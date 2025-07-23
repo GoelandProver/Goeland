@@ -61,6 +61,9 @@ func (t TermForm) RenameVariables() AST.Form { return t }
 func (t TermForm) ReplaceTermByTerm(AST.Term, AST.Term) (AST.Form, bool) {
 	return t, false
 }
+func (t TermForm) ReplaceTyVar(AST.TyBound, AST.Ty) AST.Form {
+	return t
+}
 func (t TermForm) GetIndex() int                                  { return t.index }
 func (t TermForm) SubstituteVarByMeta(AST.Var, AST.Meta) AST.Form { return t }
 func (t TermForm) GetInternalMetas() Lib.List[AST.Meta]           { return Lib.NewList[AST.Meta]() }

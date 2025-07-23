@@ -38,130 +38,61 @@
 
 package AST
 
-// FIXME: update this file with the new type system
-
-// var tInt TypeHint
-// var tRat TypeHint
-// var tReal TypeHint
-// var defaultType TypeHint
-// var defaultProp TypeHint
-
-// var intCrossInt TypeApp
-// var ratCrossRat TypeApp
-// var realCrossReal TypeApp
+import (
+	"github.com/GoelandProver/Goeland/Lib"
+)
 
 var tType Ty
 
+var tInt Ty
+var tRat Ty
+var tReal Ty
+
+var tIndividual Ty
+var tProp Ty
+
 func initTPTPNativeTypes() {
 	tType = MkTyConst("$tType")
-	// FIXME: always register the equality type in the context.
+
+	tInt = MkTyConst("$int")
+	tRat = MkTyConst("$rat")
+	tReal = MkTyConst("$real")
+
+	tIndividual = MkTyConst("$i")
+	tProp = MkTyConst("$o")
 }
 
 func TType() Ty {
 	return tType
 }
 
+func TInt() Ty {
+	return tInt
+}
+
+func TRat() Ty {
+	return tRat
+}
+
+func TReal() Ty {
+	return tReal
+}
+
+func TIndividual() Ty {
+	return tIndividual
+}
+
+func TProp() Ty {
+	return tProp
+}
+
 func IsTType(ty Ty) bool {
 	return ty.Equals(tType)
 }
 
-// func InitTPTPArithmetic() {
-// 	// Types
-// 	tInt = MkTypeHint("$int")
-// 	tRat = MkTypeHint("$rat")
-// 	tReal = MkTypeHint("$real")
-
-// 	intCrossInt = MkTypeCross(tInt, tInt)
-// 	ratCrossRat = MkTypeCross(tRat, tRat)
-// 	realCrossReal = MkTypeCross(tReal, tReal)
-
-// 	// Schemes
-// 	// 1 - Binary predicates
-// 	recordBinaryProp("$less")
-// 	recordBinaryProp("$lesseq")
-// 	recordBinaryProp("$greater")
-// 	recordBinaryProp("$greatereq")
-
-// 	// 2 - Binary input arguments
-// 	recordBinaryInArgs("$sum")
-// 	recordBinaryInArgs("$difference")
-// 	recordBinaryInArgs("$product")
-// 	recordBinaryInArgs("$quotient_e")
-// 	recordBinaryInArgs("$quotient_t")
-// 	recordBinaryInArgs("$quotient_f")
-// 	recordBinaryInArgs("$remainder_e")
-// 	recordBinaryInArgs("$remainder_t")
-// 	recordBinaryInArgs("$remainder_f")
-
-// 	// 3 - $quotient
-// 	SaveTypeScheme("$quotient", ratCrossRat, tRat)
-// 	SaveTypeScheme("$quotient", realCrossReal, tReal)
-
-// 	// 4 - Unary input arguments
-// 	recordUnaryInArgs("$uminus")
-// 	recordUnaryInArgs("$floor")
-// 	recordUnaryInArgs("$ceiling")
-// 	recordUnaryInArgs("$truncate")
-// 	recordUnaryInArgs("$round")
-
-// 	// 5 - Unary predicates
-// 	recordUnaryProp("$is_int")
-// 	recordUnaryProp("$is_rat")
-
-// 	// 6 - Conversion
-// 	recordConversion("$to_int", tInt)
-// 	recordConversion("$to_rat", tRat)
-// 	recordConversion("$to_real", tReal)
-// }
-
-// func recordBinaryProp(name string) {
-// 	SaveTypeScheme(name, intCrossInt, defaultProp)
-// 	SaveTypeScheme(name, ratCrossRat, defaultProp)
-// 	SaveTypeScheme(name, realCrossReal, defaultProp)
-// }
-
-// func recordBinaryInArgs(name string) {
-// 	SaveTypeScheme(name, intCrossInt, tInt)
-// 	SaveTypeScheme(name, ratCrossRat, tRat)
-// 	SaveTypeScheme(name, realCrossReal, tReal)
-// }
-
-// func recordUnaryInArgs(name string) {
-// 	SaveTypeScheme(name, tInt, tInt)
-// 	SaveTypeScheme(name, tRat, tRat)
-// 	SaveTypeScheme(name, tReal, tReal)
-// }
-
-// func recordUnaryProp(name string) {
-// 	SaveTypeScheme(name, tInt, defaultProp)
-// 	SaveTypeScheme(name, tRat, defaultProp)
-// 	SaveTypeScheme(name, tReal, defaultProp)
-// }
-
-// func recordConversion(name string, out TypeApp) {
-// 	SaveTypeScheme(name, tInt, out)
-// 	SaveTypeScheme(name, tRat, out)
-// 	SaveTypeScheme(name, tReal, out)
-// }
-
-// func IsInt(tType TypeScheme) bool        { return tType.Equals(tInt) }
-// func IsRat(tType TypeScheme) bool        { return tType.Equals(tRat) }
-// func IsReal(tType TypeScheme) bool       { return tType.Equals(tReal) }
-// func DefaultType() TypeApp               { return defaultType }
-// func DefaultProp() TypeApp               { return defaultProp }
-// func DefaultFunType(len int) TypeScheme  { return defaultAppType(len, defaultType) }
-// func DefaultPropType(len int) TypeScheme { return defaultAppType(len, defaultProp) }
-
-// func defaultAppType(len int, out TypeApp) TypeScheme {
-// 	if len == 0 {
-// 		return Glob.To[TypeScheme](out)
-// 	} else if len == 1 {
-// 		return MkTypeArrow(defaultType, out)
-// 	} else {
-// 		ts := []TypeApp{}
-// 		for i := 0; i < len; i++ {
-// 			ts = append(ts, defaultType)
-// 		}
-// 		return MkTypeArrow(MkTypeCross(ts...), out)
-// 	}
-// }
+func DefinedTPTPTypes() Lib.List[TyConstr] {
+	return Lib.ListMap(
+		Lib.MkListV(tType, tInt, tRat, tReal, tIndividual, tProp),
+		func(ty Ty) TyConstr { return ty.(TyConstr) },
+	)
+}
