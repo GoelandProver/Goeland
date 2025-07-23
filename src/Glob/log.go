@@ -41,6 +41,8 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
+	"runtime"
 	"time"
 )
 
@@ -52,6 +54,10 @@ var (
 
 	wrt      io.Writer
 	fileName string
+
+	// Registered debuggers: allows to print the debug logs of only a part of the program.
+	// See the [CreateDebugger] function to create a custom debugger.
+	registered_debuggers Lib.Set[Lib.String] = Lib.EmptySet[Lib.String]()
 )
 
 /**
@@ -69,6 +75,7 @@ func InitLogs() {
 	logInfo = log.New(wrt, "[\033[32minfo\033[0m] ", 0)
 	logError = log.New(wrt, "[\033[31merror\033[0m] ", 0)
 	logWarning = log.New(wrt, "[\033[33mwarn\033[0m] ", 0)
+	registered_debuggers = Lib.EmptySet[Lib.String]()
 }
 
 /* Sets the function to be called when PrintDebug is called. This way, we avoid an if test when not in debug mode. */
@@ -111,7 +118,6 @@ var getId = func() (options []any, str string) {
 }
 
 func EnableShowTrace() {
-	logDebug.SetFlags(log.Lshortfile)
 	logInfo.SetFlags(log.Lshortfile)
 	logError.SetFlags(log.Lshortfile)
 	logWarning.SetFlags(log.Lshortfile)
@@ -169,4 +175,22 @@ func PrintError(function, message string) {
 
 func PrintWarn(function, message string) {
 	printToLogger(logWarning, function, message)
+}
+
+type Debugger func(Lib.Lazy[string])
+
+func CreateDebugger(name string) Debugger {
+	registered_debuggers = registered_debuggers.Add(Lib.MkString(name))
+
+	debug := func(s Lib.Lazy[string]) {
+		if debug.Contains(Lib.MkString(name)) {
+			_, file, no, ok := runtime.Caller(1)
+			displayed_name := name
+			if ok {
+				displayed_name = fmt.Sprintf("%s:%s:%d", name, filepath.Base(file), no)
+			}
+			PrintDebug(displayed_name, s)
+		}
+	}
+	return debug
 }
