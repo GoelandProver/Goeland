@@ -48,8 +48,6 @@ var (
 	logDebug   *log.Logger
 	logInfo    *log.Logger
 	logError   *log.Logger
-	logPanic   *log.Logger
-	logFatal   *log.Logger
 	logWarning *log.Logger
 
 	wrt      io.Writer
@@ -116,8 +114,7 @@ func EnableShowTrace() {
 	logDebug.SetFlags(log.Lshortfile)
 	logInfo.SetFlags(log.Lshortfile)
 	logError.SetFlags(log.Lshortfile)
-	logPanic.SetFlags(log.Lshortfile)
-	logFatal.SetFlags(log.Lshortfile)
+	logWarning.SetFlags(log.Lshortfile)
 }
 
 func EnableLogFile(file string) {
@@ -144,8 +141,7 @@ func EnableWriteLogs() {
 	logDebug.SetOutput(wrt)
 	logInfo.SetOutput(wrt)
 	logError.SetOutput(wrt)
-	logPanic.SetOutput(wrt)
-	logFatal.SetOutput(wrt)
+	logWarning.SetOutput(wrt)
 }
 
 // Prints the message into the terminal and/or the file as a debug message
