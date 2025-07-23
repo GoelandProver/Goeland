@@ -66,10 +66,10 @@ var EmptyPredEq Pred
 /* Initialization */
 func Init() {
 	Reset()
-	initTPTPNativeTypes()
 	Id_eq = MakerId("=")
 	EmptyPredEq = MakerPred(Id_eq, Lib.NewList[Ty](), Lib.NewList[Term]())
 	initDefaultMap()
+	initTPTPNativeTypes()
 }
 
 /* Reset all the maps and counters */
