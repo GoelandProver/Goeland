@@ -23,7 +23,11 @@ It supports [TPTP](http://tptp.org/) FOF and TFF files.
 
 In order to compile, Goéland needs:
 * Go (version >= 1.22, download directly from the [site](https://go.dev/)), and
-* `goyacc`, which can be found
+* `goyacc`, which can be installed (recommended) from `go`'s package manager tool using:
+  ```
+  go install golang.org/x/tools/cmd/goyacc
+  ```
+  or can be found in distribution-based packages:
   - in the package `golang-golang-x-tools` on `apt`-based distributions,
   - in the package `goyacc` with homebrew.
 
