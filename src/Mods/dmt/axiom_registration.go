@@ -45,6 +45,12 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
+var debug Glob.Debugger
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("plugin.DMT")
+}
+
 func RegisterAxiom(axiom AST.Form) bool {
 	axiomFT := instanciateForalls(axiom)
 
@@ -98,8 +104,7 @@ func printDebugRewriteRule(polarity bool, axiom, cons AST.Form) {
 	} else {
 		ax, co = AST.MakerNot(axiom).ToString(), cons.ToString()
 	}
-	Glob.PrintDebug(
-		"DMT",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Rewrite rule: %s ---> %s\n", ax, co) }),
 	)
 }

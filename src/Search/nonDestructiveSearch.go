@@ -59,7 +59,7 @@ func (nds *nonDestructiveSearch) setApplyRules(function func(uint64, State, Comm
 }
 
 func (nds *nonDestructiveSearch) doEndManageBeta(fatherId uint64, state State, c Communication, channels []Communication, currentNodeId int, originalNodeId int, childIds []int, metaToReintroduce []int) {
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Die" }))
+	debug(Lib.MkLazy(func() string { return "Die" }))
 }
 
 func (nds *nonDestructiveSearch) manageRewriteRules(fatherId uint64, state State, c Communication, newAtomics Core.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
@@ -141,15 +141,13 @@ func (nds *nonDestructiveSearch) catchFormulaToInstantiate(subst_found Unif.Subs
 * Got the substitution (X, a) and reintroduce ForAll x P(x) -> need to reintroduce P(a). Remplace immediatly the new generated metavariable by a.
 **/
 func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Communication, index int, s Core.SubstAndForm) {
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Instantiate with subst : %v ", s.GetSubst().ToString()) }),
 	)
 	newMetaGenerator := state.GetMetaGen()
 	reslf := Core.ReintroduceMeta(&newMetaGenerator, index, state.GetN())
 	state.SetMetaGen(newMetaGenerator)
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Instantiate the formula : %s", reslf.ToString()) }),
 	)
 
@@ -202,8 +200,7 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 			}
 		}
 		if !found {
-			Glob.PrintDebug(
-				"PS",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Error : No matching found for %v in new formula : %v\n",
@@ -245,16 +242,14 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 	// 	}
 	// }
 
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Applied subst: %s",
 				state.GetAppliedSubst().GetSubst().ToString())
 		}),
 	)
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Real substitution applied : %s", new_subst.ToString())
@@ -302,7 +297,7 @@ func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64
 	}
 
 	choosenSubstMetas := new_choosen_subst.GetSubst().GetMeta()
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string {
+	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf(
 			"Choosen subst : %v - HasInCommon : %v",
 			new_choosen_subst.GetSubst().ToString(),
@@ -312,8 +307,7 @@ func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64
 			),
 		)
 	}))
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("AreRulesApplicable : %v", st.AreRulesApplicable()) }),
 	)
 
@@ -321,8 +315,7 @@ func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64
 
 	// Catch all the meta which can be instantiate
 	form_to_instantiate = nds.catchFormulaToInstantiate(choosen_subst.GetSubst())
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Form_to_instantiate : %v", form_to_instantiate) }),
 	)
 
@@ -403,8 +396,7 @@ func (ds *nonDestructiveSearch) manageResult(c Communication) (Core.Unifier, []P
 
 		time.Sleep(1 * time.Millisecond)
 
-		Glob.PrintDebug(
-			"MAIN",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("open is : %v from %v", open, res.getId()) }),
 		)
 		Glob.PrintInfo("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), Glob.GetNbGoroutines()))

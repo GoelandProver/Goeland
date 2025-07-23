@@ -36,7 +36,6 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -152,7 +151,7 @@ func getArgsTypes(
 			types = append(types, tmpTerm.GetTypeApp())
 		// There shouldn't be Metas yet.
 		case AST.Meta:
-			Glob.PrintDebug("GAT", Lib.MkLazy(func() string { return "Found a Meta while typing everything." }))
+			debug(Lib.MkLazy(func() string { return "Found a Meta while typing everything." }))
 			// ID is filtered out
 		}
 	}

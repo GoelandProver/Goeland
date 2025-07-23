@@ -39,7 +39,6 @@ package equality
 import (
 	"fmt"
 
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -95,22 +94,18 @@ func makeConstraintStruct(ac ConstraintList, s Unif.Substitutions, p ConstraintL
 func (cs *ConstraintStruct) appendIfConsistant(c Constraint) bool {
 	if !cs.getAllConstraints().contains(c) {
 		if is_consistant := cs.isConsistantWith(c); is_consistant {
-			Glob.PrintDebug(
-				"AIC",
+			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("%v is consistant", c.toString()) }),
 			)
-			Glob.PrintDebug(
-				"AIC",
+			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("CL at the end : %v", cs.toString()) }),
 			)
 			return true
 		} else {
-			Glob.PrintDebug(
-				"AIC",
+			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("%v is not consistant", c.toString()) }),
 			)
-			Glob.PrintDebug(
-				"AIC",
+			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("CL at the end : %v", cs.toString()) }),
 			)
 			return false
@@ -121,8 +116,7 @@ func (cs *ConstraintStruct) appendIfConsistant(c Constraint) bool {
 
 /* Check if a constraint is consistant with LPO and constraint list + update cl */
 func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
-	Glob.PrintDebug(
-		"ICW",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Constraint : %v", c.toString()) }),
 	)
 	switch c.getCType() {
@@ -131,8 +125,7 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		new_c := c.copy()
 		new_c.applySubstitution(cs.getSubst())
 		respect_lpo, is_comparable := new_c.checkLPO()
-		Glob.PrintDebug(
-			"ICW",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Is_comparable : %v, respec_lpo : %v", is_comparable, respect_lpo)
@@ -155,8 +148,7 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 	case EQ:
 		// Check if the EQ constraint is unifiable
 		subst := Unif.AddUnification(c.getTP().GetT1().Copy(), c.getTP().GetT2().Copy(), Unif.MakeEmptySubstitution())
-		Glob.PrintDebug(
-			"ICW",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Candidate subst : %v", subst.ToString()) }),
 		)
 		if subst.Equals(Unif.Failure()) {
@@ -172,8 +164,7 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		//	return respect_lpo
 		// }
 
-		Glob.PrintDebug(
-			"ICW",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Try to check compatibility : %v (%v and %v) and %v",
@@ -186,8 +177,7 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		)
 		// Add it to subst and check unification consistency
 		subst_all := Unif.AddUnification(c.getTP().GetT1(), c.getTP().GetT2(), cs.getSubst())
-		Glob.PrintDebug(
-			"ICW",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Subst all : %v", subst_all.ToString()) }),
 		)
 		if subst_all.Equals(Unif.Failure()) {
@@ -198,9 +188,9 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		}
 
 		// Apply new global subst to prec
-		Glob.PrintDebug("ICW", Lib.MkLazy(func() string { return "Check if consistant with the whole cl" }))
+		debug(Lib.MkLazy(func() string { return "Check if consistant with the whole cl" }))
 		if !cs.getPrec().isConsistantWithSubst(subst_all) {
-			Glob.PrintDebug("ICW", Lib.MkLazy(func() string { return "Not consistant with the whole cl" }))
+			debug(Lib.MkLazy(func() string { return "Not consistant with the whole cl" }))
 			return false
 		}
 
@@ -210,7 +200,7 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		return true
 
 	default:
-		Glob.PrintDebug("ICW", Lib.MkLazy(func() string { return "Constraint type unknown" }))
+		debug(Lib.MkLazy(func() string { return "Constraint type unknown" }))
 		return false
 	}
 }

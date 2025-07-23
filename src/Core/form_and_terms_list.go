@@ -41,7 +41,6 @@ import (
 	"sort"
 
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -85,7 +84,7 @@ func (fl FormAndTermsList) ToString() string {
 /* Print a list of formulas */
 func (lf FormAndTermsList) Print() {
 	for _, f := range lf {
-		Glob.PrintDebug("FLTS", Lib.MkLazy(func() string { return f.GetForm().ToString() }))
+		debug(Lib.MkLazy(func() string { return f.GetForm().ToString() }))
 	}
 }
 

@@ -40,7 +40,6 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -61,7 +60,7 @@ func (m MatchingSubstitutions) ToString() string {
 }
 
 func (m MatchingSubstitutions) Print() {
-	Glob.PrintDebug("M.P", Lib.MkLazy(func() string { return fmt.Sprintf(" %s ", m.GetForm().ToString()) }))
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf(" %s ", m.GetForm().ToString()) }))
 	m.GetSubst().Print()
 }
 

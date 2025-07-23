@@ -56,6 +56,12 @@ var UsedSearch SearchAlgorithm
 
 var EagerEq = false
 
+var debug Glob.Debugger
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("search")
+}
+
 func init() {
 	SetSearchAlgorithm(NewDestructiveSearch())
 }
@@ -70,9 +76,8 @@ func SetApplyRules(function func(uint64, State, Communication, Core.FormAndTerms
 
 /* Begin the proof search */
 func Search(formula AST.Form, bound int) {
-	Glob.PrintDebug("MAIN", Lib.MkLazy(func() string { return "Start search" }))
-	Glob.PrintDebug(
-		"MAIN",
+	debug(Lib.MkLazy(func() string { return "Start search" }))
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Initial formula: %v", formula.ToString()) }),
 	)
 

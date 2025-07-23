@@ -108,7 +108,7 @@ func buildOptions() {
 	(&option[string]{}).init(
 		"debug",
 		"none",
-		"Enables printing debug information in the terminal. Debugging a specific part of the code is possible via -debug a,b,c which will output the debugs of parts a, b and c. If you want all the debugs, use -debug all or simply -debug.",
+		"Enables printing debug information in the terminal. Debugging a specific part of the code is possible via -debug a,b,c which will output the debugs of parts a, b and c. If you want all the debugs, use -debug all.",
 		Glob.SetDebug,
 		func(string) {})
 	(&option[bool]{}).init(

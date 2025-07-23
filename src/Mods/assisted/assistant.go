@@ -42,6 +42,12 @@ import (
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
+var debug Glob.Debugger
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("plugin.assisted")
+}
+
 var ruleSynonymList = map[string]string{
 	"Atomic": "X",
 	"atomic": "X",
