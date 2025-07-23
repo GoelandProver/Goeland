@@ -106,11 +106,9 @@ func ChangeVarSeparator(sep string) string {
 func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
 	varStrings := []string{}
 
-	for _ = range q.GetVarList().GetSlice() {
-		str := mapping[QuantVarOpen]
-		str += ListToMappedString(q.GetVarList().GetSlice(), varSeparator, "", mapping, false)
-		varStrings = append(varStrings, str+mapping[QuantVarClose])
-	}
+	str := mapping[QuantVarOpen]
+	str += ListToMappedString(q.GetVarList().GetSlice(), varSeparator, "", mapping, false)
+	varStrings = append(varStrings, str+mapping[QuantVarClose])
 
 	return "(" + mapping[q.symbol] + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
 }
@@ -162,20 +160,49 @@ func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 	), res
 }
 
+func (q quantifier) replaceTyVar(old TyBound, new Ty) quantifier {
+	f := q.GetForm().ReplaceTyVar(old, new)
+	return makeQuantifier(
+		q.GetIndex(),
+		Lib.ListMap(
+			q.GetVarList(),
+			func(p TypedVar) TypedVar { return p.ReplaceTyVar(old, new) },
+		),
+		f,
+		q.metas.Raw().Copy(),
+		q.symbol,
+	)
+}
+
 func (q quantifier) renameVariables() quantifier {
 	newVarList := Lib.NewList[TypedVar]()
-	newForm := q.GetForm()
+	newForm := q.GetForm().RenameVariables()
 
+	newTyBv := Lib.NewList[Lib.Pair[TyBound, Ty]]()
 	for _, v := range q.GetVarList().GetSlice() {
 		newVar := MakerNewVar(v.GetName())
 		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()))
 		newVarList.Append(MkTypedVar(newVar.name, newVar.index, v.ty))
-		newForm, _ = newForm.RenameVariables().ReplaceTermByTerm(v.ToBoundVar(), newVar)
+		f, replaced := newForm.ReplaceTermByTerm(v.ToBoundVar(), newVar)
+		if !replaced {
+			newBv := MkTyBV(newVar.name, newVar.index)
+			f = f.ReplaceTyVar(v.ToTyBoundVar(), newBv)
+			newTyBv.Append(Lib.MkPair(v.ToTyBoundVar(), newBv))
+		}
+		newForm = f
 	}
 
 	return makeQuantifier(
 		q.GetIndex(),
-		newVarList,
+		Lib.ListMap(
+			newVarList,
+			func(p TypedVar) TypedVar {
+				for _, pair := range newTyBv.GetSlice() {
+					p = p.ReplaceTyVar(pair.Fst, pair.Snd)
+				}
+				return p
+			},
+		),
 		newForm,
 		q.metas.Raw().Copy(),
 		q.symbol,
