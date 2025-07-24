@@ -1,4 +1,4 @@
-name: Full CI
+name: Benchs
 
 permissions:
   pull-requests: write
@@ -32,13 +32,16 @@ jobs:
         with:
           go-version: ${{ env.goVersion }}
       - run: go install golang.org/x/tools/cmd/goyacc@latest
-      - run: cd src && make
       - name: First set of benchs
         id: benchs-1
         run: |
+          git config --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
+          git fetch
+          new_commit=${{ github.event.pull_request.head.sha }}
+          old_commit=$(git merge-base origin/master $new_commit)
           cd devtools
           chmod +x run-benchs.sh
-          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/1 >> "$GITHUB_OUTPUT"
+          ./run-benchs.sh $new_commit $old_commit $(pwd)/../.github/benchs ../.github/benchs/CASC-J12/1 $RUNNER_TEMP/benchs-1
 
   CASCSet2:
     if: github.event.label.name == 'request:benchs'
@@ -49,13 +52,16 @@ jobs:
         with:
           go-version: ${{ env.goVersion }}
       - run: go install golang.org/x/tools/cmd/goyacc@latest
-      - run: cd src && make
       - name: Second set of benchs
         id: benchs-2
         run: |
+          git config --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
+          git fetch
+          new_commit=${{ github.event.pull_request.head.sha }}
+          old_commit=$(git merge-base origin/master $new_commit)
           cd devtools
           chmod +x run-benchs.sh
-          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/2 >> "$GITHUB_OUTPUT"
+          ./run-benchs.sh $new_commit $old_commit $(pwd)/../.github/benchs ../.github/benchs/CASC-J12/2 $RUNNER_TEMP/benchs-2
 
   CASCSet3:
     if: github.event.label.name == 'request:benchs'
@@ -66,13 +72,16 @@ jobs:
         with:
           go-version: ${{ env.goVersion }}
       - run: go install golang.org/x/tools/cmd/goyacc@latest
-      - run: cd src && make
       - name: Third set of benchs
         id: benchs-3
         run: |
+          git config --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
+          git fetch
+          new_commit=${{ github.event.pull_request.head.sha }}
+          old_commit=$(git merge-base origin/master $new_commit)
           cd devtools
           chmod +x run-benchs.sh
-          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/3 >> "$GITHUB_OUTPUT"
+          ./run-benchs.sh $new_commit $old_commit $(pwd)/../.github/benchs ../.github/benchs/CASC-J12/3 $RUNNER_TEMP/benchs-3
 
   CASCSet4:
     if: github.event.label.name == 'request:benchs'
@@ -83,13 +92,16 @@ jobs:
         with:
           go-version: ${{ env.goVersion }}
       - run: go install golang.org/x/tools/cmd/goyacc@latest
-      - run: cd src && make
       - name: Fourth set of benchs
         id: benchs-4
         run: |
+          git config --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
+          git fetch
+          new_commit=${{ github.event.pull_request.head.sha }}
+          old_commit=$(git merge-base origin/master $new_commit)
           cd devtools
           chmod +x run-benchs.sh
-          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/4 >> "$GITHUB_OUTPUT"
+          ./run-benchs.sh $new_commit $old_commit $(pwd)/../.github/benchs ../.github/benchs/CASC-J12/4 $RUNNER_TEMP/benchs-4
 
   CASCSet5:
     if: github.event.label.name == 'request:benchs'
@@ -100,13 +112,16 @@ jobs:
         with:
           go-version: ${{ env.goVersion }}
       - run: go install golang.org/x/tools/cmd/goyacc@latest
-      - run: cd src && make
       - name: Fifth set of benchs
         id: benchs-5
         run: |
+          git config --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
+          git fetch
+          new_commit=${{ github.event.pull_request.head.sha }}
+          old_commit=$(git merge-base origin/master $new_commit)
           cd devtools
           chmod +x run-benchs.sh
-          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/5 >> "$GITHUB_OUTPUT"
+          ./run-benchs.sh $new_commit $old_commit $(pwd)/../.github/benchs ../.github/benchs/CASC-J12/5 $RUNNER_TEMP/benchs-5
 
   CASCSet6:
     if: github.event.label.name == 'request:benchs'
@@ -117,13 +132,16 @@ jobs:
         with:
           go-version: ${{ env.goVersion }}
       - run: go install golang.org/x/tools/cmd/goyacc@latest
-      - run: cd src && make
       - name: Sixth set of benchs
         id: benchs-6
         run: |
+          git config --add remote.origin.fetch "+refs/pull/*/head:refs/remotes/origin/pr/*"
+          git fetch
+          new_commit=${{ github.event.pull_request.head.sha }}
+          old_commit=$(git merge-base origin/master $new_commit)
           cd devtools
           chmod +x run-benchs.sh
-          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/6 >> "$GITHUB_OUTPUT"
+          ./run-benchs.sh $new_commit $old_commit $(pwd)/../.github/benchs ../.github/benchs/CASC-J12/6 $RUNNER_TEMP/benchs-6
 
   WriteCASCRecap:
     needs:
@@ -138,14 +156,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
+      - name: Format message
+        id: format-message
+        run: |
+          pip install prettytable
+          cd devtools
+          echo "message=$(python3 make-recap-comment.py $RUNNER_TEMP/benchs-1 $RUNNER_TEMP/benchs-2 $RUNNER_TEMP/benchs-3 $RUNNER_TEMP/benchs-4 $RUNNER_TEMP/benchs-5 $RUNNER_TEMP/benchs-6)" >> $GITHUB_ENV
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v3
         with:
-          message: |
-            Result of set 1: **${{ steps.benchs-1.outputs.recap }}**
-            Result of set 2: **${{ steps.benchs-2.outputs.recap }}**
-            Result of set 3: **${{ steps.benchs-3.outputs.recap }}**
-            Result of set 4: **${{ steps.benchs-4.outputs.recap }}**
-            Result of set 5: **${{ steps.benchs-5.outputs.recap }}**
-            Result of set 6: **${{ steps.benchs-6.outputs.recap }}**
+          message: ${{ env.message }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
