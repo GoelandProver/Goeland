@@ -1,0 +1,712 @@
+%------------------------------------------------------------------------------
+% File     : SET007+61 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Curried and Uncurried Functions
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : funct_5 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   86 (  12 unt;   0 def)
+%            Number of atoms       :  403 ( 126 equ)
+%            Maximal formula atoms :   17 (   4 avg)
+%            Number of connectives :  332 (  15   ~;  10   |; 183   &)
+%                                         (   8 <=>; 116  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   6 avg)
+%            Maximal term depth    :    6 (   2 avg)
+%            Number of predicates  :    8 (   6 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   28 (  28 usr;   2 con; 0-2 aty)
+%            Number of variables   :  213 ( 207   !;   6   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_funct_5,axiom,
+    k2_funct_4(k1_xboole_0) = k1_xboole_0 ).
+
+fof(d1_funct_5,axiom,
+    ! [A,B] :
+      ( B = k1_funct_5(A)
+    <=> ! [C] :
+          ( r2_hidden(C,B)
+        <=> ? [D] : r2_hidden(k4_tarski(C,D),A) ) ) ).
+
+fof(d2_funct_5,axiom,
+    ! [A,B] :
+      ( B = k2_funct_5(A)
+    <=> ! [C] :
+          ( r2_hidden(C,B)
+        <=> ? [D] : r2_hidden(k4_tarski(D,C),A) ) ) ).
+
+fof(t2_funct_5,axiom,
+    $true ).
+
+fof(t3_funct_5,axiom,
+    $true ).
+
+fof(t4_funct_5,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(k4_tarski(A,B),C)
+     => ( r2_hidden(A,k1_funct_5(C))
+        & r2_hidden(B,k2_funct_5(C)) ) ) ).
+
+fof(t5_funct_5,axiom,
+    ! [A,B] :
+      ( r1_tarski(A,B)
+     => ( r1_tarski(k1_funct_5(A),k1_funct_5(B))
+        & r1_tarski(k2_funct_5(A),k2_funct_5(B)) ) ) ).
+
+fof(t6_funct_5,axiom,
+    ! [A,B] :
+      ( k1_funct_5(k2_xboole_0(A,B)) = k2_xboole_0(k1_funct_5(A),k1_funct_5(B))
+      & k2_funct_5(k2_xboole_0(A,B)) = k2_xboole_0(k2_funct_5(A),k2_funct_5(B)) ) ).
+
+fof(t7_funct_5,axiom,
+    ! [A,B] :
+      ( r1_tarski(k1_funct_5(k3_xboole_0(A,B)),k3_xboole_0(k1_funct_5(A),k1_funct_5(B)))
+      & r1_tarski(k2_funct_5(k3_xboole_0(A,B)),k3_xboole_0(k2_funct_5(A),k2_funct_5(B))) ) ).
+
+fof(t8_funct_5,axiom,
+    ! [A,B] :
+      ( r1_tarski(k4_xboole_0(k1_funct_5(A),k1_funct_5(B)),k1_funct_5(k4_xboole_0(A,B)))
+      & r1_tarski(k4_xboole_0(k2_funct_5(A),k2_funct_5(B)),k2_funct_5(k4_xboole_0(A,B))) ) ).
+
+fof(t9_funct_5,axiom,
+    ! [A,B] :
+      ( r1_tarski(k5_xboole_0(k1_funct_5(A),k1_funct_5(B)),k1_funct_5(k5_xboole_0(A,B)))
+      & r1_tarski(k5_xboole_0(k2_funct_5(A),k2_funct_5(B)),k2_funct_5(k5_xboole_0(A,B))) ) ).
+
+fof(t10_funct_5,axiom,
+    ( k1_funct_5(k1_xboole_0) = k1_xboole_0
+    & k2_funct_5(k1_xboole_0) = k1_xboole_0 ) ).
+
+fof(t11_funct_5,axiom,
+    ! [A,B] :
+      ( ~ ( A = k1_xboole_0
+          & k2_zfmisc_1(B,A) = k1_xboole_0
+          & k2_zfmisc_1(A,B) = k1_xboole_0 )
+     => ( k1_funct_5(k2_zfmisc_1(B,A)) = B
+        & k2_funct_5(k2_zfmisc_1(A,B)) = B ) ) ).
+
+fof(t12_funct_5,axiom,
+    ! [A,B] :
+      ( r1_tarski(k1_funct_5(k2_zfmisc_1(A,B)),A)
+      & r1_tarski(k2_funct_5(k2_zfmisc_1(A,B)),B) ) ).
+
+fof(t13_funct_5,axiom,
+    ! [A,B,C] :
+      ( r1_tarski(A,k2_zfmisc_1(B,C))
+     => ( r1_tarski(k1_funct_5(A),B)
+        & r1_tarski(k2_funct_5(A),C) ) ) ).
+
+fof(t14_funct_5,axiom,
+    $true ).
+
+fof(t15_funct_5,axiom,
+    ! [A,B] :
+      ( k1_funct_5(k1_tarski(k4_tarski(A,B))) = k1_tarski(A)
+      & k2_funct_5(k1_tarski(k4_tarski(A,B))) = k1_tarski(B) ) ).
+
+fof(t16_funct_5,axiom,
+    ! [A,B,C,D] :
+      ( k1_funct_5(k2_tarski(k4_tarski(A,B),k4_tarski(C,D))) = k2_tarski(A,C)
+      & k2_funct_5(k2_tarski(k4_tarski(A,B),k4_tarski(C,D))) = k2_tarski(B,D) ) ).
+
+fof(t17_funct_5,axiom,
+    ! [A] :
+      ( ! [B,C] : ~ r2_hidden(k4_tarski(B,C),A)
+     => ( k1_funct_5(A) = k1_xboole_0
+        & k2_funct_5(A) = k1_xboole_0 ) ) ).
+
+fof(t18_funct_5,axiom,
+    ! [A] :
+      ( ( k1_funct_5(A) = k1_xboole_0
+        | k2_funct_5(A) = k1_xboole_0 )
+     => ! [B,C] : ~ r2_hidden(k4_tarski(B,C),A) ) ).
+
+fof(t19_funct_5,axiom,
+    ! [A] :
+      ( k1_funct_5(A) = k1_xboole_0
+    <=> k2_funct_5(A) = k1_xboole_0 ) ).
+
+fof(t20_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( k1_funct_5(k1_relat_1(A)) = k2_funct_5(k1_relat_1(k2_funct_4(A)))
+        & k2_funct_5(k1_relat_1(A)) = k1_funct_5(k1_relat_1(k2_funct_4(A))) ) ) ).
+
+fof(t21_funct_5,axiom,
+    ! [A] :
+      ( v1_relat_1(A)
+     => ( k1_funct_5(A) = k1_relat_1(A)
+        & k2_funct_5(A) = k2_relat_1(A) ) ) ).
+
+fof(d3_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( B = k3_funct_5(A)
+          <=> ( k1_relat_1(B) = k1_funct_5(k1_relat_1(A))
+              & ! [C] :
+                  ~ ( r2_hidden(C,k1_funct_5(k1_relat_1(A)))
+                    & ! [D] :
+                        ( ( v1_relat_1(D)
+                          & v1_funct_1(D) )
+                       => ~ ( k1_funct_1(B,C) = D
+                            & k1_relat_1(D) = k2_funct_5(k3_xboole_0(k1_relat_1(A),k2_zfmisc_1(k1_tarski(C),k2_funct_5(k1_relat_1(A)))))
+                            & ! [E] :
+                                ( r2_hidden(E,k1_relat_1(D))
+                               => k1_funct_1(D,E) = k1_funct_1(A,k4_tarski(C,E)) ) ) ) ) ) ) ) ) ).
+
+fof(d4_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( B = k4_funct_5(A)
+          <=> ( ! [C] :
+                  ( r2_hidden(C,k1_relat_1(B))
+                <=> ? [D,E] :
+                      ( v1_relat_1(E)
+                      & v1_funct_1(E)
+                      & ? [F] :
+                          ( C = k4_tarski(D,F)
+                          & r2_hidden(D,k1_relat_1(A))
+                          & E = k1_funct_1(A,D)
+                          & r2_hidden(F,k1_relat_1(E)) ) ) )
+              & ! [C,D] :
+                  ( ( v1_relat_1(D)
+                    & v1_funct_1(D) )
+                 => ( ( r2_hidden(C,k1_relat_1(B))
+                      & D = k1_funct_1(A,k1_mcart_1(C)) )
+                   => k1_funct_1(B,C) = k1_funct_1(D,k2_mcart_1(C)) ) ) ) ) ) ) ).
+
+fof(d5_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => k5_funct_5(A) = k3_funct_5(k2_funct_4(A)) ) ).
+
+fof(d6_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => k6_funct_5(A) = k2_funct_4(k4_funct_5(A)) ) ).
+
+fof(t22_funct_5,axiom,
+    $true ).
+
+fof(t23_funct_5,axiom,
+    $true ).
+
+fof(t24_funct_5,axiom,
+    $true ).
+
+fof(t25_funct_5,axiom,
+    $true ).
+
+fof(t26_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r2_hidden(k4_tarski(A,B),k1_relat_1(C))
+       => ( r2_hidden(A,k1_relat_1(k3_funct_5(C)))
+          & v1_relat_1(k1_funct_1(k3_funct_5(C),A))
+          & v1_funct_1(k1_funct_1(k3_funct_5(C),A)) ) ) ) ).
+
+fof(t27_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r2_hidden(k4_tarski(A,B),k1_relat_1(C))
+              & D = k1_funct_1(k3_funct_5(C),A) )
+           => ( r2_hidden(B,k1_relat_1(D))
+              & k1_funct_1(D,B) = k1_funct_1(C,k4_tarski(A,B)) ) ) ) ) ).
+
+fof(t28_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r2_hidden(k4_tarski(A,B),k1_relat_1(C))
+       => ( r2_hidden(B,k1_relat_1(k5_funct_5(C)))
+          & v1_relat_1(k1_funct_1(k5_funct_5(C),B))
+          & v1_funct_1(k1_funct_1(k5_funct_5(C),B)) ) ) ) ).
+
+fof(t29_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r2_hidden(k4_tarski(A,B),k1_relat_1(C))
+              & D = k1_funct_1(k5_funct_5(C),B) )
+           => ( r2_hidden(A,k1_relat_1(D))
+              & k1_funct_1(D,A) = k1_funct_1(C,k4_tarski(A,B)) ) ) ) ) ).
+
+fof(t30_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => k1_relat_1(k5_funct_5(A)) = k2_funct_5(k1_relat_1(A)) ) ).
+
+fof(t31_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( k1_relat_1(C) = k2_zfmisc_1(A,B)
+       => ( k2_zfmisc_1(A,B) = k1_xboole_0
+          | ( k1_relat_1(k3_funct_5(C)) = A
+            & k1_relat_1(k5_funct_5(C)) = B ) ) ) ) ).
+
+fof(t32_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r1_tarski(k1_relat_1(C),k2_zfmisc_1(A,B))
+       => ( r1_tarski(k1_relat_1(k3_funct_5(C)),A)
+          & r1_tarski(k1_relat_1(k5_funct_5(C)),B) ) ) ) ).
+
+fof(t33_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r1_tarski(k2_relat_1(C),k1_funct_2(A,B))
+       => ( k1_relat_1(k4_funct_5(C)) = k2_zfmisc_1(k1_relat_1(C),A)
+          & k1_relat_1(k6_funct_5(C)) = k2_zfmisc_1(A,k1_relat_1(C)) ) ) ) ).
+
+fof(t34_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( ! [B,C] : ~ r2_hidden(k4_tarski(B,C),k1_relat_1(A))
+       => ( k3_funct_5(A) = k1_xboole_0
+          & k5_funct_5(A) = k1_xboole_0 ) ) ) ).
+
+fof(t35_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( ! [B] :
+            ~ ( r2_hidden(B,k1_relat_1(A))
+              & v1_relat_1(k1_funct_1(A,B))
+              & v1_funct_1(k1_funct_1(A,B)) )
+       => ( k4_funct_5(A) = k1_xboole_0
+          & k6_funct_5(A) = k1_xboole_0 ) ) ) ).
+
+fof(t36_funct_5,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_relat_1(D)
+        & v1_funct_1(D) )
+     => ~ ( k2_zfmisc_1(A,B) != k1_xboole_0
+          & k1_relat_1(D) = k2_zfmisc_1(A,B)
+          & r2_hidden(C,A)
+          & ! [E] :
+              ( ( v1_relat_1(E)
+                & v1_funct_1(E) )
+             => ~ ( k1_funct_1(k3_funct_5(D),C) = E
+                  & k1_relat_1(E) = B
+                  & r1_tarski(k2_relat_1(E),k2_relat_1(D))
+                  & ! [F] :
+                      ( r2_hidden(F,B)
+                     => k1_funct_1(E,F) = k1_funct_1(D,k4_tarski(C,F)) ) ) ) ) ) ).
+
+fof(t37_funct_5,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ( r2_hidden(A,k1_relat_1(k3_funct_5(B)))
+       => ( v1_relat_1(k1_funct_1(k3_funct_5(B),A))
+          & v1_funct_1(k1_funct_1(k3_funct_5(B),A)) ) ) ) ).
+
+fof(t38_funct_5,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ! [C] :
+          ( ( v1_relat_1(C)
+            & v1_funct_1(C) )
+         => ( ( r2_hidden(A,k1_relat_1(k3_funct_5(B)))
+              & C = k1_funct_1(k3_funct_5(B),A) )
+           => ( k1_relat_1(C) = k2_funct_5(k3_xboole_0(k1_relat_1(B),k2_zfmisc_1(k1_tarski(A),k2_funct_5(k1_relat_1(B)))))
+              & r1_tarski(k1_relat_1(C),k2_funct_5(k1_relat_1(B)))
+              & r1_tarski(k2_relat_1(C),k2_relat_1(B))
+              & ! [D] :
+                  ( r2_hidden(D,k1_relat_1(C))
+                 => ( k1_funct_1(C,D) = k1_funct_1(B,k4_tarski(A,D))
+                    & r2_hidden(k4_tarski(A,D),k1_relat_1(B)) ) ) ) ) ) ) ).
+
+fof(t39_funct_5,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_relat_1(D)
+        & v1_funct_1(D) )
+     => ~ ( k2_zfmisc_1(A,B) != k1_xboole_0
+          & k1_relat_1(D) = k2_zfmisc_1(A,B)
+          & r2_hidden(C,B)
+          & ! [E] :
+              ( ( v1_relat_1(E)
+                & v1_funct_1(E) )
+             => ~ ( k1_funct_1(k5_funct_5(D),C) = E
+                  & k1_relat_1(E) = A
+                  & r1_tarski(k2_relat_1(E),k2_relat_1(D))
+                  & ! [F] :
+                      ( r2_hidden(F,A)
+                     => k1_funct_1(E,F) = k1_funct_1(D,k4_tarski(F,C)) ) ) ) ) ) ).
+
+fof(t40_funct_5,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ( r2_hidden(A,k1_relat_1(k5_funct_5(B)))
+       => ( v1_relat_1(k1_funct_1(k5_funct_5(B),A))
+          & v1_funct_1(k1_funct_1(k5_funct_5(B),A)) ) ) ) ).
+
+fof(t41_funct_5,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ! [C] :
+          ( ( v1_relat_1(C)
+            & v1_funct_1(C) )
+         => ( ( r2_hidden(A,k1_relat_1(k5_funct_5(B)))
+              & C = k1_funct_1(k5_funct_5(B),A) )
+           => ( k1_relat_1(C) = k1_funct_5(k3_xboole_0(k1_relat_1(B),k2_zfmisc_1(k1_funct_5(k1_relat_1(B)),k1_tarski(A))))
+              & r1_tarski(k1_relat_1(C),k1_funct_5(k1_relat_1(B)))
+              & r1_tarski(k2_relat_1(C),k2_relat_1(B))
+              & ! [D] :
+                  ( r2_hidden(D,k1_relat_1(C))
+                 => ( k1_funct_1(C,D) = k1_funct_1(B,k4_tarski(D,A))
+                    & r2_hidden(k4_tarski(D,A),k1_relat_1(B)) ) ) ) ) ) ) ).
+
+fof(t42_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( k1_relat_1(C) = k2_zfmisc_1(A,B)
+       => ( r1_tarski(k2_relat_1(k3_funct_5(C)),k1_funct_2(B,k2_relat_1(C)))
+          & r1_tarski(k2_relat_1(k5_funct_5(C)),k1_funct_2(A,k2_relat_1(C))) ) ) ) ).
+
+fof(t43_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( r1_tarski(k2_relat_1(k3_funct_5(A)),k4_partfun1(k2_funct_5(k1_relat_1(A)),k2_relat_1(A)))
+        & r1_tarski(k2_relat_1(k5_funct_5(A)),k4_partfun1(k1_funct_5(k1_relat_1(A)),k2_relat_1(A))) ) ) ).
+
+fof(t44_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r1_tarski(k2_relat_1(C),k4_partfun1(A,B))
+       => ( r1_tarski(k1_relat_1(k4_funct_5(C)),k2_zfmisc_1(k1_relat_1(C),A))
+          & r1_tarski(k1_relat_1(k6_funct_5(C)),k2_zfmisc_1(A,k1_relat_1(C))) ) ) ) ).
+
+fof(t45_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r2_hidden(A,k1_relat_1(C))
+              & D = k1_funct_1(C,A)
+              & r2_hidden(B,k1_relat_1(D)) )
+           => ( r2_hidden(k4_tarski(A,B),k1_relat_1(k4_funct_5(C)))
+              & k1_funct_1(k4_funct_5(C),k4_tarski(A,B)) = k1_funct_1(D,B)
+              & r2_hidden(k1_funct_1(D,B),k2_relat_1(k4_funct_5(C))) ) ) ) ) ).
+
+fof(t46_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r2_hidden(A,k1_relat_1(C))
+              & D = k1_funct_1(C,A)
+              & r2_hidden(B,k1_relat_1(D)) )
+           => ( r2_hidden(k4_tarski(B,A),k1_relat_1(k6_funct_5(C)))
+              & k1_funct_1(k6_funct_5(C),k4_tarski(B,A)) = k1_funct_1(D,B)
+              & r2_hidden(k1_funct_1(D,B),k2_relat_1(k6_funct_5(C))) ) ) ) ) ).
+
+fof(t47_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r1_tarski(k2_relat_1(C),k4_partfun1(A,B))
+       => ( r1_tarski(k2_relat_1(k4_funct_5(C)),B)
+          & r1_tarski(k2_relat_1(k6_funct_5(C)),B) ) ) ) ).
+
+fof(t48_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r1_tarski(k2_relat_1(C),k1_funct_2(A,B))
+       => ( r1_tarski(k2_relat_1(k4_funct_5(C)),B)
+          & r1_tarski(k2_relat_1(k6_funct_5(C)),B) ) ) ) ).
+
+fof(t49_funct_5,axiom,
+    ( k3_funct_5(k1_xboole_0) = k1_xboole_0
+    & k5_funct_5(k1_xboole_0) = k1_xboole_0 ) ).
+
+fof(t50_funct_5,axiom,
+    ( k4_funct_5(k1_xboole_0) = k1_xboole_0
+    & k6_funct_5(k1_xboole_0) = k1_xboole_0 ) ).
+
+fof(t51_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( k1_relat_1(C) = k2_zfmisc_1(A,B)
+              & k1_relat_1(D) = k2_zfmisc_1(A,B)
+              & k3_funct_5(C) = k3_funct_5(D) )
+           => C = D ) ) ) ).
+
+fof(t52_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( k1_relat_1(C) = k2_zfmisc_1(A,B)
+              & k1_relat_1(D) = k2_zfmisc_1(A,B)
+              & k5_funct_5(C) = k5_funct_5(D) )
+           => C = D ) ) ) ).
+
+fof(t53_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r1_tarski(k2_relat_1(C),k1_funct_2(A,B))
+              & r1_tarski(k2_relat_1(D),k1_funct_2(A,B))
+              & k4_funct_5(C) = k4_funct_5(D) )
+           => ( A = k1_xboole_0
+              | C = D ) ) ) ) ).
+
+fof(t54_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r1_tarski(k2_relat_1(C),k1_funct_2(A,B))
+              & r1_tarski(k2_relat_1(D),k1_funct_2(A,B))
+              & k6_funct_5(C) = k6_funct_5(D) )
+           => ( A = k1_xboole_0
+              | C = D ) ) ) ) ).
+
+fof(t55_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r1_tarski(k2_relat_1(C),k1_funct_2(A,B))
+       => ( A = k1_xboole_0
+          | ( k3_funct_5(k4_funct_5(C)) = C
+            & k5_funct_5(k6_funct_5(C)) = C ) ) ) ) ).
+
+fof(t56_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( k1_relat_1(C) = k2_zfmisc_1(A,B)
+       => ( k4_funct_5(k3_funct_5(C)) = C
+          & k6_funct_5(k5_funct_5(C)) = C ) ) ) ).
+
+fof(t57_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r1_tarski(k1_relat_1(C),k2_zfmisc_1(A,B))
+       => ( k4_funct_5(k3_funct_5(C)) = C
+          & k6_funct_5(k5_funct_5(C)) = C ) ) ) ).
+
+fof(t58_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ( r1_tarski(k2_relat_1(C),k4_partfun1(A,B))
+       => ( r2_hidden(k1_xboole_0,k2_relat_1(C))
+          | ( k3_funct_5(k4_funct_5(C)) = C
+            & k5_funct_5(k6_funct_5(C)) = C ) ) ) ) ).
+
+fof(t59_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r1_tarski(k1_relat_1(C),k2_zfmisc_1(A,B))
+              & r1_tarski(k1_relat_1(D),k2_zfmisc_1(A,B))
+              & k3_funct_5(C) = k3_funct_5(D) )
+           => C = D ) ) ) ).
+
+fof(t60_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r1_tarski(k1_relat_1(C),k2_zfmisc_1(A,B))
+              & r1_tarski(k1_relat_1(D),k2_zfmisc_1(A,B))
+              & k5_funct_5(C) = k5_funct_5(D) )
+           => C = D ) ) ) ).
+
+fof(t61_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r1_tarski(k2_relat_1(C),k4_partfun1(A,B))
+              & r1_tarski(k2_relat_1(D),k4_partfun1(A,B))
+              & k4_funct_5(C) = k4_funct_5(D) )
+           => ( r2_hidden(k1_xboole_0,k2_relat_1(C))
+              | r2_hidden(k1_xboole_0,k2_relat_1(D))
+              | C = D ) ) ) ) ).
+
+fof(t62_funct_5,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(C)
+        & v1_funct_1(C) )
+     => ! [D] :
+          ( ( v1_relat_1(D)
+            & v1_funct_1(D) )
+         => ( ( r1_tarski(k2_relat_1(C),k4_partfun1(A,B))
+              & r1_tarski(k2_relat_1(D),k4_partfun1(A,B))
+              & k6_funct_5(C) = k6_funct_5(D) )
+           => ( r2_hidden(k1_xboole_0,k2_relat_1(C))
+              | r2_hidden(k1_xboole_0,k2_relat_1(D))
+              | C = D ) ) ) ) ).
+
+fof(t63_funct_5,axiom,
+    ! [A,B,C] :
+      ( r1_tarski(A,B)
+     => r1_tarski(k1_funct_2(C,A),k1_funct_2(C,B)) ) ).
+
+fof(t64_funct_5,axiom,
+    ! [A] : k1_funct_2(k1_xboole_0,A) = k1_tarski(k1_xboole_0) ).
+
+fof(t65_funct_5,axiom,
+    ! [A,B] :
+      ( r2_wellord2(A,k1_funct_2(k1_tarski(B),A))
+      & k1_card_1(A) = k1_card_1(k1_funct_2(k1_tarski(B),A)) ) ).
+
+fof(t66_funct_5,axiom,
+    ! [A,B] : k1_funct_2(A,k1_tarski(B)) = k1_tarski(k2_funcop_1(A,B)) ).
+
+fof(t67_funct_5,axiom,
+    ! [A,B,C,D] :
+      ( ( r2_wellord2(A,B)
+        & r2_wellord2(C,D) )
+     => ( r2_wellord2(k1_funct_2(A,C),k1_funct_2(B,D))
+        & k1_card_1(k1_funct_2(A,C)) = k1_card_1(k1_funct_2(B,D)) ) ) ).
+
+fof(t68_funct_5,axiom,
+    ! [A,B,C,D] :
+      ( ( k1_card_1(A) = k1_card_1(B)
+        & k1_card_1(C) = k1_card_1(D) )
+     => k1_card_1(k1_funct_2(A,C)) = k1_card_1(k1_funct_2(B,D)) ) ).
+
+fof(t69_funct_5,axiom,
+    ! [A,B,C] :
+      ( r1_xboole_0(A,B)
+     => ( r2_wellord2(k1_funct_2(k2_xboole_0(A,B),C),k2_zfmisc_1(k1_funct_2(A,C),k1_funct_2(B,C)))
+        & k1_card_1(k1_funct_2(k2_xboole_0(A,B),C)) = k1_card_1(k2_zfmisc_1(k1_funct_2(A,C),k1_funct_2(B,C))) ) ) ).
+
+fof(t70_funct_5,axiom,
+    ! [A,B,C] :
+      ( r2_wellord2(k1_funct_2(k2_zfmisc_1(A,B),C),k1_funct_2(A,k1_funct_2(B,C)))
+      & k1_card_1(k1_funct_2(k2_zfmisc_1(A,B),C)) = k1_card_1(k1_funct_2(A,k1_funct_2(B,C))) ) ).
+
+fof(t71_funct_5,axiom,
+    ! [A,B,C] :
+      ( r2_wellord2(k1_funct_2(A,k2_zfmisc_1(B,C)),k2_zfmisc_1(k1_funct_2(A,B),k1_funct_2(A,C)))
+      & k1_card_1(k1_funct_2(A,k2_zfmisc_1(B,C))) = k1_card_1(k2_zfmisc_1(k1_funct_2(A,B),k1_funct_2(A,C))) ) ).
+
+fof(t72_funct_5,axiom,
+    ! [A,B,C] :
+      ( A != B
+     => ( r2_wellord2(k1_funct_2(C,k2_tarski(A,B)),k1_zfmisc_1(C))
+        & k1_card_1(k1_funct_2(C,k2_tarski(A,B))) = k1_card_1(k1_zfmisc_1(C)) ) ) ).
+
+fof(t73_funct_5,axiom,
+    ! [A,B,C] :
+      ( A != B
+     => ( r2_wellord2(k1_funct_2(k2_tarski(A,B),C),k2_zfmisc_1(C,C))
+        & k1_card_1(k1_funct_2(k2_tarski(A,B),C)) = k1_card_1(k2_zfmisc_1(C,C)) ) ) ).
+
+fof(s1_funct_5,axiom,
+    ? [A] :
+      ( v1_relat_1(A)
+      & v1_funct_1(A)
+      & k1_relat_1(A) = f1_s1_funct_5
+      & ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( r2_hidden(B,f1_s1_funct_5)
+           => k1_funct_1(A,B) = f2_s1_funct_5(B) ) ) ) ).
+
+fof(dt_k1_funct_5,axiom,
+    $true ).
+
+fof(dt_k2_funct_5,axiom,
+    $true ).
+
+fof(dt_k3_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( v1_relat_1(k3_funct_5(A))
+        & v1_funct_1(k3_funct_5(A)) ) ) ).
+
+fof(dt_k4_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( v1_relat_1(k4_funct_5(A))
+        & v1_funct_1(k4_funct_5(A)) ) ) ).
+
+fof(dt_k5_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( v1_relat_1(k5_funct_5(A))
+        & v1_funct_1(k5_funct_5(A)) ) ) ).
+
+fof(dt_k6_funct_5,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( v1_relat_1(k6_funct_5(A))
+        & v1_funct_1(k6_funct_5(A)) ) ) ).
+
+%------------------------------------------------------------------------------

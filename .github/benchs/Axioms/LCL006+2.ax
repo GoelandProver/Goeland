@@ -1,0 +1,89 @@
+%------------------------------------------------------------------------------
+% File     : LCL006+2 : TPTP v8.1.2. Released v3.3.0.
+% Domain   : Logic Calculi (Propositional)
+% Axioms   : Hilbert's axiomatization of propositional logic
+% Version  : [HB34] axioms.
+% English  :
+
+% Refs     : [HB34]  Hilbert & Bernays (1934), Grundlagen der Mathematick
+%          : [Hac66] Hackstaff (1966), Systems of Formal Logic
+%          : [Hal]   Halleck (URL), John Halleck's Logic Systems
+%          : [She06] Shen (2006), Automated Proofs of Equivalence of Modal
+% Source   : [Hal]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   18 (  18 unt;   0 def)
+%            Number of atoms       :   18 (   0 equ)
+%            Maximal formula atoms :    1 (   1 avg)
+%            Number of connectives :    0 (   0   ~;   0   |;   0   &)
+%                                         (   0 <=>;   0  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    1 (   1 avg)
+%            Maximal term depth    :    0 (   0 avg)
+%            Number of predicates  :   18 (  18 usr;  18 prp; 0-0 aty)
+%            Number of functors    :    0 (   0 usr;   0 con; --- aty)
+%            Number of variables   :    0 (   0   !;   0   ?)
+% SPC      : 
+
+% Comments : Requires LCL006+0, LCL006+1
+%------------------------------------------------------------------------------
+%----Operator definitions to reduce everything to and & not
+fof(hilbert_op_or,axiom,
+    op_or ).
+
+fof(hilbert_op_implies_and,axiom,
+    op_implies_and ).
+
+fof(hilbert_op_equiv,axiom,
+    op_equiv ).
+
+%----The one explicit rule
+fof(hilbert_modus_ponens,axiom,
+    modus_ponens ).
+
+%----The axioms
+fof(hilbert_modus_tollens,axiom,
+    modus_tollens ).
+
+fof(hilbert_implies_1,axiom,
+    implies_1 ).
+
+fof(hilbert_implies_2,axiom,
+    implies_2 ).
+
+fof(hilbert_implies_3,axiom,
+    implies_3 ).
+
+fof(hilbert_and_1,axiom,
+    and_1 ).
+
+fof(hilbert_and_2,axiom,
+    and_2 ).
+
+fof(hilbert_and_3,axiom,
+    and_3 ).
+
+fof(hilbert_or_1,axiom,
+    or_1 ).
+
+fof(hilbert_or_2,axiom,
+    or_2 ).
+
+fof(hilbert_or_3,axiom,
+    or_3 ).
+
+fof(hilbert_equivalence_1,axiom,
+    equivalence_1 ).
+
+fof(hilbert_equivalence_2,axiom,
+    equivalence_2 ).
+
+fof(hilbert_equivalence_3,axiom,
+    equivalence_3 ).
+
+%----Admissible but not required for completeness. With it much more can
+%----be done.
+fof(substitution_of_equivalents,axiom,
+    substitution_of_equivalents ).
+
+%------------------------------------------------------------------------------

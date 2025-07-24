@@ -1,0 +1,1353 @@
+%------------------------------------------------------------------------------
+% File     : SET007+907 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Some Equations Related to the Limit of Sequence of Subsets
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : setlim_2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  117 (   0 unt;   0 def)
+%            Number of atoms       :  820 (  77 equ)
+%            Maximal formula atoms :   12 (   7 avg)
+%            Number of connectives :  703 (   0   ~;   3   |; 393   &)
+%                                         (   9 <=>; 298  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   11 (   9 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   12 (  11 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   25 (  25 usr;   2 con; 0-3 aty)
+%            Number of variables   :  395 ( 395   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => k1_prob_1(B,k1_setlim_1(B,C),A) = k4_prob_1(B,k3_kurato_2(k1_zfmisc_1(B),C,A)) ) ) ).
+
+fof(t2_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => k1_prob_1(B,k2_setlim_1(B,C),A) = k2_prob_1(B,k3_kurato_2(k1_zfmisc_1(B),C,A)) ) ) ).
+
+fof(d1_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ( D = k1_setlim_2(A,B,C)
+              <=> ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => k1_prob_1(A,D,E) = k5_subset_1(A,k1_prob_1(A,B,E),k1_prob_1(A,C,E)) ) ) ) ) ) ).
+
+fof(d2_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ( D = k2_setlim_2(A,B,C)
+              <=> ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => k1_prob_1(A,D,E) = k4_subset_1(A,k1_prob_1(A,B,E),k1_prob_1(A,C,E)) ) ) ) ) ) ).
+
+fof(d3_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ( D = k3_setlim_2(A,B,C)
+              <=> ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => k1_prob_1(A,D,E) = k6_subset_1(A,k1_prob_1(A,B,E),k1_prob_1(A,C,E)) ) ) ) ) ) ).
+
+fof(d4_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ( D = k4_setlim_2(A,B,C)
+              <=> ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => k1_prob_1(A,D,E) = k7_subset_1(A,k1_prob_1(A,B,E),k1_prob_1(A,C,E)) ) ) ) ) ) ).
+
+fof(t3_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k4_setlim_2(A,B,C) = k2_setlim_2(A,k3_setlim_2(A,B,C),k3_setlim_2(A,C,B)) ) ) ).
+
+fof(t4_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k3_kurato_2(k1_zfmisc_1(B),k1_setlim_2(B,C,D),A) = k1_setlim_2(B,k3_kurato_2(k1_zfmisc_1(B),C,A),k3_kurato_2(k1_zfmisc_1(B),D,A)) ) ) ) ).
+
+fof(t5_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k3_kurato_2(k1_zfmisc_1(B),k2_setlim_2(B,C,D),A) = k2_setlim_2(B,k3_kurato_2(k1_zfmisc_1(B),C,A),k3_kurato_2(k1_zfmisc_1(B),D,A)) ) ) ) ).
+
+fof(t6_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k3_kurato_2(k1_zfmisc_1(B),k3_setlim_2(B,C,D),A) = k3_setlim_2(B,k3_kurato_2(k1_zfmisc_1(B),C,A),k3_kurato_2(k1_zfmisc_1(B),D,A)) ) ) ) ).
+
+fof(t7_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k3_kurato_2(k1_zfmisc_1(B),k4_setlim_2(B,C,D),A) = k4_setlim_2(B,k3_kurato_2(k1_zfmisc_1(B),C,A),k3_kurato_2(k1_zfmisc_1(B),D,A)) ) ) ) ).
+
+fof(t8_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k2_prob_1(A,k1_setlim_2(A,B,C)),k5_subset_1(A,k2_prob_1(A,B),k2_prob_1(A,C))) ) ) ).
+
+fof(t9_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k2_prob_1(A,k2_setlim_2(A,B,C)) = k4_subset_1(A,k2_prob_1(A,B),k2_prob_1(A,C)) ) ) ).
+
+fof(t10_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k6_subset_1(A,k2_prob_1(A,B),k2_prob_1(A,C)),k2_prob_1(A,k3_setlim_2(A,B,C))) ) ) ).
+
+fof(t11_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k7_subset_1(A,k2_prob_1(A,B),k2_prob_1(A,C)),k2_prob_1(A,k4_setlim_2(A,B,C))) ) ) ).
+
+fof(t12_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k4_prob_1(A,k1_setlim_2(A,B,C)) = k5_subset_1(A,k4_prob_1(A,B),k4_prob_1(A,C)) ) ) ).
+
+fof(t13_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k4_subset_1(A,k4_prob_1(A,B),k4_prob_1(A,C)),k4_prob_1(A,k2_setlim_2(A,B,C))) ) ) ).
+
+fof(t14_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k4_prob_1(A,k3_setlim_2(A,B,C)),k6_subset_1(A,k4_prob_1(A,B),k4_prob_1(A,C))) ) ) ).
+
+fof(d5_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ( D = k5_setlim_2(A,B,C)
+              <=> ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => k1_prob_1(A,D,E) = k5_subset_1(A,C,k1_prob_1(A,B,E)) ) ) ) ) ) ).
+
+fof(d6_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ( D = k6_setlim_2(A,B,C)
+              <=> ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => k1_prob_1(A,D,E) = k4_subset_1(A,C,k1_prob_1(A,B,E)) ) ) ) ) ) ).
+
+fof(d7_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ( D = k7_setlim_2(A,B,C)
+              <=> ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => k1_prob_1(A,D,E) = k6_subset_1(A,C,k1_prob_1(A,B,E)) ) ) ) ) ) ).
+
+fof(d8_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ( D = k8_setlim_2(A,B,C)
+              <=> ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => k1_prob_1(A,D,E) = k6_subset_1(A,k1_prob_1(A,B,E),C) ) ) ) ) ) ).
+
+fof(d9_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(A))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(A))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(A)) )
+             => ( D = k9_setlim_2(A,B,C)
+              <=> ! [E] :
+                    ( m2_subset_1(E,k1_numbers,k5_numbers)
+                   => k1_prob_1(A,D,E) = k7_subset_1(A,C,k1_prob_1(A,B,E)) ) ) ) ) ) ).
+
+fof(t15_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k9_setlim_2(A,C,B) = k2_setlim_2(A,k7_setlim_2(A,C,B),k8_setlim_2(A,C,B)) ) ) ).
+
+fof(t16_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k3_kurato_2(k1_zfmisc_1(B),k5_setlim_2(B,D,C),A) = k5_setlim_2(B,k3_kurato_2(k1_zfmisc_1(B),D,A),C) ) ) ) ).
+
+fof(t17_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k3_kurato_2(k1_zfmisc_1(B),k6_setlim_2(B,D,C),A) = k6_setlim_2(B,k3_kurato_2(k1_zfmisc_1(B),D,A),C) ) ) ) ).
+
+fof(t18_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k3_kurato_2(k1_zfmisc_1(B),k7_setlim_2(B,D,C),A) = k7_setlim_2(B,k3_kurato_2(k1_zfmisc_1(B),D,A),C) ) ) ) ).
+
+fof(t19_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k3_kurato_2(k1_zfmisc_1(B),k8_setlim_2(B,D,C),A) = k8_setlim_2(B,k3_kurato_2(k1_zfmisc_1(B),D,A),C) ) ) ) ).
+
+fof(t20_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k3_kurato_2(k1_zfmisc_1(B),k9_setlim_2(B,D,C),A) = k9_setlim_2(B,k3_kurato_2(k1_zfmisc_1(B),D,A),C) ) ) ) ).
+
+fof(t21_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v2_prob_1(C,A)
+           => v2_prob_1(k5_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t22_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_prob_1(C,A)
+           => v3_prob_1(k5_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t23_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v1_setlim_1(C,A)
+           => v1_setlim_1(k5_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t24_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v2_prob_1(C,A)
+           => v2_prob_1(k6_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t25_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_prob_1(C,A)
+           => v3_prob_1(k6_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t26_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v1_setlim_1(C,A)
+           => v1_setlim_1(k6_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t27_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v2_prob_1(C,A)
+           => v3_prob_1(k7_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t28_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_prob_1(C,A)
+           => v2_prob_1(k7_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t29_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v1_setlim_1(C,A)
+           => v1_setlim_1(k7_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t30_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v2_prob_1(C,A)
+           => v2_prob_1(k8_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t31_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_prob_1(C,A)
+           => v3_prob_1(k8_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t32_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v1_setlim_1(C,A)
+           => v1_setlim_1(k8_setlim_2(A,C,B),A) ) ) ) ).
+
+fof(t33_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k4_prob_1(A,k5_setlim_2(A,C,B)) = k5_subset_1(A,B,k4_prob_1(A,C)) ) ) ).
+
+fof(t34_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k4_prob_1(A,k6_setlim_2(A,C,B)) = k4_subset_1(A,B,k4_prob_1(A,C)) ) ) ).
+
+fof(t35_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k4_prob_1(A,k7_setlim_2(A,C,B)),k6_subset_1(A,B,k4_prob_1(A,C))) ) ) ).
+
+fof(t36_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k4_prob_1(A,k8_setlim_2(A,C,B)) = k6_subset_1(A,k4_prob_1(A,C),B) ) ) ).
+
+fof(t37_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k4_prob_1(A,k9_setlim_2(A,C,B)),k7_subset_1(A,B,k4_prob_1(A,C))) ) ) ).
+
+fof(t38_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k2_prob_1(A,k5_setlim_2(A,C,B)) = k5_subset_1(A,B,k2_prob_1(A,C)) ) ) ).
+
+fof(t39_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k2_prob_1(A,k6_setlim_2(A,C,B)) = k4_subset_1(A,B,k2_prob_1(A,C)) ) ) ).
+
+fof(t40_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k6_subset_1(A,B,k2_prob_1(A,C)),k2_prob_1(A,k7_setlim_2(A,C,B))) ) ) ).
+
+fof(t41_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k2_prob_1(A,k8_setlim_2(A,C,B)) = k6_subset_1(A,k2_prob_1(A,C),B) ) ) ).
+
+fof(t42_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k7_subset_1(A,B,k2_prob_1(A,C)),k2_prob_1(A,k9_setlim_2(A,C,B))) ) ) ).
+
+fof(t43_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k1_prob_1(B,k1_setlim_1(B,k1_setlim_2(B,C,D)),A) = k5_subset_1(B,k1_prob_1(B,k1_setlim_1(B,C),A),k1_prob_1(B,k1_setlim_1(B,D),A)) ) ) ) ).
+
+fof(t44_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => r1_tarski(k4_subset_1(B,k1_prob_1(B,k1_setlim_1(B,C),A),k1_prob_1(B,k1_setlim_1(B,D),A)),k1_prob_1(B,k1_setlim_1(B,k2_setlim_2(B,C,D)),A)) ) ) ) ).
+
+fof(t45_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => r1_tarski(k1_prob_1(B,k1_setlim_1(B,k3_setlim_2(B,C,D)),A),k6_subset_1(B,k1_prob_1(B,k1_setlim_1(B,C),A),k1_prob_1(B,k1_setlim_1(B,D),A))) ) ) ) ).
+
+fof(t46_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => r1_tarski(k1_prob_1(B,k2_setlim_1(B,k1_setlim_2(B,C,D)),A),k5_subset_1(B,k1_prob_1(B,k2_setlim_1(B,C),A),k1_prob_1(B,k2_setlim_1(B,D),A))) ) ) ) ).
+
+fof(t47_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k1_prob_1(B,k2_setlim_1(B,k2_setlim_2(B,C,D)),A) = k4_subset_1(B,k1_prob_1(B,k2_setlim_1(B,C),A),k1_prob_1(B,k2_setlim_1(B,D),A)) ) ) ) ).
+
+fof(t48_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => r1_tarski(k6_subset_1(B,k1_prob_1(B,k2_setlim_1(B,C),A),k1_prob_1(B,k2_setlim_1(B,D),A)),k1_prob_1(B,k2_setlim_1(B,k3_setlim_2(B,C,D)),A)) ) ) ) ).
+
+fof(t49_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(B))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(B)) )
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => r1_tarski(k7_subset_1(B,k1_prob_1(B,k2_setlim_1(B,C),A),k1_prob_1(B,k2_setlim_1(B,D),A)),k1_prob_1(B,k2_setlim_1(B,k4_setlim_2(B,C,D)),A)) ) ) ) ).
+
+fof(t50_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k1_prob_1(B,k1_setlim_1(B,k5_setlim_2(B,D,C)),A) = k5_subset_1(B,C,k1_prob_1(B,k1_setlim_1(B,D),A)) ) ) ) ).
+
+fof(t51_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k1_prob_1(B,k1_setlim_1(B,k6_setlim_2(B,D,C)),A) = k4_subset_1(B,C,k1_prob_1(B,k1_setlim_1(B,D),A)) ) ) ) ).
+
+fof(t52_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => r1_tarski(k1_prob_1(B,k1_setlim_1(B,k7_setlim_2(B,D,C)),A),k6_subset_1(B,C,k1_prob_1(B,k1_setlim_1(B,D),A))) ) ) ) ).
+
+fof(t53_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k1_prob_1(B,k1_setlim_1(B,k8_setlim_2(B,D,C)),A) = k6_subset_1(B,k1_prob_1(B,k1_setlim_1(B,D),A),C) ) ) ) ).
+
+fof(t54_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => r1_tarski(k1_prob_1(B,k1_setlim_1(B,k9_setlim_2(B,D,C)),A),k7_subset_1(B,C,k1_prob_1(B,k1_setlim_1(B,D),A))) ) ) ) ).
+
+fof(t55_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k1_prob_1(B,k2_setlim_1(B,k5_setlim_2(B,D,C)),A) = k5_subset_1(B,C,k1_prob_1(B,k2_setlim_1(B,D),A)) ) ) ) ).
+
+fof(t56_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k1_prob_1(B,k2_setlim_1(B,k6_setlim_2(B,D,C)),A) = k4_subset_1(B,C,k1_prob_1(B,k2_setlim_1(B,D),A)) ) ) ) ).
+
+fof(t57_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => r1_tarski(k6_subset_1(B,C,k1_prob_1(B,k2_setlim_1(B,D),A)),k1_prob_1(B,k2_setlim_1(B,k7_setlim_2(B,D,C)),A)) ) ) ) ).
+
+fof(t58_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => k1_prob_1(B,k2_setlim_1(B,k8_setlim_2(B,D,C)),A) = k6_subset_1(B,k1_prob_1(B,k2_setlim_1(B,D),A),C) ) ) ) ).
+
+fof(t59_setlim_2,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B,C] :
+          ( m1_subset_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( ( v1_funct_1(D)
+                & v1_funct_2(D,k5_numbers,k1_zfmisc_1(B))
+                & m2_relset_1(D,k5_numbers,k1_zfmisc_1(B)) )
+             => r1_tarski(k7_subset_1(B,C,k1_prob_1(B,k2_setlim_1(B,D),A)),k1_prob_1(B,k2_setlim_1(B,k9_setlim_2(B,D,C)),A)) ) ) ) ).
+
+fof(t60_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k4_kurato_2(A,k1_setlim_2(A,B,C)) = k5_subset_1(A,k4_kurato_2(A,B),k4_kurato_2(A,C)) ) ) ).
+
+fof(t61_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k4_subset_1(A,k4_kurato_2(A,B),k4_kurato_2(A,C)),k4_kurato_2(A,k2_setlim_2(A,B,C))) ) ) ).
+
+fof(t62_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k4_kurato_2(A,k3_setlim_2(A,B,C)),k6_subset_1(A,k4_kurato_2(A,B),k4_kurato_2(A,C))) ) ) ).
+
+fof(t63_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( ( v3_kurato_2(B,A)
+              | v3_kurato_2(C,A) )
+           => k4_kurato_2(A,k2_setlim_2(A,B,C)) = k4_subset_1(A,k4_kurato_2(A,B),k4_kurato_2(A,C)) ) ) ) ).
+
+fof(t64_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(B,A)
+           => k4_kurato_2(A,k3_setlim_2(A,C,B)) = k6_subset_1(A,k4_kurato_2(A,C),k4_kurato_2(A,B)) ) ) ) ).
+
+fof(t65_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( ( v3_kurato_2(B,A)
+              | v3_kurato_2(C,A) )
+           => r1_tarski(k4_kurato_2(A,k4_setlim_2(A,B,C)),k7_subset_1(A,k4_kurato_2(A,B),k4_kurato_2(A,C))) ) ) ) ).
+
+fof(t66_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( ( v3_kurato_2(B,A)
+              & v3_kurato_2(C,A) )
+           => k4_kurato_2(A,k4_setlim_2(A,B,C)) = k7_subset_1(A,k4_kurato_2(A,B),k4_kurato_2(A,C)) ) ) ) ).
+
+fof(t67_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k5_kurato_2(A,k1_setlim_2(A,B,C)),k5_subset_1(A,k5_kurato_2(A,B),k5_kurato_2(A,C))) ) ) ).
+
+fof(t68_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k5_kurato_2(A,k2_setlim_2(A,B,C)) = k4_subset_1(A,k5_kurato_2(A,B),k5_kurato_2(A,C)) ) ) ).
+
+fof(t69_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k6_subset_1(A,k5_kurato_2(A,B),k5_kurato_2(A,C)),k5_kurato_2(A,k3_setlim_2(A,B,C))) ) ) ).
+
+fof(t70_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k7_subset_1(A,k5_kurato_2(A,B),k5_kurato_2(A,C)),k5_kurato_2(A,k4_setlim_2(A,B,C))) ) ) ).
+
+fof(t71_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( ( v3_kurato_2(B,A)
+              | v3_kurato_2(C,A) )
+           => k5_kurato_2(A,k1_setlim_2(A,B,C)) = k5_subset_1(A,k5_kurato_2(A,B),k5_kurato_2(A,C)) ) ) ) ).
+
+fof(t72_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(B,A)
+           => k5_kurato_2(A,k3_setlim_2(A,C,B)) = k6_subset_1(A,k5_kurato_2(A,C),k5_kurato_2(A,B)) ) ) ) ).
+
+fof(t73_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( ( v3_kurato_2(B,A)
+              & v3_kurato_2(C,A) )
+           => k5_kurato_2(A,k4_setlim_2(A,B,C)) = k7_subset_1(A,k5_kurato_2(A,B),k5_kurato_2(A,C)) ) ) ) ).
+
+fof(t74_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k4_kurato_2(A,k5_setlim_2(A,C,B)) = k5_subset_1(A,B,k4_kurato_2(A,C)) ) ) ).
+
+fof(t75_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k4_kurato_2(A,k6_setlim_2(A,C,B)) = k4_subset_1(A,B,k4_kurato_2(A,C)) ) ) ).
+
+fof(t76_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k4_kurato_2(A,k7_setlim_2(A,C,B)),k6_subset_1(A,B,k4_kurato_2(A,C))) ) ) ).
+
+fof(t77_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k4_kurato_2(A,k8_setlim_2(A,C,B)) = k6_subset_1(A,k4_kurato_2(A,C),B) ) ) ).
+
+fof(t78_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k4_kurato_2(A,k9_setlim_2(A,C,B)),k7_subset_1(A,B,k4_kurato_2(A,C))) ) ) ).
+
+fof(t79_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(C,A)
+           => k4_kurato_2(A,k7_setlim_2(A,C,B)) = k6_subset_1(A,B,k4_kurato_2(A,C)) ) ) ) ).
+
+fof(t80_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(C,A)
+           => k4_kurato_2(A,k9_setlim_2(A,C,B)) = k7_subset_1(A,B,k4_kurato_2(A,C)) ) ) ) ).
+
+fof(t81_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k5_kurato_2(A,k5_setlim_2(A,C,B)) = k5_subset_1(A,B,k5_kurato_2(A,C)) ) ) ).
+
+fof(t82_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k5_kurato_2(A,k6_setlim_2(A,C,B)) = k4_subset_1(A,B,k5_kurato_2(A,C)) ) ) ).
+
+fof(t83_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k6_subset_1(A,B,k5_kurato_2(A,C)),k5_kurato_2(A,k7_setlim_2(A,C,B))) ) ) ).
+
+fof(t84_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => k5_kurato_2(A,k8_setlim_2(A,C,B)) = k6_subset_1(A,k5_kurato_2(A,C),B) ) ) ).
+
+fof(t85_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => r1_tarski(k7_subset_1(A,B,k5_kurato_2(A,C)),k5_kurato_2(A,k9_setlim_2(A,C,B))) ) ) ).
+
+fof(t86_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(C,A)
+           => k5_kurato_2(A,k7_setlim_2(A,C,B)) = k6_subset_1(A,B,k5_kurato_2(A,C)) ) ) ) ).
+
+fof(t87_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(C,A)
+           => k5_kurato_2(A,k9_setlim_2(A,C,B)) = k7_subset_1(A,B,k5_kurato_2(A,C)) ) ) ) ).
+
+fof(t88_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( ( v3_kurato_2(B,A)
+              & v3_kurato_2(C,A) )
+           => ( v3_kurato_2(k1_setlim_2(A,B,C),A)
+              & k3_setlim_1(A,k1_setlim_2(A,B,C)) = k5_subset_1(A,k3_setlim_1(A,B),k3_setlim_1(A,C)) ) ) ) ) ).
+
+fof(t89_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( ( v3_kurato_2(B,A)
+              & v3_kurato_2(C,A) )
+           => ( v3_kurato_2(k2_setlim_2(A,B,C),A)
+              & k3_setlim_1(A,k2_setlim_2(A,B,C)) = k4_subset_1(A,k3_setlim_1(A,B),k3_setlim_1(A,C)) ) ) ) ) ).
+
+fof(t90_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( ( v3_kurato_2(B,A)
+              & v3_kurato_2(C,A) )
+           => ( v3_kurato_2(k3_setlim_2(A,B,C),A)
+              & k3_setlim_1(A,k3_setlim_2(A,B,C)) = k6_subset_1(A,k3_setlim_1(A,B),k3_setlim_1(A,C)) ) ) ) ) ).
+
+fof(t91_setlim_2,axiom,
+    ! [A,B] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(B,k5_numbers,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( ( v3_kurato_2(B,A)
+              & v3_kurato_2(C,A) )
+           => ( v3_kurato_2(k4_setlim_2(A,B,C),A)
+              & k3_setlim_1(A,k4_setlim_2(A,B,C)) = k7_subset_1(A,k3_setlim_1(A,B),k3_setlim_1(A,C)) ) ) ) ) ).
+
+fof(t92_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(C,A)
+           => ( v3_kurato_2(k5_setlim_2(A,C,B),A)
+              & k3_setlim_1(A,k5_setlim_2(A,C,B)) = k5_subset_1(A,B,k3_setlim_1(A,C)) ) ) ) ) ).
+
+fof(t93_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(C,A)
+           => ( v3_kurato_2(k6_setlim_2(A,C,B),A)
+              & k3_setlim_1(A,k6_setlim_2(A,C,B)) = k4_subset_1(A,B,k3_setlim_1(A,C)) ) ) ) ) ).
+
+fof(t94_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(C,A)
+           => ( v3_kurato_2(k7_setlim_2(A,C,B),A)
+              & k3_setlim_1(A,k7_setlim_2(A,C,B)) = k6_subset_1(A,B,k3_setlim_1(A,C)) ) ) ) ) ).
+
+fof(t95_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(C,A)
+           => ( v3_kurato_2(k8_setlim_2(A,C,B),A)
+              & k3_setlim_1(A,k8_setlim_2(A,C,B)) = k6_subset_1(A,k3_setlim_1(A,C),B) ) ) ) ) ).
+
+fof(t96_setlim_2,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+            & m2_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+         => ( v3_kurato_2(C,A)
+           => ( v3_kurato_2(k9_setlim_2(A,C,B),A)
+              & k3_setlim_1(A,k9_setlim_2(A,C,B)) = k7_subset_1(A,B,k3_setlim_1(A,C)) ) ) ) ) ).
+
+fof(dt_k1_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+     => ( v1_funct_1(k1_setlim_2(A,B,C))
+        & v1_funct_2(k1_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(k1_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A)) ) ) ).
+
+fof(commutativity_k1_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+     => k1_setlim_2(A,B,C) = k1_setlim_2(A,C,B) ) ).
+
+fof(dt_k2_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+     => ( v1_funct_1(k2_setlim_2(A,B,C))
+        & v1_funct_2(k2_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(k2_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A)) ) ) ).
+
+fof(commutativity_k2_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+     => k2_setlim_2(A,B,C) = k2_setlim_2(A,C,B) ) ).
+
+fof(dt_k3_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+     => ( v1_funct_1(k3_setlim_2(A,B,C))
+        & v1_funct_2(k3_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(k3_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A)) ) ) ).
+
+fof(dt_k4_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+     => ( v1_funct_1(k4_setlim_2(A,B,C))
+        & v1_funct_2(k4_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(k4_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A)) ) ) ).
+
+fof(commutativity_k4_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & v1_funct_1(C)
+        & v1_funct_2(C,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(C,k5_numbers,k1_zfmisc_1(A)) )
+     => k4_setlim_2(A,B,C) = k4_setlim_2(A,C,B) ) ).
+
+fof(dt_k5_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => ( v1_funct_1(k5_setlim_2(A,B,C))
+        & v1_funct_2(k5_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(k5_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A)) ) ) ).
+
+fof(dt_k6_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => ( v1_funct_1(k6_setlim_2(A,B,C))
+        & v1_funct_2(k6_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(k6_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A)) ) ) ).
+
+fof(dt_k7_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => ( v1_funct_1(k7_setlim_2(A,B,C))
+        & v1_funct_2(k7_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(k7_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A)) ) ) ).
+
+fof(dt_k8_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => ( v1_funct_1(k8_setlim_2(A,B,C))
+        & v1_funct_2(k8_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(k8_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A)) ) ) ).
+
+fof(dt_k9_setlim_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_relset_1(B,k5_numbers,k1_zfmisc_1(A))
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => ( v1_funct_1(k9_setlim_2(A,B,C))
+        & v1_funct_2(k9_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A))
+        & m2_relset_1(k9_setlim_2(A,B,C),k5_numbers,k1_zfmisc_1(A)) ) ) ).
+
+%------------------------------------------------------------------------------

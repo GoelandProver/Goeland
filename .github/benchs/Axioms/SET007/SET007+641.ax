@@ -1,0 +1,821 @@
+%------------------------------------------------------------------------------
+% File     : SET007+641 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The Field of Complex Numbers
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : complfld [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  123 (  45 unt;   0 def)
+%            Number of atoms       :  388 ( 158 equ)
+%            Maximal formula atoms :   16 (   3 avg)
+%            Number of connectives :  359 (  94   ~;   9   |;  74   &)
+%                                         (   2 <=>; 180  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (   5 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   23 (  21 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   39 (  39 usr;  10 con; 0-3 aty)
+%            Number of variables   :  154 ( 154   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_complfld,axiom,
+    ( ~ v3_struct_0(k1_complfld)
+    & v3_vectsp_1(k1_complfld) ) ).
+
+fof(cc1_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => v1_xcmplx_0(A) ) ).
+
+fof(fc2_complfld,axiom,
+    ( ~ v3_struct_0(k1_complfld)
+    & v2_group_1(k1_complfld)
+    & v3_vectsp_1(k1_complfld)
+    & v6_vectsp_1(k1_complfld)
+    & v8_vectsp_1(k1_complfld) ) ).
+
+fof(fc3_complfld,axiom,
+    ( ~ v3_struct_0(k1_complfld)
+    & v3_rlvect_1(k1_complfld)
+    & v4_rlvect_1(k1_complfld)
+    & v5_rlvect_1(k1_complfld)
+    & v6_rlvect_1(k1_complfld)
+    & v2_group_1(k1_complfld)
+    & v4_group_1(k1_complfld)
+    & v7_group_1(k1_complfld)
+    & v3_vectsp_1(k1_complfld)
+    & v4_vectsp_1(k1_complfld)
+    & v5_vectsp_1(k1_complfld)
+    & v6_vectsp_1(k1_complfld)
+    & v7_vectsp_1(k1_complfld)
+    & v8_vectsp_1(k1_complfld)
+    & v9_vectsp_1(k1_complfld)
+    & ~ v10_vectsp_1(k1_complfld) ) ).
+
+fof(t1_complfld,axiom,
+    $true ).
+
+fof(t2_complfld,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => k2_xcmplx_0(k2_xcmplx_0(A,k3_xcmplx_0(B,k7_complex1)),k2_xcmplx_0(C,k3_xcmplx_0(D,k7_complex1))) = k2_xcmplx_0(k2_xcmplx_0(A,C),k3_xcmplx_0(k2_xcmplx_0(B,D),k7_complex1)) ) ) ) ) ).
+
+fof(d1_complfld,axiom,
+    ! [A] :
+      ( ( v3_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ( A = k1_complfld
+      <=> ( u1_struct_0(A) = k2_numbers
+          & u1_rlvect_1(A) = k27_binop_2
+          & u1_group_1(A) = k29_binop_2
+          & u1_vectsp_1(A) = k6_complex1
+          & u2_struct_0(A) = k5_complex1 ) ) ) ).
+
+fof(t3_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( v1_xcmplx_0(C)
+             => ! [D] :
+                  ( v1_xcmplx_0(D)
+                 => ( ( A = C
+                      & B = D )
+                   => k4_rlvect_1(k1_complfld,A,B) = k2_xcmplx_0(C,D) ) ) ) ) ) ).
+
+fof(t4_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( v1_xcmplx_0(B)
+         => ( A = B
+           => k5_rlvect_1(k1_complfld,A) = k4_xcmplx_0(B) ) ) ) ).
+
+fof(t5_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( v1_xcmplx_0(C)
+             => ! [D] :
+                  ( v1_xcmplx_0(D)
+                 => ( ( A = C
+                      & B = D )
+                   => k6_rlvect_1(k1_complfld,A,B) = k6_xcmplx_0(C,D) ) ) ) ) ) ).
+
+fof(t6_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( v1_xcmplx_0(C)
+             => ! [D] :
+                  ( v1_xcmplx_0(D)
+                 => ( ( A = C
+                      & B = D )
+                   => k10_group_1(k1_complfld,A,B) = k3_xcmplx_0(C,D) ) ) ) ) ) ).
+
+fof(t7_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( v1_xcmplx_0(B)
+         => ( A = B
+           => ( A = k1_rlvect_1(k1_complfld)
+              | k4_vectsp_1(k1_complfld,A) = k5_xcmplx_0(B) ) ) ) ) ).
+
+fof(t8_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( v1_xcmplx_0(C)
+             => ! [D] :
+                  ( v1_xcmplx_0(D)
+                 => ( ( A = C
+                      & B = D )
+                   => ( B = k1_rlvect_1(k1_complfld)
+                      | k5_vectsp_1(k1_complfld,A,B) = k7_xcmplx_0(C,D) ) ) ) ) ) ) ).
+
+fof(t9_complfld,axiom,
+    k1_rlvect_1(k1_complfld) = k5_complex1 ).
+
+fof(t10_complfld,axiom,
+    k2_group_1(k1_complfld) = k6_complex1 ).
+
+fof(t11_complfld,axiom,
+    k4_rlvect_1(k1_complfld,k2_group_1(k1_complfld),k2_group_1(k1_complfld)) != k1_rlvect_1(k1_complfld) ).
+
+fof(t12_complfld,axiom,
+    $true ).
+
+fof(t13_complfld,axiom,
+    $true ).
+
+fof(t14_complfld,axiom,
+    $true ).
+
+fof(t15_complfld,axiom,
+    $true ).
+
+fof(t16_complfld,axiom,
+    $true ).
+
+fof(t17_complfld,axiom,
+    $true ).
+
+fof(t18_complfld,axiom,
+    $true ).
+
+fof(t19_complfld,axiom,
+    $true ).
+
+fof(t20_complfld,axiom,
+    $true ).
+
+fof(t21_complfld,axiom,
+    $true ).
+
+fof(t22_complfld,axiom,
+    $true ).
+
+fof(t23_complfld,axiom,
+    $true ).
+
+fof(t24_complfld,axiom,
+    $true ).
+
+fof(t25_complfld,axiom,
+    $true ).
+
+fof(t26_complfld,axiom,
+    $true ).
+
+fof(t27_complfld,axiom,
+    $true ).
+
+fof(t28_complfld,axiom,
+    $true ).
+
+fof(t29_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => k5_rlvect_1(k1_complfld,A) = k10_group_1(k1_complfld,k5_rlvect_1(k1_complfld,k2_group_1(k1_complfld)),A) ) ).
+
+fof(t30_complfld,axiom,
+    $true ).
+
+fof(t31_complfld,axiom,
+    $true ).
+
+fof(t32_complfld,axiom,
+    $true ).
+
+fof(t33_complfld,axiom,
+    $true ).
+
+fof(t34_complfld,axiom,
+    $true ).
+
+fof(t35_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => k6_rlvect_1(k1_complfld,A,k5_rlvect_1(k1_complfld,B)) = k4_rlvect_1(k1_complfld,A,B) ) ) ).
+
+fof(t36_complfld,axiom,
+    $true ).
+
+fof(t37_complfld,axiom,
+    $true ).
+
+fof(t38_complfld,axiom,
+    $true ).
+
+fof(t39_complfld,axiom,
+    $true ).
+
+fof(t40_complfld,axiom,
+    $true ).
+
+fof(t41_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => A = k6_rlvect_1(k1_complfld,k4_rlvect_1(k1_complfld,A,B),B) ) ) ).
+
+fof(t42_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => A = k4_rlvect_1(k1_complfld,k6_rlvect_1(k1_complfld,A,B),B) ) ) ).
+
+fof(t43_complfld,axiom,
+    $true ).
+
+fof(t44_complfld,axiom,
+    $true ).
+
+fof(t45_complfld,axiom,
+    $true ).
+
+fof(t46_complfld,axiom,
+    $true ).
+
+fof(t47_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( k4_vectsp_1(k1_complfld,A) = k4_vectsp_1(k1_complfld,B)
+           => ( A = k1_rlvect_1(k1_complfld)
+              | B = k1_rlvect_1(k1_complfld)
+              | A = B ) ) ) ) ).
+
+fof(t48_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ~ ( A != k1_rlvect_1(k1_complfld)
+              & ( k10_group_1(k1_complfld,B,A) = u1_vectsp_1(k1_complfld)
+                | k10_group_1(k1_complfld,A,B) = u1_vectsp_1(k1_complfld) )
+              & B != k4_vectsp_1(k1_complfld,A) ) ) ) ).
+
+fof(t49_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ~ ( A != k1_rlvect_1(k1_complfld)
+                  & ( k10_group_1(k1_complfld,B,A) = C
+                    | k10_group_1(k1_complfld,A,B) = C )
+                  & ~ ( B = k10_group_1(k1_complfld,C,k4_vectsp_1(k1_complfld,A))
+                      & B = k10_group_1(k1_complfld,k4_vectsp_1(k1_complfld,A),C) ) ) ) ) ) ).
+
+fof(t50_complfld,axiom,
+    k4_vectsp_1(k1_complfld,u1_vectsp_1(k1_complfld)) = u1_vectsp_1(k1_complfld) ).
+
+fof(t51_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ~ ( A != k1_rlvect_1(k1_complfld)
+              & B != k1_rlvect_1(k1_complfld)
+              & k4_vectsp_1(k1_complfld,k10_group_1(k1_complfld,A,B)) != k10_group_1(k1_complfld,k4_vectsp_1(k1_complfld,A),k4_vectsp_1(k1_complfld,B)) ) ) ) ).
+
+fof(t52_complfld,axiom,
+    $true ).
+
+fof(t53_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ( A != k1_rlvect_1(k1_complfld)
+       => k4_vectsp_1(k1_complfld,k5_rlvect_1(k1_complfld,A)) = k5_rlvect_1(k1_complfld,k4_vectsp_1(k1_complfld,A)) ) ) ).
+
+fof(t54_complfld,axiom,
+    $true ).
+
+fof(t55_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ~ ( A != k1_rlvect_1(k1_complfld)
+              & B != k1_rlvect_1(k1_complfld)
+              & k4_rlvect_1(k1_complfld,k4_vectsp_1(k1_complfld,A),k4_vectsp_1(k1_complfld,B)) != k10_group_1(k1_complfld,k4_rlvect_1(k1_complfld,A,B),k4_vectsp_1(k1_complfld,k10_group_1(k1_complfld,A,B))) ) ) ) ).
+
+fof(t56_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ~ ( A != k1_rlvect_1(k1_complfld)
+              & B != k1_rlvect_1(k1_complfld)
+              & k6_rlvect_1(k1_complfld,k4_vectsp_1(k1_complfld,A),k4_vectsp_1(k1_complfld,B)) != k10_group_1(k1_complfld,k6_rlvect_1(k1_complfld,B,A),k4_vectsp_1(k1_complfld,k10_group_1(k1_complfld,A,B))) ) ) ) ).
+
+fof(t57_complfld,axiom,
+    $true ).
+
+fof(t58_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ( A != k1_rlvect_1(k1_complfld)
+       => k4_vectsp_1(k1_complfld,A) = k5_vectsp_1(k1_complfld,u1_vectsp_1(k1_complfld),A) ) ) ).
+
+fof(t59_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => k5_vectsp_1(k1_complfld,A,u1_vectsp_1(k1_complfld)) = A ) ).
+
+fof(t60_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ( A != k1_rlvect_1(k1_complfld)
+       => k5_vectsp_1(k1_complfld,A,A) = u1_vectsp_1(k1_complfld) ) ) ).
+
+fof(t61_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ( A != k1_rlvect_1(k1_complfld)
+       => k5_vectsp_1(k1_complfld,k1_rlvect_1(k1_complfld),A) = k1_rlvect_1(k1_complfld) ) ) ).
+
+fof(t62_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( k5_vectsp_1(k1_complfld,B,A) = k1_rlvect_1(k1_complfld)
+           => ( A = k1_rlvect_1(k1_complfld)
+              | B = k1_rlvect_1(k1_complfld) ) ) ) ) ).
+
+fof(t63_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k1_complfld))
+                 => ~ ( A != k1_rlvect_1(k1_complfld)
+                      & B != k1_rlvect_1(k1_complfld)
+                      & k10_group_1(k1_complfld,k5_vectsp_1(k1_complfld,C,A),k5_vectsp_1(k1_complfld,D,B)) != k5_vectsp_1(k1_complfld,k10_group_1(k1_complfld,C,D),k10_group_1(k1_complfld,A,B)) ) ) ) ) ) ).
+
+fof(t64_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ( A != k1_rlvect_1(k1_complfld)
+               => k10_group_1(k1_complfld,B,k5_vectsp_1(k1_complfld,C,A)) = k5_vectsp_1(k1_complfld,k10_group_1(k1_complfld,B,C),A) ) ) ) ) ).
+
+fof(t65_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( k5_vectsp_1(k1_complfld,B,A) = u1_vectsp_1(k1_complfld)
+           => ( A = k1_rlvect_1(k1_complfld)
+              | B = A ) ) ) ) ).
+
+fof(t66_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( A != k1_rlvect_1(k1_complfld)
+           => B = k5_vectsp_1(k1_complfld,k10_group_1(k1_complfld,B,A),A) ) ) ) ).
+
+fof(t67_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ~ ( A != k1_rlvect_1(k1_complfld)
+              & B != k1_rlvect_1(k1_complfld)
+              & k4_vectsp_1(k1_complfld,k5_vectsp_1(k1_complfld,A,B)) != k5_vectsp_1(k1_complfld,B,A) ) ) ) ).
+
+fof(t68_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ~ ( A != k1_rlvect_1(k1_complfld)
+              & B != k1_rlvect_1(k1_complfld)
+              & k5_vectsp_1(k1_complfld,k4_vectsp_1(k1_complfld,A),k4_vectsp_1(k1_complfld,B)) != k5_vectsp_1(k1_complfld,B,A) ) ) ) ).
+
+fof(t69_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( A != k1_rlvect_1(k1_complfld)
+           => k5_vectsp_1(k1_complfld,B,k4_vectsp_1(k1_complfld,A)) = k10_group_1(k1_complfld,B,A) ) ) ) ).
+
+fof(t70_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ~ ( A != k1_rlvect_1(k1_complfld)
+              & B != k1_rlvect_1(k1_complfld)
+              & k5_vectsp_1(k1_complfld,k4_vectsp_1(k1_complfld,A),B) != k4_vectsp_1(k1_complfld,k10_group_1(k1_complfld,A,B)) ) ) ) ).
+
+fof(t71_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ~ ( A != k1_rlvect_1(k1_complfld)
+                  & B != k1_rlvect_1(k1_complfld)
+                  & k10_group_1(k1_complfld,k4_vectsp_1(k1_complfld,A),k5_vectsp_1(k1_complfld,C,B)) != k5_vectsp_1(k1_complfld,C,k10_group_1(k1_complfld,A,B)) ) ) ) ) ).
+
+fof(t72_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ~ ( A != k1_rlvect_1(k1_complfld)
+                  & B != k1_rlvect_1(k1_complfld)
+                  & ~ ( k5_vectsp_1(k1_complfld,C,B) = k5_vectsp_1(k1_complfld,k10_group_1(k1_complfld,C,A),k10_group_1(k1_complfld,B,A))
+                      & k5_vectsp_1(k1_complfld,C,B) = k5_vectsp_1(k1_complfld,k10_group_1(k1_complfld,A,C),k10_group_1(k1_complfld,A,B)) ) ) ) ) ) ).
+
+fof(t73_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ~ ( A != k1_rlvect_1(k1_complfld)
+                  & B != k1_rlvect_1(k1_complfld)
+                  & k5_vectsp_1(k1_complfld,C,k10_group_1(k1_complfld,A,B)) != k5_vectsp_1(k1_complfld,k5_vectsp_1(k1_complfld,C,A),B) ) ) ) ) ).
+
+fof(t74_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ~ ( A != k1_rlvect_1(k1_complfld)
+                  & B != k1_rlvect_1(k1_complfld)
+                  & k5_vectsp_1(k1_complfld,k10_group_1(k1_complfld,C,B),A) != k5_vectsp_1(k1_complfld,C,k5_vectsp_1(k1_complfld,A,B)) ) ) ) ) ).
+
+fof(t75_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k1_complfld))
+                 => ~ ( A != k1_rlvect_1(k1_complfld)
+                      & B != k1_rlvect_1(k1_complfld)
+                      & C != k1_rlvect_1(k1_complfld)
+                      & k5_vectsp_1(k1_complfld,k5_vectsp_1(k1_complfld,D,A),k5_vectsp_1(k1_complfld,B,C)) != k5_vectsp_1(k1_complfld,k10_group_1(k1_complfld,D,C),k10_group_1(k1_complfld,A,B)) ) ) ) ) ) ).
+
+fof(t76_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k1_complfld))
+                 => ~ ( A != k1_rlvect_1(k1_complfld)
+                      & B != k1_rlvect_1(k1_complfld)
+                      & k4_rlvect_1(k1_complfld,k5_vectsp_1(k1_complfld,C,A),k5_vectsp_1(k1_complfld,D,B)) != k5_vectsp_1(k1_complfld,k4_rlvect_1(k1_complfld,k10_group_1(k1_complfld,C,B),k10_group_1(k1_complfld,D,A)),k10_group_1(k1_complfld,A,B)) ) ) ) ) ) ).
+
+fof(t77_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ( A != k1_rlvect_1(k1_complfld)
+               => k4_rlvect_1(k1_complfld,k5_vectsp_1(k1_complfld,B,A),k5_vectsp_1(k1_complfld,C,A)) = k5_vectsp_1(k1_complfld,k4_rlvect_1(k1_complfld,B,C),A) ) ) ) ) ).
+
+fof(t78_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( A != k1_rlvect_1(k1_complfld)
+           => ( k5_rlvect_1(k1_complfld,k5_vectsp_1(k1_complfld,B,A)) = k5_vectsp_1(k1_complfld,k5_rlvect_1(k1_complfld,B),A)
+              & k5_rlvect_1(k1_complfld,k5_vectsp_1(k1_complfld,B,A)) = k5_vectsp_1(k1_complfld,B,k5_rlvect_1(k1_complfld,A)) ) ) ) ) ).
+
+fof(t79_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( A != k1_rlvect_1(k1_complfld)
+           => k5_vectsp_1(k1_complfld,B,A) = k5_vectsp_1(k1_complfld,k5_rlvect_1(k1_complfld,B),k5_rlvect_1(k1_complfld,A)) ) ) ) ).
+
+fof(t80_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k1_complfld))
+                 => ~ ( A != k1_rlvect_1(k1_complfld)
+                      & B != k1_rlvect_1(k1_complfld)
+                      & k6_rlvect_1(k1_complfld,k5_vectsp_1(k1_complfld,C,A),k5_vectsp_1(k1_complfld,D,B)) != k5_vectsp_1(k1_complfld,k6_rlvect_1(k1_complfld,k10_group_1(k1_complfld,C,B),k10_group_1(k1_complfld,D,A)),k10_group_1(k1_complfld,A,B)) ) ) ) ) ) ).
+
+fof(t81_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ( A != k1_rlvect_1(k1_complfld)
+               => k6_rlvect_1(k1_complfld,k5_vectsp_1(k1_complfld,B,A),k5_vectsp_1(k1_complfld,C,A)) = k5_vectsp_1(k1_complfld,k6_rlvect_1(k1_complfld,B,C),A) ) ) ) ) ).
+
+fof(t82_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => ~ ( A != k1_rlvect_1(k1_complfld)
+                  & ( k10_group_1(k1_complfld,B,A) = C
+                    | k10_group_1(k1_complfld,A,B) = C )
+                  & B != k5_vectsp_1(k1_complfld,C,A) ) ) ) ) ).
+
+fof(t83_complfld,axiom,
+    k2_complfld(u2_struct_0(k1_complfld)) = u2_struct_0(k1_complfld) ).
+
+fof(t84_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ( k2_complfld(A) = u2_struct_0(k1_complfld)
+       => A = u2_struct_0(k1_complfld) ) ) ).
+
+fof(t85_complfld,axiom,
+    k2_complfld(u1_vectsp_1(k1_complfld)) = u1_vectsp_1(k1_complfld) ).
+
+fof(t86_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => k2_complfld(k2_complfld(A)) = A ) ).
+
+fof(t87_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => k2_complfld(k4_rlvect_1(k1_complfld,A,B)) = k4_rlvect_1(k1_complfld,k2_complfld(A),k2_complfld(B)) ) ) ).
+
+fof(t88_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => k2_complfld(k5_rlvect_1(k1_complfld,A)) = k5_rlvect_1(k1_complfld,k2_complfld(A)) ) ).
+
+fof(t89_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => k2_complfld(k6_rlvect_1(k1_complfld,A,B)) = k6_rlvect_1(k1_complfld,k2_complfld(A),k2_complfld(B)) ) ) ).
+
+fof(t90_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => k2_complfld(k10_group_1(k1_complfld,A,B)) = k10_group_1(k1_complfld,k2_complfld(A),k2_complfld(B)) ) ) ).
+
+fof(t91_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ( A != u2_struct_0(k1_complfld)
+       => k2_complfld(k4_vectsp_1(k1_complfld,A)) = k4_vectsp_1(k1_complfld,k2_complfld(A)) ) ) ).
+
+fof(t92_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( A != u2_struct_0(k1_complfld)
+           => k2_complfld(k5_vectsp_1(k1_complfld,B,A)) = k5_vectsp_1(k1_complfld,k2_complfld(B),k2_complfld(A)) ) ) ) ).
+
+fof(t93_complfld,axiom,
+    k3_complfld(u2_struct_0(k1_complfld)) = np__0 ).
+
+fof(t94_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ( k3_complfld(A) = np__0
+       => A = k1_rlvect_1(k1_complfld) ) ) ).
+
+fof(t95_complfld,axiom,
+    $true ).
+
+fof(t96_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ( ~ ( A != k1_rlvect_1(k1_complfld)
+            & r1_xreal_0(k3_complfld(A),np__0) )
+        & ~ ( ~ r1_xreal_0(k3_complfld(A),np__0)
+            & A = k1_rlvect_1(k1_complfld) ) ) ) ).
+
+fof(t97_complfld,axiom,
+    k3_complfld(u1_vectsp_1(k1_complfld)) = np__1 ).
+
+fof(t98_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => k3_complfld(k5_rlvect_1(k1_complfld,A)) = k3_complfld(A) ) ).
+
+fof(t99_complfld,axiom,
+    $true ).
+
+fof(t100_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => r1_xreal_0(k3_complfld(k4_rlvect_1(k1_complfld,A,B)),k9_binop_2(k3_complfld(A),k3_complfld(B))) ) ) ).
+
+fof(t101_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => r1_xreal_0(k3_complfld(k6_rlvect_1(k1_complfld,A,B)),k9_binop_2(k3_complfld(A),k3_complfld(B))) ) ) ).
+
+fof(t102_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => r1_xreal_0(k10_binop_2(k3_complfld(A),k3_complfld(B)),k3_complfld(k4_rlvect_1(k1_complfld,A,B))) ) ) ).
+
+fof(t103_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => r1_xreal_0(k10_binop_2(k3_complfld(A),k3_complfld(B)),k3_complfld(k6_rlvect_1(k1_complfld,A,B))) ) ) ).
+
+fof(t104_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => k3_complfld(k6_rlvect_1(k1_complfld,A,B)) = k3_complfld(k6_rlvect_1(k1_complfld,B,A)) ) ) ).
+
+fof(t105_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( k3_complfld(k6_rlvect_1(k1_complfld,A,B)) = np__0
+          <=> A = B ) ) ) ).
+
+fof(t106_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( ~ ( A != B
+                & r1_xreal_0(k3_complfld(k6_rlvect_1(k1_complfld,A,B)),np__0) )
+            & ~ ( ~ r1_xreal_0(k3_complfld(k6_rlvect_1(k1_complfld,A,B)),np__0)
+                & A = B ) ) ) ) ).
+
+fof(t107_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k1_complfld))
+             => r1_xreal_0(k3_complfld(k6_rlvect_1(k1_complfld,A,B)),k9_binop_2(k3_complfld(k6_rlvect_1(k1_complfld,A,C)),k3_complfld(k6_rlvect_1(k1_complfld,C,B)))) ) ) ) ).
+
+fof(t108_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => r1_xreal_0(k18_complex1(k10_binop_2(k3_complfld(A),k3_complfld(B))),k3_complfld(k6_rlvect_1(k1_complfld,A,B))) ) ) ).
+
+fof(t109_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => k3_complfld(k10_group_1(k1_complfld,A,B)) = k11_binop_2(k3_complfld(A),k3_complfld(B)) ) ) ).
+
+fof(t110_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ( A != u2_struct_0(k1_complfld)
+       => k3_complfld(k4_vectsp_1(k1_complfld,A)) = k8_binop_2(k3_complfld(A)) ) ) ).
+
+fof(t111_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k1_complfld))
+         => ( A != u2_struct_0(k1_complfld)
+           => k12_binop_2(k3_complfld(B),k3_complfld(A)) = k3_complfld(k5_vectsp_1(k1_complfld,B,A)) ) ) ) ).
+
+fof(dt_k1_complfld,axiom,
+    ( v3_vectsp_1(k1_complfld)
+    & l3_vectsp_1(k1_complfld) ) ).
+
+fof(dt_k2_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => m1_subset_1(k2_complfld(A),u1_struct_0(k1_complfld)) ) ).
+
+fof(involutiveness_k2_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => k2_complfld(k2_complfld(A)) = A ) ).
+
+fof(redefinition_k2_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => k2_complfld(A) = k14_complex1(A) ) ).
+
+fof(dt_k3_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => m1_subset_1(k3_complfld(A),k1_numbers) ) ).
+
+fof(projectivity_k3_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => k3_complfld(k3_complfld(A)) = k3_complfld(A) ) ).
+
+fof(redefinition_k3_complfld,axiom,
+    ! [A] :
+      ( m1_subset_1(A,u1_struct_0(k1_complfld))
+     => k3_complfld(A) = k16_complex1(A) ) ).
+
+%------------------------------------------------------------------------------

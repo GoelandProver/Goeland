@@ -1,0 +1,230 @@
+%------------------------------------------------------------------------------
+% File     : SET007+2 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Boolean Properties of Sets - Definitions
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : xboole_0 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   38 (  16 unt;   0 def)
+%            Number of atoms       :   89 (  17 equ)
+%            Maximal formula atoms :    6 (   2 avg)
+%            Number of connectives :   76 (  25   ~;   2   |;  20   &)
+%                                         (  21 <=>;   8  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   11 (   5 avg)
+%            Maximal term depth    :    3 (   1 avg)
+%            Number of predicates  :   11 (   9 usr;   1 prp; 0-2 aty)
+%            Number of functors    :    8 (   8 usr;   4 con; 0-2 aty)
+%            Number of variables   :   77 (  72   !;   5   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_xboole_0,axiom,
+    v1_xboole_0(k1_xboole_0) ).
+
+fof(rc1_xboole_0,axiom,
+    ? [A] : v1_xboole_0(A) ).
+
+fof(rc2_xboole_0,axiom,
+    ? [A] : ~ v1_xboole_0(A) ).
+
+fof(fc2_xboole_0,axiom,
+    ! [A,B] :
+      ( ~ v1_xboole_0(A)
+     => ~ v1_xboole_0(k2_xboole_0(A,B)) ) ).
+
+fof(fc3_xboole_0,axiom,
+    ! [A,B] :
+      ( ~ v1_xboole_0(A)
+     => ~ v1_xboole_0(k2_xboole_0(B,A)) ) ).
+
+fof(d1_xboole_0,axiom,
+    ! [A] :
+      ( A = k1_xboole_0
+    <=> ! [B] : ~ r2_hidden(B,A) ) ).
+
+fof(d2_xboole_0,axiom,
+    ! [A,B,C] :
+      ( C = k2_xboole_0(A,B)
+    <=> ! [D] :
+          ( r2_hidden(D,C)
+        <=> ( r2_hidden(D,A)
+            | r2_hidden(D,B) ) ) ) ).
+
+fof(d3_xboole_0,axiom,
+    ! [A,B,C] :
+      ( C = k3_xboole_0(A,B)
+    <=> ! [D] :
+          ( r2_hidden(D,C)
+        <=> ( r2_hidden(D,A)
+            & r2_hidden(D,B) ) ) ) ).
+
+fof(d4_xboole_0,axiom,
+    ! [A,B,C] :
+      ( C = k4_xboole_0(A,B)
+    <=> ! [D] :
+          ( r2_hidden(D,C)
+        <=> ( r2_hidden(D,A)
+            & ~ r2_hidden(D,B) ) ) ) ).
+
+fof(d5_xboole_0,axiom,
+    ! [A] :
+      ( v1_xboole_0(A)
+    <=> A = k1_xboole_0 ) ).
+
+fof(d6_xboole_0,axiom,
+    ! [A,B] : k5_xboole_0(A,B) = k2_xboole_0(k4_xboole_0(A,B),k4_xboole_0(B,A)) ).
+
+fof(d7_xboole_0,axiom,
+    ! [A,B] :
+      ( r1_xboole_0(A,B)
+    <=> k3_xboole_0(A,B) = k1_xboole_0 ) ).
+
+fof(d8_xboole_0,axiom,
+    ! [A,B] :
+      ( r2_xboole_0(A,B)
+    <=> ( r1_tarski(A,B)
+        & A != B ) ) ).
+
+fof(d9_xboole_0,axiom,
+    ! [A,B] :
+      ( r3_xboole_0(A,B)
+    <=> ( r1_tarski(A,B)
+        | r1_tarski(B,A) ) ) ).
+
+fof(d10_xboole_0,axiom,
+    ! [A,B] :
+      ( A = B
+    <=> ( r1_tarski(A,B)
+        & r1_tarski(B,A) ) ) ).
+
+fof(t1_xboole_0,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(A,k5_xboole_0(B,C))
+    <=> ~ ( r2_hidden(A,B)
+        <=> r2_hidden(A,C) ) ) ).
+
+fof(t2_xboole_0,axiom,
+    ! [A,B,C] :
+      ( ! [D] :
+          ( ~ r2_hidden(D,A)
+        <=> ( r2_hidden(D,B)
+          <=> r2_hidden(D,C) ) )
+     => A = k5_xboole_0(B,C) ) ).
+
+fof(t3_xboole_0,axiom,
+    ! [A,B] :
+      ( ~ ( ~ r1_xboole_0(A,B)
+          & ! [C] :
+              ~ ( r2_hidden(C,A)
+                & r2_hidden(C,B) ) )
+      & ~ ( ? [C] :
+              ( r2_hidden(C,A)
+              & r2_hidden(C,B) )
+          & r1_xboole_0(A,B) ) ) ).
+
+fof(t4_xboole_0,axiom,
+    ! [A,B] :
+      ( ~ ( ~ r1_xboole_0(A,B)
+          & ! [C] : ~ r2_hidden(C,k3_xboole_0(A,B)) )
+      & ~ ( ? [C] : r2_hidden(C,k3_xboole_0(A,B))
+          & r1_xboole_0(A,B) ) ) ).
+
+fof(t5_xboole_0,axiom,
+    ! [A,B,C] :
+      ~ ( r1_xboole_0(A,B)
+        & r2_hidden(C,k2_xboole_0(A,B))
+        & ~ ( r2_hidden(C,A)
+            & ~ r2_hidden(C,B) )
+        & ~ ( r2_hidden(C,B)
+            & ~ r2_hidden(C,A) ) ) ).
+
+fof(s1_xboole_0,axiom,
+    ? [A] :
+    ! [B] :
+      ( r2_hidden(B,A)
+    <=> ( r2_hidden(B,f1_s1_xboole_0)
+        & p1_s1_xboole_0(B) ) ) ).
+
+fof(s2_xboole_0,axiom,
+    ( ( ! [A] :
+          ( r2_hidden(A,f1_s2_xboole_0)
+        <=> p1_s2_xboole_0(A) )
+      & ! [A] :
+          ( r2_hidden(A,f2_s2_xboole_0)
+        <=> p1_s2_xboole_0(A) ) )
+   => f1_s2_xboole_0 = f2_s2_xboole_0 ) ).
+
+fof(s3_xboole_0,axiom,
+    ! [A,B] :
+      ( ( ! [C] :
+            ( r2_hidden(C,A)
+          <=> p1_s3_xboole_0(C) )
+        & ! [C] :
+            ( r2_hidden(C,B)
+          <=> p1_s3_xboole_0(C) ) )
+     => A = B ) ).
+
+fof(symmetry_r1_xboole_0,axiom,
+    ! [A,B] :
+      ( r1_xboole_0(A,B)
+     => r1_xboole_0(B,A) ) ).
+
+fof(irreflexivity_r2_xboole_0,axiom,
+    ! [A,B] : ~ r2_xboole_0(A,A) ).
+
+fof(antisymmetry_r2_xboole_0,axiom,
+    ! [A,B] :
+      ( r2_xboole_0(A,B)
+     => ~ r2_xboole_0(B,A) ) ).
+
+fof(symmetry_r3_xboole_0,axiom,
+    ! [A,B] :
+      ( r3_xboole_0(A,B)
+     => r3_xboole_0(B,A) ) ).
+
+fof(reflexivity_r3_xboole_0,axiom,
+    ! [A,B] : r3_xboole_0(A,A) ).
+
+fof(dt_k1_xboole_0,axiom,
+    $true ).
+
+fof(dt_k2_xboole_0,axiom,
+    $true ).
+
+fof(commutativity_k2_xboole_0,axiom,
+    ! [A,B] : k2_xboole_0(A,B) = k2_xboole_0(B,A) ).
+
+fof(idempotence_k2_xboole_0,axiom,
+    ! [A,B] : k2_xboole_0(A,A) = A ).
+
+fof(dt_k3_xboole_0,axiom,
+    $true ).
+
+fof(commutativity_k3_xboole_0,axiom,
+    ! [A,B] : k3_xboole_0(A,B) = k3_xboole_0(B,A) ).
+
+fof(idempotence_k3_xboole_0,axiom,
+    ! [A,B] : k3_xboole_0(A,A) = A ).
+
+fof(dt_k4_xboole_0,axiom,
+    $true ).
+
+fof(dt_k5_xboole_0,axiom,
+    $true ).
+
+fof(commutativity_k5_xboole_0,axiom,
+    ! [A,B] : k5_xboole_0(A,B) = k5_xboole_0(B,A) ).
+
+%------------------------------------------------------------------------------

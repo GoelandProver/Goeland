@@ -1,0 +1,944 @@
+%------------------------------------------------------------------------------
+% File     : SET007+223 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Real Functions Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : funcsdom [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  100 (  29 unt;   0 def)
+%            Number of atoms       :  532 ( 123 equ)
+%            Maximal formula atoms :   21 (   5 avg)
+%            Number of connectives :  536 ( 104   ~;   2   |; 246   &)
+%                                         (   7 <=>; 177  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   24 (   7 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :   30 (  28 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   46 (  46 usr;   5 con; 0-6 aty)
+%            Number of variables   :  242 ( 221   !;  21   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k12_funcsdom(A))
+        & v3_vectsp_1(k12_funcsdom(A)) ) ) ).
+
+fof(fc2_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k12_funcsdom(A))
+        & v2_group_1(k12_funcsdom(A))
+        & v3_vectsp_1(k12_funcsdom(A))
+        & v6_vectsp_1(k12_funcsdom(A))
+        & v8_vectsp_1(k12_funcsdom(A)) ) ) ).
+
+fof(rc1_funcsdom,axiom,
+    ? [A] :
+      ( l3_vectsp_1(A)
+      & ~ v3_struct_0(A)
+      & v3_rlvect_1(A)
+      & v4_rlvect_1(A)
+      & v5_rlvect_1(A)
+      & v6_rlvect_1(A)
+      & v4_group_1(A)
+      & v7_group_1(A)
+      & v3_vectsp_1(A)
+      & v4_vectsp_1(A)
+      & v6_vectsp_1(A) ) ).
+
+fof(rc2_funcsdom,axiom,
+    ? [A] :
+      ( l1_funcsdom(A)
+      & v1_funcsdom(A) ) ).
+
+fof(rc3_funcsdom,axiom,
+    ? [A] :
+      ( l1_funcsdom(A)
+      & ~ v3_struct_0(A) ) ).
+
+fof(fc3_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k13_funcsdom(A))
+        & v1_funcsdom(k13_funcsdom(A)) ) ) ).
+
+fof(fc4_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k13_funcsdom(A))
+        & v2_group_1(k13_funcsdom(A))
+        & v6_vectsp_1(k13_funcsdom(A))
+        & v8_vectsp_1(k13_funcsdom(A))
+        & v1_funcsdom(k13_funcsdom(A)) ) ) ).
+
+fof(rc4_funcsdom,axiom,
+    ? [A] :
+      ( l1_funcsdom(A)
+      & ~ v3_struct_0(A)
+      & v3_rlvect_1(A)
+      & v4_rlvect_1(A)
+      & v5_rlvect_1(A)
+      & v6_rlvect_1(A)
+      & v4_group_1(A)
+      & v7_group_1(A)
+      & v1_funcsdom(A)
+      & v2_funcsdom(A) ) ).
+
+fof(d1_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,A,B)
+                & m2_relset_1(C,A,B) )
+             => k3_funcsdom(A,B,C) = C ) ) ) ).
+
+fof(d2_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+            & m2_relset_1(B,k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) )
+         => ( B = k6_funcsdom(A)
+          <=> ! [C] :
+                ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+               => ! [D] :
+                    ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                   => k1_funcsdom(A,k1_numbers,B,C,D) = k4_funcsdom(k1_numbers,A,k33_binop_2,C,D) ) ) ) ) ) ).
+
+fof(d3_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+            & m2_relset_1(B,k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) )
+         => ( B = k7_funcsdom(A)
+          <=> ! [C] :
+                ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+               => ! [D] :
+                    ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                   => k1_funcsdom(A,k1_numbers,B,C,D) = k4_funcsdom(k1_numbers,A,k35_binop_2,C,D) ) ) ) ) ) ).
+
+fof(d4_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(k1_numbers,k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+            & m2_relset_1(B,k2_zfmisc_1(k1_numbers,k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) )
+         => ( B = k8_funcsdom(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => ! [D] :
+                    ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                   => ! [E] :
+                        ( m1_subset_1(E,A)
+                       => k8_funct_2(A,k1_numbers,k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),B,k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),C,D)),E) = k4_real_1(C,k8_funct_2(A,k1_numbers,D,E)) ) ) ) ) ) ) ).
+
+fof(d5_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k9_funcsdom(A) = k2_funcop_1(A,np__0) ) ).
+
+fof(d6_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k10_funcsdom(A) = k2_funcop_1(A,np__1) ) ).
+
+fof(t1_funcsdom,axiom,
+    $true ).
+
+fof(t2_funcsdom,axiom,
+    $true ).
+
+fof(t3_funcsdom,axiom,
+    $true ).
+
+fof(t4_funcsdom,axiom,
+    $true ).
+
+fof(t5_funcsdom,axiom,
+    $true ).
+
+fof(t6_funcsdom,axiom,
+    $true ).
+
+fof(t7_funcsdom,axiom,
+    $true ).
+
+fof(t8_funcsdom,axiom,
+    $true ).
+
+fof(t9_funcsdom,axiom,
+    $true ).
+
+fof(t10_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                 => ( B = k1_funcsdom(A,k1_numbers,k6_funcsdom(A),C,D)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,A)
+                       => k8_funct_2(A,k1_numbers,B,E) = k3_real_1(k8_funct_2(A,k1_numbers,C,E),k8_funct_2(A,k1_numbers,D,E)) ) ) ) ) ) ) ).
+
+fof(t11_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                 => ( B = k1_funcsdom(A,k1_numbers,k7_funcsdom(A),C,D)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,A)
+                       => k8_funct_2(A,k1_numbers,B,E) = k4_real_1(k8_funct_2(A,k1_numbers,C,E),k8_funct_2(A,k1_numbers,D,E)) ) ) ) ) ) ) ).
+
+fof(t12_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => k8_funct_2(A,k1_numbers,k10_funcsdom(A),B) = np__1 ) ) ).
+
+fof(t13_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,A)
+         => k8_funct_2(A,k1_numbers,k9_funcsdom(A),B) = np__0 ) ) ).
+
+fof(t14_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k9_funcsdom(A) != k10_funcsdom(A) ) ).
+
+fof(t15_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( B = k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),D,C))
+                  <=> ! [E] :
+                        ( m1_subset_1(E,A)
+                       => k8_funct_2(A,k1_numbers,B,E) = k4_real_1(D,k8_funct_2(A,k1_numbers,C,E)) ) ) ) ) ) ) ).
+
+fof(t16_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k6_funcsdom(A),B,C) = k1_funcsdom(A,k1_numbers,k6_funcsdom(A),C,B) ) ) ) ).
+
+fof(t17_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                 => k1_funcsdom(A,k1_numbers,k6_funcsdom(A),B,k1_funcsdom(A,k1_numbers,k6_funcsdom(A),C,D)) = k1_funcsdom(A,k1_numbers,k6_funcsdom(A),k1_funcsdom(A,k1_numbers,k6_funcsdom(A),B,C),D) ) ) ) ) ).
+
+fof(t18_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => k1_funcsdom(A,k1_numbers,k7_funcsdom(A),B,C) = k1_funcsdom(A,k1_numbers,k7_funcsdom(A),C,B) ) ) ) ).
+
+fof(t19_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                 => k1_funcsdom(A,k1_numbers,k7_funcsdom(A),B,k1_funcsdom(A,k1_numbers,k7_funcsdom(A),C,D)) = k1_funcsdom(A,k1_numbers,k7_funcsdom(A),k1_funcsdom(A,k1_numbers,k7_funcsdom(A),B,C),D) ) ) ) ) ).
+
+fof(t20_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => k1_funcsdom(A,k1_numbers,k7_funcsdom(A),k10_funcsdom(A),B) = B ) ) ).
+
+fof(t21_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => k1_funcsdom(A,k1_numbers,k6_funcsdom(A),k9_funcsdom(A),B) = B ) ) ).
+
+fof(t22_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => k1_funcsdom(A,k1_numbers,k6_funcsdom(A),B,k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),k1_real_1(np__1),B))) = k9_funcsdom(A) ) ) ).
+
+fof(t23_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),np__1,B)) = B ) ) ).
+
+fof(t24_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),C,k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),D,B)))) = k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),k4_real_1(C,D),B)) ) ) ) ) ).
+
+fof(t25_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => k1_funcsdom(A,k1_numbers,k6_funcsdom(A),k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),C,B)),k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),D,B))) = k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),k3_real_1(C,D),B)) ) ) ) ) ).
+
+fof(t26_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m2_fraenkel(D,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+                 => k1_funcsdom(A,k1_numbers,k7_funcsdom(A),B,k1_funcsdom(A,k1_numbers,k6_funcsdom(A),C,D)) = k1_funcsdom(A,k1_numbers,k6_funcsdom(A),k1_funcsdom(A,k1_numbers,k7_funcsdom(A),B,C),k1_funcsdom(A,k1_numbers,k7_funcsdom(A),B,D)) ) ) ) ) ).
+
+fof(t27_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_fraenkel(B,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+         => ! [C] :
+              ( m2_fraenkel(C,A,k1_numbers,k1_fraenkel(A,k1_numbers))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => k1_funcsdom(A,k1_numbers,k7_funcsdom(A),k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),D,B)),C) = k2_funcsdom(A,k1_numbers,k1_numbers,k1_fraenkel(A,k1_numbers),k8_funcsdom(A),k1_domain_1(k1_numbers,k1_fraenkel(A,k1_numbers),D,k1_funcsdom(A,k1_numbers,k7_funcsdom(A),B,C))) ) ) ) ) ).
+
+fof(t28_funcsdom,axiom,
+    ! [A,B] :
+      ( ~ v1_xboole_0(B)
+     => ? [C] :
+          ( m2_fraenkel(C,B,k1_numbers,k1_fraenkel(B,k1_numbers))
+          & ? [D] :
+              ( m2_fraenkel(D,B,k1_numbers,k1_fraenkel(B,k1_numbers))
+              & ! [E] :
+                  ( r2_hidden(E,B)
+                 => ( ( E = A
+                     => k1_funct_1(C,E) = np__1 )
+                    & ( E != A
+                     => k1_funct_1(C,E) = np__0 ) ) )
+              & ! [E] :
+                  ( r2_hidden(E,B)
+                 => ( ( E = A
+                     => k1_funct_1(D,E) = np__0 )
+                    & ( E != A
+                     => k1_funct_1(D,E) = np__1 ) ) ) ) ) ) ).
+
+fof(t29_funcsdom,axiom,
+    ! [A,B,C] :
+      ( ~ v1_xboole_0(C)
+     => ! [D] :
+          ( m2_fraenkel(D,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+         => ! [E] :
+              ( m2_fraenkel(E,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+             => ( ( r2_hidden(A,C)
+                  & r2_hidden(B,C)
+                  & ! [F] :
+                      ( r2_hidden(F,C)
+                     => ( ( F = A
+                         => k1_funct_1(D,F) = np__1 )
+                        & ( F != A
+                         => k1_funct_1(D,F) = np__0 ) ) )
+                  & ! [F] :
+                      ( r2_hidden(F,C)
+                     => ( ( F = A
+                         => k1_funct_1(E,F) = np__0 )
+                        & ( F != A
+                         => k1_funct_1(E,F) = np__1 ) ) ) )
+               => ( A = B
+                  | ! [F] :
+                      ( m1_subset_1(F,k1_numbers)
+                     => ! [G] :
+                          ( m1_subset_1(G,k1_numbers)
+                         => ( k1_funcsdom(C,k1_numbers,k6_funcsdom(C),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),F,D)),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),G,E))) = k9_funcsdom(C)
+                           => ( F = np__0
+                              & G = np__0 ) ) ) ) ) ) ) ) ) ).
+
+fof(t30_funcsdom,axiom,
+    ! [A,B,C] :
+      ( ~ v1_xboole_0(C)
+     => ~ ( r2_hidden(A,C)
+          & r2_hidden(B,C)
+          & A != B
+          & ! [D] :
+              ( m2_fraenkel(D,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+             => ! [E] :
+                  ( m2_fraenkel(E,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+                 => ? [F] :
+                      ( m1_subset_1(F,k1_numbers)
+                      & ? [G] :
+                          ( m1_subset_1(G,k1_numbers)
+                          & k1_funcsdom(C,k1_numbers,k6_funcsdom(C),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),F,D)),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),G,E))) = k9_funcsdom(C)
+                          & ~ ( F = np__0
+                              & G = np__0 ) ) ) ) ) ) ) ).
+
+fof(t31_funcsdom,axiom,
+    ! [A,B,C] :
+      ( ~ v1_xboole_0(C)
+     => ! [D] :
+          ( m2_fraenkel(D,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+         => ! [E] :
+              ( m2_fraenkel(E,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+             => ( ( C = k2_tarski(A,B)
+                  & ! [F] :
+                      ( r2_hidden(F,C)
+                     => ( ( F = A
+                         => k1_funct_1(D,F) = np__1 )
+                        & ( F != A
+                         => k1_funct_1(D,F) = np__0 ) ) )
+                  & ! [F] :
+                      ( r2_hidden(F,C)
+                     => ( ( F = A
+                         => k1_funct_1(E,F) = np__0 )
+                        & ( F != A
+                         => k1_funct_1(E,F) = np__1 ) ) ) )
+               => ( A = B
+                  | ! [F] :
+                      ( m2_fraenkel(F,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+                     => ? [G] :
+                          ( m1_subset_1(G,k1_numbers)
+                          & ? [H] :
+                              ( m1_subset_1(H,k1_numbers)
+                              & F = k1_funcsdom(C,k1_numbers,k6_funcsdom(C),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),G,D)),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),H,E))) ) ) ) ) ) ) ) ) ).
+
+fof(t32_funcsdom,axiom,
+    ! [A,B,C] :
+      ( ~ v1_xboole_0(C)
+     => ~ ( C = k2_tarski(A,B)
+          & A != B
+          & ! [D] :
+              ( m2_fraenkel(D,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+             => ! [E] :
+                  ( m2_fraenkel(E,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+                 => ? [F] :
+                      ( m2_fraenkel(F,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+                      & ! [G] :
+                          ( m1_subset_1(G,k1_numbers)
+                         => ! [H] :
+                              ( m1_subset_1(H,k1_numbers)
+                             => F != k1_funcsdom(C,k1_numbers,k6_funcsdom(C),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),G,D)),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),H,E))) ) ) ) ) ) ) ) ).
+
+fof(t33_funcsdom,axiom,
+    ! [A,B,C] :
+      ( ~ v1_xboole_0(C)
+     => ~ ( C = k2_tarski(A,B)
+          & A != B
+          & ! [D] :
+              ( m2_fraenkel(D,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+             => ! [E] :
+                  ( m2_fraenkel(E,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+                 => ~ ( ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ! [G] :
+                              ( m1_subset_1(G,k1_numbers)
+                             => ( k1_funcsdom(C,k1_numbers,k6_funcsdom(C),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),F,D)),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),G,E))) = k9_funcsdom(C)
+                               => ( F = np__0
+                                  & G = np__0 ) ) ) )
+                      & ! [F] :
+                          ( m2_fraenkel(F,C,k1_numbers,k1_fraenkel(C,k1_numbers))
+                         => ? [G] :
+                              ( m1_subset_1(G,k1_numbers)
+                              & ? [H] :
+                                  ( m1_subset_1(H,k1_numbers)
+                                  & F = k1_funcsdom(C,k1_numbers,k6_funcsdom(C),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),G,D)),k2_funcsdom(C,k1_numbers,k1_numbers,k1_fraenkel(C,k1_numbers),k8_funcsdom(C),k1_domain_1(k1_numbers,k1_fraenkel(C,k1_numbers),H,E))) ) ) ) ) ) ) ) ) ).
+
+fof(t34_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(g2_rlvect_1(k1_fraenkel(A,k1_numbers),k9_funcsdom(A),k6_funcsdom(A),k8_funcsdom(A)))
+        & v3_rlvect_1(g2_rlvect_1(k1_fraenkel(A,k1_numbers),k9_funcsdom(A),k6_funcsdom(A),k8_funcsdom(A)))
+        & v4_rlvect_1(g2_rlvect_1(k1_fraenkel(A,k1_numbers),k9_funcsdom(A),k6_funcsdom(A),k8_funcsdom(A)))
+        & v5_rlvect_1(g2_rlvect_1(k1_fraenkel(A,k1_numbers),k9_funcsdom(A),k6_funcsdom(A),k8_funcsdom(A)))
+        & v6_rlvect_1(g2_rlvect_1(k1_fraenkel(A,k1_numbers),k9_funcsdom(A),k6_funcsdom(A),k8_funcsdom(A)))
+        & v7_rlvect_1(g2_rlvect_1(k1_fraenkel(A,k1_numbers),k9_funcsdom(A),k6_funcsdom(A),k8_funcsdom(A)))
+        & l2_rlvect_1(g2_rlvect_1(k1_fraenkel(A,k1_numbers),k9_funcsdom(A),k6_funcsdom(A),k8_funcsdom(A))) ) ) ).
+
+fof(d7_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k11_funcsdom(A) = g2_rlvect_1(k1_fraenkel(A,k1_numbers),k9_funcsdom(A),k6_funcsdom(A),k8_funcsdom(A)) ) ).
+
+fof(t35_funcsdom,axiom,
+    $true ).
+
+fof(t36_funcsdom,axiom,
+    $true ).
+
+fof(t37_funcsdom,axiom,
+    ? [A] :
+      ( ~ v3_struct_0(A)
+      & v2_rlvect_1(A)
+      & v3_rlvect_1(A)
+      & v4_rlvect_1(A)
+      & v5_rlvect_1(A)
+      & v6_rlvect_1(A)
+      & v7_rlvect_1(A)
+      & l2_rlvect_1(A)
+      & ? [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+          & ? [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+              & ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ( k4_rlvect_1(A,k3_rlvect_1(A,B,D),k3_rlvect_1(A,C,E)) = k1_rlvect_1(A)
+                       => ( D = np__0
+                          & E = np__0 ) ) ) )
+              & ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ? [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                      & ? [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                          & D = k4_rlvect_1(A,k3_rlvect_1(A,B,E),k3_rlvect_1(A,C,F)) ) ) ) ) ) ) ).
+
+fof(d8_funcsdom,axiom,
+    $true ).
+
+fof(d9_funcsdom,axiom,
+    $true ).
+
+fof(d10_funcsdom,axiom,
+    $true ).
+
+fof(d11_funcsdom,axiom,
+    $true ).
+
+fof(d12_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k12_funcsdom(A) = g3_vectsp_1(k1_fraenkel(A,k1_numbers),k6_funcsdom(A),k7_funcsdom(A),k10_funcsdom(A),k9_funcsdom(A)) ) ).
+
+fof(t38_funcsdom,axiom,
+    $true ).
+
+fof(t39_funcsdom,axiom,
+    $true ).
+
+fof(t40_funcsdom,axiom,
+    $true ).
+
+fof(t41_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k2_group_1(k12_funcsdom(A)) = k10_funcsdom(A) ) ).
+
+fof(t42_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k12_funcsdom(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k12_funcsdom(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k12_funcsdom(A)))
+                 => ( k2_rlvect_1(k12_funcsdom(A),B,C) = k2_rlvect_1(k12_funcsdom(A),C,B)
+                    & k2_rlvect_1(k12_funcsdom(A),k2_rlvect_1(k12_funcsdom(A),B,C),D) = k2_rlvect_1(k12_funcsdom(A),B,k2_rlvect_1(k12_funcsdom(A),C,D))
+                    & k2_rlvect_1(k12_funcsdom(A),B,k1_rlvect_1(k12_funcsdom(A))) = B
+                    & ? [E] :
+                        ( m1_subset_1(E,u1_struct_0(k12_funcsdom(A)))
+                        & k2_rlvect_1(k12_funcsdom(A),B,E) = k1_rlvect_1(k12_funcsdom(A)) )
+                    & k1_group_1(k12_funcsdom(A),B,C) = k1_group_1(k12_funcsdom(A),C,B)
+                    & k1_group_1(k12_funcsdom(A),k1_group_1(k12_funcsdom(A),B,C),D) = k1_group_1(k12_funcsdom(A),B,k1_group_1(k12_funcsdom(A),C,D))
+                    & k1_group_1(k12_funcsdom(A),B,k2_group_1(k12_funcsdom(A))) = B
+                    & k1_group_1(k12_funcsdom(A),k2_group_1(k12_funcsdom(A)),B) = B
+                    & k1_group_1(k12_funcsdom(A),B,k2_rlvect_1(k12_funcsdom(A),C,D)) = k2_rlvect_1(k12_funcsdom(A),k1_group_1(k12_funcsdom(A),B,C),k1_group_1(k12_funcsdom(A),B,D))
+                    & k1_group_1(k12_funcsdom(A),k2_rlvect_1(k12_funcsdom(A),C,D),B) = k2_rlvect_1(k12_funcsdom(A),k1_group_1(k12_funcsdom(A),C,B),k1_group_1(k12_funcsdom(A),D,B)) ) ) ) ) ) ).
+
+fof(t43_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k12_funcsdom(A))
+        & v3_rlvect_1(k12_funcsdom(A))
+        & v4_rlvect_1(k12_funcsdom(A))
+        & v5_rlvect_1(k12_funcsdom(A))
+        & v6_rlvect_1(k12_funcsdom(A))
+        & v4_group_1(k12_funcsdom(A))
+        & v7_group_1(k12_funcsdom(A))
+        & v6_vectsp_1(k12_funcsdom(A))
+        & v7_vectsp_1(k12_funcsdom(A))
+        & v8_vectsp_1(k12_funcsdom(A))
+        & l3_vectsp_1(k12_funcsdom(A)) ) ) ).
+
+fof(d13_funcsdom,axiom,
+    $true ).
+
+fof(d14_funcsdom,axiom,
+    $true ).
+
+fof(d15_funcsdom,axiom,
+    $true ).
+
+fof(d16_funcsdom,axiom,
+    $true ).
+
+fof(d17_funcsdom,axiom,
+    $true ).
+
+fof(d18_funcsdom,axiom,
+    $true ).
+
+fof(d19_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k13_funcsdom(A) = g1_funcsdom(k1_fraenkel(A,k1_numbers),k7_funcsdom(A),k6_funcsdom(A),k8_funcsdom(A),k10_funcsdom(A),k9_funcsdom(A)) ) ).
+
+fof(t44_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k2_group_1(k13_funcsdom(A)) = k10_funcsdom(A) ) ).
+
+fof(t45_funcsdom,axiom,
+    $true ).
+
+fof(t46_funcsdom,axiom,
+    $true ).
+
+fof(t47_funcsdom,axiom,
+    $true ).
+
+fof(t48_funcsdom,axiom,
+    $true ).
+
+fof(t49_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k13_funcsdom(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k13_funcsdom(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k13_funcsdom(A)))
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ( k2_rlvect_1(k13_funcsdom(A),B,C) = k2_rlvect_1(k13_funcsdom(A),C,B)
+                            & k2_rlvect_1(k13_funcsdom(A),k2_rlvect_1(k13_funcsdom(A),B,C),D) = k2_rlvect_1(k13_funcsdom(A),B,k2_rlvect_1(k13_funcsdom(A),C,D))
+                            & k2_rlvect_1(k13_funcsdom(A),B,k1_rlvect_1(k13_funcsdom(A))) = B
+                            & ? [G] :
+                                ( m1_subset_1(G,u1_struct_0(k13_funcsdom(A)))
+                                & k2_rlvect_1(k13_funcsdom(A),B,G) = k1_rlvect_1(k13_funcsdom(A)) )
+                            & k1_group_1(k13_funcsdom(A),B,C) = k1_group_1(k13_funcsdom(A),C,B)
+                            & k1_group_1(k13_funcsdom(A),k1_group_1(k13_funcsdom(A),B,C),D) = k1_group_1(k13_funcsdom(A),B,k1_group_1(k13_funcsdom(A),C,D))
+                            & k1_group_1(k13_funcsdom(A),B,k2_group_1(k13_funcsdom(A))) = B
+                            & k1_group_1(k13_funcsdom(A),B,k2_rlvect_1(k13_funcsdom(A),C,D)) = k2_rlvect_1(k13_funcsdom(A),k1_group_1(k13_funcsdom(A),B,C),k1_group_1(k13_funcsdom(A),B,D))
+                            & k3_rlvect_1(k13_funcsdom(A),k1_group_1(k13_funcsdom(A),B,C),E) = k1_group_1(k13_funcsdom(A),k3_rlvect_1(k13_funcsdom(A),B,E),C)
+                            & k3_rlvect_1(k13_funcsdom(A),k2_rlvect_1(k13_funcsdom(A),B,C),E) = k2_rlvect_1(k13_funcsdom(A),k3_rlvect_1(k13_funcsdom(A),B,E),k3_rlvect_1(k13_funcsdom(A),C,E))
+                            & k3_rlvect_1(k13_funcsdom(A),B,k3_real_1(E,F)) = k2_rlvect_1(k13_funcsdom(A),k3_rlvect_1(k13_funcsdom(A),B,E),k3_rlvect_1(k13_funcsdom(A),B,F))
+                            & k3_rlvect_1(k13_funcsdom(A),B,k4_real_1(E,F)) = k3_rlvect_1(k13_funcsdom(A),k3_rlvect_1(k13_funcsdom(A),B,F),E) ) ) ) ) ) ) ) ).
+
+fof(d20_funcsdom,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_funcsdom(A) )
+     => ( v2_funcsdom(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,k1_numbers)
+                       => ! [F] :
+                            ( m1_subset_1(F,k1_numbers)
+                           => ( k1_group_1(A,B,k2_group_1(A)) = B
+                              & k1_group_1(A,B,k2_rlvect_1(A,C,D)) = k2_rlvect_1(A,k1_group_1(A,B,C),k1_group_1(A,B,D))
+                              & k3_rlvect_1(A,k1_group_1(A,B,C),E) = k1_group_1(A,k3_rlvect_1(A,B,E),C)
+                              & k3_rlvect_1(A,k2_rlvect_1(A,B,C),E) = k2_rlvect_1(A,k3_rlvect_1(A,B,E),k3_rlvect_1(A,C,E))
+                              & k3_rlvect_1(A,B,k3_real_1(E,F)) = k2_rlvect_1(A,k3_rlvect_1(A,B,E),k3_rlvect_1(A,B,F))
+                              & k3_rlvect_1(A,B,k4_real_1(E,F)) = k3_rlvect_1(A,k3_rlvect_1(A,B,F),E) ) ) ) ) ) ) ) ) ).
+
+fof(t50_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k13_funcsdom(A))
+        & v3_rlvect_1(k13_funcsdom(A))
+        & v4_rlvect_1(k13_funcsdom(A))
+        & v5_rlvect_1(k13_funcsdom(A))
+        & v6_rlvect_1(k13_funcsdom(A))
+        & v4_group_1(k13_funcsdom(A))
+        & v7_group_1(k13_funcsdom(A))
+        & v2_funcsdom(k13_funcsdom(A))
+        & l1_funcsdom(k13_funcsdom(A)) ) ) ).
+
+fof(dt_l1_funcsdom,axiom,
+    ! [A] :
+      ( l1_funcsdom(A)
+     => ( l3_vectsp_1(A)
+        & l2_rlvect_1(A) ) ) ).
+
+fof(existence_l1_funcsdom,axiom,
+    ? [A] : l1_funcsdom(A) ).
+
+fof(abstractness_v1_funcsdom,axiom,
+    ! [A] :
+      ( l1_funcsdom(A)
+     => ( v1_funcsdom(A)
+       => A = g1_funcsdom(u1_struct_0(A),u1_group_1(A),u1_rlvect_1(A),u2_rlvect_1(A),u1_vectsp_1(A),u2_struct_0(A)) ) ) ).
+
+fof(dt_k1_funcsdom,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(k1_fraenkel(A,B),k1_fraenkel(A,B)),k1_fraenkel(A,B))
+        & m1_relset_1(C,k2_zfmisc_1(k1_fraenkel(A,B),k1_fraenkel(A,B)),k1_fraenkel(A,B))
+        & m1_subset_1(D,k1_fraenkel(A,B))
+        & m1_subset_1(E,k1_fraenkel(A,B)) )
+     => m2_fraenkel(k1_funcsdom(A,B,C,D,E),A,B,k1_fraenkel(A,B)) ) ).
+
+fof(redefinition_k1_funcsdom,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(k1_fraenkel(A,B),k1_fraenkel(A,B)),k1_fraenkel(A,B))
+        & m1_relset_1(C,k2_zfmisc_1(k1_fraenkel(A,B),k1_fraenkel(A,B)),k1_fraenkel(A,B))
+        & m1_subset_1(D,k1_fraenkel(A,B))
+        & m1_subset_1(E,k1_fraenkel(A,B)) )
+     => k1_funcsdom(A,B,C,D,E) = k1_binop_1(C,D,E) ) ).
+
+fof(dt_k2_funcsdom,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & ~ v1_xboole_0(D)
+        & v1_funct_1(E)
+        & v1_funct_2(E,k2_zfmisc_1(C,D),k1_fraenkel(A,B))
+        & m1_relset_1(E,k2_zfmisc_1(C,D),k1_fraenkel(A,B))
+        & m1_subset_1(F,k2_zfmisc_1(C,D)) )
+     => m2_fraenkel(k2_funcsdom(A,B,C,D,E,F),A,B,k1_fraenkel(A,B)) ) ).
+
+fof(redefinition_k2_funcsdom,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & ~ v1_xboole_0(C)
+        & ~ v1_xboole_0(D)
+        & v1_funct_1(E)
+        & v1_funct_2(E,k2_zfmisc_1(C,D),k1_fraenkel(A,B))
+        & m1_relset_1(E,k2_zfmisc_1(C,D),k1_fraenkel(A,B))
+        & m1_subset_1(F,k2_zfmisc_1(C,D)) )
+     => k2_funcsdom(A,B,C,D,E,F) = k1_funct_1(E,F) ) ).
+
+fof(dt_k3_funcsdom,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,B)
+        & m1_relset_1(C,A,B) )
+     => m2_fraenkel(k3_funcsdom(A,B,C),A,B,k1_fraenkel(A,B)) ) ).
+
+fof(dt_k4_funcsdom,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,B,A)
+        & m1_relset_1(D,B,A)
+        & v1_funct_1(E)
+        & v1_funct_2(E,B,A)
+        & m1_relset_1(E,B,A) )
+     => m2_fraenkel(k4_funcsdom(A,B,C,D,E),B,A,k1_fraenkel(B,A)) ) ).
+
+fof(redefinition_k4_funcsdom,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,B,A)
+        & m1_relset_1(D,B,A)
+        & v1_funct_1(E)
+        & v1_funct_2(E,B,A)
+        & m1_relset_1(E,B,A) )
+     => k4_funcsdom(A,B,C,D,E) = k3_funcop_1(C,D,E) ) ).
+
+fof(dt_k5_funcsdom,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & m1_subset_1(D,A)
+        & v1_funct_1(E)
+        & v1_funct_2(E,B,A)
+        & m1_relset_1(E,B,A) )
+     => m2_fraenkel(k5_funcsdom(A,B,C,D,E),B,A,k1_fraenkel(B,A)) ) ).
+
+fof(redefinition_k5_funcsdom,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & m1_subset_1(D,A)
+        & v1_funct_1(E)
+        & v1_funct_2(E,B,A)
+        & m1_relset_1(E,B,A) )
+     => k5_funcsdom(A,B,C,D,E) = k5_funcop_1(C,D,E) ) ).
+
+fof(dt_k6_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v1_funct_1(k6_funcsdom(A))
+        & v1_funct_2(k6_funcsdom(A),k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+        & m2_relset_1(k6_funcsdom(A),k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) ) ) ).
+
+fof(dt_k7_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v1_funct_1(k7_funcsdom(A))
+        & v1_funct_2(k7_funcsdom(A),k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+        & m2_relset_1(k7_funcsdom(A),k2_zfmisc_1(k1_fraenkel(A,k1_numbers),k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) ) ) ).
+
+fof(dt_k8_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v1_funct_1(k8_funcsdom(A))
+        & v1_funct_2(k8_funcsdom(A),k2_zfmisc_1(k1_numbers,k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers))
+        & m2_relset_1(k8_funcsdom(A),k2_zfmisc_1(k1_numbers,k1_fraenkel(A,k1_numbers)),k1_fraenkel(A,k1_numbers)) ) ) ).
+
+fof(dt_k9_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => m2_fraenkel(k9_funcsdom(A),A,k1_numbers,k1_fraenkel(A,k1_numbers)) ) ).
+
+fof(dt_k10_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => m2_fraenkel(k10_funcsdom(A),A,k1_numbers,k1_fraenkel(A,k1_numbers)) ) ).
+
+fof(dt_k11_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( ~ v3_struct_0(k11_funcsdom(A))
+        & v2_rlvect_1(k11_funcsdom(A))
+        & v3_rlvect_1(k11_funcsdom(A))
+        & v4_rlvect_1(k11_funcsdom(A))
+        & v5_rlvect_1(k11_funcsdom(A))
+        & v6_rlvect_1(k11_funcsdom(A))
+        & v7_rlvect_1(k11_funcsdom(A))
+        & l2_rlvect_1(k11_funcsdom(A)) ) ) ).
+
+fof(dt_k12_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v3_vectsp_1(k12_funcsdom(A))
+        & l3_vectsp_1(k12_funcsdom(A)) ) ) ).
+
+fof(dt_k13_funcsdom,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ( v1_funcsdom(k13_funcsdom(A))
+        & l1_funcsdom(k13_funcsdom(A)) ) ) ).
+
+fof(dt_g1_funcsdom,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k2_zfmisc_1(k1_numbers,A),A)
+        & m1_relset_1(D,k2_zfmisc_1(k1_numbers,A),A)
+        & m1_subset_1(E,A)
+        & m1_subset_1(F,A) )
+     => ( v1_funcsdom(g1_funcsdom(A,B,C,D,E,F))
+        & l1_funcsdom(g1_funcsdom(A,B,C,D,E,F)) ) ) ).
+
+fof(free_g1_funcsdom,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k2_zfmisc_1(k1_numbers,A),A)
+        & m1_relset_1(D,k2_zfmisc_1(k1_numbers,A),A)
+        & m1_subset_1(E,A)
+        & m1_subset_1(F,A) )
+     => ! [G,H,I,J,K,L] :
+          ( g1_funcsdom(A,B,C,D,E,F) = g1_funcsdom(G,H,I,J,K,L)
+         => ( A = G
+            & B = H
+            & C = I
+            & D = J
+            & E = K
+            & F = L ) ) ) ).
+
+%------------------------------------------------------------------------------

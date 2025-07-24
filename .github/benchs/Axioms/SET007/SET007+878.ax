@@ -1,0 +1,1580 @@
+%------------------------------------------------------------------------------
+% File     : SET007+878 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Pencil Spaces, Grassmann Spaces, and Generalized Veronese Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : pencil_4 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   65 (   2 unt;   0 def)
+%            Number of atoms       : 1223 (  50 equ)
+%            Maximal formula atoms :   34 (  18 avg)
+%            Number of connectives : 1356 ( 198   ~;  12   |; 929   &)
+%                                         (  13 <=>; 204  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   29 (  14 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   35 (  33 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   38 (  38 usr;   6 con; 0-5 aty)
+%            Number of variables   :  224 ( 216   !;   8   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_pencil_4,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ~ v1_xboole_0(k8_pencil_4(A)) ) ).
+
+fof(fc2_pencil_4,axiom,
+    ! [A,B] :
+      ( ~ v1_xboole_0(B)
+     => ~ v1_xboole_0(k9_pencil_4(A,B)) ) ).
+
+fof(fc3_pencil_4,axiom,
+    ! [A,B] :
+      ( ~ v1_realset1(B)
+     => ( ~ v1_xboole_0(k9_pencil_4(A,B))
+        & ~ v1_realset1(k9_pencil_4(A,B)) ) ) ).
+
+fof(fc4_pencil_4,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ~ v1_xboole_0(k10_pencil_4(A,B)) ) ).
+
+fof(fc5_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_pre_topc(A) )
+     => ( ~ v3_struct_0(k11_pencil_4(A))
+        & v1_pre_topc(k11_pencil_4(A)) ) ) ).
+
+fof(fc6_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_pencil_1(A)
+        & l1_pre_topc(A) )
+     => ( ~ v3_struct_0(k11_pencil_4(A))
+        & v1_pre_topc(k11_pencil_4(A))
+        & ~ v3_pencil_1(k11_pencil_4(A)) ) ) ).
+
+fof(fc7_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_pencil_1(A)
+        & ~ v4_pencil_1(A)
+        & l1_pre_topc(A) )
+     => ( ~ v3_struct_0(k11_pencil_4(A))
+        & v1_pre_topc(k11_pencil_4(A))
+        & ~ v3_pencil_1(k11_pencil_4(A))
+        & ~ v4_pencil_1(k11_pencil_4(A)) ) ) ).
+
+fof(fc8_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_pencil_1(A)
+        & v5_pencil_1(A)
+        & l1_pre_topc(A) )
+     => ( ~ v3_struct_0(k11_pencil_4(A))
+        & v1_pre_topc(k11_pencil_4(A))
+        & ~ v3_pencil_1(k11_pencil_4(A))
+        & v5_pencil_1(k11_pencil_4(A)) ) ) ).
+
+fof(fc9_pencil_4,axiom,
+    ! [A] :
+      ( ( v6_pencil_1(A)
+        & l1_pre_topc(A) )
+     => ( v1_pre_topc(k11_pencil_4(A))
+        & v6_pencil_1(k11_pencil_4(A)) ) ) ).
+
+fof(t1_pencil_4,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( r1_xreal_0(np__1,A)
+              & ~ r1_xreal_0(B,A)
+              & r1_xreal_0(np__3,B)
+              & r1_xreal_0(B,k1_nat_1(A,np__1))
+              & ~ r1_xreal_0(np__2,A) ) ) ) ).
+
+fof(t2_pencil_4,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ~ ( r1_xreal_0(B,k4_card_1(A))
+              & ! [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(A))
+                 => k4_card_1(C) != B ) ) ) ) ).
+
+fof(t3_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => m1_vectsp_4(C,A,k2_vectsp_4(A,B)) ) ) ) ).
+
+fof(t4_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,k2_vectsp_4(A,B))
+             => m1_vectsp_4(C,A,B) ) ) ) ).
+
+fof(t5_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => m1_vectsp_4(k2_vectsp_4(A,C),A,B) ) ) ) ).
+
+fof(t6_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v3_rlvect_1(C)
+                & v4_rlvect_1(C)
+                & v5_rlvect_1(C)
+                & v6_rlvect_1(C)
+                & v12_vectsp_1(C,A)
+                & l4_vectsp_1(C,A) )
+             => ( m1_vectsp_4(k2_vectsp_4(A,C),A,B)
+               => m1_vectsp_4(C,A,B) ) ) ) ) ).
+
+fof(d1_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_zfmisc_1(k3_vectsp_5(A,B)))
+                     => ( ( m1_vectsp_4(C,A,D)
+                         => ( E = k1_pencil_4(A,B,C,D)
+                          <=> ! [F] :
+                                ( ( v11_vectsp_1(F,A)
+                                  & m1_vectsp_4(F,A,B) )
+                               => ( r2_hidden(F,E)
+                                <=> ( m1_vectsp_4(C,A,F)
+                                    & m1_vectsp_4(F,A,D) ) ) ) ) )
+                        & ( ~ m1_vectsp_4(C,A,D)
+                         => ( E = k1_pencil_4(A,B,C,D)
+                          <=> E = k1_xboole_0 ) ) ) ) ) ) ) ) ).
+
+fof(t7_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => ! [E] :
+                      ( m1_vectsp_4(E,A,B)
+                     => ! [F] :
+                          ( m1_vectsp_4(F,A,B)
+                         => ( ( m1_vectsp_4(C,A,D)
+                              & m1_vectsp_4(E,A,F)
+                              & k2_vectsp_4(A,C) = k2_vectsp_4(A,E)
+                              & k2_vectsp_4(A,D) = k2_vectsp_4(A,F) )
+                           => k1_pencil_4(A,B,C,D) = k1_pencil_4(A,B,E,F) ) ) ) ) ) ) ) ).
+
+fof(d2_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => k2_pencil_4(A,B,C,D) = k4_xboole_0(k1_pencil_4(A,B,C,D),k2_tarski(k2_vectsp_4(A,C),k2_vectsp_4(A,D))) ) ) ) ) ).
+
+fof(t8_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => ! [E] :
+                      ( m1_vectsp_4(E,A,B)
+                     => ! [F] :
+                          ( m1_vectsp_4(F,A,B)
+                         => ( ( m1_vectsp_4(C,A,D)
+                              & m1_vectsp_4(E,A,F)
+                              & k2_vectsp_4(A,C) = k2_vectsp_4(A,E)
+                              & k2_vectsp_4(A,D) = k2_vectsp_4(A,F) )
+                           => k2_pencil_4(A,B,C,D) = k2_pencil_4(A,B,E,F) ) ) ) ) ) ) ) ).
+
+fof(d3_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => k3_pencil_4(A,B,C,D,E) = k3_xboole_0(k2_pencil_4(A,B,C,D),k2_vectsp_9(A,B,E)) ) ) ) ) ) ).
+
+fof(t9_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => ! [E] :
+                      ( m1_vectsp_4(E,A,B)
+                     => ! [F] :
+                          ( m1_vectsp_4(F,A,B)
+                         => ( r2_hidden(F,k3_pencil_4(A,B,D,E,C))
+                           => ( m1_vectsp_4(D,A,F)
+                              & m1_vectsp_4(F,A,E) ) ) ) ) ) ) ) ) ).
+
+fof(t10_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => ! [E] :
+                      ( m1_vectsp_4(E,A,B)
+                     => ! [F] :
+                          ( m1_vectsp_4(F,A,B)
+                         => ! [G] :
+                              ( m1_vectsp_4(G,A,B)
+                             => ( ( m1_vectsp_4(D,A,E)
+                                  & m1_vectsp_4(F,A,G)
+                                  & k2_vectsp_4(A,D) = k2_vectsp_4(A,F)
+                                  & k2_vectsp_4(A,E) = k2_vectsp_4(A,G) )
+                               => k3_pencil_4(A,B,D,E,C) = k3_pencil_4(A,B,F,G,C) ) ) ) ) ) ) ) ) ).
+
+fof(d4_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k1_zfmisc_1(k2_vectsp_9(A,B,C))))
+                 => ( D = k4_pencil_4(A,B,C)
+                  <=> ! [E] :
+                        ( r2_hidden(E,D)
+                      <=> ? [F] :
+                            ( m1_vectsp_4(F,A,B)
+                            & ? [G] :
+                                ( m1_vectsp_4(G,A,B)
+                                & m1_vectsp_4(F,A,G)
+                                & k1_nat_1(k1_vectsp_9(A,F),np__1) = C
+                                & k1_vectsp_9(A,G) = k1_nat_1(C,np__1)
+                                & E = k3_pencil_4(A,B,F,G,C) ) ) ) ) ) ) ) ) ).
+
+fof(t11_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( r1_xreal_0(np__1,C)
+                  & ~ r1_xreal_0(k1_vectsp_9(A,B),C)
+                  & v1_xboole_0(k4_pencil_4(A,B,C)) ) ) ) ) ).
+
+fof(t12_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => ! [E] :
+                      ( m1_vectsp_4(E,A,B)
+                     => ! [F] :
+                          ( m1_vectsp_4(F,A,B)
+                         => ! [G] :
+                              ( m2_subset_1(G,k1_numbers,k5_numbers)
+                             => ( ( r1_xreal_0(np__1,G)
+                                  & k1_nat_1(k1_vectsp_9(A,C),np__1) = G
+                                  & k1_vectsp_9(A,D) = k1_nat_1(G,np__1)
+                                  & r2_hidden(E,k3_pencil_4(A,B,C,D,G))
+                                  & r2_hidden(F,k3_pencil_4(A,B,C,D,G)) )
+                               => ( r1_xreal_0(k1_vectsp_9(A,B),G)
+                                  | E = F
+                                  | ( k2_vectsp_5(A,B,E,F) = k2_vectsp_4(A,C)
+                                    & k1_vectsp_5(A,B,E,F) = k2_vectsp_4(A,D) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t13_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ( C != k1_rlvect_1(B)
+               => k1_vectsp_9(A,k1_vectsp_7(A,B,k1_struct_0(B,C))) = np__1 ) ) ) ) ).
+
+fof(t14_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ( ~ r1_rlvect_1(C,D)
+                   => k1_vectsp_9(A,k1_vectsp_5(A,B,C,k1_vectsp_7(A,B,k1_struct_0(B,D)))) = k1_nat_1(k1_vectsp_9(A,C),np__1) ) ) ) ) ) ).
+
+fof(t15_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(B))
+                     => ( ( v1_vectsp_7(k2_struct_0(B,D,E),A,B)
+                          & k2_vectsp_5(A,B,C,k1_vectsp_7(A,B,k2_struct_0(B,D,E))) = k1_vectsp_4(A,B) )
+                       => ( r1_rlvect_1(C,D)
+                          | r1_rlvect_1(C,E)
+                          | D = E
+                          | k1_vectsp_9(A,k1_vectsp_5(A,B,C,k1_vectsp_7(A,B,k2_struct_0(B,D,E)))) = k1_nat_1(k1_vectsp_9(A,C),np__2) ) ) ) ) ) ) ) ).
+
+fof(t16_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => ( m1_vectsp_4(C,A,D)
+                   => ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ( ( r1_xreal_0(np__1,E)
+                            & k1_nat_1(k1_vectsp_9(A,C),np__1) = E
+                            & k1_vectsp_9(A,D) = k1_nat_1(E,np__1) )
+                         => ( r1_xreal_0(k1_vectsp_9(A,B),E)
+                            | ! [F] :
+                                ( m1_subset_1(F,u1_struct_0(B))
+                               => ( r1_rlvect_1(D,F)
+                                 => ( r1_rlvect_1(C,F)
+                                    | r2_hidden(k1_vectsp_5(A,B,C,k1_vectsp_7(A,B,k1_struct_0(B,F))),k3_pencil_4(A,B,C,D,E)) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t17_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m1_vectsp_4(D,A,B)
+                 => ( m1_vectsp_4(C,A,D)
+                   => ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ~ ( r1_xreal_0(np__1,E)
+                            & ~ r1_xreal_0(k1_vectsp_9(A,B),E)
+                            & k1_nat_1(k1_vectsp_9(A,C),np__1) = E
+                            & k1_vectsp_9(A,D) = k1_nat_1(E,np__1)
+                            & v1_realset1(k3_pencil_4(A,B,C,D,E)) ) ) ) ) ) ) ) ).
+
+fof(d5_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => k5_pencil_4(A,B,C) = g1_pre_topc(k2_vectsp_9(A,B,C),k4_pencil_4(A,B,C)) ) ) ) ).
+
+fof(t18_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( r1_xreal_0(C,k1_vectsp_9(A,B))
+                  & v3_struct_0(k5_pencil_4(A,B,C)) ) ) ) ) ).
+
+fof(t19_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( r1_xreal_0(np__1,C)
+                  & ~ r1_xreal_0(k1_vectsp_9(A,B),C)
+                  & v3_pencil_1(k5_pencil_4(A,B,C)) ) ) ) ) ).
+
+fof(t20_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( r1_xreal_0(np__1,C)
+                  & ~ r1_xreal_0(k1_vectsp_9(A,B),C)
+                  & r1_xreal_0(np__3,k1_vectsp_9(A,B))
+                  & v4_pencil_1(k5_pencil_4(A,B,C)) ) ) ) ) ).
+
+fof(t21_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r1_xreal_0(np__1,C)
+               => ( r1_xreal_0(k1_vectsp_9(A,B),C)
+                  | v5_pencil_1(k5_pencil_4(A,B,C)) ) ) ) ) ) ).
+
+fof(t22_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r1_xreal_0(np__1,C)
+               => ( r1_xreal_0(k1_vectsp_9(A,B),C)
+                  | v6_pencil_1(k5_pencil_4(A,B,C)) ) ) ) ) ) ).
+
+fof(t23_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_xreal_0(np__1,C)
+                  & r1_xreal_0(np__3,k1_vectsp_9(A,B)) )
+               => ( r1_xreal_0(k1_vectsp_9(A,B),C)
+                  | ( ~ v3_struct_0(k5_pencil_4(A,B,C))
+                    & ~ v3_pencil_1(k5_pencil_4(A,B,C))
+                    & ~ v4_pencil_1(k5_pencil_4(A,B,C))
+                    & v5_pencil_1(k5_pencil_4(A,B,C))
+                    & v6_pencil_1(k5_pencil_4(A,B,C))
+                    & l1_pre_topc(k5_pencil_4(A,B,C)) ) ) ) ) ) ) ).
+
+fof(d6_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_zfmisc_1(k1_zfmisc_1(k2_vectsp_9(A,B,C))))
+                     => ( E = k6_pencil_4(A,B,C,D)
+                      <=> ! [F] :
+                            ( r2_hidden(F,E)
+                          <=> ? [G] :
+                                ( m1_vectsp_4(G,A,B)
+                                & k1_vectsp_9(A,G) = D
+                                & F = k2_vectsp_9(A,G,C) ) ) ) ) ) ) ) ) ).
+
+fof(t24_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ~ ( r1_xreal_0(D,k1_vectsp_9(A,B))
+                      & v1_xboole_0(k6_pencil_4(A,B,C,D)) ) ) ) ) ) ).
+
+fof(t25_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v3_rlvect_1(C)
+                & v4_rlvect_1(C)
+                & v5_rlvect_1(C)
+                & v6_rlvect_1(C)
+                & v12_vectsp_1(C,A)
+                & v2_matrlin(C,A)
+                & l4_vectsp_1(C,A) )
+             => ( k2_vectsp_4(A,B) = k2_vectsp_4(A,C)
+               => ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => k2_vectsp_9(A,B,D) = k2_vectsp_9(A,C,D) ) ) ) ) ) ).
+
+fof(t26_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m1_vectsp_4(C,A,B)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( r1_xreal_0(np__1,D)
+                      & r1_xreal_0(D,k1_vectsp_9(A,B))
+                      & r1_tarski(k2_vectsp_9(A,B,D),k2_vectsp_9(A,C,D)) )
+                   => k2_vectsp_4(A,B) = k2_vectsp_4(A,C) ) ) ) ) ) ).
+
+fof(d7_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => k7_pencil_4(A,B,C,D) = g1_pre_topc(k2_vectsp_9(A,B,C),k6_pencil_4(A,B,C,D)) ) ) ) ) ).
+
+fof(t27_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ~ ( r1_xreal_0(C,k1_vectsp_9(A,B))
+                      & v3_struct_0(k7_pencil_4(A,B,C,D)) ) ) ) ) ) ).
+
+fof(t28_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ~ ( r1_xreal_0(D,k1_vectsp_9(A,B))
+                      & v3_pencil_1(k7_pencil_4(A,B,C,D)) ) ) ) ) ) ).
+
+fof(t29_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ~ ( r1_xreal_0(np__1,C)
+                      & ~ r1_xreal_0(D,C)
+                      & ~ r1_xreal_0(k1_vectsp_9(A,B),D)
+                      & v4_pencil_1(k7_pencil_4(A,B,C,D)) ) ) ) ) ) ).
+
+fof(t30_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( r1_xreal_0(np__1,C)
+                      & r1_xreal_0(D,k1_vectsp_9(A,B)) )
+                   => ( r1_xreal_0(D,C)
+                      | v5_pencil_1(k7_pencil_4(A,B,C,D)) ) ) ) ) ) ) ).
+
+fof(t31_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_xreal_0(np__1,C)
+                  & r1_xreal_0(k1_nat_1(C,np__1),k1_vectsp_9(A,B)) )
+               => v6_pencil_1(k7_pencil_4(A,B,C,k1_nat_1(C,np__1))) ) ) ) ) ).
+
+fof(t32_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v12_vectsp_1(B,A)
+            & v2_matrlin(B,A)
+            & l4_vectsp_1(B,A) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r1_xreal_0(np__1,C)
+               => ( r1_xreal_0(k1_vectsp_9(A,B),k1_nat_1(C,np__1))
+                  | ( ~ v3_struct_0(k7_pencil_4(A,B,C,k1_nat_1(C,np__1)))
+                    & ~ v3_pencil_1(k7_pencil_4(A,B,C,k1_nat_1(C,np__1)))
+                    & ~ v4_pencil_1(k7_pencil_4(A,B,C,k1_nat_1(C,np__1)))
+                    & v5_pencil_1(k7_pencil_4(A,B,C,k1_nat_1(C,np__1)))
+                    & v6_pencil_1(k7_pencil_4(A,B,C,k1_nat_1(C,np__1)))
+                    & l1_pre_topc(k7_pencil_4(A,B,C,k1_nat_1(C,np__1))) ) ) ) ) ) ) ).
+
+fof(d8_pencil_4,axiom,
+    ! [A,B] :
+      ( B = k8_pencil_4(A)
+    <=> ! [C] :
+          ( r2_hidden(C,B)
+        <=> ? [D,E] :
+              ( r2_hidden(D,A)
+              & r2_hidden(E,A)
+              & C = k2_tarski(D,E) ) ) ) ).
+
+fof(d9_pencil_4,axiom,
+    ! [A,B,C] :
+      ( C = k9_pencil_4(A,B)
+    <=> ! [D] :
+          ( r2_hidden(D,C)
+        <=> ? [E] :
+              ( r2_hidden(E,B)
+              & D = k2_tarski(A,E) ) ) ) ).
+
+fof(d10_pencil_4,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => ! [C] :
+          ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(k8_pencil_4(A))))
+         => ( C = k10_pencil_4(A,B)
+          <=> ! [D] :
+                ( r2_hidden(D,C)
+              <=> ? [E,F] :
+                    ( m1_subset_1(F,k1_zfmisc_1(A))
+                    & r2_hidden(E,A)
+                    & r2_hidden(F,B)
+                    & D = k9_pencil_4(E,F) ) ) ) ) ) ).
+
+fof(d11_pencil_4,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => k11_pencil_4(A) = g1_pre_topc(k8_pencil_4(u1_struct_0(A)),k10_pencil_4(u1_struct_0(A),u1_pre_topc(A))) ) ).
+
+fof(dt_k1_pencil_4,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v12_vectsp_1(B,A)
+        & l4_vectsp_1(B,A)
+        & m1_vectsp_4(C,A,B)
+        & m1_vectsp_4(D,A,B) )
+     => m1_subset_1(k1_pencil_4(A,B,C,D),k1_zfmisc_1(k3_vectsp_5(A,B))) ) ).
+
+fof(dt_k2_pencil_4,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v12_vectsp_1(B,A)
+        & l4_vectsp_1(B,A)
+        & m1_vectsp_4(C,A,B)
+        & m1_vectsp_4(D,A,B) )
+     => m1_subset_1(k2_pencil_4(A,B,C,D),k1_zfmisc_1(k3_vectsp_5(A,B))) ) ).
+
+fof(dt_k3_pencil_4,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v12_vectsp_1(B,A)
+        & v2_matrlin(B,A)
+        & l4_vectsp_1(B,A)
+        & m1_vectsp_4(C,A,B)
+        & m1_vectsp_4(D,A,B)
+        & m1_subset_1(E,k5_numbers) )
+     => m1_subset_1(k3_pencil_4(A,B,C,D,E),k1_zfmisc_1(k2_vectsp_9(A,B,E))) ) ).
+
+fof(dt_k4_pencil_4,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v12_vectsp_1(B,A)
+        & v2_matrlin(B,A)
+        & l4_vectsp_1(B,A)
+        & m1_subset_1(C,k5_numbers) )
+     => m1_subset_1(k4_pencil_4(A,B,C),k1_zfmisc_1(k1_zfmisc_1(k2_vectsp_9(A,B,C)))) ) ).
+
+fof(dt_k5_pencil_4,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v12_vectsp_1(B,A)
+        & v2_matrlin(B,A)
+        & l4_vectsp_1(B,A)
+        & m1_subset_1(C,k5_numbers) )
+     => ( v1_pre_topc(k5_pencil_4(A,B,C))
+        & l1_pre_topc(k5_pencil_4(A,B,C)) ) ) ).
+
+fof(dt_k6_pencil_4,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v12_vectsp_1(B,A)
+        & v2_matrlin(B,A)
+        & l4_vectsp_1(B,A)
+        & m1_subset_1(C,k5_numbers)
+        & m1_subset_1(D,k5_numbers) )
+     => m1_subset_1(k6_pencil_4(A,B,C,D),k1_zfmisc_1(k1_zfmisc_1(k2_vectsp_9(A,B,C)))) ) ).
+
+fof(dt_k7_pencil_4,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v4_group_1(A)
+        & v7_group_1(A)
+        & v7_vectsp_1(A)
+        & v8_vectsp_1(A)
+        & v9_vectsp_1(A)
+        & ~ v10_vectsp_1(A)
+        & l3_vectsp_1(A)
+        & ~ v3_struct_0(B)
+        & v3_rlvect_1(B)
+        & v4_rlvect_1(B)
+        & v5_rlvect_1(B)
+        & v6_rlvect_1(B)
+        & v12_vectsp_1(B,A)
+        & v2_matrlin(B,A)
+        & l4_vectsp_1(B,A)
+        & m1_subset_1(C,k5_numbers)
+        & m1_subset_1(D,k5_numbers) )
+     => ( v1_pre_topc(k7_pencil_4(A,B,C,D))
+        & l1_pre_topc(k7_pencil_4(A,B,C,D)) ) ) ).
+
+fof(dt_k8_pencil_4,axiom,
+    $true ).
+
+fof(dt_k9_pencil_4,axiom,
+    $true ).
+
+fof(dt_k10_pencil_4,axiom,
+    ! [A,B] :
+      ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+     => m1_subset_1(k10_pencil_4(A,B),k1_zfmisc_1(k1_zfmisc_1(k8_pencil_4(A)))) ) ).
+
+fof(dt_k11_pencil_4,axiom,
+    ! [A] :
+      ( l1_pre_topc(A)
+     => ( v1_pre_topc(k11_pencil_4(A))
+        & l1_pre_topc(k11_pencil_4(A)) ) ) ).
+
+fof(dt_k12_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_pencil_1(A)
+        & ~ v4_pencil_1(A)
+        & v5_pencil_1(A)
+        & v6_pencil_1(A)
+        & l1_pre_topc(A) )
+     => ( ~ v3_struct_0(k12_pencil_4(A))
+        & v1_pre_topc(k12_pencil_4(A))
+        & ~ v3_pencil_1(k12_pencil_4(A))
+        & ~ v4_pencil_1(k12_pencil_4(A))
+        & v5_pencil_1(k12_pencil_4(A))
+        & v6_pencil_1(k12_pencil_4(A))
+        & l1_pre_topc(k12_pencil_4(A)) ) ) ).
+
+fof(redefinition_k12_pencil_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_pencil_1(A)
+        & ~ v4_pencil_1(A)
+        & v5_pencil_1(A)
+        & v6_pencil_1(A)
+        & l1_pre_topc(A) )
+     => k12_pencil_4(A) = k11_pencil_4(A) ) ).
+
+%------------------------------------------------------------------------------

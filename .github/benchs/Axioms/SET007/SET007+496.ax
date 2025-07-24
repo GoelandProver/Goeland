@@ -1,0 +1,1038 @@
+%------------------------------------------------------------------------------
+% File     : SET007+496 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Irreducible and Prime Elements
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : waybel_6 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   61 (   0 unt;   0 def)
+%            Number of atoms       :  722 (  31 equ)
+%            Maximal formula atoms :   22 (  11 avg)
+%            Number of connectives :  729 (  68   ~;   0   |; 458   &)
+%                                         (  32 <=>; 171  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   20 (  11 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   55 (  54 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   42 (  42 usr;   7 con; 0-5 aty)
+%            Number of variables   :  179 ( 168   !;  11   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v5_orders_2(B,A)
+           => ( v5_orders_2(B,A)
+              & v1_waybel_0(B,A)
+              & v2_waybel_0(B,A) ) ) ) ) ).
+
+fof(rc1_waybel_6,axiom,
+    ? [A] :
+      ( l1_orders_2(A)
+      & ~ v3_struct_0(A)
+      & v1_orders_2(A)
+      & v2_orders_2(A)
+      & v3_orders_2(A)
+      & v4_orders_2(A)
+      & v1_yellow_0(A)
+      & v2_yellow_0(A)
+      & v3_yellow_0(A)
+      & v24_waybel_0(A)
+      & v25_waybel_0(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A)
+      & v3_lattice3(A)
+      & v2_waybel_1(A)
+      & v2_waybel_3(A)
+      & v3_waybel_3(A) ) ).
+
+fof(rc2_waybel_6,axiom,
+    ! [A,B] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_lattice3(A)
+        & l1_orders_2(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & v3_lattice3(B)
+        & l1_orders_2(B) )
+     => ? [C] :
+          ( m1_relset_1(C,u1_struct_0(A),u1_struct_0(B))
+          & v1_relat_1(C)
+          & v1_funct_1(C)
+          & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+          & v18_waybel_0(C,A,B)
+          & v20_waybel_0(C,A,B)
+          & v22_waybel_0(C,A,B) ) ) ).
+
+fof(rc3_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v24_waybel_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ? [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+          & ~ v1_xboole_0(B)
+          & v2_waybel_0(B,A)
+          & v13_waybel_0(B,A)
+          & v1_waybel_6(B,A) ) ) ).
+
+fof(rc4_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_orders_2(A)
+        & v2_yellow_0(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ? [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+          & v2_waybel_6(B,A) ) ) ).
+
+fof(rc5_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_orders_2(A)
+        & v2_yellow_0(A)
+        & l1_orders_2(A) )
+     => ? [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+          & v5_waybel_6(B,A) ) ) ).
+
+fof(t1_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( v19_waybel_0(C,A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => k7_yellow_2(u1_struct_0(A),B,C,k12_lattice3(A,D,E)) = k12_lattice3(B,k7_yellow_2(u1_struct_0(A),B,C,D),k7_yellow_2(u1_struct_0(A),B,C,E)) ) ) ) ) ) ) ).
+
+fof(t2_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( v20_waybel_0(C,A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => k7_yellow_2(u1_struct_0(A),B,C,k13_lattice3(A,D,E)) = k13_lattice3(B,k7_yellow_2(u1_struct_0(A),B,C,D),k7_yellow_2(u1_struct_0(A),B,C,E)) ) ) ) ) ) ) ).
+
+fof(t3_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( ( v2_waybel_1(B)
+                  & v19_waybel_0(C,A,B)
+                  & v20_waybel_0(C,A,B)
+                  & v2_funct_1(C) )
+               => v2_waybel_1(A) ) ) ) ) ).
+
+fof(t4_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & v3_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & v18_waybel_0(C,A,B)
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( ( v2_waybel_2(B)
+                  & v19_waybel_0(C,A,B)
+                  & v2_funct_1(C) )
+               => v2_waybel_2(A) ) ) ) ) ).
+
+fof(d1_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v1_waybel_6(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ~ ( r2_hidden(C,B)
+                    & ! [D] :
+                        ( m1_subset_1(D,u1_struct_0(A))
+                       => ~ ( r2_hidden(D,B)
+                            & r1_waybel_3(A,D,C) ) ) ) ) ) ) ) ).
+
+fof(t5_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v24_waybel_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v13_waybel_0(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ( v1_waybel_6(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ~ ( r2_hidden(C,B)
+                    & r1_xboole_0(k1_waybel_3(A,C),B) ) ) ) ) ) ).
+
+fof(t7_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_waybel_3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => v1_waybel_6(k2_waybel_3(A,B),A) ) ) ).
+
+fof(t8_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_waybel_3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ~ ( r1_waybel_3(A,B,C)
+                  & ! [D] :
+                      ( ( ~ v1_xboole_0(D)
+                        & v2_waybel_0(D,A)
+                        & v13_waybel_0(D,A)
+                        & v1_waybel_6(D,A)
+                        & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A))) )
+                     => ~ ( r2_hidden(C,D)
+                          & r1_tarski(D,k2_waybel_3(A,B)) ) ) ) ) ) ) ).
+
+fof(t9_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v13_waybel_0(B,A)
+            & v1_waybel_6(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ~ ( r2_hidden(C,k3_subset_1(u1_struct_0(A),B))
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ~ ( r3_orders_2(A,C,D)
+                          & r3_waybel_4(A,k3_subset_1(u1_struct_0(A),B),D) ) ) ) ) ) ) ).
+
+fof(d2_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v2_waybel_6(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ~ ( B = k11_lattice3(A,C,D)
+                        & C != B
+                        & D != B ) ) ) ) ) ) ).
+
+fof(d3_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v3_waybel_6(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ~ ( B = k10_lattice3(A,C,D)
+                        & C != B
+                        & D != B ) ) ) ) ) ) ).
+
+fof(d4_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( B = k3_waybel_6(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ( r2_hidden(C,B)
+                <=> v2_waybel_6(C,A) ) ) ) ) ) ).
+
+fof(t10_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_orders_2(A)
+        & v2_yellow_0(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => v2_waybel_6(k4_yellow_0(A),A) ) ).
+
+fof(t11_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v2_waybel_6(B,A)
+          <=> ! [C] :
+                ( ( ~ v1_xboole_0(C)
+                  & v1_finset_1(C)
+                  & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+               => ( B = k2_yellow_0(A,C)
+                 => r2_hidden(B,C) ) ) ) ) ) ).
+
+fof(t12_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( ( ~ v1_xboole_0(k6_subset_1(u1_struct_0(A),k7_waybel_0(A,B),k1_struct_0(A,B)))
+              & v2_waybel_0(k6_subset_1(u1_struct_0(A),k7_waybel_0(A,B),k1_struct_0(A,B)),A)
+              & v13_waybel_0(k6_subset_1(u1_struct_0(A),k7_waybel_0(A,B),k1_struct_0(A,B)),A)
+              & m1_subset_1(k6_subset_1(u1_struct_0(A),k7_waybel_0(A,B),k1_struct_0(A,B)),k1_zfmisc_1(u1_struct_0(A))) )
+           => v2_waybel_6(B,A) ) ) ) ).
+
+fof(t13_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v2_waybel_0(C,A)
+                & v13_waybel_0(C,A)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => ( r3_waybel_4(A,k3_subset_1(u1_struct_0(A),C),B)
+               => v2_waybel_6(B,A) ) ) ) ) ).
+
+fof(t14_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_waybel_3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ~ ( ~ r3_orders_2(A,C,B)
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ~ ( v2_waybel_6(D,A)
+                          & r3_orders_2(A,B,D)
+                          & ~ r3_orders_2(A,C,D) ) ) ) ) ) ) ).
+
+fof(d5_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v4_waybel_6(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ( r2_yellow_0(A,k5_subset_1(u1_struct_0(A),k7_waybel_0(A,C),B))
+                  & C = k2_yellow_0(A,k5_subset_1(u1_struct_0(A),k7_waybel_0(A,C),B)) ) ) ) ) ) ).
+
+fof(t15_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v24_waybel_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v4_waybel_6(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ? [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(B))
+                    & C = k2_yellow_0(A,D) ) ) ) ) ) ).
+
+fof(t16_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v24_waybel_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v4_waybel_6(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( ( r1_tarski(B,C)
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_zfmisc_1(C))
+                       => r2_hidden(k2_yellow_0(A,D),C) ) )
+                 => u1_struct_0(A) = C ) ) ) ) ) ).
+
+fof(t17_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v24_waybel_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v4_waybel_6(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ~ ( ~ r3_orders_2(A,D,C)
+                        & ! [E] :
+                            ( m1_subset_1(E,u1_struct_0(A))
+                           => ~ ( r2_hidden(E,B)
+                                & r3_orders_2(A,C,E)
+                                & ~ r3_orders_2(A,D,E) ) ) ) ) ) ) ) ) ).
+
+fof(t18_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_waybel_3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( B = k6_subset_1(u1_struct_0(A),k3_waybel_6(A),k1_struct_0(A,k4_yellow_0(A)))
+           => v4_waybel_6(B,A) ) ) ) ).
+
+fof(t19_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_waybel_3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v4_waybel_6(B,A)
+                  & r1_tarski(B,C) )
+               => v4_waybel_6(C,A) ) ) ) ) ).
+
+fof(d6_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v5_waybel_6(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ~ ( r1_orders_2(A,k11_lattice3(A,C,D),B)
+                        & ~ r1_orders_2(A,C,B)
+                        & ~ r1_orders_2(A,D,B) ) ) ) ) ) ) ).
+
+fof(d7_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( B = k4_waybel_6(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ( r2_hidden(C,B)
+                <=> v5_waybel_6(C,A) ) ) ) ) ) ).
+
+fof(d8_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v6_waybel_6(B,A)
+          <=> v5_waybel_6(k8_lattice3(A,B),k7_lattice3(A)) ) ) ) ).
+
+fof(t20_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_orders_2(A)
+        & v2_yellow_0(A)
+        & l1_orders_2(A) )
+     => v5_waybel_6(k4_yellow_0(A),A) ) ).
+
+fof(t21_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & l1_orders_2(A) )
+     => v6_waybel_6(k3_yellow_0(A),A) ) ).
+
+fof(t22_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v5_waybel_6(B,A)
+          <=> ! [C] :
+                ( ( ~ v1_xboole_0(C)
+                  & v1_finset_1(C)
+                  & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+               => ~ ( r1_orders_2(A,k2_yellow_0(A,C),B)
+                    & ! [D] :
+                        ( m1_subset_1(D,u1_struct_0(A))
+                       => ~ ( r2_hidden(D,C)
+                            & r1_orders_2(A,D,B) ) ) ) ) ) ) ) ).
+
+fof(t23_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v6_waybel_6(B,A)
+          <=> ! [C] :
+                ( ( ~ v1_xboole_0(C)
+                  & v1_finset_1(C)
+                  & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+               => ~ ( r3_orders_2(A,B,k1_yellow_0(A,C))
+                    & ! [D] :
+                        ( m1_subset_1(D,u1_struct_0(A))
+                       => ~ ( r2_hidden(D,C)
+                            & r3_orders_2(A,B,D) ) ) ) ) ) ) ) ).
+
+fof(t24_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v5_waybel_6(B,A)
+           => v2_waybel_6(B,A) ) ) ) ).
+
+fof(t25_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v5_waybel_6(B,A)
+          <=> ! [C,D] :
+                ( ( v1_funct_1(D)
+                  & v1_funct_2(D,u1_struct_0(A),u1_struct_0(k3_yellow_1(k1_tarski(C))))
+                  & m2_relset_1(D,u1_struct_0(A),u1_struct_0(k3_yellow_1(k1_tarski(C)))) )
+               => ( ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( k7_yellow_2(u1_struct_0(A),k3_yellow_1(k1_tarski(C)),D,E) = k1_xboole_0
+                      <=> r3_orders_2(A,E,B) ) )
+                 => ( v19_waybel_0(D,A,k3_yellow_1(k1_tarski(C)))
+                    & v20_waybel_0(D,A,k3_yellow_1(k1_tarski(C))) ) ) ) ) ) ) ).
+
+fof(t26_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v2_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( B != k4_yellow_0(A)
+           => ( v5_waybel_6(B,A)
+            <=> ( ~ v1_xboole_0(k3_subset_1(u1_struct_0(A),k6_waybel_0(A,B)))
+                & v2_waybel_0(k3_subset_1(u1_struct_0(A),k6_waybel_0(A,B)),A)
+                & v13_waybel_0(k3_subset_1(u1_struct_0(A),k6_waybel_0(A,B)),A)
+                & m1_subset_1(k3_subset_1(u1_struct_0(A),k6_waybel_0(A,B)),k1_zfmisc_1(u1_struct_0(A))) ) ) ) ) ) ).
+
+fof(t27_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v2_waybel_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v5_waybel_6(B,A)
+          <=> v2_waybel_6(B,A) ) ) ) ).
+
+fof(t28_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v2_waybel_1(A)
+        & l1_orders_2(A) )
+     => k4_waybel_6(A) = k3_waybel_6(A) ) ).
+
+fof(t29_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v11_waybel_1(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( B != k4_yellow_0(A)
+           => ( v5_waybel_6(B,A)
+            <=> ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ( r2_orders_2(A,B,C)
+                   => C = k4_yellow_0(A) ) ) ) ) ) ) ).
+
+fof(t30_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v2_waybel_1(A)
+        & v3_waybel_3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( B != k4_yellow_0(A)
+           => ( v5_waybel_6(B,A)
+            <=> ? [C] :
+                  ( ~ v1_xboole_0(C)
+                  & v2_waybel_0(C,A)
+                  & v13_waybel_0(C,A)
+                  & v1_waybel_6(C,A)
+                  & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                  & r3_waybel_4(A,k3_subset_1(u1_struct_0(A),C),B) ) ) ) ) ) ).
+
+fof(t31_waybel_6,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v1_funct_1(k5_funct_3(B,u1_struct_0(A)))
+            & v1_funct_2(k5_funct_3(B,u1_struct_0(A)),u1_struct_0(A),u1_struct_0(k3_yellow_1(k1_tarski(k1_xboole_0))))
+            & m2_relset_1(k5_funct_3(B,u1_struct_0(A)),u1_struct_0(A),u1_struct_0(k3_yellow_1(k1_tarski(k1_xboole_0)))) ) ) ) ).
+
+fof(t32_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( k8_funct_2(u1_struct_0(A),k2_tarski(np__0,np__1),k5_funct_3(k3_subset_1(u1_struct_0(A),k6_waybel_0(A,B)),u1_struct_0(A)),C) = k1_xboole_0
+              <=> r1_orders_2(A,C,B) ) ) ) ) ).
+
+fof(t33_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v2_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),u1_struct_0(k3_yellow_1(k1_tarski(k1_xboole_0))))
+            & m2_relset_1(B,u1_struct_0(A),u1_struct_0(k3_yellow_1(k1_tarski(k1_xboole_0)))) )
+         => ! [C] :
+              ( ( v5_waybel_6(C,A)
+                & m1_subset_1(C,u1_struct_0(A)) )
+             => ( k5_funct_3(k3_subset_1(u1_struct_0(A),k6_waybel_0(A,C)),u1_struct_0(A)) = B
+               => ( v19_waybel_0(B,A,k3_yellow_1(k1_tarski(k1_xboole_0)))
+                  & v20_waybel_0(B,A,k3_yellow_1(k1_tarski(k1_xboole_0))) ) ) ) ) ) ).
+
+fof(t34_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_lattice3(A)
+        & l1_orders_2(A) )
+     => ( v4_waybel_6(k4_waybel_6(A),A)
+       => ( v2_waybel_1(A)
+          & v2_waybel_2(A) ) ) ) ).
+
+fof(t35_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_waybel_3(A)
+        & l1_orders_2(A) )
+     => ( v2_waybel_1(A)
+      <=> v4_waybel_6(k4_waybel_6(A),A) ) ) ).
+
+fof(t36_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_waybel_3(A)
+        & l1_orders_2(A) )
+     => ( v2_waybel_1(A)
+      <=> v9_waybel_1(A) ) ) ).
+
+fof(t37_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_lattice3(A)
+        & v3_waybel_3(A)
+        & l1_orders_2(A) )
+     => ( ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ? [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                & B = k1_yellow_0(A,C)
+                & ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ( r2_hidden(D,C)
+                     => v6_waybel_6(D,A) ) ) ) )
+       => ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => B = k1_yellow_0(A,k3_xboole_0(k1_waybel_3(A,B),k4_waybel_6(k7_lattice3(A)))) ) ) ) ).
+
+fof(t38_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_lattice3(A)
+        & l1_orders_2(A) )
+     => ( v1_waybel_5(A)
+      <=> ( v3_waybel_3(A)
+          & ! [B] :
+              ( m1_subset_1(B,u1_struct_0(A))
+             => ? [C] :
+                  ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+                  & B = k1_yellow_0(A,C)
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ( r2_hidden(D,C)
+                       => v6_waybel_6(D,A) ) ) ) ) ) ) ) ).
+
+fof(t39_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v3_lattice3(A)
+        & l1_orders_2(A) )
+     => ( v1_waybel_5(A)
+      <=> ( v2_waybel_1(A)
+          & v3_waybel_3(A)
+          & v3_waybel_3(k7_lattice3(A)) ) ) ) ).
+
+fof(s1_waybel_6,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,u1_struct_0(f1_s1_waybel_6))
+       => ~ ( r2_hidden(A,f2_s1_waybel_6)
+            & ! [B] :
+                ( m1_subset_1(B,u1_struct_0(f1_s1_waybel_6))
+               => ~ ( r2_hidden(B,f3_s1_waybel_6)
+                    & p1_s1_waybel_6(A,B) ) ) ) )
+   => ? [A] :
+        ( v1_funct_1(A)
+        & v1_funct_2(A,f2_s1_waybel_6,f3_s1_waybel_6)
+        & m2_relset_1(A,f2_s1_waybel_6,f3_s1_waybel_6)
+        & ! [B] :
+            ( m1_subset_1(B,u1_struct_0(f1_s1_waybel_6))
+           => ~ ( r2_hidden(B,f2_s1_waybel_6)
+                & ! [C] :
+                    ( m1_subset_1(C,u1_struct_0(f1_s1_waybel_6))
+                   => ~ ( r2_hidden(C,f3_s1_waybel_6)
+                        & C = k1_funct_1(A,B)
+                        & p1_s1_waybel_6(B,C) ) ) ) ) ) ) ).
+
+fof(dt_k1_waybel_6,axiom,
+    ! [A,B,C,D] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & v1_funct_1(C)
+        & v1_funct_2(C,B,B)
+        & m1_relset_1(C,B,B)
+        & m1_subset_1(D,k5_numbers) )
+     => ( v1_funct_1(k1_waybel_6(A,B,C,D))
+        & v1_funct_2(k1_waybel_6(A,B,C,D),B,B)
+        & m2_relset_1(k1_waybel_6(A,B,C,D),B,B) ) ) ).
+
+fof(redefinition_k1_waybel_6,axiom,
+    ! [A,B,C,D] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & v1_funct_1(C)
+        & v1_funct_2(C,B,B)
+        & m1_relset_1(C,B,B)
+        & m1_subset_1(D,k5_numbers) )
+     => k1_waybel_6(A,B,C,D) = k9_funct_7(C,D) ) ).
+
+fof(dt_k2_waybel_6,axiom,
+    ! [A,B,C,D,E] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+        & v1_funct_1(D)
+        & v1_funct_2(D,B,C)
+        & m1_relset_1(D,B,C)
+        & m1_subset_1(E,B) )
+     => m1_subset_1(k2_waybel_6(A,B,C,D,E),u1_struct_0(A)) ) ).
+
+fof(redefinition_k2_waybel_6,axiom,
+    ! [A,B,C,D,E] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A)
+        & ~ v1_xboole_0(B)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & ~ v1_xboole_0(C)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+        & v1_funct_1(D)
+        & v1_funct_2(D,B,C)
+        & m1_relset_1(D,B,C)
+        & m1_subset_1(E,B) )
+     => k2_waybel_6(A,B,C,D,E) = k1_funct_1(D,E) ) ).
+
+fof(dt_k3_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => m1_subset_1(k3_waybel_6(A),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k4_waybel_6,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_orders_2(A) )
+     => m1_subset_1(k4_waybel_6(A),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(t6_waybel_6,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v24_waybel_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v13_waybel_0(B,A)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ( v1_waybel_6(B,A)
+          <=> B = k3_tarski(a_2_0_waybel_6(A,B)) ) ) ) ).
+
+fof(fraenkel_a_2_0_waybel_6,axiom,
+    ! [A,B,C] :
+      ( ( v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v24_waybel_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & l1_orders_2(B)
+        & v13_waybel_0(C,B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B))) )
+     => ( r2_hidden(A,a_2_0_waybel_6(B,C))
+      <=> ? [D] :
+            ( m1_subset_1(D,u1_struct_0(B))
+            & A = k2_waybel_3(B,D)
+            & r2_hidden(D,C) ) ) ) ).
+
+%------------------------------------------------------------------------------

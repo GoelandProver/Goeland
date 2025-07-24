@@ -1,0 +1,1436 @@
+%------------------------------------------------------------------------------
+% File     : SET007+261 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Complex Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : complsp1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  177 (  26 unt;   0 def)
+%            Number of atoms       :  692 ( 135 equ)
+%            Maximal formula atoms :   10 (   3 avg)
+%            Number of connectives :  557 (  42   ~;   6   |; 101   &)
+%                                         (  20 <=>; 388  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   6 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   35 (  33 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   83 (  83 usr;  19 con; 0-6 aty)
+%            Number of variables   :  404 ( 393   !;  11   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ~ v1_xboole_0(k8_complsp1(A)) ) ).
+
+fof(fc2_complsp1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A))) )
+     => ( ~ v3_struct_0(g1_pre_topc(A,B))
+        & v1_pre_topc(g1_pre_topc(A,B)) ) ) ).
+
+fof(fc3_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v3_struct_0(k23_complsp1(A))
+        & v1_pre_topc(k23_complsp1(A))
+        & v2_pre_topc(k23_complsp1(A)) ) ) ).
+
+fof(t1_complsp1,axiom,
+    $true ).
+
+fof(t2_complsp1,axiom,
+    $true ).
+
+fof(t3_complsp1,axiom,
+    r3_binop_1(k2_numbers,k5_complex1,k27_binop_2) ).
+
+fof(t4_complsp1,axiom,
+    $true ).
+
+fof(t5_complsp1,axiom,
+    $true ).
+
+fof(t6_complsp1,axiom,
+    r1_finseqop(k2_numbers,k25_binop_2,k27_binop_2) ).
+
+fof(t7_complsp1,axiom,
+    v1_finseqop(k27_binop_2,k2_numbers) ).
+
+fof(t8_complsp1,axiom,
+    k6_finseqop(k2_numbers,k27_binop_2) = k25_binop_2 ).
+
+fof(d1_complsp1,axiom,
+    $true ).
+
+fof(d2_complsp1,axiom,
+    $true ).
+
+fof(d3_complsp1,axiom,
+    k28_binop_2 = k8_finseqop(k2_numbers,k27_binop_2,k6_partfun1(k2_numbers),k25_binop_2) ).
+
+fof(t9_complsp1,axiom,
+    $true ).
+
+fof(t10_complsp1,axiom,
+    $true ).
+
+fof(t11_complsp1,axiom,
+    $true ).
+
+fof(t12_complsp1,axiom,
+    r3_binop_1(k2_numbers,k6_complex1,k29_binop_2) ).
+
+fof(t13_complsp1,axiom,
+    k3_binop_1(k2_numbers,k29_binop_2) = k6_complex1 ).
+
+fof(t14_complsp1,axiom,
+    $true ).
+
+fof(t15_complsp1,axiom,
+    r6_binop_1(k2_numbers,k29_binop_2,k27_binop_2) ).
+
+fof(d4_complsp1,axiom,
+    $true ).
+
+fof(d5_complsp1,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(A)
+     => k1_complsp1(A) = k5_funcop_1(k29_binop_2,A,k6_partfun1(k2_numbers)) ) ).
+
+fof(t16_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => k8_funct_2(k2_numbers,k2_numbers,k1_complsp1(A),B) = k5_binop_2(A,B) ) ) ).
+
+fof(t17_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k2_numbers)
+     => r7_binop_1(k2_numbers,k1_complsp1(A),k27_binop_2) ) ).
+
+fof(d6_complsp1,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & v1_funct_2(A,k2_numbers,k1_numbers)
+        & m2_relset_1(A,k2_numbers,k1_numbers) )
+     => ( A = k2_complsp1
+      <=> ! [B] :
+            ( m1_subset_1(B,k2_numbers)
+           => k8_funct_2(k2_numbers,k1_numbers,A,B) = k17_complex1(B) ) ) ) ).
+
+fof(d7_complsp1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k2_numbers)
+     => ! [B] :
+          ( m2_finseq_1(B,k2_numbers)
+         => k3_complsp1(A,B) = k1_finseqop(k2_numbers,k2_numbers,k2_numbers,k27_binop_2,A,B) ) ) ).
+
+fof(d8_complsp1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k2_numbers)
+     => ! [B] :
+          ( m2_finseq_1(B,k2_numbers)
+         => k4_complsp1(A,B) = k1_finseqop(k2_numbers,k2_numbers,k2_numbers,k28_binop_2,A,B) ) ) ).
+
+fof(d9_complsp1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k2_numbers)
+     => k5_complsp1(A) = k5_finseqop(k2_numbers,k2_numbers,A,k25_binop_2) ) ).
+
+fof(d10_complsp1,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k2_numbers)
+         => k6_complsp1(A,B) = k5_finseqop(k2_numbers,k2_numbers,B,k1_complsp1(A)) ) ) ).
+
+fof(d11_complsp1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k2_numbers)
+     => k7_complsp1(A) = k5_finseqop(k2_numbers,k1_numbers,A,k2_complsp1) ) ).
+
+fof(d12_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k8_complsp1(A) = k4_finseq_2(A,k2_numbers) ) ).
+
+fof(t18_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k3_finseq_1(B) = A ) ) ).
+
+fof(t19_complsp1,axiom,
+    ! [A] :
+      ( m2_finseq_2(A,k2_numbers,k8_complsp1(np__0))
+     => A = k6_finseq_1(k2_numbers) ) ).
+
+fof(t20_complsp1,axiom,
+    m2_finseq_2(k6_finseq_1(k2_numbers),k2_numbers,k8_complsp1(np__0)) ).
+
+fof(t21_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(B))
+             => ( r2_hidden(A,k2_finseq_1(B))
+               => r2_hidden(k1_funct_1(C,A),k2_numbers) ) ) ) ) ).
+
+fof(t22_complsp1,axiom,
+    $true ).
+
+fof(t23_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ( ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ( r2_hidden(D,k2_finseq_1(A))
+                     => k1_funct_1(B,D) = k1_funct_1(C,D) ) )
+               => B = C ) ) ) ) ).
+
+fof(t24_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k2_numbers,k8_complsp1(B))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k2_numbers,k8_complsp1(B))
+                         => ( ( r2_hidden(A,k2_finseq_1(B))
+                              & C = k1_funct_1(E,A)
+                              & D = k1_funct_1(F,A) )
+                           => k1_funct_1(k9_complsp1(B,E,F),A) = k3_binop_2(C,D) ) ) ) ) ) ) ) ).
+
+fof(t25_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k9_complsp1(A,B,C) = k9_complsp1(A,C,B) ) ) ) ).
+
+fof(t26_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => k9_complsp1(A,B,k9_complsp1(A,C,D)) = k9_complsp1(A,k9_complsp1(A,B,C),D) ) ) ) ) ).
+
+fof(d13_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k10_complsp1(A) = k4_finseqop(k2_numbers,A,k5_complex1) ) ).
+
+fof(t27_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_hidden(A,k2_finseq_1(B))
+           => k1_funct_1(k11_complsp1(B),A) = k5_complex1 ) ) ) ).
+
+fof(t28_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ( k9_complsp1(A,B,k11_complsp1(A)) = B
+            & B = k9_complsp1(A,k11_complsp1(A),B) ) ) ) ).
+
+fof(t29_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(B))
+                 => ( ( r2_hidden(A,k2_finseq_1(B))
+                      & C = k1_funct_1(D,A) )
+                   => k1_funct_1(k12_complsp1(B,D),A) = k1_binop_2(C) ) ) ) ) ) ).
+
+fof(t30_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ( k9_complsp1(A,B,k12_complsp1(A,B)) = k11_complsp1(A)
+            & k9_complsp1(A,k12_complsp1(A,B),B) = k11_complsp1(A) ) ) ) ).
+
+fof(t31_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ( k9_complsp1(A,B,C) = k11_complsp1(A)
+               => ( B = k12_complsp1(A,C)
+                  & C = k12_complsp1(A,B) ) ) ) ) ) ).
+
+fof(t32_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k12_complsp1(A,k12_complsp1(A,B)) = B ) ) ).
+
+fof(t33_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ( k12_complsp1(A,B) = k12_complsp1(A,C)
+               => B = C ) ) ) ) ).
+
+fof(t34_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => ( ( k9_complsp1(A,B,C) = k9_complsp1(A,D,C)
+                      | k9_complsp1(A,B,C) = k9_complsp1(A,C,D) )
+                   => B = D ) ) ) ) ) ).
+
+fof(t35_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k12_complsp1(A,k9_complsp1(A,B,C)) = k9_complsp1(A,k12_complsp1(A,B),k12_complsp1(A,C)) ) ) ) ).
+
+fof(t36_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k2_numbers,k8_complsp1(B))
+                     => ! [F] :
+                          ( m2_finseq_2(F,k2_numbers,k8_complsp1(B))
+                         => ( ( r2_hidden(A,k2_finseq_1(B))
+                              & C = k1_funct_1(E,A)
+                              & D = k1_funct_1(F,A) )
+                           => k1_funct_1(k13_complsp1(B,E,F),A) = k4_binop_2(C,D) ) ) ) ) ) ) ) ).
+
+fof(t37_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k13_complsp1(A,B,C) = k9_complsp1(A,B,k12_complsp1(A,C)) ) ) ) ).
+
+fof(t38_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k13_complsp1(A,B,k11_complsp1(A)) = B ) ) ).
+
+fof(t39_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k13_complsp1(A,k11_complsp1(A),B) = k12_complsp1(A,B) ) ) ).
+
+fof(t40_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k13_complsp1(A,B,k12_complsp1(A,C)) = k9_complsp1(A,B,C) ) ) ) ).
+
+fof(t41_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k12_complsp1(A,k13_complsp1(A,B,C)) = k13_complsp1(A,C,B) ) ) ) ).
+
+fof(t42_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k12_complsp1(A,k13_complsp1(A,B,C)) = k9_complsp1(A,k12_complsp1(A,B),C) ) ) ) ).
+
+fof(t43_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k13_complsp1(A,B,B) = k11_complsp1(A) ) ) ).
+
+fof(t44_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ( k13_complsp1(A,B,C) = k11_complsp1(A)
+               => B = C ) ) ) ) ).
+
+fof(t45_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => k13_complsp1(A,k13_complsp1(A,B,C),D) = k13_complsp1(A,B,k9_complsp1(A,C,D)) ) ) ) ) ).
+
+fof(t46_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => k9_complsp1(A,B,k13_complsp1(A,C,D)) = k13_complsp1(A,k9_complsp1(A,B,C),D) ) ) ) ) ).
+
+fof(t47_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => k13_complsp1(A,B,k13_complsp1(A,C,D)) = k9_complsp1(A,k13_complsp1(A,B,C),D) ) ) ) ) ).
+
+fof(t48_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => k9_complsp1(A,k13_complsp1(A,B,C),D) = k13_complsp1(A,k9_complsp1(A,B,D),C) ) ) ) ) ).
+
+fof(t49_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => B = k13_complsp1(A,k9_complsp1(A,B,C),C) ) ) ) ).
+
+fof(t50_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k9_complsp1(A,B,k13_complsp1(A,C,B)) = C ) ) ) ).
+
+fof(t51_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => B = k9_complsp1(A,k13_complsp1(A,B,C),C) ) ) ) ).
+
+fof(t52_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k2_numbers)
+                 => ! [E] :
+                      ( m2_finseq_2(E,k2_numbers,k8_complsp1(B))
+                     => ( ( r2_hidden(A,k2_finseq_1(B))
+                          & C = k1_funct_1(E,A) )
+                       => k1_funct_1(k14_complsp1(B,D,E),A) = k5_binop_2(D,C) ) ) ) ) ) ) ).
+
+fof(t53_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => k14_complsp1(A,B,k14_complsp1(A,C,D)) = k14_complsp1(A,k5_binop_2(B,C),D) ) ) ) ) ).
+
+fof(t54_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => k14_complsp1(A,k3_binop_2(B,C),D) = k9_complsp1(A,k14_complsp1(A,B,D),k14_complsp1(A,C,D)) ) ) ) ) ).
+
+fof(t55_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => k14_complsp1(A,B,k9_complsp1(A,C,D)) = k9_complsp1(A,k14_complsp1(A,B,C),k14_complsp1(A,B,D)) ) ) ) ) ).
+
+fof(t56_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k14_complsp1(A,k6_complex1,B) = B ) ) ).
+
+fof(t57_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k14_complsp1(A,k5_complex1,B) = k11_complsp1(A) ) ) ).
+
+fof(t58_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k14_complsp1(A,k1_binop_2(k6_complex1),B) = k12_complsp1(A,B) ) ) ).
+
+fof(t59_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k2_numbers)
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(B))
+                 => ( ( r2_hidden(A,k2_finseq_1(B))
+                      & C = k1_funct_1(D,A) )
+                   => k1_funct_1(k15_complsp1(B,D),A) = k17_complex1(C) ) ) ) ) ) ).
+
+fof(t60_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k15_complsp1(A,k11_complsp1(A)) = k4_finseqop(k1_numbers,A,np__0) ) ).
+
+fof(t61_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k15_complsp1(A,k12_complsp1(A,B)) = k15_complsp1(A,B) ) ) ).
+
+fof(t62_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k15_complsp1(A,k14_complsp1(A,B,C)) = k10_rvsum_1(A,k17_complex1(B),k15_complsp1(A,C)) ) ) ) ).
+
+fof(d14_complsp1,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k2_numbers)
+     => k16_complsp1(A) = k9_square_1(k15_rvsum_1(k11_rvsum_1(k7_complsp1(A)))) ) ).
+
+fof(t63_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k16_complsp1(k11_complsp1(A)) = np__0 ) ).
+
+fof(t64_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ( k16_complsp1(B) = np__0
+           => B = k11_complsp1(A) ) ) ) ).
+
+fof(t65_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => r1_xreal_0(np__0,k16_complsp1(B)) ) ) ).
+
+fof(t66_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => k16_complsp1(k12_complsp1(A,B)) = k16_complsp1(B) ) ) ).
+
+fof(t67_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k2_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k16_complsp1(k14_complsp1(A,B,C)) = k11_binop_2(k17_complex1(B),k16_complsp1(C)) ) ) ) ).
+
+fof(t68_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => r1_xreal_0(k16_complsp1(k9_complsp1(A,B,C)),k9_binop_2(k16_complsp1(B),k16_complsp1(C))) ) ) ) ).
+
+fof(t69_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => r1_xreal_0(k16_complsp1(k13_complsp1(A,B,C)),k9_binop_2(k16_complsp1(B),k16_complsp1(C))) ) ) ) ).
+
+fof(t70_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => r1_xreal_0(k10_binop_2(k16_complsp1(B),k16_complsp1(C)),k16_complsp1(k9_complsp1(A,B,C))) ) ) ) ).
+
+fof(t71_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => r1_xreal_0(k10_binop_2(k16_complsp1(B),k16_complsp1(C)),k16_complsp1(k13_complsp1(A,B,C))) ) ) ) ).
+
+fof(t72_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ( k16_complsp1(k13_complsp1(A,B,C)) = np__0
+              <=> B = C ) ) ) ) ).
+
+fof(t73_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ~ ( B != C
+                  & r1_xreal_0(k16_complsp1(k13_complsp1(A,B,C)),np__0) ) ) ) ) ).
+
+fof(t74_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => k16_complsp1(k13_complsp1(A,B,C)) = k16_complsp1(k13_complsp1(A,C,B)) ) ) ) ).
+
+fof(t75_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => r1_xreal_0(k16_complsp1(k13_complsp1(A,B,C)),k9_binop_2(k16_complsp1(k13_complsp1(A,B,D)),k16_complsp1(k13_complsp1(A,D,C)))) ) ) ) ) ).
+
+fof(d15_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ( v1_complsp1(B,A)
+          <=> ! [C] :
+                ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+               => ~ ( r2_hidden(C,B)
+                    & ! [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                       => ~ ( ~ r1_xreal_0(D,np__0)
+                            & ! [E] :
+                                ( m2_finseq_2(E,k2_numbers,k8_complsp1(A))
+                               => ( ~ r1_xreal_0(D,k16_complsp1(E))
+                                 => r2_hidden(k9_complsp1(A,C,E),B) ) ) ) ) ) ) ) ) ) ).
+
+fof(d16_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ( v2_complsp1(B,A)
+          <=> ! [C] :
+                ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+               => ( ! [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                     => ~ ( ~ r1_xreal_0(D,np__0)
+                          & ! [E] :
+                              ( m2_finseq_2(E,k2_numbers,k8_complsp1(A))
+                             => ~ ( ~ r1_xreal_0(D,k16_complsp1(E))
+                                  & r2_hidden(k9_complsp1(A,C,E),B) ) ) ) )
+                 => r2_hidden(C,B) ) ) ) ) ) ).
+
+fof(t76_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ( B = k1_xboole_0
+           => v1_complsp1(B,A) ) ) ) ).
+
+fof(t77_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ( B = k8_complsp1(A)
+           => v1_complsp1(B,A) ) ) ) ).
+
+fof(t78_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(k8_complsp1(A))))
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+               => ( r2_hidden(C,B)
+                 => v1_complsp1(C,A) ) )
+           => ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+               => ( C = k5_setfam_1(k8_complsp1(A),B)
+                 => v1_complsp1(C,A) ) ) ) ) ) ).
+
+fof(t79_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ( ( v1_complsp1(B,A)
+                  & v1_complsp1(C,A) )
+               => ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(k8_complsp1(A)))
+                   => ( D = k5_subset_1(k8_complsp1(A),B,C)
+                     => v1_complsp1(D,A) ) ) ) ) ) ) ).
+
+fof(t80_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m2_finseq_2(D,k2_numbers,k8_complsp1(A))
+                 => ( r2_hidden(C,k17_complsp1(A,D,B))
+                  <=> ~ r1_xreal_0(B,k16_complsp1(k13_complsp1(A,D,C))) ) ) ) ) ) ).
+
+fof(t81_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ( ~ r1_xreal_0(B,np__0)
+               => r2_hidden(C,k17_complsp1(A,C,B)) ) ) ) ) ).
+
+fof(t82_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => v1_complsp1(k17_complsp1(A,C,B),A) ) ) ) ).
+
+fof(t83_complsp1,axiom,
+    $true ).
+
+fof(t84_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => ( r2_hidden(C,A)
+                 => r1_xreal_0(B,C) ) )
+           => ( A = k1_xboole_0
+              | r1_xreal_0(B,k5_seq_4(A)) ) ) ) ) ).
+
+fof(t85_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ( C != k1_xboole_0
+               => r1_xreal_0(np__0,k18_complsp1(A,B,C)) ) ) ) ) ).
+
+fof(t86_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k8_complsp1(A)))
+                 => ( D != k1_xboole_0
+                   => r1_xreal_0(k18_complsp1(A,k9_complsp1(A,B,C),D),k9_binop_2(k18_complsp1(A,B,D),k16_complsp1(C))) ) ) ) ) ) ).
+
+fof(t87_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ( r2_hidden(B,C)
+               => k18_complsp1(A,B,C) = np__0 ) ) ) ) ).
+
+fof(t88_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ~ ( ~ r2_hidden(B,C)
+                  & C != k1_xboole_0
+                  & v2_complsp1(C,A)
+                  & r1_xreal_0(k18_complsp1(A,B,C),np__0) ) ) ) ) ).
+
+fof(t89_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k8_complsp1(A)))
+                 => ( D != k1_xboole_0
+                   => r1_xreal_0(k18_complsp1(A,B,D),k9_binop_2(k16_complsp1(k13_complsp1(A,B,C)),k18_complsp1(A,C,D))) ) ) ) ) ) ).
+
+fof(t90_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k8_complsp1(A)))
+                 => ( r2_hidden(C,k19_complsp1(A,D,B))
+                  <=> ~ r1_xreal_0(B,k18_complsp1(A,C,D)) ) ) ) ) ) ).
+
+fof(t91_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m2_finseq_2(C,k2_numbers,k8_complsp1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k8_complsp1(A)))
+                 => ( r2_hidden(C,D)
+                   => ( r1_xreal_0(B,np__0)
+                      | r2_hidden(C,k19_complsp1(A,D,B)) ) ) ) ) ) ) ).
+
+fof(t92_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ( ~ r1_xreal_0(B,np__0)
+               => r1_tarski(C,k19_complsp1(A,C,B)) ) ) ) ) ).
+
+fof(t93_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_numbers)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ( C != k1_xboole_0
+               => v1_complsp1(k19_complsp1(A,C,B),A) ) ) ) ) ).
+
+fof(t94_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+         => ~ ( A != k1_xboole_0
+              & B != k1_xboole_0
+              & k21_complsp1(A,B) = k1_xboole_0 ) ) ) ).
+
+fof(t95_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+         => ( ( v2_seq_4(A)
+              & v2_seq_4(B) )
+           => v2_seq_4(k21_complsp1(A,B)) ) ) ) ).
+
+fof(t96_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+         => ( ( v2_seq_4(A)
+              & v2_seq_4(B) )
+           => ( A = k1_xboole_0
+              | B = k1_xboole_0
+              | k5_seq_4(k21_complsp1(A,B)) = k9_binop_2(k5_seq_4(A),k5_seq_4(B)) ) ) ) ) ).
+
+fof(t97_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+         => ( ( v2_seq_4(B)
+              & ! [C] :
+                  ( m1_subset_1(C,k1_numbers)
+                 => ~ ( r2_hidden(C,A)
+                      & ! [D] :
+                          ( m1_subset_1(D,k1_numbers)
+                         => ~ ( r2_hidden(D,B)
+                              & r1_xreal_0(D,C) ) ) ) ) )
+           => ( A = k1_xboole_0
+              | r1_xreal_0(k5_seq_4(B),k5_seq_4(A)) ) ) ) ) ).
+
+fof(t98_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ~ ( B != k1_xboole_0
+                  & C != k1_xboole_0
+                  & ~ r1_xreal_0(np__0,k20_complsp1(A,B,C)) ) ) ) ) ).
+
+fof(t99_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => k20_complsp1(A,B,C) = k20_complsp1(A,C,B) ) ) ) ).
+
+fof(t100_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(k8_complsp1(A)))
+                 => ~ ( C != k1_xboole_0
+                      & D != k1_xboole_0
+                      & ~ r1_xreal_0(k20_complsp1(A,C,D),k9_binop_2(k18_complsp1(A,B,C),k18_complsp1(A,B,D))) ) ) ) ) ) ).
+
+fof(t101_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ( ~ r1_xboole_0(B,C)
+               => k20_complsp1(A,B,C) = np__0 ) ) ) ) ).
+
+fof(t102_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ( r2_hidden(B,k22_complsp1(A))
+          <=> v1_complsp1(B,A) ) ) ) ).
+
+fof(d23_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k23_complsp1(A) = g1_pre_topc(k8_complsp1(A),k22_complsp1(A)) ) ).
+
+fof(t103_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => u1_pre_topc(k23_complsp1(A)) = k22_complsp1(A) ) ).
+
+fof(t104_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => u1_struct_0(k23_complsp1(A)) = k8_complsp1(A) ) ).
+
+fof(t105_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k23_complsp1(A)))
+         => m2_finseq_2(B,k2_numbers,k8_complsp1(A)) ) ) ).
+
+fof(t106_complsp1,axiom,
+    $true ).
+
+fof(t107_complsp1,axiom,
+    $true ).
+
+fof(t108_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k23_complsp1(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ( C = B
+               => ( v1_complsp1(C,A)
+                <=> v3_pre_topc(B,k23_complsp1(A)) ) ) ) ) ) ).
+
+fof(t109_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ( v2_complsp1(B,A)
+          <=> v1_complsp1(k3_subset_1(k8_complsp1(A),B),A) ) ) ) ).
+
+fof(t110_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k23_complsp1(A))))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ( C = B
+               => ( v2_complsp1(C,A)
+                <=> v4_pre_topc(B,k23_complsp1(A)) ) ) ) ) ) ).
+
+fof(t111_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => v3_compts_1(k23_complsp1(A)) ) ).
+
+fof(t112_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => v4_compts_1(k23_complsp1(A)) ) ).
+
+fof(dt_k1_complsp1,axiom,
+    ! [A] :
+      ( v1_xcmplx_0(A)
+     => ( v1_funct_1(k1_complsp1(A))
+        & v1_funct_2(k1_complsp1(A),k2_numbers,k2_numbers)
+        & m2_relset_1(k1_complsp1(A),k2_numbers,k2_numbers) ) ) ).
+
+fof(dt_k2_complsp1,axiom,
+    ( v1_funct_1(k2_complsp1)
+    & v1_funct_2(k2_complsp1,k2_numbers,k1_numbers)
+    & m2_relset_1(k2_complsp1,k2_numbers,k1_numbers) ) ).
+
+fof(dt_k3_complsp1,axiom,
+    ! [A,B] :
+      ( ( m1_finseq_1(A,k2_numbers)
+        & m1_finseq_1(B,k2_numbers) )
+     => m2_finseq_1(k3_complsp1(A,B),k2_numbers) ) ).
+
+fof(dt_k4_complsp1,axiom,
+    ! [A,B] :
+      ( ( m1_finseq_1(A,k2_numbers)
+        & m1_finseq_1(B,k2_numbers) )
+     => m2_finseq_1(k4_complsp1(A,B),k2_numbers) ) ).
+
+fof(dt_k5_complsp1,axiom,
+    ! [A] :
+      ( m1_finseq_1(A,k2_numbers)
+     => m2_finseq_1(k5_complsp1(A),k2_numbers) ) ).
+
+fof(dt_k6_complsp1,axiom,
+    ! [A,B] :
+      ( ( v1_xcmplx_0(A)
+        & m1_finseq_1(B,k2_numbers) )
+     => m2_finseq_1(k6_complsp1(A,B),k2_numbers) ) ).
+
+fof(dt_k7_complsp1,axiom,
+    ! [A] :
+      ( m1_finseq_1(A,k2_numbers)
+     => m2_finseq_1(k7_complsp1(A),k1_numbers) ) ).
+
+fof(dt_k8_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( ~ v1_xboole_0(k8_complsp1(A))
+        & m1_finseq_2(k8_complsp1(A),k2_numbers) ) ) ).
+
+fof(dt_k9_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A))
+        & m1_subset_1(C,k8_complsp1(A)) )
+     => m2_finseq_2(k9_complsp1(A,B,C),k2_numbers,k8_complsp1(A)) ) ).
+
+fof(redefinition_k9_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A))
+        & m1_subset_1(C,k8_complsp1(A)) )
+     => k9_complsp1(A,B,C) = k3_complsp1(B,C) ) ).
+
+fof(dt_k10_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m2_finseq_1(k10_complsp1(A),k2_numbers) ) ).
+
+fof(dt_k11_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m2_finseq_2(k11_complsp1(A),k2_numbers,k8_complsp1(A)) ) ).
+
+fof(redefinition_k11_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => k11_complsp1(A) = k10_complsp1(A) ) ).
+
+fof(dt_k12_complsp1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A)) )
+     => m2_finseq_2(k12_complsp1(A,B),k2_numbers,k8_complsp1(A)) ) ).
+
+fof(redefinition_k12_complsp1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A)) )
+     => k12_complsp1(A,B) = k5_complsp1(B) ) ).
+
+fof(dt_k13_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A))
+        & m1_subset_1(C,k8_complsp1(A)) )
+     => m2_finseq_2(k13_complsp1(A,B,C),k2_numbers,k8_complsp1(A)) ) ).
+
+fof(redefinition_k13_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A))
+        & m1_subset_1(C,k8_complsp1(A)) )
+     => k13_complsp1(A,B,C) = k4_complsp1(B,C) ) ).
+
+fof(dt_k14_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k2_numbers)
+        & m1_subset_1(C,k8_complsp1(A)) )
+     => m2_finseq_2(k14_complsp1(A,B,C),k2_numbers,k8_complsp1(A)) ) ).
+
+fof(redefinition_k14_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k2_numbers)
+        & m1_subset_1(C,k8_complsp1(A)) )
+     => k14_complsp1(A,B,C) = k6_complsp1(B,C) ) ).
+
+fof(dt_k15_complsp1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A)) )
+     => m2_finseq_2(k15_complsp1(A,B),k1_numbers,k4_finseq_2(A,k1_numbers)) ) ).
+
+fof(redefinition_k15_complsp1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A)) )
+     => k15_complsp1(A,B) = k7_complsp1(B) ) ).
+
+fof(dt_k16_complsp1,axiom,
+    ! [A] :
+      ( m1_finseq_1(A,k2_numbers)
+     => m1_subset_1(k16_complsp1(A),k1_numbers) ) ).
+
+fof(dt_k17_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A))
+        & m1_subset_1(C,k1_numbers) )
+     => m1_subset_1(k17_complsp1(A,B,C),k1_zfmisc_1(k8_complsp1(A))) ) ).
+
+fof(dt_k18_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k8_complsp1(A))
+        & m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A))) )
+     => m1_subset_1(k18_complsp1(A,B,C),k1_numbers) ) ).
+
+fof(dt_k19_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+        & m1_subset_1(C,k1_numbers) )
+     => m1_subset_1(k19_complsp1(A,B,C),k1_zfmisc_1(k8_complsp1(A))) ) ).
+
+fof(dt_k20_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(A,k5_numbers)
+        & m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+        & m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A))) )
+     => m1_subset_1(k20_complsp1(A,B,C),k1_numbers) ) ).
+
+fof(dt_k21_complsp1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+        & m1_subset_1(B,k1_zfmisc_1(k1_numbers)) )
+     => m1_subset_1(k21_complsp1(A,B),k1_zfmisc_1(k1_numbers)) ) ).
+
+fof(dt_k22_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => m1_subset_1(k22_complsp1(A),k1_zfmisc_1(k1_zfmisc_1(k8_complsp1(A)))) ) ).
+
+fof(dt_k23_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k5_numbers)
+     => ( v1_pre_topc(k23_complsp1(A))
+        & v2_pre_topc(k23_complsp1(A))
+        & l1_pre_topc(k23_complsp1(A)) ) ) ).
+
+fof(d17_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => k17_complsp1(A,B,C) = a_3_0_complsp1(A,B,C) ) ) ) ).
+
+fof(d18_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_finseq_2(B,k2_numbers,k8_complsp1(A))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( D = k18_complsp1(A,B,C)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(k1_numbers))
+                       => ( E = a_3_1_complsp1(A,B,C)
+                         => D = k5_seq_4(E) ) ) ) ) ) ) ) ).
+
+fof(d19_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => k19_complsp1(A,B,C) = a_3_2_complsp1(A,B,C) ) ) ) ).
+
+fof(d20_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k8_complsp1(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( D = k20_complsp1(A,B,C)
+                  <=> ! [E] :
+                        ( m1_subset_1(E,k1_zfmisc_1(k1_numbers))
+                       => ( E = a_3_3_complsp1(A,B,C)
+                         => D = k5_seq_4(E) ) ) ) ) ) ) ) ).
+
+fof(d21_complsp1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+         => k21_complsp1(A,B) = a_2_0_complsp1(A,B) ) ) ).
+
+fof(d22_complsp1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => k22_complsp1(A) = a_1_0_complsp1(A) ) ).
+
+fof(s1_complsp1,axiom,
+    m1_subset_1(a_0_0_complsp1,k1_zfmisc_1(f2_s1_complsp1)) ).
+
+fof(s2_complsp1,axiom,
+    m1_subset_1(a_0_1_complsp1,k1_zfmisc_1(f3_s2_complsp1)) ).
+
+fof(fraenkel_a_3_0_complsp1,axiom,
+    ! [A,B,C,D] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m2_finseq_2(C,k2_numbers,k8_complsp1(B))
+        & m1_subset_1(D,k1_numbers) )
+     => ( r2_hidden(A,a_3_0_complsp1(B,C,D))
+      <=> ? [E] :
+            ( m2_finseq_2(E,k2_numbers,k8_complsp1(B))
+            & A = E
+            & ~ r1_xreal_0(D,k16_complsp1(k13_complsp1(B,E,C))) ) ) ) ).
+
+fof(fraenkel_a_3_1_complsp1,axiom,
+    ! [A,B,C,D] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m2_finseq_2(C,k2_numbers,k8_complsp1(B))
+        & m1_subset_1(D,k1_zfmisc_1(k8_complsp1(B))) )
+     => ( r2_hidden(A,a_3_1_complsp1(B,C,D))
+      <=> ? [E] :
+            ( m2_finseq_2(E,k2_numbers,k8_complsp1(B))
+            & A = k16_complsp1(k13_complsp1(B,C,E))
+            & r2_hidden(E,D) ) ) ) ).
+
+fof(fraenkel_a_3_2_complsp1,axiom,
+    ! [A,B,C,D] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m1_subset_1(C,k1_zfmisc_1(k8_complsp1(B)))
+        & m1_subset_1(D,k1_numbers) )
+     => ( r2_hidden(A,a_3_2_complsp1(B,C,D))
+      <=> ? [E] :
+            ( m2_finseq_2(E,k2_numbers,k8_complsp1(B))
+            & A = E
+            & ~ r1_xreal_0(D,k18_complsp1(B,E,C)) ) ) ) ).
+
+fof(fraenkel_a_3_3_complsp1,axiom,
+    ! [A,B,C,D] :
+      ( ( m2_subset_1(B,k1_numbers,k5_numbers)
+        & m1_subset_1(C,k1_zfmisc_1(k8_complsp1(B)))
+        & m1_subset_1(D,k1_zfmisc_1(k8_complsp1(B))) )
+     => ( r2_hidden(A,a_3_3_complsp1(B,C,D))
+      <=> ? [E,F] :
+            ( m2_finseq_2(E,k2_numbers,k8_complsp1(B))
+            & m2_finseq_2(F,k2_numbers,k8_complsp1(B))
+            & A = k16_complsp1(k13_complsp1(B,E,F))
+            & r2_hidden(E,C)
+            & r2_hidden(F,D) ) ) ) ).
+
+fof(fraenkel_a_2_0_complsp1,axiom,
+    ! [A,B,C] :
+      ( ( m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+        & m1_subset_1(C,k1_zfmisc_1(k1_numbers)) )
+     => ( r2_hidden(A,a_2_0_complsp1(B,C))
+      <=> ? [D,E] :
+            ( m1_subset_1(D,k1_numbers)
+            & m1_subset_1(E,k1_numbers)
+            & A = k9_binop_2(D,E)
+            & r2_hidden(D,B)
+            & r2_hidden(E,C) ) ) ) ).
+
+fof(fraenkel_a_1_0_complsp1,axiom,
+    ! [A,B] :
+      ( m2_subset_1(B,k1_numbers,k5_numbers)
+     => ( r2_hidden(A,a_1_0_complsp1(B))
+      <=> ? [C] :
+            ( m1_subset_1(C,k1_zfmisc_1(k8_complsp1(B)))
+            & A = C
+            & v1_complsp1(C,B) ) ) ) ).
+
+fof(fraenkel_a_0_0_complsp1,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_0_complsp1)
+    <=> ? [B] :
+          ( m1_subset_1(B,f1_s1_complsp1)
+          & A = f3_s1_complsp1(B)
+          & p1_s1_complsp1(B) ) ) ).
+
+fof(fraenkel_a_0_1_complsp1,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_1_complsp1)
+    <=> ? [B,C] :
+          ( m1_subset_1(B,f1_s2_complsp1)
+          & m1_subset_1(C,f2_s2_complsp1)
+          & A = f4_s2_complsp1(B,C)
+          & p1_s2_complsp1(B,C) ) ) ).
+
+%------------------------------------------------------------------------------

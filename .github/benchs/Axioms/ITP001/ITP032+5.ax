@@ -1,0 +1,890 @@
+%------------------------------------------------------------------------------
+% File     : ITP032+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : res_quan+2.ax [Gau20]
+%          : HL4032+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   87 (   0 unt;   0 def)
+%            Number of atoms       :  419 (  49 equ)
+%            Maximal formula atoms :    9 (   4 avg)
+%            Number of connectives :  344 (  12   ~;   4   |;  13   &)
+%                                         (  38 <=>; 277  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   16 (   9 avg)
+%            Maximal term depth    :    7 (   2 avg)
+%            Number of predicates  :    4 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   63 (  63 usr;   7 con; 0-4 aty)
+%            Number of variables   :  336 ( 332   !;   4   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(conj_thm_2Eres__quan_2ERES__FORALL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1f] :
+              ( mem(V1f,arr(A_27a,bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),V1f))
+              <=> ! [V2x] :
+                    ( mem(V2x,A_27a)
+                   => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V2x),V0P))
+                     => p(ap(V1f,V2x)) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1f] :
+              ( mem(V1f,arr(A_27a,bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0P),V1f))
+              <=> ? [V2x] :
+                    ( mem(V2x,A_27a)
+                    & p(ap(ap(c_2Ebool_2EIN(A_27a),V2x),V0P))
+                    & p(ap(V1f,V2x)) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1f] :
+              ( mem(V1f,arr(A_27a,bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27a),V0P),V1f))
+              <=> ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0P),f61(A_27a,V1f)))
+                  & p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),f63(A_27a,V1f,V0P))) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__SELECT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1f] :
+              ( mem(V1f,arr(A_27a,bool))
+             => ap(ap(c_2Ebool_2ERES__SELECT(A_27a),V0P),V1f) = ap(c_2Emin_2E_40(A_27a),f64(A_27a,V0P,V1f)) ) ) ) ).
+
+fof(lameq_f467,axiom,
+    ! [A_27a,V1Q] :
+      ( mem(V1Q,arr(A_27a,bool))
+     => ! [V2R] :
+          ( mem(V2R,arr(A_27a,bool))
+         => ! [V3i] : ap(f467(A_27a,V1Q,V2R),V3i) = ap(ap(c_2Ebool_2E_2F_5C,ap(V1Q,V3i)),ap(V2R,V3i)) ) ) ).
+
+fof(lameq_f468,axiom,
+    ! [A_27a,V1Q] :
+      ( mem(V1Q,arr(A_27a,bool))
+     => ! [V4i] : ap(f468(A_27a,V1Q),V4i) = ap(V1Q,V4i) ) ).
+
+fof(lameq_f469,axiom,
+    ! [A_27a,V2R] :
+      ( mem(V2R,arr(A_27a,bool))
+     => ! [V5i] : ap(f469(A_27a,V2R),V5i) = ap(V2R,V5i) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__CONJ__DIST,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1Q] :
+              ( mem(V1Q,arr(A_27a,bool))
+             => ! [V2R] :
+                  ( mem(V2R,arr(A_27a,bool))
+                 => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),f467(A_27a,V1Q,V2R)))
+                  <=> ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),f468(A_27a,V1Q)))
+                      & p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),f469(A_27a,V2R))) ) ) ) ) ) ) ).
+
+fof(lameq_f470,axiom,
+    ! [A_27a,V0P] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V1Q] :
+          ( mem(V1Q,arr(A_27a,bool))
+         => ! [V3j] : ap(f470(A_27a,V0P,V1Q),V3j) = ap(ap(c_2Ebool_2E_5C_2F,ap(V0P,V3j)),ap(V1Q,V3j)) ) ) ).
+
+fof(lameq_f471,axiom,
+    ! [A_27a,V2R] :
+      ( mem(V2R,arr(A_27a,bool))
+     => ! [V4i] : ap(f471(A_27a,V2R),V4i) = ap(V2R,V4i) ) ).
+
+fof(lameq_f472,axiom,
+    ! [A_27a,V2R] :
+      ( mem(V2R,arr(A_27a,bool))
+     => ! [V6i] : ap(f472(A_27a,V2R),V6i) = ap(V2R,V6i) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__DISJ__DIST,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1Q] :
+              ( mem(V1Q,arr(A_27a,bool))
+             => ! [V2R] :
+                  ( mem(V2R,arr(A_27a,bool))
+                 => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),f470(A_27a,V0P,V1Q)),f471(A_27a,V2R)))
+                  <=> ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),f469(A_27a,V2R)))
+                      & p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V1Q),f472(A_27a,V2R))) ) ) ) ) ) ) ).
+
+fof(lameq_f473,axiom,
+    ! [A_27a,V0P] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V2i] : ap(f473(A_27a,V0P),V2i) = ap(V0P,V2i) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__UNIQUE,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1j] :
+              ( mem(V1j,A_27a)
+             => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),ap(c_2Emin_2E_3D(A_27a),V1j)),f473(A_27a,V0P)))
+              <=> p(ap(V0P,V1j)) ) ) ) ) ).
+
+fof(lameq_f474,axiom,
+    ! [A_27b,A_27a,V1R] :
+      ( mem(V1R,arr(A_27a,arr(A_27b,bool)))
+     => ! [V3x] :
+          ( mem(V3x,A_27b)
+         => ! [V4i] : ap(f474(A_27b,A_27a,V1R,V3x),V4i) = ap(ap(V1R,V4i),V3x) ) ) ).
+
+fof(lameq_f475,axiom,
+    ! [A_27a,A_27b,V5i] :
+      ( mem(V5i,A_27a)
+     => ! [V1R] :
+          ( mem(V1R,arr(A_27a,arr(A_27b,bool)))
+         => ! [V6x] : ap(f475(A_27a,A_27b,V5i,V1R),V6x) = ap(ap(V1R,V5i),V6x) ) ) ).
+
+fof(lameq_f476,axiom,
+    ! [A_27b,A_27a,V1R] :
+      ( mem(V1R,arr(A_27a,arr(A_27b,bool)))
+     => ! [V5i] : ap(f476(A_27b,A_27a,V1R),V5i) = ap(c_2Ebool_2E_21(A_27b),f475(A_27a,A_27b,V5i,V1R)) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__FORALL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0P] :
+              ( mem(V0P,arr(A_27a,bool))
+             => ! [V1R] :
+                  ( mem(V1R,arr(A_27a,arr(A_27b,bool)))
+                 => ! [V2x] :
+                      ( mem(V2x,A_27b)
+                     => ( ! [V3x] :
+                            ( mem(V3x,A_27b)
+                           => p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),f474(A_27b,A_27a,V1R,V3x))) )
+                      <=> p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),f476(A_27b,A_27a,V1R))) ) ) ) ) ) ) ).
+
+fof(lameq_f477,axiom,
+    ! [A_27a,A_27b,V3i] :
+      ( mem(V3i,A_27a)
+     => ! [V2R] :
+          ( mem(V2R,arr(A_27a,arr(A_27b,bool)))
+         => ! [V4j] : ap(f477(A_27a,A_27b,V3i,V2R),V4j) = ap(ap(V2R,V3i),V4j) ) ) ).
+
+fof(lameq_f478,axiom,
+    ! [A_27b,A_27a,V2R] :
+      ( mem(V2R,arr(A_27a,arr(A_27b,bool)))
+     => ! [V1Q] :
+          ( mem(V1Q,arr(A_27b,bool))
+         => ! [V3i] : ap(f478(A_27b,A_27a,V2R,V1Q),V3i) = ap(ap(c_2Ebool_2ERES__FORALL(A_27b),V1Q),f477(A_27a,A_27b,V3i,V2R)) ) ) ).
+
+fof(lameq_f479,axiom,
+    ! [A_27b,A_27a,V2R] :
+      ( mem(V2R,arr(A_27a,arr(A_27b,bool)))
+     => ! [V5j] :
+          ( mem(V5j,A_27b)
+         => ! [V6i] : ap(f479(A_27b,A_27a,V2R,V5j),V6i) = ap(ap(V2R,V6i),V5j) ) ) ).
+
+fof(lameq_f480,axiom,
+    ! [A_27a,A_27b,V2R] :
+      ( mem(V2R,arr(A_27a,arr(A_27b,bool)))
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V5j] : ap(f480(A_27a,A_27b,V2R,V0P),V5j) = ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),f479(A_27b,A_27a,V2R,V5j)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__REORDER,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0P] :
+              ( mem(V0P,arr(A_27a,bool))
+             => ! [V1Q] :
+                  ( mem(V1Q,arr(A_27b,bool))
+                 => ! [V2R] :
+                      ( mem(V2R,arr(A_27a,arr(A_27b,bool)))
+                     => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0P),f478(A_27b,A_27a,V2R,V1Q)))
+                      <=> p(ap(ap(c_2Ebool_2ERES__FORALL(A_27b),V1Q),f480(A_27a,A_27b,V2R,V0P))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__T,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [V0P] :
+                  ( mem(V0P,A_27a)
+                 => ! [V1s] :
+                      ( mem(V1s,arr(A_27b,bool))
+                     => ! [V2x] :
+                          ( mem(V2x,A_27c)
+                         => p(ap(ap(c_2Ebool_2ERES__FORALL(A_27b),V1s),k(A_27b,c_2Ebool_2ET))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__F,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [V0P] :
+                  ( mem(V0P,A_27a)
+                 => ! [V1s] :
+                      ( mem(V1s,arr(A_27b,bool))
+                     => ! [V2x] :
+                          ( mem(V2x,A_27c)
+                         => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27b),V1s),k(A_27b,c_2Ebool_2EF)))
+                          <=> V1s = c_2Epred__set_2EEMPTY(A_27b) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__EMPTY,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),c_2Epred__set_2EEMPTY(A_27a)),V0p)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__UNIV,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),c_2Epred__set_2EUNIV(A_27a)),V0p))
+          <=> p(ap(c_2Ebool_2E_21(A_27a),V0p)) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__NULL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ! [V1m] :
+              ( mem(V1m,bool)
+             => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0p),k(A_27a,V1m)))
+              <=> ( V0p = c_2Epred__set_2EEMPTY(A_27a)
+                  | p(V1m) ) ) ) ) ) ).
+
+fof(lameq_f481,axiom,
+    ! [A_27a,V0P] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V3x] : ap(f481(A_27a,V0P),V3x) = ap(c_2Ebool_2E_7E,ap(V0P,V3x)) ) ).
+
+fof(conj_thm_2Eres__quan_2ENOT__RES__FORALL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ( ~ p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V1s),f108(A_27a,V0P)))
+              <=> p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V1s),f481(A_27a,V0P))) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__NOT__EMPTY,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ( ~ p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V1s),V0P))
+               => V1s != c_2Epred__set_2EEMPTY(A_27a) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__SUBSET,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ! [V2t] :
+                  ( mem(V2t,arr(A_27a,bool))
+                 => ( p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1s),V2t))
+                   => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V2t),V0P))
+                     => p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V1s),V0P)) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__UNION,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ! [V2t] :
+                  ( mem(V2t,arr(A_27a,bool))
+                 => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),ap(ap(c_2Epred__set_2EUNION(A_27a),V1s),V2t)),V0P))
+                  <=> ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V1s),V0P))
+                      & p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V2t),V0P)) ) ) ) ) ) ) ).
+
+fof(lameq_f482,axiom,
+    ! [A_27a,V0P] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V4x] : ap(f482(A_27a,V0P),V4x) = ap(V0P,V4x) ) ).
+
+fof(lameq_f483,axiom,
+    ! [A_27a,V2t] :
+      ( mem(V2t,arr(A_27a,bool))
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V5x] : ap(f483(A_27a,V2t,V0P),V5x) = ap(ap(c_2Emin_2E_3D_3D_3E,ap(c_2Ebool_2E_7E,ap(ap(c_2Ebool_2EIN(A_27a),V5x),V2t))),ap(V0P,V5x)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__DIFF,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0P] :
+              ( mem(V0P,arr(A_27a,bool))
+             => ! [V1s] :
+                  ( mem(V1s,arr(A_27a,bool))
+                 => ! [V2t] :
+                      ( mem(V2t,arr(A_27a,bool))
+                     => ! [V3x] :
+                          ( mem(V3x,A_27b)
+                         => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),ap(ap(c_2Epred__set_2EDIFF(A_27a),V1s),V2t)),f482(A_27a,V0P)))
+                          <=> p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V1s),f483(A_27a,V2t,V0P))) ) ) ) ) ) ) ) ).
+
+fof(lameq_f484,axiom,
+    ! [A_27a,V0x] :
+      ( mem(V0x,A_27a)
+     => ! [V2s] : ap(f484(A_27a,V0x),V2s) = ap(ap(c_2Ebool_2EIN(A_27a),V0x),V2s) ) ).
+
+fof(conj_thm_2Eres__quan_2EIN__BIGINTER__RES__FORALL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0x] :
+          ( mem(V0x,A_27a)
+         => ! [V1sos] :
+              ( mem(V1sos,arr(arr(A_27a,bool),bool))
+             => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V0x),ap(c_2Epred__set_2EBIGINTER(A_27a),V1sos)))
+              <=> p(ap(ap(c_2Ebool_2ERES__FORALL(arr(A_27a,bool)),V1sos),f484(A_27a,V0x))) ) ) ) ) ).
+
+fof(lameq_f485,axiom,
+    ! [A_27a,V0P] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V3s] : ap(f485(A_27a,V0P),V3s) = ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V3s),f482(A_27a,V0P)) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__BIGUNION,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1sos] :
+              ( mem(V1sos,arr(arr(A_27a,bool),bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),ap(c_2Epred__set_2EBIGUNION(A_27a),V1sos)),f108(A_27a,V0P)))
+              <=> p(ap(ap(c_2Ebool_2ERES__FORALL(arr(A_27a,bool)),V1sos),f485(A_27a,V0P))) ) ) ) ) ).
+
+fof(lameq_f486,axiom,
+    ! [A_27a,V3x] :
+      ( mem(V3x,A_27a)
+     => ! [V4s] : ap(f486(A_27a,V3x),V4s) = ap(ap(c_2Ebool_2EIN(A_27a),V3x),V4s) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__FORALL__BIGINTER,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1sos] :
+              ( mem(V1sos,arr(arr(A_27a,bool),bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),ap(c_2Epred__set_2EBIGINTER(A_27a),V1sos)),f108(A_27a,V0P)))
+              <=> ! [V3x] :
+                    ( mem(V3x,A_27a)
+                   => ( p(ap(ap(c_2Ebool_2ERES__FORALL(arr(A_27a,bool)),V1sos),f486(A_27a,V3x)))
+                     => p(ap(V0P,V3x)) ) ) ) ) ) ) ).
+
+fof(lameq_f487,axiom,
+    ! [A_27a,V1Q] :
+      ( mem(V1Q,arr(A_27a,bool))
+     => ! [V2R] :
+          ( mem(V2R,arr(A_27a,bool))
+         => ! [V3i] : ap(f487(A_27a,V1Q,V2R),V3i) = ap(ap(c_2Ebool_2E_5C_2F,ap(V1Q,V3i)),ap(V2R,V3i)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__DISJ__DIST,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1Q] :
+              ( mem(V1Q,arr(A_27a,bool))
+             => ! [V2R] :
+                  ( mem(V2R,arr(A_27a,bool))
+                 => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0P),f487(A_27a,V1Q,V2R)))
+                  <=> ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0P),f468(A_27a,V1Q)))
+                      | p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0P),f469(A_27a,V2R))) ) ) ) ) ) ) ).
+
+fof(lameq_f488,axiom,
+    ! [A_27a,V0P] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V1Q] :
+          ( mem(V1Q,arr(A_27a,bool))
+         => ! [V3i] : ap(f488(A_27a,V0P,V1Q),V3i) = ap(ap(c_2Ebool_2E_5C_2F,ap(V0P,V3i)),ap(V1Q,V3i)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__DISJ__EXISTS__DIST,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1Q] :
+              ( mem(V1Q,arr(A_27a,bool))
+             => ! [V2R] :
+                  ( mem(V2R,arr(A_27a,bool))
+                 => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),f488(A_27a,V0P,V1Q)),f471(A_27a,V2R)))
+                  <=> ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0P),f469(A_27a,V2R)))
+                      | p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V1Q),f472(A_27a,V2R))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__EQUAL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1j] :
+              ( mem(V1j,A_27a)
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),ap(c_2Emin_2E_3D(A_27a),V1j)),f473(A_27a,V0P)))
+              <=> p(ap(V0P,V1j)) ) ) ) ) ).
+
+fof(lameq_f489,axiom,
+    ! [A_27b,A_27a,V2R] :
+      ( mem(V2R,arr(A_27a,arr(A_27b,bool)))
+     => ! [V1Q] :
+          ( mem(V1Q,arr(A_27b,bool))
+         => ! [V3i] : ap(f489(A_27b,A_27a,V2R,V1Q),V3i) = ap(ap(c_2Ebool_2ERES__EXISTS(A_27b),V1Q),f477(A_27a,A_27b,V3i,V2R)) ) ) ).
+
+fof(lameq_f490,axiom,
+    ! [A_27a,A_27b,V2R] :
+      ( mem(V2R,arr(A_27a,arr(A_27b,bool)))
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V5j] : ap(f490(A_27a,A_27b,V2R,V0P),V5j) = ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0P),f479(A_27b,A_27a,V2R,V5j)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__REORDER,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0P] :
+              ( mem(V0P,arr(A_27a,bool))
+             => ! [V1Q] :
+                  ( mem(V1Q,arr(A_27b,bool))
+                 => ! [V2R] :
+                      ( mem(V2R,arr(A_27a,arr(A_27b,bool)))
+                     => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0P),f489(A_27b,A_27a,V2R,V1Q)))
+                      <=> p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27b),V1Q),f490(A_27a,A_27b,V2R,V0P))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__F,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [V0P] :
+                  ( mem(V0P,A_27a)
+                 => ! [V1s] :
+                      ( mem(V1s,A_27b)
+                     => ! [V2x] :
+                          ( mem(V2x,arr(A_27c,bool))
+                         => ~ p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27c),V2x),k(A_27c,c_2Ebool_2EF))) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__T,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [V0P] :
+                  ( mem(V0P,A_27a)
+                 => ! [V1s] :
+                      ( mem(V1s,arr(A_27b,bool))
+                     => ! [V2x] :
+                          ( mem(V2x,A_27c)
+                         => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27b),V1s),k(A_27b,c_2Ebool_2ET)))
+                          <=> V1s != c_2Epred__set_2EEMPTY(A_27b) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__EMPTY,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ~ p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),c_2Epred__set_2EEMPTY(A_27a)),V0p)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIV,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),c_2Epred__set_2EUNIV(A_27a)),V0p))
+          <=> p(ap(c_2Ebool_2E_3F(A_27a),V0p)) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__NULL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ! [V1m] :
+              ( mem(V1m,bool)
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0p),k(A_27a,V1m)))
+              <=> ( V0p != c_2Epred__set_2EEMPTY(A_27a)
+                  & p(V1m) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__ALT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ! [V1m] :
+              ( mem(V1m,arr(A_27a,bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0p),V1m))
+              <=> ( p(ap(ap(c_2Ebool_2EIN(A_27a),ap(ap(c_2Ebool_2ERES__SELECT(A_27a),V0p),V1m)),V0p))
+                  & p(ap(V1m,ap(ap(c_2Ebool_2ERES__SELECT(A_27a),V0p),V1m))) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ENOT__RES__EXISTS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ( ~ p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V1s),f108(A_27a,V0P)))
+              <=> p(ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V1s),f481(A_27a,V0P))) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__NOT__EMPTY,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V1s),V0P))
+               => V1s != c_2Epred__set_2EEMPTY(A_27a) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__SUBSET,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ! [V2t] :
+                  ( mem(V2t,arr(A_27a,bool))
+                 => ( p(ap(ap(c_2Epred__set_2ESUBSET(A_27a),V1s),V2t))
+                   => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V1s),V0P))
+                     => p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V2t),V0P)) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNION,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ! [V2t] :
+                  ( mem(V2t,arr(A_27a,bool))
+                 => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),ap(ap(c_2Epred__set_2EUNION(A_27a),V1s),V2t)),V0P))
+                  <=> ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V1s),V0P))
+                      | p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V2t),V0P)) ) ) ) ) ) ) ).
+
+fof(lameq_f491,axiom,
+    ! [A_27a,V2t] :
+      ( mem(V2t,arr(A_27a,bool))
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V5x] : ap(f491(A_27a,V2t,V0P),V5x) = ap(ap(c_2Ebool_2E_2F_5C,ap(c_2Ebool_2E_7E,ap(ap(c_2Ebool_2EIN(A_27a),V5x),V2t))),ap(V0P,V5x)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__DIFF,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0P] :
+              ( mem(V0P,arr(A_27a,bool))
+             => ! [V1s] :
+                  ( mem(V1s,arr(A_27a,bool))
+                 => ! [V2t] :
+                      ( mem(V2t,arr(A_27a,bool))
+                     => ! [V3x] :
+                          ( mem(V3x,A_27b)
+                         => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),ap(ap(c_2Epred__set_2EDIFF(A_27a),V1s),V2t)),f482(A_27a,V0P)))
+                          <=> p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V1s),f491(A_27a,V2t,V0P))) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2EIN__BIGUNION__RES__EXISTS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0x] :
+          ( mem(V0x,A_27a)
+         => ! [V1sos] :
+              ( mem(V1sos,arr(arr(A_27a,bool),bool))
+             => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V0x),ap(c_2Epred__set_2EBIGUNION(A_27a),V1sos)))
+              <=> p(ap(ap(c_2Ebool_2ERES__EXISTS(arr(A_27a,bool)),V1sos),f484(A_27a,V0x))) ) ) ) ) ).
+
+fof(lameq_f492,axiom,
+    ! [A_27a,V0P] :
+      ( mem(V0P,arr(A_27a,bool))
+     => ! [V3s] : ap(f492(A_27a,V0P),V3s) = ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V3s),f482(A_27a,V0P)) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__BIGUNION,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1sos] :
+              ( mem(V1sos,arr(arr(A_27a,bool),bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),ap(c_2Epred__set_2EBIGUNION(A_27a),V1sos)),f108(A_27a,V0P)))
+              <=> p(ap(ap(c_2Ebool_2ERES__EXISTS(arr(A_27a,bool)),V1sos),f492(A_27a,V0P))) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__BIGINTER,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1sos] :
+              ( mem(V1sos,arr(arr(A_27a,bool),bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),ap(c_2Epred__set_2EBIGINTER(A_27a),V1sos)),f108(A_27a,V0P)))
+              <=> ? [V3x] :
+                    ( mem(V3x,A_27a)
+                    & p(ap(ap(c_2Ebool_2ERES__FORALL(arr(A_27a,bool)),V1sos),f486(A_27a,V3x)))
+                    & p(ap(V0P,V3x)) ) ) ) ) ) ).
+
+fof(lameq_f493,axiom,
+    ! [A_27a,V1s] :
+      ( mem(V1s,arr(A_27a,bool))
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V3x] : ap(f493(A_27a,V1s,V0P),V3x) = ap(ap(c_2Ebool_2E_2F_5C,ap(ap(c_2Ebool_2EIN(A_27a),V3x),V1s)),ap(V0P,V3x)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__ELIM,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27a),V1s),f108(A_27a,V0P)))
+              <=> p(ap(c_2Ebool_2E_3F_21(A_27a),f493(A_27a,V1s,V0P))) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__EXISTS,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27a),V0P),V1s))
+               => p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0P),V1s)) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__F,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [V0P] :
+                  ( mem(V0P,A_27a)
+                 => ! [V1s] :
+                      ( mem(V1s,arr(A_27b,bool))
+                     => ! [V2x] :
+                          ( mem(V2x,A_27c)
+                         => ~ p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27b),V1s),k(A_27b,c_2Ebool_2EF))) ) ) ) ) ) ) ).
+
+fof(lameq_f494,axiom,
+    ! [A_27b,V1s] :
+      ( mem(V1s,arr(A_27b,bool))
+     => ! [V4x] : ap(f494(A_27b,V1s),V4x) = ap(ap(c_2Ebool_2EIN(A_27b),V4x),V1s) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__T,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [V0P] :
+                  ( mem(V0P,A_27a)
+                 => ! [V1s] :
+                      ( mem(V1s,arr(A_27b,bool))
+                     => ! [V2x] :
+                          ( mem(V2x,A_27c)
+                         => ( p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27b),V1s),k(A_27b,c_2Ebool_2ET)))
+                          <=> p(ap(c_2Ebool_2E_3F_21(A_27b),f494(A_27b,V1s))) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__EMPTY,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ~ p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27a),c_2Epred__set_2EEMPTY(A_27a)),V0p)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__NOT__EMPTY,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0P] :
+          ( mem(V0P,arr(A_27a,bool))
+         => ! [V1s] :
+              ( mem(V1s,arr(A_27a,bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27a),V1s),V0P))
+               => V1s != c_2Epred__set_2EEMPTY(A_27a) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__UNIV,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ( p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27a),c_2Epred__set_2EUNIV(A_27a)),V0p))
+          <=> p(ap(c_2Ebool_2E_3F_21(A_27a),V0p)) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__NULL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ! [V1m] :
+              ( mem(V1m,bool)
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27a),V0p),k(A_27a,V1m)))
+              <=> ( ? [V3x] :
+                      ( mem(V3x,A_27a)
+                      & V0p = ap(ap(c_2Epred__set_2EINSERT(A_27a),V3x),c_2Epred__set_2EEMPTY(A_27a)) )
+                  & p(V1m) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__SING,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [A_27c] :
+              ( ne(A_27c)
+             => ! [V0P] :
+                  ( mem(V0P,A_27a)
+                 => ! [V1s] :
+                      ( mem(V1s,arr(A_27b,bool))
+                     => ! [V2x] :
+                          ( mem(V2x,A_27c)
+                         => ( p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27b),V1s),k(A_27b,c_2Ebool_2ET)))
+                          <=> ? [V4y] :
+                                ( mem(V4y,A_27b)
+                                & V1s = ap(ap(c_2Epred__set_2EINSERT(A_27b),V4y),c_2Epred__set_2EEMPTY(A_27b)) ) ) ) ) ) ) ) ) ).
+
+fof(lameq_f495,axiom,
+    ! [A_27a,V1m] :
+      ( mem(V1m,arr(A_27a,bool))
+     => ! [V2x] :
+          ( mem(V2x,A_27a)
+         => ! [V3y] : ap(f495(A_27a,V1m,V2x),V3y) = ap(ap(c_2Emin_2E_3D_3D_3E,ap(V1m,V3y)),ap(ap(c_2Emin_2E_3D(A_27a),V3y),V2x)) ) ) ).
+
+fof(lameq_f496,axiom,
+    ! [A_27a,V0p] :
+      ( mem(V0p,arr(A_27a,bool))
+     => ! [V1m] :
+          ( mem(V1m,arr(A_27a,bool))
+         => ! [V2x] : ap(f496(A_27a,V0p,V1m),V2x) = ap(ap(c_2Ebool_2E_2F_5C,ap(V1m,V2x)),ap(ap(c_2Ebool_2ERES__FORALL(A_27a),V0p),f495(A_27a,V1m,V2x))) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__EXISTS__UNIQUE__ALT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ! [V1m] :
+              ( mem(V1m,arr(A_27a,bool))
+             => ( p(ap(ap(c_2Ebool_2ERES__EXISTS__UNIQUE(A_27a),V0p),V1m))
+              <=> p(ap(ap(c_2Ebool_2ERES__EXISTS(A_27a),V0p),f496(A_27a,V0p,V1m))) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__SELECT__EMPTY,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ap(ap(c_2Ebool_2ERES__SELECT(A_27a),c_2Epred__set_2EEMPTY(A_27a)),V0p) = ap(c_2Emin_2E_40(A_27a),k(A_27a,c_2Ebool_2EF)) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__SELECT__UNIV,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ap(ap(c_2Ebool_2ERES__SELECT(A_27a),c_2Epred__set_2EUNIV(A_27a)),V0p) = ap(c_2Emin_2E_40(A_27a),V0p) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__ABSTRACT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0p] :
+              ( mem(V0p,arr(A_27a,bool))
+             => ! [V1m] :
+                  ( mem(V1m,arr(A_27a,A_27b))
+                 => ! [V2x] :
+                      ( mem(V2x,A_27a)
+                     => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V2x),V0p))
+                       => ap(ap(ap(c_2Ebool_2ERES__ABSTRACT(A_27a,A_27b),V0p),V1m),V2x) = ap(V1m,V2x) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__ABSTRACT__EQUAL,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0p] :
+              ( mem(V0p,arr(A_27a,bool))
+             => ! [V1m1] :
+                  ( mem(V1m1,arr(A_27a,A_27b))
+                 => ! [V2m2] :
+                      ( mem(V2m2,arr(A_27a,A_27b))
+                     => ( ! [V3x] :
+                            ( mem(V3x,A_27a)
+                           => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V3x),V0p))
+                             => ap(V1m1,V3x) = ap(V2m2,V3x) ) )
+                       => ap(ap(c_2Ebool_2ERES__ABSTRACT(A_27a,A_27b),V0p),V1m1) = ap(ap(c_2Ebool_2ERES__ABSTRACT(A_27a,A_27b),V0p),V2m2) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__ABSTRACT__IDEMPOT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0p] :
+              ( mem(V0p,arr(A_27a,bool))
+             => ! [V1m] :
+                  ( mem(V1m,arr(A_27a,A_27b))
+                 => ap(ap(c_2Ebool_2ERES__ABSTRACT(A_27a,A_27b),V0p),ap(ap(c_2Ebool_2ERES__ABSTRACT(A_27a,A_27b),V0p),V1m)) = ap(ap(c_2Ebool_2ERES__ABSTRACT(A_27a,A_27b),V0p),V1m) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__ABSTRACT__EQUAL__EQ,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0p] :
+              ( mem(V0p,arr(A_27a,bool))
+             => ! [V1m1] :
+                  ( mem(V1m1,arr(A_27a,A_27b))
+                 => ! [V2m2] :
+                      ( mem(V2m2,arr(A_27a,A_27b))
+                     => ( ap(ap(c_2Ebool_2ERES__ABSTRACT(A_27a,A_27b),V0p),V1m1) = ap(ap(c_2Ebool_2ERES__ABSTRACT(A_27a,A_27b),V0p),V2m2)
+                      <=> ! [V3x] :
+                            ( mem(V3x,A_27a)
+                           => ( p(ap(ap(c_2Ebool_2EIN(A_27a),V3x),V0p))
+                             => ap(V1m1,V3x) = ap(V2m2,V3x) ) ) ) ) ) ) ) ) ).
+
+fof(conj_thm_2Eres__quan_2ERES__ABSTRACT__UNIV,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0m] :
+              ( mem(V0m,arr(A_27a,A_27b))
+             => ap(ap(c_2Ebool_2ERES__ABSTRACT(A_27a,A_27b),c_2Epred__set_2EUNIV(A_27a)),V0m) = V0m ) ) ) ).
+
+%------------------------------------------------------------------------------

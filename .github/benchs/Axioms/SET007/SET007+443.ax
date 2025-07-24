@@ -1,0 +1,581 @@
+%------------------------------------------------------------------------------
+% File     : SET007+443 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Monoid of Endomorphisms of Universal and Many Sorted Algebras
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : endalg [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   45 (   5 unt;   0 def)
+%            Number of atoms       :  367 (  28 equ)
+%            Maximal formula atoms :   15 (   8 avg)
+%            Number of connectives :  387 (  65   ~;   0   |; 216   &)
+%                                         (  13 <=>;  93  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   15 (   8 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   41 (  39 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   30 (  30 usr;   1 con; 0-6 aty)
+%            Number of variables   :   98 (  95   !;   3   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ( ~ v3_struct_0(k3_endalg(A))
+        & v1_vectsp_1(k3_endalg(A)) ) ) ).
+
+fof(fc2_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ( ~ v3_struct_0(k3_endalg(A))
+        & v2_group_1(k3_endalg(A))
+        & v4_group_1(k3_endalg(A))
+        & v1_vectsp_1(k3_endalg(A))
+        & v6_vectsp_1(k3_endalg(A))
+        & v8_vectsp_1(k3_endalg(A)) ) ) ).
+
+fof(fc3_endalg,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v5_msualg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ( ~ v3_struct_0(k6_endalg(A,B))
+        & v1_vectsp_1(k6_endalg(A,B)) ) ) ).
+
+fof(fc4_endalg,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v5_msualg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ( ~ v3_struct_0(k6_endalg(A,B))
+        & v2_group_1(k6_endalg(A,B))
+        & v4_group_1(k6_endalg(A,B))
+        & v1_vectsp_1(k6_endalg(A,B))
+        & v6_vectsp_1(k6_endalg(A,B))
+        & v8_vectsp_1(k6_endalg(A,B)) ) ) ).
+
+fof(rc1_endalg,axiom,
+    ? [A] :
+      ( l1_vectsp_1(A)
+      & ~ v3_struct_0(A)
+      & v8_vectsp_1(A) ) ).
+
+fof(rc2_endalg,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v8_vectsp_1(A)
+        & l1_vectsp_1(A)
+        & ~ v3_struct_0(B)
+        & v8_vectsp_1(B)
+        & l1_vectsp_1(B) )
+     => ? [C] :
+          ( m1_relset_1(C,u1_struct_0(A),u1_struct_0(B))
+          & v1_relat_1(C)
+          & v1_funct_1(C)
+          & ~ v1_xboole_0(C)
+          & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+          & v1_partfun1(C,u1_struct_0(A),u1_struct_0(B))
+          & v1_group_6(C,A,B)
+          & v1_endalg(C,A,B) ) ) ).
+
+fof(d1_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ! [B] :
+          ( m1_fraenkel(B,u1_struct_0(A),u1_struct_0(A))
+         => ( B = k1_endalg(A)
+          <=> ! [C] :
+                ( ( v1_funct_1(C)
+                  & v1_funct_2(C,u1_struct_0(A),u1_struct_0(A))
+                  & m2_relset_1(C,u1_struct_0(A),u1_struct_0(A)) )
+               => ( r2_hidden(C,B)
+                <=> r1_alg_1(A,A,C) ) ) ) ) ) ).
+
+fof(t1_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => r1_tarski(k1_endalg(A),k1_fraenkel(u1_struct_0(A),u1_struct_0(A))) ) ).
+
+fof(t2_endalg,axiom,
+    $true ).
+
+fof(t3_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => r2_hidden(k6_partfun1(u1_struct_0(A)),k1_endalg(A)) ) ).
+
+fof(t4_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ! [B] :
+          ( m2_fraenkel(B,u1_struct_0(A),u1_struct_0(A),k1_endalg(A))
+         => ! [C] :
+              ( m2_fraenkel(C,u1_struct_0(A),u1_struct_0(A),k1_endalg(A))
+             => r2_hidden(k7_funct_2(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),C,B),k1_endalg(A)) ) ) ) ).
+
+fof(d2_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,k2_zfmisc_1(k1_endalg(A),k1_endalg(A)),k1_endalg(A))
+            & m2_relset_1(B,k2_zfmisc_1(k1_endalg(A),k1_endalg(A)),k1_endalg(A)) )
+         => ( B = k2_endalg(A)
+          <=> ! [C] :
+                ( m2_fraenkel(C,u1_struct_0(A),u1_struct_0(A),k1_endalg(A))
+               => ! [D] :
+                    ( m2_fraenkel(D,u1_struct_0(A),u1_struct_0(A),k1_endalg(A))
+                   => k2_binop_1(k1_endalg(A),k1_endalg(A),k1_endalg(A),B,C,D) = k7_funct_2(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),C,D) ) ) ) ) ) ).
+
+fof(d3_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ! [B] :
+          ( ( v1_vectsp_1(B)
+            & l1_vectsp_1(B) )
+         => ( B = k3_endalg(A)
+          <=> ( u1_struct_0(B) = k1_endalg(A)
+              & u1_group_1(B) = k2_endalg(A)
+              & u1_vectsp_1(B) = k6_partfun1(u1_struct_0(A)) ) ) ) ) ).
+
+fof(t5_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k3_endalg(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k3_endalg(A)))
+             => ! [D] :
+                  ( m2_fraenkel(D,u1_struct_0(A),u1_struct_0(A),k1_endalg(A))
+                 => ! [E] :
+                      ( m2_fraenkel(E,u1_struct_0(A),u1_struct_0(A),k1_endalg(A))
+                     => ( ( B = D
+                          & C = E )
+                       => k1_group_1(k3_endalg(A),B,C) = k7_funct_2(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),D,E) ) ) ) ) ) ) ).
+
+fof(t6_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => k6_partfun1(u1_struct_0(A)) = k2_group_1(k3_endalg(A)) ) ).
+
+fof(d4_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( m1_autalg_1(C,u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,B))
+             => ( C = k4_endalg(A,B)
+              <=> ( ! [D] :
+                      ( m2_autalg_1(D,u1_struct_0(A),u4_msualg_1(A,B),C)
+                     => m3_pboole(D,u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,B)) )
+                  & ! [D] :
+                      ( m3_pboole(D,u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,B))
+                     => ( r2_hidden(D,C)
+                      <=> r1_msualg_3(A,B,B,D) ) ) ) ) ) ) ) ).
+
+fof(t7_endalg,axiom,
+    $true ).
+
+fof(t8_endalg,axiom,
+    $true ).
+
+fof(t9_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => r1_tarski(k4_endalg(A,B),k4_card_3(k12_pboole(u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,B)))) ) ) ).
+
+fof(t10_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => r2_hidden(k2_msualg_3(u1_struct_0(A),u4_msualg_1(A,B)),k4_endalg(A,B)) ) ) ).
+
+fof(t11_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( m2_autalg_1(C,u1_struct_0(A),u4_msualg_1(A,B),k4_endalg(A,B))
+             => ! [D] :
+                  ( m2_autalg_1(D,u1_struct_0(A),u4_msualg_1(A,B),k4_endalg(A,B))
+                 => r2_hidden(k3_msualg_3(u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,B),u4_msualg_1(A,B),D,C),k4_endalg(A,B)) ) ) ) ) ).
+
+fof(t12_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ! [B] :
+          ( m3_pboole(B,u1_struct_0(k7_msualg_1(A)),u4_msualg_1(k7_msualg_1(A),k10_msualg_1(A)),u4_msualg_1(k7_msualg_1(A),k10_msualg_1(A)))
+         => ! [C] :
+              ( m2_fraenkel(C,u1_struct_0(A),u1_struct_0(A),k1_endalg(A))
+             => ( B = k10_pboole(k1_tarski(np__0),C)
+               => r2_hidden(B,k4_endalg(k7_msualg_1(A),k10_msualg_1(A))) ) ) ) ) ).
+
+fof(d5_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(k4_endalg(A,B),k4_endalg(A,B)),k4_endalg(A,B))
+                & m2_relset_1(C,k2_zfmisc_1(k4_endalg(A,B),k4_endalg(A,B)),k4_endalg(A,B)) )
+             => ( C = k5_endalg(A,B)
+              <=> ! [D] :
+                    ( m2_autalg_1(D,u1_struct_0(A),u4_msualg_1(A,B),k4_endalg(A,B))
+                   => ! [E] :
+                        ( m2_autalg_1(E,u1_struct_0(A),u4_msualg_1(A,B),k4_endalg(A,B))
+                       => k2_binop_1(k4_endalg(A,B),k4_endalg(A,B),k4_endalg(A,B),C,D,E) = k3_msualg_3(u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,B),u4_msualg_1(A,B),D,E) ) ) ) ) ) ) ).
+
+fof(d6_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( ( v1_vectsp_1(C)
+                & l1_vectsp_1(C) )
+             => ( C = k6_endalg(A,B)
+              <=> ( u1_struct_0(C) = k4_endalg(A,B)
+                  & u1_group_1(C) = k5_endalg(A,B)
+                  & u1_vectsp_1(C) = k2_msualg_3(u1_struct_0(A),u4_msualg_1(A,B)) ) ) ) ) ) ).
+
+fof(t13_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k6_endalg(A,B)))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k6_endalg(A,B)))
+                 => ! [E] :
+                      ( m2_autalg_1(E,u1_struct_0(A),u4_msualg_1(A,B),k4_endalg(A,B))
+                     => ! [F] :
+                          ( m2_autalg_1(F,u1_struct_0(A),u4_msualg_1(A,B),k4_endalg(A,B))
+                         => ( ( C = E
+                              & D = F )
+                           => k1_group_1(k6_endalg(A,B),C,D) = k3_msualg_3(u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,B),u4_msualg_1(A,B),E,F) ) ) ) ) ) ) ) ).
+
+fof(t14_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A) )
+     => ! [B] :
+          ( ( v5_msualg_1(B,A)
+            & l3_msualg_1(B,A) )
+         => k2_msualg_3(u1_struct_0(A),u4_msualg_1(A,B)) = k2_group_1(k6_endalg(A,B)) ) ) ).
+
+fof(t15_endalg,axiom,
+    $true ).
+
+fof(t16_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ! [B] :
+          ( m2_fraenkel(B,u1_struct_0(A),u1_struct_0(A),k1_endalg(A))
+         => m3_pboole(k10_pboole(k1_tarski(np__0),B),u1_struct_0(k7_msualg_1(A)),u4_msualg_1(k7_msualg_1(A),k10_msualg_1(A)),u4_msualg_1(k7_msualg_1(A),k10_msualg_1(A))) ) ) ).
+
+fof(d7_endalg,axiom,
+    $true ).
+
+fof(d8_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & l1_vectsp_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( v1_endalg(C,A,B)
+              <=> k8_funct_2(u1_struct_0(A),u1_struct_0(B),C,k2_group_1(A)) = k2_group_1(B) ) ) ) ) ).
+
+fof(d9_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v8_vectsp_1(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v8_vectsp_1(B)
+            & l1_vectsp_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( r1_endalg(A,B,C)
+              <=> v2_funct_1(C) ) ) ) ) ).
+
+fof(d10_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v8_vectsp_1(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v8_vectsp_1(B)
+            & l1_vectsp_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( r2_endalg(A,B,C)
+              <=> k2_relat_1(C) = u1_struct_0(B) ) ) ) ) ).
+
+fof(d11_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v8_vectsp_1(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v8_vectsp_1(B)
+            & l1_vectsp_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( r3_endalg(A,B,C)
+              <=> ( r2_endalg(A,B,C)
+                  & r1_endalg(A,B,C) ) ) ) ) ) ).
+
+fof(t17_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v8_vectsp_1(A)
+        & l1_vectsp_1(A) )
+     => ( v1_funct_1(k6_partfun1(u1_struct_0(A)))
+        & v1_funct_2(k6_partfun1(u1_struct_0(A)),u1_struct_0(A),u1_struct_0(A))
+        & v1_group_6(k6_partfun1(u1_struct_0(A)),A,A)
+        & v1_endalg(k6_partfun1(u1_struct_0(A)),A,A)
+        & m2_relset_1(k6_partfun1(u1_struct_0(A)),u1_struct_0(A),u1_struct_0(A)) ) ) ).
+
+fof(d12_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v8_vectsp_1(A)
+        & l1_vectsp_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v8_vectsp_1(B)
+            & l1_vectsp_1(B) )
+         => ( r4_endalg(A,B)
+          <=> ? [C] :
+                ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & v1_group_6(C,A,B)
+                & v1_endalg(C,A,B)
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B))
+                & r3_endalg(A,B,C) ) ) ) ) ).
+
+fof(t18_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( ( k1_relat_1(B) = k1_endalg(A)
+              & ! [C] :
+                  ( r2_hidden(C,k1_endalg(A))
+                 => k1_funct_1(B,C) = k10_pboole(k1_tarski(np__0),C) ) )
+           => ( v1_funct_1(B)
+              & v1_funct_2(B,u1_struct_0(k3_endalg(A)),u1_struct_0(k6_endalg(k7_msualg_1(A),k10_msualg_1(A))))
+              & v1_group_6(B,k3_endalg(A),k6_endalg(k7_msualg_1(A),k10_msualg_1(A)))
+              & v1_endalg(B,k3_endalg(A),k6_endalg(k7_msualg_1(A),k10_msualg_1(A)))
+              & m2_relset_1(B,u1_struct_0(k3_endalg(A)),u1_struct_0(k6_endalg(k7_msualg_1(A),k10_msualg_1(A)))) ) ) ) ) ).
+
+fof(t19_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(k3_endalg(A)),u1_struct_0(k6_endalg(k7_msualg_1(A),k10_msualg_1(A))))
+            & v1_group_6(B,k3_endalg(A),k6_endalg(k7_msualg_1(A),k10_msualg_1(A)))
+            & v1_endalg(B,k3_endalg(A),k6_endalg(k7_msualg_1(A),k10_msualg_1(A)))
+            & m2_relset_1(B,u1_struct_0(k3_endalg(A)),u1_struct_0(k6_endalg(k7_msualg_1(A),k10_msualg_1(A)))) )
+         => ( ! [C] :
+                ( r2_hidden(C,k1_endalg(A))
+               => k1_funct_1(B,C) = k10_pboole(k1_tarski(np__0),C) )
+           => r3_endalg(k3_endalg(A),k6_endalg(k7_msualg_1(A),k10_msualg_1(A)),B) ) ) ) ).
+
+fof(t20_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => r4_endalg(k3_endalg(A),k6_endalg(k7_msualg_1(A),k10_msualg_1(A))) ) ).
+
+fof(reflexivity_r4_endalg,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v8_vectsp_1(A)
+        & l1_vectsp_1(A)
+        & ~ v3_struct_0(B)
+        & v8_vectsp_1(B)
+        & l1_vectsp_1(B) )
+     => r4_endalg(A,A) ) ).
+
+fof(dt_k1_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => m1_fraenkel(k1_endalg(A),u1_struct_0(A),u1_struct_0(A)) ) ).
+
+fof(dt_k2_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ( v1_funct_1(k2_endalg(A))
+        & v1_funct_2(k2_endalg(A),k2_zfmisc_1(k1_endalg(A),k1_endalg(A)),k1_endalg(A))
+        & m2_relset_1(k2_endalg(A),k2_zfmisc_1(k1_endalg(A),k1_endalg(A)),k1_endalg(A)) ) ) ).
+
+fof(dt_k3_endalg,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v6_unialg_1(A)
+        & v7_unialg_1(A)
+        & v8_unialg_1(A)
+        & l1_unialg_1(A) )
+     => ( v1_vectsp_1(k3_endalg(A))
+        & l1_vectsp_1(k3_endalg(A)) ) ) ).
+
+fof(dt_k4_endalg,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v5_msualg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => m1_autalg_1(k4_endalg(A,B),u1_struct_0(A),u4_msualg_1(A,B),u4_msualg_1(A,B)) ) ).
+
+fof(dt_k5_endalg,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v5_msualg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ( v1_funct_1(k5_endalg(A,B))
+        & v1_funct_2(k5_endalg(A,B),k2_zfmisc_1(k4_endalg(A,B),k4_endalg(A,B)),k4_endalg(A,B))
+        & m2_relset_1(k5_endalg(A,B),k2_zfmisc_1(k4_endalg(A,B),k4_endalg(A,B)),k4_endalg(A,B)) ) ) ).
+
+fof(dt_k6_endalg,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v2_msualg_1(A)
+        & l1_msualg_1(A)
+        & v5_msualg_1(B,A)
+        & l3_msualg_1(B,A) )
+     => ( v1_vectsp_1(k6_endalg(A,B))
+        & l1_vectsp_1(k6_endalg(A,B)) ) ) ).
+
+%------------------------------------------------------------------------------

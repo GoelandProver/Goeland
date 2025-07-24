@@ -1,0 +1,86 @@
+%------------------------------------------------------------------------------
+% File     : ITP006+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : normalForms+2.ax [Gau20]
+%          : HL4006+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    6 (   0 unt;   0 def)
+%            Number of atoms       :   27 (   4 equ)
+%            Maximal formula atoms :    6 (   4 avg)
+%            Number of connectives :   21 (   0   ~;   0   |;   0   &)
+%                                         (   2 <=>;  19  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   10 (   7 avg)
+%            Maximal term depth    :    5 (   2 avg)
+%            Number of predicates  :    4 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :    5 (   5 usr;   1 con; 0-2 aty)
+%            Number of variables   :   17 (  17   !;   0   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(mem_c_2EnormalForms_2EEXT__POINT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => mem(c_2EnormalForms_2EEXT__POINT(A_27a,A_27b),arr(arr(A_27a,A_27b),arr(arr(A_27a,A_27b),A_27a))) ) ) ).
+
+fof(mem_c_2EnormalForms_2EUNIV__POINT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => mem(c_2EnormalForms_2EUNIV__POINT(A_27a),arr(arr(A_27a,bool),A_27a)) ) ).
+
+fof(ax_thm_2EnormalForms_2EEXT__POINT__DEF,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0f] :
+              ( mem(V0f,arr(A_27a,A_27b))
+             => ! [V1g] :
+                  ( mem(V1g,arr(A_27a,A_27b))
+                 => ( ap(V0f,ap(ap(c_2EnormalForms_2EEXT__POINT(A_27a,A_27b),V0f),V1g)) = ap(V1g,ap(ap(c_2EnormalForms_2EEXT__POINT(A_27a,A_27b),V0f),V1g))
+                   => V0f = V1g ) ) ) ) ) ).
+
+fof(conj_thm_2EnormalForms_2EEXT__POINT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [A_27b] :
+          ( ne(A_27b)
+         => ! [V0f] :
+              ( mem(V0f,arr(A_27a,A_27b))
+             => ! [V1g] :
+                  ( mem(V1g,arr(A_27a,A_27b))
+                 => ( ap(V0f,ap(ap(c_2EnormalForms_2EEXT__POINT(A_27a,A_27b),V0f),V1g)) = ap(V1g,ap(ap(c_2EnormalForms_2EEXT__POINT(A_27a,A_27b),V0f),V1g))
+                  <=> V0f = V1g ) ) ) ) ) ).
+
+fof(ax_thm_2EnormalForms_2EUNIV__POINT__DEF,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ( p(ap(V0p,ap(c_2EnormalForms_2EUNIV__POINT(A_27a),V0p)))
+           => ! [V1x] :
+                ( mem(V1x,A_27a)
+               => p(ap(V0p,V1x)) ) ) ) ) ).
+
+fof(conj_thm_2EnormalForms_2EUNIV__POINT,axiom,
+    ! [A_27a] :
+      ( ne(A_27a)
+     => ! [V0p] :
+          ( mem(V0p,arr(A_27a,bool))
+         => ( p(ap(V0p,ap(c_2EnormalForms_2EUNIV__POINT(A_27a),V0p)))
+          <=> ! [V1x] :
+                ( mem(V1x,A_27a)
+               => p(ap(V0p,V1x)) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

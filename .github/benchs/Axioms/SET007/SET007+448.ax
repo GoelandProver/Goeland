@@ -1,0 +1,970 @@
+%------------------------------------------------------------------------------
+% File     : SET007+448 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Examples of Category Structures
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : altcat_2 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   92 (   2 unt;   0 def)
+%            Number of atoms       :  546 (  73 equ)
+%            Maximal formula atoms :   24 (   5 avg)
+%            Number of connectives :  533 (  79   ~;   1   |; 230   &)
+%                                         (  19 <=>; 204  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   34 (   8 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   39 (  37 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   60 (  60 usr;  12 con; 0-6 aty)
+%            Number of variables   :  244 ( 221   !;  23   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_altcat_2,axiom,
+    ! [A] :
+      ( v1_relat_1(k1_pboole(A))
+      & v3_relat_1(k1_pboole(A))
+      & v1_funct_1(k1_pboole(A))
+      & v1_funcop_1(k1_pboole(A)) ) ).
+
+fof(fc2_altcat_2,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_funcop_1(A) )
+     => ( v1_relat_1(k2_funct_4(A))
+        & v1_funct_1(k2_funct_4(A))
+        & v1_funcop_1(k2_funct_4(A)) ) ) ).
+
+fof(fc3_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ( ~ v3_struct_0(k6_altcat_2(A))
+        & v2_altcat_1(k6_altcat_2(A))
+        & v6_altcat_1(k6_altcat_2(A))
+        & v11_altcat_1(k6_altcat_2(A))
+        & v12_altcat_1(k6_altcat_2(A)) ) ) ).
+
+fof(rc1_altcat_2,axiom,
+    ? [A] :
+      ( l1_altcat_1(A)
+      & ~ v3_struct_0(A)
+      & v1_altcat_1(A) ) ).
+
+fof(cc1_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => ( ( ~ v3_struct_0(A)
+          & v12_altcat_1(A) )
+       => ( ~ v3_struct_0(A)
+          & v1_altcat_2(A) ) ) ) ).
+
+fof(rc2_altcat_2,axiom,
+    ? [A] :
+      ( l1_altcat_1(A)
+      & ~ v3_struct_0(A)
+      & v1_altcat_2(A) ) ).
+
+fof(rc3_altcat_2,axiom,
+    ? [A] :
+      ( l2_altcat_1(A)
+      & ~ v3_struct_0(A)
+      & v1_altcat_2(A) ) ).
+
+fof(fc4_altcat_2,axiom,
+    ( v3_struct_0(k7_altcat_2)
+    & v6_altcat_1(k7_altcat_2) ) ).
+
+fof(rc4_altcat_2,axiom,
+    ? [A] :
+      ( l2_altcat_1(A)
+      & v3_struct_0(A)
+      & v6_altcat_1(A) ) ).
+
+fof(rc5_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => ? [B] :
+          ( m1_altcat_2(B,A)
+          & v6_altcat_1(B) ) ) ).
+
+fof(fc5_altcat_2,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ( ~ v3_struct_0(k8_altcat_2(A,B))
+        & v2_altcat_1(k8_altcat_2(A,B))
+        & v6_altcat_1(k8_altcat_2(A,B)) ) ) ).
+
+fof(rc6_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A) )
+     => ? [B] :
+          ( m1_altcat_2(B,A)
+          & ~ v3_struct_0(B)
+          & v2_altcat_1(B)
+          & v6_altcat_1(B) ) ) ).
+
+fof(rc7_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => ? [B] :
+          ( m1_altcat_2(B,A)
+          & v6_altcat_1(B)
+          & v2_altcat_2(B,A) ) ) ).
+
+fof(rc8_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A) )
+     => ? [B] :
+          ( m1_altcat_2(B,A)
+          & ~ v3_struct_0(B)
+          & v6_altcat_1(B)
+          & v2_altcat_2(B,A) ) ) ).
+
+fof(fc6_altcat_2,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & v11_altcat_1(A)
+        & v12_altcat_1(A)
+        & l2_altcat_1(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ( ~ v3_struct_0(k8_altcat_2(A,B))
+        & v2_altcat_1(k8_altcat_2(A,B))
+        & v6_altcat_1(k8_altcat_2(A,B))
+        & v2_altcat_2(k8_altcat_2(A,B),A)
+        & v3_altcat_2(k8_altcat_2(A,B),A) ) ) ).
+
+fof(rc9_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & v11_altcat_1(A)
+        & v12_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ? [B] :
+          ( m1_altcat_2(B,A)
+          & ~ v3_struct_0(B)
+          & v6_altcat_1(B)
+          & v2_altcat_2(B,A)
+          & v3_altcat_2(B,A) ) ) ).
+
+fof(cc2_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( m1_altcat_2(B,A)
+         => ( ( ~ v3_struct_0(B)
+              & v2_altcat_2(B,A) )
+           => v2_altcat_1(B) ) ) ) ).
+
+fof(cc3_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & v11_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( m1_altcat_2(B,A)
+         => ( ( ~ v3_struct_0(B)
+              & v2_altcat_1(B) )
+           => ( ~ v3_struct_0(B)
+              & v11_altcat_1(B) ) ) ) ) ).
+
+fof(cc4_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & v12_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( m1_altcat_2(B,A)
+         => ( ( ~ v3_struct_0(B)
+              & v2_altcat_1(B)
+              & v3_altcat_2(B,A) )
+           => ( ~ v3_struct_0(B)
+              & v12_altcat_1(B)
+              & v1_altcat_2(B) ) ) ) ) ).
+
+fof(rc10_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & v11_altcat_1(A)
+        & v12_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ? [B] :
+          ( m1_altcat_2(B,A)
+          & ~ v3_struct_0(B)
+          & v2_altcat_1(B)
+          & v11_altcat_1(B)
+          & v12_altcat_1(B)
+          & v1_altcat_2(B)
+          & v3_altcat_2(B,A) ) ) ).
+
+fof(t1_altcat_2,axiom,
+    ! [A,B,C,D] : k15_funct_3(k2_funcop_1(A,C),k2_funcop_1(B,D)) = k2_funcop_1(k2_zfmisc_1(A,B),k4_tarski(C,D)) ).
+
+fof(t2_altcat_2,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => k2_funct_4(k5_relat_1(A,B)) = k5_relat_1(k2_funct_4(A),B) ) ) ).
+
+fof(t3_altcat_2,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => k2_funct_4(k5_relat_1(k15_funct_3(B,C),A)) = k5_relat_1(k15_funct_3(C,B),k2_funct_4(A)) ) ) ) ).
+
+fof(t4_altcat_2,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r1_pzfmisc1(A,B,C)
+               => ! [E] :
+                    ( m3_pboole(E,A,B,C)
+                   => ! [F] :
+                        ( m3_pboole(F,A,C,D)
+                       => m3_pboole(k13_pboole(E,F),A,B,D) ) ) ) ) ) ) ).
+
+fof(t5_altcat_2,axiom,
+    ! [A,B] :
+      ( ~ v1_xboole_0(B)
+     => ! [C] :
+          ( ( v1_funct_1(C)
+            & v1_funct_2(C,A,B)
+            & m2_relset_1(C,A,B) )
+         => ! [D] :
+              ( m1_pboole(D,B)
+             => ! [E] :
+                  ( m1_pboole(E,B)
+                 => ! [F] :
+                      ( m3_pboole(F,B,D,E)
+                     => m3_pboole(k7_pboole(A,B,C,F),A,k7_pboole(A,B,C,D),k7_pboole(A,B,C,E)) ) ) ) ) ) ).
+
+fof(t6_altcat_2,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( m1_pboole(C,k2_zfmisc_1(A,B))
+             => ! [D] :
+                  ( m1_subset_1(D,A)
+                 => ! [E] :
+                      ( m1_subset_1(E,B)
+                     => k1_binop_1(k18_pralg_1(A,B,C),E,D) = k1_binop_1(C,D,E) ) ) ) ) ) ).
+
+fof(d1_altcat_2,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ( r1_altcat_2(A,B)
+          <=> ( r1_tarski(k1_relat_1(A),k1_relat_1(B))
+              & ! [C] :
+                  ( r2_hidden(C,k1_relat_1(A))
+                 => r1_tarski(k1_funct_1(A,C),k1_funct_1(B,C)) ) ) ) ) ) ).
+
+fof(d2_altcat_2,axiom,
+    ! [A,B,C] :
+      ( m1_pboole(C,A)
+     => ! [D] :
+          ( m1_pboole(D,B)
+         => ( r2_altcat_2(A,B,C,D)
+          <=> ( r1_tarski(A,B)
+              & ! [E] :
+                  ( r2_hidden(E,A)
+                 => r1_tarski(k1_funct_1(C,E),k1_funct_1(D,E)) ) ) ) ) ) ).
+
+fof(t7_altcat_2,axiom,
+    $true ).
+
+fof(t8_altcat_2,axiom,
+    ! [A,B,C] :
+      ( m1_pboole(C,A)
+     => ! [D] :
+          ( m1_pboole(D,B)
+         => ( ( r2_altcat_2(A,B,C,D)
+              & r2_altcat_2(B,A,D,C) )
+           => C = D ) ) ) ).
+
+fof(t9_altcat_2,axiom,
+    ! [A,B,C,D] :
+      ( m1_pboole(D,A)
+     => ! [E] :
+          ( m1_pboole(E,B)
+         => ! [F] :
+              ( m1_pboole(F,C)
+             => ( ( r2_altcat_2(A,B,D,E)
+                  & r2_altcat_2(B,C,E,F) )
+               => r2_altcat_2(A,C,D,F) ) ) ) ) ).
+
+fof(t10_altcat_2,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r2_altcat_2(A,A,B,C)
+          <=> r2_pboole(A,B,C) ) ) ) ).
+
+fof(t11_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_cat_1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_cat_1(A))
+                 => r1_tarski(k12_mcart_1(u2_cat_1(A),u2_cat_1(A),k6_cat_1(A,C,D),k6_cat_1(A,B,C)),k1_relat_1(u5_cat_1(A))) ) ) ) ) ).
+
+fof(t12_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_cat_1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_cat_1(A))
+                 => r1_tarski(k9_relat_1(u5_cat_1(A),k12_mcart_1(u2_cat_1(A),u2_cat_1(A),k6_cat_1(A,C,D),k6_cat_1(A,B,C))),k6_cat_1(A,B,D)) ) ) ) ) ).
+
+fof(d3_altcat_2,axiom,
+    ! [A] :
+      ( l1_cat_1(A)
+     => ! [B] :
+          ( m1_pboole(B,k2_zfmisc_1(u1_cat_1(A),u1_cat_1(A)))
+         => ( B = k4_altcat_2(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_cat_1(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_cat_1(A))
+                   => k1_binop_1(B,C,D) = k6_cat_1(A,C,D) ) ) ) ) ) ).
+
+fof(t13_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => r2_hidden(k10_cat_1(A,B),k1_binop_1(k4_altcat_2(A),B,B)) ) ) ).
+
+fof(d4_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m3_pboole(B,k3_zfmisc_1(u1_cat_1(A),u1_cat_1(A),u1_cat_1(A)),k3_altcat_1(u1_cat_1(A),k4_altcat_2(A),k4_altcat_2(A)),k2_altcat_1(u1_cat_1(A),k4_altcat_2(A)))
+         => ( B = k5_altcat_2(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_cat_1(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_cat_1(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_cat_1(A))
+                       => k4_altcat_1(u1_cat_1(A),k4_altcat_2(A),B,C,D,E) = k7_relat_1(u5_cat_1(A),k2_zfmisc_1(k1_binop_1(k4_altcat_2(A),D,E),k1_binop_1(k4_altcat_2(A),C,D))) ) ) ) ) ) ) ).
+
+fof(t14_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_cat_1(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_cat_1(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_cat_1(A))
+                 => ~ ( k6_cat_1(A,B,C) != k1_xboole_0
+                      & k6_cat_1(A,C,D) != k1_xboole_0
+                      & ~ ! [E] :
+                            ( m1_cat_1(E,A,B,C)
+                           => ! [F] :
+                                ( m1_cat_1(F,A,C,D)
+                               => k1_binop_1(k4_altcat_1(u1_cat_1(A),k4_altcat_2(A),k5_altcat_2(A),B,C,D),F,E) = k9_cat_1(A,B,C,D,E,F) ) ) ) ) ) ) ) ).
+
+fof(t15_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => v3_altcat_1(k5_altcat_2(A),u1_cat_1(A),k4_altcat_2(A)) ) ).
+
+fof(t16_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ( v5_altcat_1(k5_altcat_2(A),u1_cat_1(A),k4_altcat_2(A))
+        & v4_altcat_1(k5_altcat_2(A),u1_cat_1(A),k4_altcat_2(A)) ) ) ).
+
+fof(d5_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => k6_altcat_2(A) = g2_altcat_1(u1_cat_1(A),k4_altcat_2(A),k5_altcat_2(A)) ) ).
+
+fof(t17_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => v11_altcat_1(k6_altcat_2(A)) ) ).
+
+fof(t18_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => v12_altcat_1(k6_altcat_2(A)) ) ).
+
+fof(t19_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => v2_altcat_1(k6_altcat_2(A)) ) ).
+
+fof(d6_altcat_2,axiom,
+    ! [A] :
+      ( l1_altcat_1(A)
+     => ( v1_altcat_2(A)
+      <=> ! [B] :
+            ~ ( r2_hidden(B,u1_struct_0(A))
+              & k1_binop_1(u1_altcat_1(A),B,B) = k1_xboole_0 ) ) ) ).
+
+fof(d7_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_altcat_1(A) )
+     => ( v1_altcat_2(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => k1_altcat_1(A,B,B) != k1_xboole_0 ) ) ) ).
+
+fof(d8_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ( v11_altcat_1(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,k1_altcat_1(A,B,C))
+                           => ! [G] :
+                                ( m1_subset_1(G,k1_altcat_1(A,C,D))
+                               => ! [H] :
+                                    ( m1_subset_1(H,k1_altcat_1(A,D,E))
+                                   => ~ ( k1_altcat_1(A,B,C) != k1_xboole_0
+                                        & k1_altcat_1(A,C,D) != k1_xboole_0
+                                        & k1_altcat_1(A,D,E) != k1_xboole_0
+                                        & k5_altcat_1(A,B,C,E,F,k5_altcat_1(A,C,D,E,G,H)) != k5_altcat_1(A,B,D,E,k5_altcat_1(A,B,C,D,F,G),H) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d9_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A) )
+     => ( v12_altcat_1(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ( k1_altcat_1(A,B,B) != k1_xboole_0
+              & ? [C] :
+                  ( m1_subset_1(C,k1_altcat_1(A,B,B))
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,k1_altcat_1(A,D,B))
+                         => ! [F] :
+                              ( m1_subset_1(F,k1_altcat_1(A,B,D))
+                             => ( ( k1_altcat_1(A,D,B) != k1_xboole_0
+                                 => k5_altcat_1(A,D,B,B,E,C) = E )
+                                & ( k1_altcat_1(A,B,D) != k1_xboole_0
+                                 => k5_altcat_1(A,B,B,D,C,F) = F ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d10_altcat_2,axiom,
+    ! [A] :
+      ( ( v6_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ( A = k7_altcat_2
+      <=> v1_xboole_0(u1_struct_0(A)) ) ) ).
+
+fof(t20_altcat_2,axiom,
+    ! [A] :
+      ( ( v3_struct_0(A)
+        & v6_altcat_1(A)
+        & l2_altcat_1(A) )
+     => A = k7_altcat_2 ) ).
+
+fof(d11_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => ! [B] :
+          ( l2_altcat_1(B)
+         => ( m1_altcat_2(B,A)
+          <=> ( r1_tarski(u1_struct_0(B),u1_struct_0(A))
+              & r2_altcat_2(k2_zfmisc_1(u1_struct_0(B),u1_struct_0(B)),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),u1_altcat_1(B),u1_altcat_1(A))
+              & r2_altcat_2(k3_zfmisc_1(u1_struct_0(B),u1_struct_0(B),u1_struct_0(B)),k3_zfmisc_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A)),u2_altcat_1(B),u2_altcat_1(A)) ) ) ) ) ).
+
+fof(t21_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => m1_altcat_2(A,A) ) ).
+
+fof(t22_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => ! [B] :
+          ( l2_altcat_1(B)
+         => ! [C] :
+              ( l2_altcat_1(C)
+             => ( ( m1_altcat_2(A,B)
+                  & m1_altcat_2(B,C) )
+               => m1_altcat_2(A,C) ) ) ) ) ).
+
+fof(t23_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => ! [B] :
+          ( l2_altcat_1(B)
+         => ( ( m1_altcat_2(A,B)
+              & m1_altcat_2(B,A) )
+           => g2_altcat_1(u1_struct_0(A),u1_altcat_1(A),u2_altcat_1(A)) = g2_altcat_1(u1_struct_0(B),u1_altcat_1(B),u2_altcat_1(B)) ) ) ) ).
+
+fof(d12_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( ( v6_altcat_1(C)
+                & m1_altcat_2(C,A) )
+             => ( C = k8_altcat_2(A,B)
+              <=> ( u1_struct_0(C) = k1_struct_0(A,B)
+                  & u1_altcat_1(C) = k9_funct_2(B,B,k1_altcat_1(A,B,B))
+                  & u2_altcat_1(C) = k7_cat_1(k3_mcart_1(B,B,B),k4_altcat_1(u1_struct_0(A),u1_altcat_1(A),u2_altcat_1(A),B,B,B)) ) ) ) ) ) ).
+
+fof(t24_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k8_altcat_2(A,B)))
+             => C = B ) ) ) ).
+
+fof(t25_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_altcat_1(B)
+            & m1_altcat_2(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v2_altcat_1(C)
+                & m1_altcat_2(C,A) )
+             => ( ( r1_tarski(u1_struct_0(B),u1_struct_0(C))
+                  & r2_altcat_2(k2_zfmisc_1(u1_struct_0(B),u1_struct_0(B)),k2_zfmisc_1(u1_struct_0(C),u1_struct_0(C)),u1_altcat_1(B),u1_altcat_1(C)) )
+               => m1_altcat_2(B,C) ) ) ) ) ).
+
+fof(d13_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => ! [B] :
+          ( m1_altcat_2(B,A)
+         => ( v2_altcat_2(B,A)
+          <=> u1_altcat_1(B) = k1_realset1(u1_altcat_1(A),u1_struct_0(B)) ) ) ) ).
+
+fof(d14_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v12_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( m1_altcat_2(B,A)
+         => ( ( ~ v3_struct_0(B)
+             => ( v3_altcat_2(B,A)
+              <=> ! [C] :
+                    ( m1_subset_1(C,u1_struct_0(B))
+                   => ! [D] :
+                        ( m1_subset_1(D,u1_struct_0(A))
+                       => ( C = D
+                         => r2_hidden(k8_altcat_1(A,D),k1_altcat_1(B,C,C)) ) ) ) ) )
+            & ( v3_struct_0(B)
+             => v3_altcat_2(B,A) ) ) ) ) ).
+
+fof(t26_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( m1_altcat_2(B,A)
+         => ( ( u1_struct_0(B) = u1_struct_0(A)
+              & u1_altcat_1(B) = u1_altcat_1(A) )
+           => g2_altcat_1(u1_struct_0(B),u1_altcat_1(B),u2_altcat_1(B)) = g2_altcat_1(u1_struct_0(A),u1_altcat_1(A),u2_altcat_1(A)) ) ) ) ).
+
+fof(t27_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_altcat_1(B)
+            & m1_altcat_2(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v2_altcat_1(C)
+                & m1_altcat_2(C,A) )
+             => ( ( u1_struct_0(B) = u1_struct_0(C)
+                  & u1_altcat_1(B) = u1_altcat_1(C) )
+               => g2_altcat_1(u1_struct_0(B),u1_altcat_1(B),u2_altcat_1(B)) = g2_altcat_1(u1_struct_0(C),u1_altcat_1(C),u2_altcat_1(C)) ) ) ) ) ).
+
+fof(t28_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( v2_altcat_2(B,A)
+            & m1_altcat_2(B,A) )
+         => ( u1_struct_0(B) = u1_struct_0(A)
+           => g2_altcat_1(u1_struct_0(B),u1_altcat_1(B),u2_altcat_1(B)) = g2_altcat_1(u1_struct_0(A),u1_altcat_1(A),u2_altcat_1(A)) ) ) ) ).
+
+fof(t29_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_altcat_2(B,A)
+            & m1_altcat_2(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(B))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(B))
+                         => ( ( C = E
+                              & D = F )
+                           => k1_altcat_1(A,C,D) = k1_altcat_1(B,E,F) ) ) ) ) ) ) ) ).
+
+fof(t30_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_altcat_2(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => m1_subset_1(C,u1_struct_0(A)) ) ) ) ).
+
+fof(t31_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_altcat_2(B,A)
+            & m1_altcat_2(B,A) )
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & v2_altcat_2(C,A)
+                & m1_altcat_2(C,A) )
+             => ( u1_struct_0(B) = u1_struct_0(C)
+               => g2_altcat_1(u1_struct_0(B),u1_altcat_1(B),u2_altcat_1(B)) = g2_altcat_1(u1_struct_0(C),u1_altcat_1(C),u2_altcat_1(C)) ) ) ) ) ).
+
+fof(t32_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_altcat_2(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(B))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(B))
+                         => ( ( C = E
+                              & D = F )
+                           => r1_tarski(k1_altcat_1(B,E,F),k1_altcat_1(A,C,D)) ) ) ) ) ) ) ) ).
+
+fof(t33_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_altcat_1(B)
+            & m1_altcat_2(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(B))
+                     => ~ ( k1_altcat_1(B,C,D) != k1_xboole_0
+                          & k1_altcat_1(B,D,E) != k1_xboole_0
+                          & ? [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                              & ? [G] :
+                                  ( m1_subset_1(G,u1_struct_0(A))
+                                  & ? [H] :
+                                      ( m1_subset_1(H,u1_struct_0(A))
+                                      & F = C
+                                      & G = D
+                                      & H = E
+                                      & ? [I] :
+                                          ( m1_subset_1(I,k1_altcat_1(A,F,G))
+                                          & ? [J] :
+                                              ( m1_subset_1(J,k1_altcat_1(A,G,H))
+                                              & ? [K] :
+                                                  ( m1_subset_1(K,k1_altcat_1(B,C,D))
+                                                  & ? [L] :
+                                                      ( m1_subset_1(L,k1_altcat_1(B,D,E))
+                                                      & I = K
+                                                      & J = L
+                                                      & k5_altcat_1(A,F,G,H,I,J) != k5_altcat_1(B,C,D,E,K,L) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t34_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & m1_altcat_2(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(B))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(B))
+                         => ( ( C = E
+                              & D = F )
+                           => ( k1_altcat_1(B,E,F) = k1_xboole_0
+                              | ! [G] :
+                                  ( m1_subset_1(G,k1_altcat_1(B,E,F))
+                                 => m1_subset_1(G,k1_altcat_1(A,C,D)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t35_altcat_2,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_altcat_1(A)
+        & v11_altcat_1(A)
+        & v12_altcat_1(A)
+        & l2_altcat_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_altcat_1(B)
+            & v3_altcat_2(B,A)
+            & m1_altcat_2(B,A) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( C = D
+                   => k8_altcat_1(B,C) = k8_altcat_1(A,D) ) ) ) ) ) ).
+
+fof(dt_m1_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => ! [B] :
+          ( m1_altcat_2(B,A)
+         => l2_altcat_1(B) ) ) ).
+
+fof(existence_m1_altcat_2,axiom,
+    ! [A] :
+      ( l2_altcat_1(A)
+     => ? [B] : m1_altcat_2(B,A) ) ).
+
+fof(reflexivity_r1_altcat_2,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_relat_1(B)
+        & v1_funct_1(B) )
+     => r1_altcat_2(A,A) ) ).
+
+fof(reflexivity_r2_altcat_2,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(C,A)
+        & m1_pboole(D,B) )
+     => r2_altcat_2(A,B,C,C) ) ).
+
+fof(redefinition_r2_altcat_2,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(C,A)
+        & m1_pboole(D,B) )
+     => ( r2_altcat_2(A,B,C,D)
+      <=> r1_altcat_2(C,D) ) ) ).
+
+fof(dt_k1_altcat_2,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,k2_zfmisc_1(A,A))
+     => m1_pboole(k1_altcat_2(A,B),k2_zfmisc_1(A,A)) ) ).
+
+fof(redefinition_k1_altcat_2,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,k2_zfmisc_1(A,A))
+     => k1_altcat_2(A,B) = k2_funct_4(B) ) ).
+
+fof(dt_k2_altcat_2,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,k2_zfmisc_1(A,A))
+        & m1_pboole(C,k2_zfmisc_1(A,A))
+        & m3_pboole(D,k2_zfmisc_1(A,A),B,C) )
+     => m3_pboole(k2_altcat_2(A,B,C,D),k2_zfmisc_1(A,A),k1_altcat_2(A,B),k1_altcat_2(A,C)) ) ).
+
+fof(redefinition_k2_altcat_2,axiom,
+    ! [A,B,C,D] :
+      ( ( m1_pboole(B,k2_zfmisc_1(A,A))
+        & m1_pboole(C,k2_zfmisc_1(A,A))
+        & m3_pboole(D,k2_zfmisc_1(A,A),B,C) )
+     => k2_altcat_2(A,B,C,D) = k2_funct_4(D) ) ).
+
+fof(dt_k3_altcat_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funcop_1(B)
+        & m1_pboole(B,A)
+        & v1_funcop_1(C)
+        & m1_pboole(C,A) )
+     => ( v1_funcop_1(k3_altcat_2(A,B,C))
+        & m1_pboole(k3_altcat_2(A,B,C),A) ) ) ).
+
+fof(redefinition_k3_altcat_2,axiom,
+    ! [A,B,C] :
+      ( ( v1_funcop_1(B)
+        & m1_pboole(B,A)
+        & v1_funcop_1(C)
+        & m1_pboole(C,A) )
+     => k3_altcat_2(A,B,C) = k13_pboole(B,C) ) ).
+
+fof(dt_k4_altcat_2,axiom,
+    ! [A] :
+      ( l1_cat_1(A)
+     => m1_pboole(k4_altcat_2(A),k2_zfmisc_1(u1_cat_1(A),u1_cat_1(A))) ) ).
+
+fof(dt_k5_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => m3_pboole(k5_altcat_2(A),k3_zfmisc_1(u1_cat_1(A),u1_cat_1(A),u1_cat_1(A)),k3_altcat_1(u1_cat_1(A),k4_altcat_2(A),k4_altcat_2(A)),k2_altcat_1(u1_cat_1(A),k4_altcat_2(A))) ) ).
+
+fof(dt_k6_altcat_2,axiom,
+    ! [A] :
+      ( ( v2_cat_1(A)
+        & l1_cat_1(A) )
+     => ( ~ v3_struct_0(k6_altcat_2(A))
+        & v6_altcat_1(k6_altcat_2(A))
+        & l2_altcat_1(k6_altcat_2(A)) ) ) ).
+
+fof(dt_k7_altcat_2,axiom,
+    ( v6_altcat_1(k7_altcat_2)
+    & l2_altcat_1(k7_altcat_2) ) ).
+
+fof(dt_k8_altcat_2,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l2_altcat_1(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ( v6_altcat_1(k8_altcat_2(A,B))
+        & m1_altcat_2(k8_altcat_2(A,B),A) ) ) ).
+
+fof(s1_altcat_2,axiom,
+    ( v1_relat_1(a_0_0_altcat_2)
+    & v1_funct_1(a_0_0_altcat_2) ) ).
+
+fof(s2_altcat_2,axiom,
+    ( f2_s2_altcat_2 = a_0_1_altcat_2
+   => k1_relat_1(f2_s2_altcat_2) = a_0_2_altcat_2 ) ).
+
+fof(s3_altcat_2,axiom,
+    ( ( f2_s3_altcat_2 = a_0_3_altcat_2
+      & p1_s3_altcat_2(f3_s3_altcat_2) )
+   => k1_funct_1(f2_s3_altcat_2,f3_s3_altcat_2) = f4_s3_altcat_2(f3_s3_altcat_2) ) ).
+
+fof(fraenkel_a_0_0_altcat_2,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_0_altcat_2)
+    <=> ? [B] :
+          ( m1_subset_1(B,f1_s1_altcat_2)
+          & A = k4_tarski(B,f2_s1_altcat_2(B))
+          & p1_s1_altcat_2(B) ) ) ).
+
+fof(fraenkel_a_0_1_altcat_2,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_1_altcat_2)
+    <=> ? [B] :
+          ( m1_subset_1(B,f1_s2_altcat_2)
+          & A = k4_tarski(B,f3_s2_altcat_2(B))
+          & p1_s2_altcat_2(B) ) ) ).
+
+fof(fraenkel_a_0_2_altcat_2,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_2_altcat_2)
+    <=> ? [B] :
+          ( m1_subset_1(B,f1_s2_altcat_2)
+          & A = B
+          & p1_s2_altcat_2(B) ) ) ).
+
+fof(fraenkel_a_0_3_altcat_2,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_3_altcat_2)
+    <=> ? [B] :
+          ( m1_subset_1(B,f1_s3_altcat_2)
+          & A = k4_tarski(B,f4_s3_altcat_2(B))
+          & p1_s3_altcat_2(B) ) ) ).
+
+%------------------------------------------------------------------------------

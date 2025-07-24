@@ -1,0 +1,709 @@
+%------------------------------------------------------------------------------
+% File     : SET007+294 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Fundamental Types of Metric Affine Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : euclmetr [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   45 (   1 unt;   0 def)
+%            Number of atoms       :  462 (  22 equ)
+%            Maximal formula atoms :   24 (  10 avg)
+%            Number of connectives :  516 (  99   ~;   9   |; 260   &)
+%                                         (  13 <=>; 135  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   26 (  11 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :   43 (  41 usr;   1 prp; 0-5 aty)
+%            Number of functors    :   12 (  12 usr;   2 con; 0-3 aty)
+%            Number of variables   :  124 ( 122   !;   2   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_euclmetr,axiom,
+    ? [A] :
+      ( l1_analmetr(A)
+      & ~ v3_struct_0(A)
+      & v2_analmetr(A)
+      & v3_analmetr(A)
+      & v1_euclmetr(A)
+      & v2_euclmetr(A)
+      & v3_euclmetr(A)
+      & v4_euclmetr(A)
+      & v5_euclmetr(A)
+      & v6_euclmetr(A)
+      & v7_euclmetr(A) ) ).
+
+fof(rc2_euclmetr,axiom,
+    ? [A] :
+      ( l1_analmetr(A)
+      & ~ v3_struct_0(A)
+      & v2_analmetr(A)
+      & v1_euclmetr(A)
+      & v2_euclmetr(A)
+      & v3_euclmetr(A)
+      & v4_euclmetr(A)
+      & v5_euclmetr(A)
+      & v6_euclmetr(A)
+      & v7_euclmetr(A) ) ).
+
+fof(fc1_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & v2_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v2_diraf(k3_analmetr(A))
+        & v2_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc2_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & v3_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v2_diraf(k3_analmetr(A))
+        & v4_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc3_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & v5_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v2_diraf(k3_analmetr(A))
+        & v7_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc4_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & v6_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v2_diraf(k3_analmetr(A))
+        & v11_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc5_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & v4_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v2_diraf(k3_analmetr(A))
+        & v1_translac(k3_analmetr(A)) ) ) ).
+
+fof(fc6_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & v7_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v2_diraf(k3_analmetr(A))
+        & v4_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc7_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & v1_euclmetr(A)
+        & v3_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v2_diraf(k3_analmetr(A))
+        & v2_aff_2(k3_analmetr(A))
+        & v4_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc8_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & v2_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v2_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc9_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & v3_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v4_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc10_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & v5_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v7_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc11_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & v6_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v11_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(fc12_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & v4_euclmetr(A)
+        & l1_analmetr(A) )
+     => ( ~ v3_struct_0(k3_analmetr(A))
+        & ~ v3_realset2(k3_analmetr(A))
+        & v1_analoaf(k3_analmetr(A))
+        & v1_diraf(k3_analmetr(A))
+        & v1_translac(k3_analmetr(A)) ) ) ).
+
+fof(d1_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v1_euclmetr(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ( ( r5_analmetr(A,B,C,D,E)
+                            & r5_analmetr(A,C,D,B,E) )
+                         => r5_analmetr(A,C,E,B,D) ) ) ) ) ) ) ) ).
+
+fof(d2_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v2_euclmetr(A)
+      <=> v2_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(d3_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v3_euclmetr(A)
+      <=> v4_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(d4_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v4_euclmetr(A)
+      <=> v1_translac(k3_analmetr(A)) ) ) ).
+
+fof(d5_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v5_euclmetr(A)
+      <=> v7_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(d6_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v6_euclmetr(A)
+      <=> v11_aff_2(k3_analmetr(A)) ) ) ).
+
+fof(d7_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v7_euclmetr(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ! [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(A))
+                                   => ( ( r5_analmetr(A,B,C,B,D)
+                                        & r5_analmetr(A,B,E,B,F)
+                                        & r5_analmetr(A,B,G,B,H)
+                                        & r5_analmetr(A,C,E,D,F)
+                                        & r5_analmetr(A,C,G,D,H) )
+                                     => ( r4_analmetr(A,B,G,B,C)
+                                        | r4_analmetr(A,B,C,B,E)
+                                        | r5_analmetr(A,E,G,F,H) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t1_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( ~ r6_analmetr(A,B,C,D)
+                   => ( B != C
+                      & C != D
+                      & B != D ) ) ) ) ) ) ).
+
+fof(t2_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A)))
+                         => ( ( r7_analmetr(A,B,C,F)
+                              & r7_analmetr(A,D,E,F) )
+                           => ( r4_analmetr(A,B,C,D,E)
+                              & r4_analmetr(A,B,C,E,D) ) ) ) ) ) ) ) ) ).
+
+fof(t3_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A)))
+                     => ~ ( B != C
+                          & ( r7_analmetr(A,B,C,E)
+                            | r7_analmetr(A,C,B,E) )
+                          & ( r7_analmetr(A,B,C,D)
+                            | r7_analmetr(A,C,B,D) )
+                          & ~ r10_analmetr(A,E,D) ) ) ) ) ) ) ).
+
+fof(t4_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r6_analmetr(A,B,C,D)
+                   => ( r6_analmetr(A,B,D,C)
+                      & r6_analmetr(A,C,B,D)
+                      & r6_analmetr(A,C,D,B)
+                      & r6_analmetr(A,D,B,C)
+                      & r6_analmetr(A,D,C,B) ) ) ) ) ) ) ).
+
+fof(t5_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ~ ( ~ r6_analmetr(A,B,C,D)
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ~ ( r5_analmetr(A,E,B,C,D)
+                              & r5_analmetr(A,E,C,B,D) ) ) ) ) ) ) ) ).
+
+fof(t6_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ( ( r5_analmetr(A,E,B,C,D)
+                              & r5_analmetr(A,E,C,B,D)
+                              & r5_analmetr(A,F,B,C,D)
+                              & r5_analmetr(A,F,C,B,D) )
+                           => ( r6_analmetr(A,B,C,D)
+                              | E = F ) ) ) ) ) ) ) ) ).
+
+fof(t7_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ~ ( r5_analmetr(A,B,C,D,E)
+                          & r5_analmetr(A,C,D,B,E)
+                          & r6_analmetr(A,B,C,D)
+                          & B != D
+                          & B != C
+                          & C != D ) ) ) ) ) ) ).
+
+fof(t8_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v1_euclmetr(A)
+      <=> v3_conaffm(A) ) ) ).
+
+fof(t9_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v7_euclmetr(A)
+      <=> v4_conaffm(A) ) ) ).
+
+fof(t10_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v2_euclmetr(A)
+      <=> v2_conmetr(A) ) ) ).
+
+fof(t11_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v3_euclmetr(A)
+      <=> v1_conaffm(A) ) ) ).
+
+fof(t12_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v5_euclmetr(A)
+      <=> v5_conmetr(A) ) ) ).
+
+fof(t13_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v6_euclmetr(A)
+      <=> v8_conmetr(A) ) ) ).
+
+fof(t14_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ( v7_euclmetr(A)
+       => v3_euclmetr(A) ) ) ).
+
+fof(t15_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ( ( v1_euclmetr(A)
+          & v3_euclmetr(A) )
+       => v2_euclmetr(A) ) ) ).
+
+fof(t16_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( ( r5_analmetr(A,B,C,B,D)
+                                  & r5_analmetr(A,B,E,B,F)
+                                  & r5_analmetr(A,B,E,B,G)
+                                  & r5_analmetr(A,C,E,D,F)
+                                  & r5_analmetr(A,C,E,D,G) )
+                               => ( r6_analmetr(A,B,C,E)
+                                  | B = D
+                                  | F = G ) ) ) ) ) ) ) ) ) ).
+
+fof(t17_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ~ ( ~ r6_analmetr(A,B,C,E)
+                          & B != D
+                          & ! [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                             => ~ ( r5_analmetr(A,B,E,B,F)
+                                  & r5_analmetr(A,C,E,D,F) ) ) ) ) ) ) ) ) ).
+
+fof(t18_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ! [G] :
+                              ( m1_subset_1(G,k1_numbers)
+                             => ~ ( r1_analmetr(A,B,C)
+                                  & k1_rlvect_1(A) != D
+                                  & k1_rlvect_1(A) != E
+                                  & r2_analmetr(A,D,E,B,C)
+                                  & D = k4_rlvect_1(A,k3_rlvect_1(A,B,F),k3_rlvect_1(A,C,G))
+                                  & ! [H] :
+                                      ( m1_subset_1(H,k1_numbers)
+                                     => ~ ( H != np__0
+                                          & E = k4_rlvect_1(A,k3_rlvect_1(A,B,k4_real_1(H,G)),k3_rlvect_1(A,C,k1_real_1(k4_real_1(H,F)))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t19_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ~ ( r1_analmetr(A,B,C)
+                          & k1_rlvect_1(A) != D
+                          & k1_rlvect_1(A) != E
+                          & r2_analmetr(A,D,E,B,C)
+                          & ! [F] :
+                              ( m1_subset_1(F,k1_numbers)
+                             => ~ ! [G] :
+                                    ( m1_subset_1(G,k1_numbers)
+                                   => ! [H] :
+                                        ( m1_subset_1(H,k1_numbers)
+                                       => ( r2_analmetr(A,k4_rlvect_1(A,k3_rlvect_1(A,B,G),k3_rlvect_1(A,C,H)),k4_rlvect_1(A,k3_rlvect_1(A,B,k4_real_1(F,H)),k3_rlvect_1(A,C,k1_real_1(k4_real_1(F,G)))),B,C)
+                                          & r2_analmetr(A,k6_rlvect_1(A,k4_rlvect_1(A,k3_rlvect_1(A,B,G),k3_rlvect_1(A,C,H)),D),k6_rlvect_1(A,k4_rlvect_1(A,k3_rlvect_1(A,B,k4_real_1(F,H)),k3_rlvect_1(A,C,k1_real_1(k4_real_1(F,G)))),E),B,C) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t20_euclmetr,axiom,
+    $true ).
+
+fof(t21_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_rlvect_1(B)
+            & l2_rlvect_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ( ( r1_analmetr(B,C,D)
+                      & A = k2_analmetr(B,C,D) )
+                   => v5_conaffm(A) ) ) ) ) ) ).
+
+fof(t22_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ( ( r5_analmetr(A,B,C,B,D)
+                                      & r5_analmetr(A,B,E,B,F)
+                                      & r5_analmetr(A,B,G,B,H)
+                                      & r5_analmetr(A,C,E,D,F)
+                                      & r5_analmetr(A,C,G,D,H)
+                                      & B = D )
+                                   => ( r4_analmetr(A,B,G,B,C)
+                                      | r4_analmetr(A,B,C,B,E)
+                                      | r5_analmetr(A,E,G,F,H) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t23_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_rlvect_1(B)
+            & l2_rlvect_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ( ( r1_analmetr(B,C,D)
+                      & A = k2_analmetr(B,C,D) )
+                   => v7_euclmetr(A) ) ) ) ) ) ).
+
+fof(t24_euclmetr,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_analmetr(A)
+        & l1_analmetr(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v3_rlvect_1(B)
+            & v4_rlvect_1(B)
+            & v5_rlvect_1(B)
+            & v6_rlvect_1(B)
+            & v7_rlvect_1(B)
+            & l2_rlvect_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(B))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(B))
+                 => ( ( r1_analmetr(B,C,D)
+                      & A = k2_analmetr(B,C,D) )
+                   => ( ~ v3_struct_0(A)
+                      & v3_analmetr(A)
+                      & v1_euclmetr(A)
+                      & v2_euclmetr(A)
+                      & v3_euclmetr(A)
+                      & v4_euclmetr(A)
+                      & v5_euclmetr(A)
+                      & v6_euclmetr(A)
+                      & v7_euclmetr(A)
+                      & l1_analmetr(A) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

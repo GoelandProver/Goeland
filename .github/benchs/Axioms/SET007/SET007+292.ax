@@ -1,0 +1,1335 @@
+%------------------------------------------------------------------------------
+% File     : SET007+292 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Preliminaries to the Lambek Calculus
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : prelamb [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   88 (   3 unt;   0 def)
+%            Number of atoms       :  810 ( 143 equ)
+%            Maximal formula atoms :   93 (   9 avg)
+%            Number of connectives :  849 ( 127   ~;   1   |; 399   &)
+%                                         (  30 <=>; 292  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   30 (  10 avg)
+%            Maximal term depth    :    7 (   2 avg)
+%            Number of predicates  :   36 (  34 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   50 (  50 usr;  11 con; 0-6 aty)
+%            Number of variables   :  379 ( 322   !;  57   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_prelamb,axiom,
+    ? [A] :
+      ( l1_prelamb(A)
+      & v1_prelamb(A) ) ).
+
+fof(rc2_prelamb,axiom,
+    ? [A] :
+      ( l1_prelamb(A)
+      & ~ v3_struct_0(A)
+      & v1_prelamb(A) ) ).
+
+fof(rc3_prelamb,axiom,
+    ? [A] :
+      ( l2_prelamb(A)
+      & v9_prelamb(A) ) ).
+
+fof(rc4_prelamb,axiom,
+    ? [A] :
+      ( l2_prelamb(A)
+      & ~ v3_struct_0(A)
+      & v9_prelamb(A) ) ).
+
+fof(rc5_prelamb,axiom,
+    ? [A] :
+      ( l2_prelamb(A)
+      & ~ v3_struct_0(A)
+      & v10_prelamb(A) ) ).
+
+fof(d1_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k1_prelamb(A,B,C) = k2_binop_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),u1_prelamb(A),B,C) ) ) ) ).
+
+fof(d2_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k2_prelamb(A,B,C) = k2_binop_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),u2_prelamb(A),B,C) ) ) ) ).
+
+fof(d3_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k3_prelamb(A,B,C) = k2_binop_1(u1_struct_0(A),u1_struct_0(A),u1_struct_0(A),u3_prelamb(A),B,C) ) ) ) ).
+
+fof(d4_prelamb,axiom,
+    $true ).
+
+fof(d5_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_finset_1(B)
+            & v3_trees_2(B)
+            & m3_trees_2(B,k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers)) )
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ( ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__0
+                 => ( v2_prelamb(C,A,B)
+                  <=> ( k10_trees_2(k1_relat_1(B),C) = np__0
+                      & ? [D] :
+                          ( m1_subset_1(D,u1_struct_0(A))
+                          & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k4_tarski(k12_finseq_1(u1_struct_0(A),D),D) ) ) ) )
+                & ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__1
+                 => ( v2_prelamb(C,A,B)
+                  <=> ( k10_trees_2(k1_relat_1(B),C) = np__1
+                      & ? [D] :
+                          ( m2_finseq_1(D,u1_struct_0(A))
+                          & ? [E] :
+                              ( m1_subset_1(E,u1_struct_0(A))
+                              & ? [F] :
+                                  ( m1_subset_1(F,u1_struct_0(A))
+                                  & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k4_tarski(D,k2_prelamb(A,E,F))
+                                  & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0)))) = k4_tarski(k8_finseq_1(u1_struct_0(A),D,k12_finseq_1(u1_struct_0(A),F)),E) ) ) ) ) ) )
+                & ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__2
+                 => ( v2_prelamb(C,A,B)
+                  <=> ( k10_trees_2(k1_relat_1(B),C) = np__1
+                      & ? [D] :
+                          ( m2_finseq_1(D,u1_struct_0(A))
+                          & ? [E] :
+                              ( m1_subset_1(E,u1_struct_0(A))
+                              & ? [F] :
+                                  ( m1_subset_1(F,u1_struct_0(A))
+                                  & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k4_tarski(D,k1_prelamb(A,F,E))
+                                  & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0)))) = k4_tarski(k8_finseq_1(u1_struct_0(A),k12_finseq_1(u1_struct_0(A),F),D),E) ) ) ) ) ) )
+                & ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__3
+                 => ( v2_prelamb(C,A,B)
+                  <=> ( k10_trees_2(k1_relat_1(B),C) = np__2
+                      & ? [D] :
+                          ( m2_finseq_1(D,u1_struct_0(A))
+                          & ? [E] :
+                              ( m2_finseq_1(E,u1_struct_0(A))
+                              & ? [F] :
+                                  ( m2_finseq_1(F,u1_struct_0(A))
+                                  & ? [G] :
+                                      ( m1_subset_1(G,u1_struct_0(A))
+                                      & ? [H] :
+                                          ( m1_subset_1(H,u1_struct_0(A))
+                                          & ? [I] :
+                                              ( m1_subset_1(I,u1_struct_0(A))
+                                              & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k4_tarski(k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,k12_finseq_1(u1_struct_0(A),k2_prelamb(A,G,H))),D),F),I)
+                                              & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0)))) = k4_tarski(D,H)
+                                              & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__1)))) = k4_tarski(k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,k12_finseq_1(u1_struct_0(A),G)),F),I) ) ) ) ) ) ) ) ) )
+                & ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__4
+                 => ( v2_prelamb(C,A,B)
+                  <=> ( k10_trees_2(k1_relat_1(B),C) = np__2
+                      & ? [D] :
+                          ( m2_finseq_1(D,u1_struct_0(A))
+                          & ? [E] :
+                              ( m2_finseq_1(E,u1_struct_0(A))
+                              & ? [F] :
+                                  ( m2_finseq_1(F,u1_struct_0(A))
+                                  & ? [G] :
+                                      ( m1_subset_1(G,u1_struct_0(A))
+                                      & ? [H] :
+                                          ( m1_subset_1(H,u1_struct_0(A))
+                                          & ? [I] :
+                                              ( m1_subset_1(I,u1_struct_0(A))
+                                              & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k4_tarski(k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,D),k12_finseq_1(u1_struct_0(A),k1_prelamb(A,H,G))),F),I)
+                                              & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0)))) = k4_tarski(D,H)
+                                              & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__1)))) = k4_tarski(k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,k12_finseq_1(u1_struct_0(A),G)),F),I) ) ) ) ) ) ) ) ) )
+                & ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__5
+                 => ( v2_prelamb(C,A,B)
+                  <=> ! [D] :
+                        ( m1_subset_1(D,u1_struct_0(A))
+                       => ( k10_trees_2(k1_relat_1(B),C) = np__1
+                          & ? [E] :
+                              ( m2_finseq_1(E,u1_struct_0(A))
+                              & ? [F] :
+                                  ( m1_subset_1(F,u1_struct_0(A))
+                                  & ? [G] :
+                                      ( m1_subset_1(G,u1_struct_0(A))
+                                      & ? [H] :
+                                          ( m2_finseq_1(H,u1_struct_0(A))
+                                          & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k4_tarski(k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,k12_finseq_1(u1_struct_0(A),k3_prelamb(A,F,G))),H),D)
+                                          & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0)))) = k4_tarski(k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,k12_finseq_1(u1_struct_0(A),F)),k12_finseq_1(u1_struct_0(A),G)),H),D) ) ) ) ) ) ) ) )
+                & ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__6
+                 => ( v2_prelamb(C,A,B)
+                  <=> ( k10_trees_2(k1_relat_1(B),C) = np__2
+                      & ? [D] :
+                          ( m2_finseq_1(D,u1_struct_0(A))
+                          & ? [E] :
+                              ( m2_finseq_1(E,u1_struct_0(A))
+                              & ? [F] :
+                                  ( m1_subset_1(F,u1_struct_0(A))
+                                  & ? [G] :
+                                      ( m1_subset_1(G,u1_struct_0(A))
+                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k4_tarski(k8_finseq_1(u1_struct_0(A),D,E),k3_prelamb(A,F,G))
+                                      & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0)))) = k4_tarski(D,F)
+                                      & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__1)))) = k4_tarski(E,G) ) ) ) ) ) ) )
+                & ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__7
+                 => ( v2_prelamb(C,A,B)
+                  <=> ( k10_trees_2(k1_relat_1(B),C) = np__2
+                      & ? [D] :
+                          ( m2_finseq_1(D,u1_struct_0(A))
+                          & ? [E] :
+                              ( m2_finseq_1(E,u1_struct_0(A))
+                              & ? [F] :
+                                  ( m2_finseq_1(F,u1_struct_0(A))
+                                  & ? [G] :
+                                      ( m1_subset_1(G,u1_struct_0(A))
+                                      & ? [H] :
+                                          ( m1_subset_1(H,u1_struct_0(A))
+                                          & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k4_tarski(k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,D),F),H)
+                                          & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0)))) = k4_tarski(D,G)
+                                          & k1_mcart_1(k1_funct_1(B,k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__1)))) = k4_tarski(k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,k12_finseq_1(u1_struct_0(A),G)),F),H) ) ) ) ) ) ) ) )
+                & ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__0
+                    & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__1
+                    & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__2
+                    & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__3
+                    & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__4
+                    & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__5
+                    & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__6
+                    & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__7
+                    & ~ ( v2_prelamb(C,A,B)
+                      <=> ~ $true ) ) ) ) ) ) ).
+
+fof(d6_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v3_prelamb(B,A)
+          <=> ? [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+                & ? [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                    & B = k1_prelamb(A,C,D) ) ) ) ) ) ).
+
+fof(d7_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v4_prelamb(B,A)
+          <=> ? [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+                & ? [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                    & B = k2_prelamb(A,C,D) ) ) ) ) ) ).
+
+fof(d8_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v5_prelamb(B,A)
+          <=> ? [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+                & ? [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                    & B = k3_prelamb(A,C,D) ) ) ) ) ) ).
+
+fof(d9_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v6_prelamb(B,A)
+          <=> ( ~ v3_prelamb(B,A)
+              & ~ v4_prelamb(B,A)
+              & ~ v5_prelamb(B,A) ) ) ) ) ).
+
+fof(d10_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_finset_1(B)
+            & v3_trees_2(B)
+            & m3_trees_2(B,u1_struct_0(A)) )
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_prelamb(A,B,C)
+              <=> ( v1_finset_1(k1_relat_1(B))
+                  & ! [D] :
+                      ( m1_trees_1(D,k1_relat_1(B))
+                     => ( ( k10_trees_2(k1_relat_1(B),D) = np__0
+                          | k10_trees_2(k1_relat_1(B),D) = np__2 )
+                        & ( k10_trees_2(k1_relat_1(B),D) = np__0
+                         => v6_prelamb(k4_prelamb(A,B,D),A) )
+                        & ~ ( k10_trees_2(k1_relat_1(B),D) = np__2
+                            & ! [E] :
+                                ( m1_subset_1(E,u1_struct_0(A))
+                               => ! [F] :
+                                    ( m1_subset_1(F,u1_struct_0(A))
+                                   => ~ ( ~ ( k4_prelamb(A,B,D) != k2_prelamb(A,E,F)
+                                            & k4_prelamb(A,B,D) != k1_prelamb(A,E,F)
+                                            & k4_prelamb(A,B,D) != k3_prelamb(A,E,F) )
+                                        & k1_funct_1(B,k8_finseq_1(k5_numbers,D,k12_finseq_1(k5_numbers,np__0))) = E
+                                        & k1_funct_1(B,k8_finseq_1(k5_numbers,D,k12_finseq_1(k5_numbers,np__1))) = F ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d11_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ( v7_prelamb(A)
+      <=> ( ! [B] :
+              ( m1_subset_1(B,u1_struct_0(A))
+             => ( ~ ( v3_prelamb(B,A)
+                    & v4_prelamb(B,A) )
+                & ~ ( v3_prelamb(B,A)
+                    & v5_prelamb(B,A) )
+                & ~ ( v4_prelamb(B,A)
+                    & v5_prelamb(B,A) ) ) )
+          & ! [B] :
+              ( m1_subset_1(B,u1_struct_0(A))
+             => ? [C] :
+                  ( v1_funct_1(C)
+                  & v1_finset_1(C)
+                  & v3_trees_2(C)
+                  & m3_trees_2(C,u1_struct_0(A))
+                  & ! [D] :
+                      ( ( v1_funct_1(D)
+                        & v1_finset_1(D)
+                        & v3_trees_2(D)
+                        & m3_trees_2(D,u1_struct_0(A)) )
+                     => ( r1_prelamb(A,D,B)
+                      <=> C = D ) ) ) ) ) ) ) ).
+
+fof(d12_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( v7_prelamb(A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & v1_finset_1(C)
+                  & v3_trees_2(C)
+                  & m3_trees_2(C,u1_struct_0(A)) )
+               => ( C = k5_prelamb(A,B)
+                <=> ! [D] :
+                      ( ( v1_funct_1(D)
+                        & v1_finset_1(D)
+                        & v3_trees_2(D)
+                        & m3_trees_2(D,u1_struct_0(A)) )
+                     => ( r1_prelamb(A,D,B)
+                      <=> C = D ) ) ) ) ) ) ) ).
+
+fof(d13_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_finset_1(B)
+            & v3_trees_2(B)
+            & m3_trees_2(B,k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers)) )
+         => ( m1_prelamb(B,A)
+          <=> ( v1_finset_1(k1_relat_1(B))
+              & ! [C] :
+                  ( m1_trees_1(C,k1_relat_1(B))
+                 => v2_prelamb(C,A,B) ) ) ) ) ) ).
+
+fof(t1_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ( k10_trees_2(k1_relat_1(B),C) = np__1
+               => r2_hidden(k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0)),k1_relat_1(B)) ) ) ) ) ).
+
+fof(t2_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ( k10_trees_2(k1_relat_1(B),C) = np__2
+               => ( r2_hidden(k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0)),k1_relat_1(B))
+                  & r2_hidden(k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__1)),k1_relat_1(B)) ) ) ) ) ) ).
+
+fof(t3_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__0
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != k6_prelamb(A,k12_finseq_1(u1_struct_0(A),D),D) ) ) ) ) ) ).
+
+fof(t4_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__1
+                  & ! [D] :
+                      ( m1_trees_1(D,k1_relat_1(B))
+                     => ! [E] :
+                          ( m2_finseq_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                             => ! [G] :
+                                  ( m1_subset_1(G,u1_struct_0(A))
+                                 => ~ ( D = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0))
+                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k6_prelamb(A,E,k2_prelamb(A,F,G))
+                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,D)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),E,k12_finseq_1(u1_struct_0(A),G)),F) ) ) ) ) ) ) ) ) ) ).
+
+fof(t5_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__2
+                  & ! [D] :
+                      ( m1_trees_1(D,k1_relat_1(B))
+                     => ! [E] :
+                          ( m2_finseq_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                             => ! [G] :
+                                  ( m1_subset_1(G,u1_struct_0(A))
+                                 => ~ ( D = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0))
+                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k6_prelamb(A,E,k1_prelamb(A,G,F))
+                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,D)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k12_finseq_1(u1_struct_0(A),G),E),F) ) ) ) ) ) ) ) ) ) ).
+
+fof(t6_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__3
+                  & ! [D] :
+                      ( m1_trees_1(D,k1_relat_1(B))
+                     => ! [E] :
+                          ( m1_trees_1(E,k1_relat_1(B))
+                         => ! [F] :
+                              ( m2_finseq_1(F,u1_struct_0(A))
+                             => ! [G] :
+                                  ( m2_finseq_1(G,u1_struct_0(A))
+                                 => ! [H] :
+                                      ( m2_finseq_1(H,u1_struct_0(A))
+                                     => ! [I] :
+                                          ( m1_subset_1(I,u1_struct_0(A))
+                                         => ! [J] :
+                                              ( m1_subset_1(J,u1_struct_0(A))
+                                             => ! [K] :
+                                                  ( m1_subset_1(K,u1_struct_0(A))
+                                                 => ~ ( D = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0))
+                                                      & E = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__1))
+                                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),G,k12_finseq_1(u1_struct_0(A),k2_prelamb(A,I,J))),F),H),K)
+                                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,D)) = k6_prelamb(A,F,J)
+                                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,E)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),G,k12_finseq_1(u1_struct_0(A),I)),H),K) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t7_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__4
+                  & ! [D] :
+                      ( m1_trees_1(D,k1_relat_1(B))
+                     => ! [E] :
+                          ( m1_trees_1(E,k1_relat_1(B))
+                         => ! [F] :
+                              ( m2_finseq_1(F,u1_struct_0(A))
+                             => ! [G] :
+                                  ( m2_finseq_1(G,u1_struct_0(A))
+                                 => ! [H] :
+                                      ( m2_finseq_1(H,u1_struct_0(A))
+                                     => ! [I] :
+                                          ( m1_subset_1(I,u1_struct_0(A))
+                                         => ! [J] :
+                                              ( m1_subset_1(J,u1_struct_0(A))
+                                             => ! [K] :
+                                                  ( m1_subset_1(K,u1_struct_0(A))
+                                                 => ~ ( D = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0))
+                                                      & E = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__1))
+                                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),G,F),k12_finseq_1(u1_struct_0(A),k1_prelamb(A,J,I))),H),K)
+                                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,D)) = k6_prelamb(A,F,J)
+                                                      & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,E)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),G,k12_finseq_1(u1_struct_0(A),I)),H),K) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t8_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_prelamb(C,A)
+             => ! [D] :
+                  ( m1_trees_1(D,k1_relat_1(C))
+                 => ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),C,D)) = np__5
+                      & ! [E] :
+                          ( m1_trees_1(E,k1_relat_1(C))
+                         => ! [F] :
+                              ( m2_finseq_1(F,u1_struct_0(A))
+                             => ! [G] :
+                                  ( m1_subset_1(G,u1_struct_0(A))
+                                 => ! [H] :
+                                      ( m1_subset_1(H,u1_struct_0(A))
+                                     => ! [I] :
+                                          ( m2_finseq_1(I,u1_struct_0(A))
+                                         => ~ ( E = k8_finseq_1(k5_numbers,D,k12_finseq_1(k5_numbers,np__0))
+                                              & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),C,D)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),F,k12_finseq_1(u1_struct_0(A),k3_prelamb(A,G,H))),I),B)
+                                              & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),C,E)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),F,k12_finseq_1(u1_struct_0(A),G)),k12_finseq_1(u1_struct_0(A),H)),I),B) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t9_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__6
+                  & ! [D] :
+                      ( m1_trees_1(D,k1_relat_1(B))
+                     => ! [E] :
+                          ( m1_trees_1(E,k1_relat_1(B))
+                         => ! [F] :
+                              ( m2_finseq_1(F,u1_struct_0(A))
+                             => ! [G] :
+                                  ( m2_finseq_1(G,u1_struct_0(A))
+                                 => ! [H] :
+                                      ( m1_subset_1(H,u1_struct_0(A))
+                                     => ! [I] :
+                                          ( m1_subset_1(I,u1_struct_0(A))
+                                         => ~ ( D = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0))
+                                              & E = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__1))
+                                              & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),F,G),k3_prelamb(A,H,I))
+                                              & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,D)) = k6_prelamb(A,F,H)
+                                              & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,E)) = k6_prelamb(A,G,I) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t10_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = np__7
+                  & ! [D] :
+                      ( m1_trees_1(D,k1_relat_1(B))
+                     => ! [E] :
+                          ( m1_trees_1(E,k1_relat_1(B))
+                         => ! [F] :
+                              ( m2_finseq_1(F,u1_struct_0(A))
+                             => ! [G] :
+                                  ( m2_finseq_1(G,u1_struct_0(A))
+                                 => ! [H] :
+                                      ( m2_finseq_1(H,u1_struct_0(A))
+                                     => ! [I] :
+                                          ( m1_subset_1(I,u1_struct_0(A))
+                                         => ! [J] :
+                                              ( m1_subset_1(J,u1_struct_0(A))
+                                             => ~ ( D = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__0))
+                                                  & E = k8_finseq_1(k5_numbers,C,k12_finseq_1(k5_numbers,np__1))
+                                                  & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),G,F),H),J)
+                                                  & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,D)) = k6_prelamb(A,F,I)
+                                                  & k1_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,E)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),G,k12_finseq_1(u1_struct_0(A),I)),H),J) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t11_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(B))
+             => ~ ( k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__0
+                  & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__1
+                  & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__2
+                  & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__3
+                  & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__4
+                  & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__5
+                  & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__6
+                  & k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__7 ) ) ) ) ).
+
+fof(d14_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_finset_1(B)
+            & v3_trees_2(B)
+            & m3_trees_2(B,k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers)) )
+         => ( v8_prelamb(B,A)
+          <=> ! [C] :
+                ( m1_trees_1(C,k1_relat_1(B))
+               => k2_mcart_1(k3_trees_2(k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers),B,C)) != np__7 ) ) ) ) ).
+
+fof(d15_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( ( v1_funct_1(B)
+            & v1_funct_2(B,u1_struct_0(A),k5_numbers)
+            & m2_relset_1(B,u1_struct_0(A),k5_numbers) )
+         => ( B = k7_prelamb(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => k8_funct_2(u1_struct_0(A),k5_numbers,B,C) = k4_card_1(k1_relat_1(k5_prelamb(A,C))) ) ) ) ) ).
+
+fof(d16_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( k2_mcart_1(k1_funct_1(B,k1_xboole_0)) = np__7
+                 => ( C = k9_prelamb(A,B)
+                  <=> ? [D] :
+                        ( m2_finseq_1(D,u1_struct_0(A))
+                        & ? [E] :
+                            ( m2_finseq_1(E,u1_struct_0(A))
+                            & ? [F] :
+                                ( m2_finseq_1(F,u1_struct_0(A))
+                                & ? [G] :
+                                    ( m1_subset_1(G,u1_struct_0(A))
+                                    & ? [H] :
+                                        ( m1_subset_1(H,u1_struct_0(A))
+                                        & k1_mcart_1(k1_funct_1(B,k1_xboole_0)) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,D),F),H)
+                                        & k1_mcart_1(k1_funct_1(B,k12_finseq_1(k5_numbers,np__0))) = k6_prelamb(A,D,G)
+                                        & k1_mcart_1(k1_funct_1(B,k12_finseq_1(k5_numbers,np__1))) = k6_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,k12_finseq_1(u1_struct_0(A),G)),F),H)
+                                        & C = k3_real_1(k1_nat_1(k8_funct_2(u1_struct_0(A),k5_numbers,k7_prelamb(A),G),k8_funct_2(u1_struct_0(A),k5_numbers,k7_prelamb(A),H)),k15_rvsum_1(k8_prelamb(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),E,D),F),k7_prelamb(A)))) ) ) ) ) ) ) )
+                & ( k2_mcart_1(k1_funct_1(B,k1_xboole_0)) != np__7
+                 => ( C = k9_prelamb(A,B)
+                  <=> C = np__0 ) ) ) ) ) ) ).
+
+fof(d18_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m2_finseq_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r2_prelamb(A,B,C)
+              <=> r2_hidden(k6_prelamb(A,B,C),u4_prelamb(A)) ) ) ) ) ).
+
+fof(d19_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_prelamb(A) )
+     => ( v10_prelamb(A)
+      <=> ( ! [B] :
+              ( m1_subset_1(B,u1_struct_0(A))
+             => r2_prelamb(A,k12_finseq_1(u1_struct_0(A),B),B) )
+          & ! [B] :
+              ( m2_finseq_1(B,u1_struct_0(A))
+             => ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ( r2_prelamb(A,k8_finseq_1(u1_struct_0(A),B,k12_finseq_1(u1_struct_0(A),D)),C)
+                       => r2_prelamb(A,B,k2_prelamb(A,C,D)) ) ) ) )
+          & ! [B] :
+              ( m2_finseq_1(B,u1_struct_0(A))
+             => ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ( r2_prelamb(A,k8_finseq_1(u1_struct_0(A),k12_finseq_1(u1_struct_0(A),D),B),C)
+                       => r2_prelamb(A,B,k1_prelamb(A,D,C)) ) ) ) )
+          & ! [B] :
+              ( m2_finseq_1(B,u1_struct_0(A))
+             => ! [C] :
+                  ( m2_finseq_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m2_finseq_1(D,u1_struct_0(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                             => ! [G] :
+                                  ( m1_subset_1(G,u1_struct_0(A))
+                                 => ( ( r2_prelamb(A,B,F)
+                                      & r2_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),C,k12_finseq_1(u1_struct_0(A),E)),D),G) )
+                                   => r2_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),C,k12_finseq_1(u1_struct_0(A),k2_prelamb(A,E,F))),B),D),G) ) ) ) ) ) ) )
+          & ! [B] :
+              ( m2_finseq_1(B,u1_struct_0(A))
+             => ! [C] :
+                  ( m2_finseq_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m2_finseq_1(D,u1_struct_0(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                             => ! [G] :
+                                  ( m1_subset_1(G,u1_struct_0(A))
+                                 => ( ( r2_prelamb(A,B,F)
+                                      & r2_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),C,k12_finseq_1(u1_struct_0(A),E)),D),G) )
+                                   => r2_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),C,B),k12_finseq_1(u1_struct_0(A),k1_prelamb(A,F,E))),D),G) ) ) ) ) ) ) )
+          & ! [B] :
+              ( m2_finseq_1(B,u1_struct_0(A))
+             => ! [C] :
+                  ( m2_finseq_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                             => ( r2_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),B,k12_finseq_1(u1_struct_0(A),D)),k12_finseq_1(u1_struct_0(A),E)),C),F)
+                               => r2_prelamb(A,k8_finseq_1(u1_struct_0(A),k8_finseq_1(u1_struct_0(A),B,k12_finseq_1(u1_struct_0(A),k3_prelamb(A,D,E))),C),F) ) ) ) ) ) )
+          & ! [B] :
+              ( m2_finseq_1(B,u1_struct_0(A))
+             => ! [C] :
+                  ( m2_finseq_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ( ( r2_prelamb(A,B,D)
+                              & r2_prelamb(A,C,E) )
+                           => r2_prelamb(A,k8_finseq_1(u1_struct_0(A),B,C),k3_prelamb(A,D,E)) ) ) ) ) ) ) ) ) ).
+
+fof(t12_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r2_prelamb(A,k8_finseq_1(u1_struct_0(A),k12_finseq_1(u1_struct_0(A),k2_prelamb(A,B,C)),k12_finseq_1(u1_struct_0(A),C)),B)
+                & r2_prelamb(A,k8_finseq_1(u1_struct_0(A),k12_finseq_1(u1_struct_0(A),C),k12_finseq_1(u1_struct_0(A),k1_prelamb(A,C,B))),B) ) ) ) ) ).
+
+fof(t13_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r2_prelamb(A,k12_finseq_1(u1_struct_0(A),B),k2_prelamb(A,C,k1_prelamb(A,B,C)))
+                & r2_prelamb(A,k12_finseq_1(u1_struct_0(A),B),k1_prelamb(A,k2_prelamb(A,C,B),C)) ) ) ) ) ).
+
+fof(t14_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => r2_prelamb(A,k12_finseq_1(u1_struct_0(A),k2_prelamb(A,B,C)),k2_prelamb(A,k2_prelamb(A,B,D),k2_prelamb(A,C,D))) ) ) ) ) ).
+
+fof(t15_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => r2_prelamb(A,k12_finseq_1(u1_struct_0(A),k1_prelamb(A,B,C)),k1_prelamb(A,k1_prelamb(A,D,B),k1_prelamb(A,D,C))) ) ) ) ) ).
+
+fof(t16_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r2_prelamb(A,k12_finseq_1(u1_struct_0(A),B),C)
+                   => ( r2_prelamb(A,k12_finseq_1(u1_struct_0(A),k2_prelamb(A,B,D)),k2_prelamb(A,C,D))
+                      & r2_prelamb(A,k12_finseq_1(u1_struct_0(A),k1_prelamb(A,D,B)),k1_prelamb(A,D,C)) ) ) ) ) ) ) ).
+
+fof(t17_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r2_prelamb(A,k12_finseq_1(u1_struct_0(A),B),C)
+                   => ( r2_prelamb(A,k12_finseq_1(u1_struct_0(A),k2_prelamb(A,D,C)),k2_prelamb(A,D,B))
+                      & r2_prelamb(A,k12_finseq_1(u1_struct_0(A),k1_prelamb(A,C,D)),k1_prelamb(A,B,D)) ) ) ) ) ) ) ).
+
+fof(t18_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r2_prelamb(A,k12_finseq_1(u1_struct_0(A),k2_prelamb(A,B,k1_prelamb(A,k2_prelamb(A,B,C),B))),k2_prelamb(A,B,C)) ) ) ) ).
+
+fof(t19_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r2_prelamb(A,k12_finseq_1(u1_struct_0(A),B),C)
+               => ( r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k2_prelamb(A,C,B))
+                  & r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k1_prelamb(A,B,C)) ) ) ) ) ) ).
+
+fof(t20_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ( r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k2_prelamb(A,B,B))
+            & r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k1_prelamb(A,B,B)) ) ) ) ).
+
+fof(t21_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k2_prelamb(A,k2_prelamb(A,B,k1_prelamb(A,C,B)),C))
+                & r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k1_prelamb(A,C,k1_prelamb(A,k2_prelamb(A,B,C),B))) ) ) ) ) ).
+
+fof(t22_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k2_prelamb(A,k2_prelamb(A,k2_prelamb(A,B,C),k2_prelamb(A,D,C)),k2_prelamb(A,B,D)))
+                    & r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k1_prelamb(A,k1_prelamb(A,D,B),k1_prelamb(A,k1_prelamb(A,C,D),k1_prelamb(A,C,B)))) ) ) ) ) ) ).
+
+fof(t23_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),B)
+               => ( r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k2_prelamb(A,C,k2_prelamb(A,C,B)))
+                  & r2_prelamb(A,k6_finseq_1(u1_struct_0(A)),k1_prelamb(A,k1_prelamb(A,B,C),C)) ) ) ) ) ) ).
+
+fof(t24_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r2_prelamb(A,k12_finseq_1(u1_struct_0(A),k2_prelamb(A,B,k2_prelamb(A,C,C))),B) ) ) ) ).
+
+fof(d20_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r3_prelamb(A,B,C)
+              <=> ( r2_prelamb(A,k12_finseq_1(u1_struct_0(A),B),C)
+                  & r2_prelamb(A,k12_finseq_1(u1_struct_0(A),C),B) ) ) ) ) ) ).
+
+fof(t25_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => r3_prelamb(A,B,B) ) ) ).
+
+fof(t26_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => r3_prelamb(A,k2_prelamb(A,B,C),k2_prelamb(A,B,k1_prelamb(A,k2_prelamb(A,B,C),B))) ) ) ) ).
+
+fof(t27_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => r3_prelamb(A,k2_prelamb(A,B,k3_prelamb(A,C,D)),k2_prelamb(A,k2_prelamb(A,B,D),C)) ) ) ) ) ).
+
+fof(t28_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => r2_prelamb(A,k12_finseq_1(u1_struct_0(A),k3_prelamb(A,B,k2_prelamb(A,C,D))),k2_prelamb(A,k3_prelamb(A,B,C),D)) ) ) ) ) ).
+
+fof(t29_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r2_prelamb(A,k12_finseq_1(u1_struct_0(A),B),k2_prelamb(A,k3_prelamb(A,B,C),C))
+                & r2_prelamb(A,k12_finseq_1(u1_struct_0(A),B),k1_prelamb(A,C,k3_prelamb(A,C,B))) ) ) ) ) ).
+
+fof(t30_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v10_prelamb(A)
+        & l2_prelamb(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => r3_prelamb(A,k3_prelamb(A,k3_prelamb(A,B,C),D),k3_prelamb(A,B,k3_prelamb(A,C,D))) ) ) ) ) ).
+
+fof(dt_m1_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( m1_prelamb(B,A)
+         => ( v1_funct_1(B)
+            & v1_finset_1(B)
+            & v3_trees_2(B)
+            & m3_trees_2(B,k2_zfmisc_1(k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)),k5_numbers)) ) ) ) ).
+
+fof(existence_m1_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ? [B] : m1_prelamb(B,A) ) ).
+
+fof(dt_m2_prelamb,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & ~ v1_xboole_0(B) )
+     => ! [C] :
+          ( m2_prelamb(C,A,B)
+         => ( v1_funct_1(C)
+            & v1_funct_2(C,u1_struct_0(A),k1_zfmisc_1(k3_finseq_2(B)))
+            & m2_relset_1(C,u1_struct_0(A),k1_zfmisc_1(k3_finseq_2(B))) ) ) ) ).
+
+fof(existence_m2_prelamb,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & ~ v1_xboole_0(B) )
+     => ? [C] : m2_prelamb(C,A,B) ) ).
+
+fof(dt_l1_prelamb,axiom,
+    ! [A] :
+      ( l1_prelamb(A)
+     => l1_struct_0(A) ) ).
+
+fof(existence_l1_prelamb,axiom,
+    ? [A] : l1_prelamb(A) ).
+
+fof(dt_l2_prelamb,axiom,
+    ! [A] :
+      ( l2_prelamb(A)
+     => l1_prelamb(A) ) ).
+
+fof(existence_l2_prelamb,axiom,
+    ? [A] : l2_prelamb(A) ).
+
+fof(abstractness_v1_prelamb,axiom,
+    ! [A] :
+      ( l1_prelamb(A)
+     => ( v1_prelamb(A)
+       => A = g1_prelamb(u1_struct_0(A),u1_prelamb(A),u2_prelamb(A),u3_prelamb(A)) ) ) ).
+
+fof(abstractness_v9_prelamb,axiom,
+    ! [A] :
+      ( l2_prelamb(A)
+     => ( v9_prelamb(A)
+       => A = g2_prelamb(u1_struct_0(A),u1_prelamb(A),u2_prelamb(A),u3_prelamb(A),u4_prelamb(A)) ) ) ).
+
+fof(dt_k1_prelamb,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k1_prelamb(A,B,C),u1_struct_0(A)) ) ).
+
+fof(dt_k2_prelamb,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k2_prelamb(A,B,C),u1_struct_0(A)) ) ).
+
+fof(dt_k3_prelamb,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k3_prelamb(A,B,C),u1_struct_0(A)) ) ).
+
+fof(dt_k4_prelamb,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & v1_funct_1(B)
+        & v1_finset_1(B)
+        & v3_trees_2(B)
+        & m3_trees_2(B,u1_struct_0(A))
+        & m1_subset_1(C,k1_relat_1(B)) )
+     => m1_subset_1(k4_prelamb(A,B,C),u1_struct_0(A)) ) ).
+
+fof(redefinition_k4_prelamb,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & v1_funct_1(B)
+        & v1_finset_1(B)
+        & v3_trees_2(B)
+        & m3_trees_2(B,u1_struct_0(A))
+        & m1_subset_1(C,k1_relat_1(B)) )
+     => k4_prelamb(A,B,C) = k1_funct_1(B,C) ) ).
+
+fof(dt_k5_prelamb,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & m1_subset_1(B,u1_struct_0(A)) )
+     => ( v1_funct_1(k5_prelamb(A,B))
+        & v1_finset_1(k5_prelamb(A,B))
+        & v3_trees_2(k5_prelamb(A,B))
+        & m3_trees_2(k5_prelamb(A,B),u1_struct_0(A)) ) ) ).
+
+fof(dt_k6_prelamb,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & m1_finseq_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k6_prelamb(A,B,C),k2_zfmisc_1(k3_finseq_2(u1_struct_0(A)),u1_struct_0(A))) ) ).
+
+fof(redefinition_k6_prelamb,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & m1_finseq_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k6_prelamb(A,B,C) = k4_tarski(B,C) ) ).
+
+fof(dt_k7_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ( v1_funct_1(k7_prelamb(A))
+        & v1_funct_2(k7_prelamb(A),u1_struct_0(A),k5_numbers)
+        & m2_relset_1(k7_prelamb(A),u1_struct_0(A),k5_numbers) ) ) ).
+
+fof(dt_k8_prelamb,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_finseq_1(B,A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,k5_numbers)
+        & m1_relset_1(C,A,k5_numbers) )
+     => m2_finseq_1(k8_prelamb(A,B,C),k1_numbers) ) ).
+
+fof(redefinition_k8_prelamb,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_finseq_1(B,A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,A,k5_numbers)
+        & m1_relset_1(C,A,k5_numbers) )
+     => k8_prelamb(A,B,C) = k5_relat_1(B,C) ) ).
+
+fof(dt_k9_prelamb,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A)
+        & m1_prelamb(B,A) )
+     => m2_subset_1(k9_prelamb(A,B),k1_numbers,k5_numbers) ) ).
+
+fof(dt_u1_prelamb,axiom,
+    ! [A] :
+      ( l1_prelamb(A)
+     => ( v1_funct_1(u1_prelamb(A))
+        & v1_funct_2(u1_prelamb(A),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),u1_struct_0(A))
+        & m2_relset_1(u1_prelamb(A),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),u1_struct_0(A)) ) ) ).
+
+fof(dt_u2_prelamb,axiom,
+    ! [A] :
+      ( l1_prelamb(A)
+     => ( v1_funct_1(u2_prelamb(A))
+        & v1_funct_2(u2_prelamb(A),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),u1_struct_0(A))
+        & m2_relset_1(u2_prelamb(A),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),u1_struct_0(A)) ) ) ).
+
+fof(dt_u3_prelamb,axiom,
+    ! [A] :
+      ( l1_prelamb(A)
+     => ( v1_funct_1(u3_prelamb(A))
+        & v1_funct_2(u3_prelamb(A),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),u1_struct_0(A))
+        & m2_relset_1(u3_prelamb(A),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),u1_struct_0(A)) ) ) ).
+
+fof(dt_u4_prelamb,axiom,
+    ! [A] :
+      ( l2_prelamb(A)
+     => m2_relset_1(u4_prelamb(A),k3_finseq_2(u1_struct_0(A)),u1_struct_0(A)) ) ).
+
+fof(dt_g1_prelamb,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,k2_zfmisc_1(A,A),A) )
+     => ( v1_prelamb(g1_prelamb(A,B,C,D))
+        & l1_prelamb(g1_prelamb(A,B,C,D)) ) ) ).
+
+fof(free_g1_prelamb,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,k2_zfmisc_1(A,A),A) )
+     => ! [E,F,G,H] :
+          ( g1_prelamb(A,B,C,D) = g1_prelamb(E,F,G,H)
+         => ( A = E
+            & B = F
+            & C = G
+            & D = H ) ) ) ).
+
+fof(dt_g2_prelamb,axiom,
+    ! [A,B,C,D,E] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(E,k3_finseq_2(A),A) )
+     => ( v9_prelamb(g2_prelamb(A,B,C,D,E))
+        & l2_prelamb(g2_prelamb(A,B,C,D,E)) ) ) ).
+
+fof(free_g2_prelamb,axiom,
+    ! [A,B,C,D,E] :
+      ( ( v1_funct_1(B)
+        & v1_funct_2(B,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(B,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),A)
+        & v1_funct_1(D)
+        & v1_funct_2(D,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(D,k2_zfmisc_1(A,A),A)
+        & m1_relset_1(E,k3_finseq_2(A),A) )
+     => ! [F,G,H,I,J] :
+          ( g2_prelamb(A,B,C,D,E) = g2_prelamb(F,G,H,I,J)
+         => ( A = F
+            & B = G
+            & C = H
+            & D = I
+            & E = J ) ) ) ).
+
+fof(d17_prelamb,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_prelamb(A) )
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),k1_zfmisc_1(k3_finseq_2(B)))
+                & m2_relset_1(C,u1_struct_0(A),k1_zfmisc_1(k3_finseq_2(B))) )
+             => ( m2_prelamb(C,A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ( k8_funct_2(u1_struct_0(A),k1_zfmisc_1(k3_finseq_2(B)),C,k3_prelamb(A,D,E)) = a_5_0_prelamb(A,B,C,D,E)
+                          & k8_funct_2(u1_struct_0(A),k1_zfmisc_1(k3_finseq_2(B)),C,k2_prelamb(A,D,E)) = a_5_1_prelamb(A,B,C,D,E)
+                          & k8_funct_2(u1_struct_0(A),k1_zfmisc_1(k3_finseq_2(B)),C,k1_prelamb(A,E,D)) = a_5_2_prelamb(A,B,C,D,E) ) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_5_0_prelamb,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( ~ v3_struct_0(B)
+        & l1_prelamb(B)
+        & ~ v1_xboole_0(C)
+        & v1_funct_1(D)
+        & v1_funct_2(D,u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)))
+        & m2_relset_1(D,u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)))
+        & m1_subset_1(E,u1_struct_0(B))
+        & m1_subset_1(F,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_5_0_prelamb(B,C,D,E,F))
+      <=> ? [G,H] :
+            ( m2_finseq_2(G,C,k3_finseq_2(C))
+            & m2_finseq_2(H,C,k3_finseq_2(C))
+            & A = k8_finseq_1(C,G,H)
+            & r2_hidden(G,k8_funct_2(u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)),D,E))
+            & r2_hidden(H,k8_funct_2(u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)),D,F)) ) ) ) ).
+
+fof(fraenkel_a_5_1_prelamb,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( ~ v3_struct_0(B)
+        & l1_prelamb(B)
+        & ~ v1_xboole_0(C)
+        & v1_funct_1(D)
+        & v1_funct_2(D,u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)))
+        & m2_relset_1(D,u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)))
+        & m1_subset_1(E,u1_struct_0(B))
+        & m1_subset_1(F,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_5_1_prelamb(B,C,D,E,F))
+      <=> ? [G] :
+            ( m2_finseq_2(G,C,k3_finseq_2(C))
+            & A = G
+            & ! [H] :
+                ( m2_finseq_2(H,C,k3_finseq_2(C))
+               => ( r2_hidden(H,k8_funct_2(u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)),D,F))
+                 => r2_hidden(k8_finseq_1(C,G,H),k8_funct_2(u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)),D,E)) ) ) ) ) ) ).
+
+fof(fraenkel_a_5_2_prelamb,axiom,
+    ! [A,B,C,D,E,F] :
+      ( ( ~ v3_struct_0(B)
+        & l1_prelamb(B)
+        & ~ v1_xboole_0(C)
+        & v1_funct_1(D)
+        & v1_funct_2(D,u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)))
+        & m2_relset_1(D,u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)))
+        & m1_subset_1(E,u1_struct_0(B))
+        & m1_subset_1(F,u1_struct_0(B)) )
+     => ( r2_hidden(A,a_5_2_prelamb(B,C,D,E,F))
+      <=> ? [G] :
+            ( m2_finseq_2(G,C,k3_finseq_2(C))
+            & A = G
+            & ! [H] :
+                ( m2_finseq_2(H,C,k3_finseq_2(C))
+               => ( r2_hidden(H,k8_funct_2(u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)),D,F))
+                 => r2_hidden(k8_finseq_1(C,H,G),k8_funct_2(u1_struct_0(B),k1_zfmisc_1(k3_finseq_2(C)),D,E)) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

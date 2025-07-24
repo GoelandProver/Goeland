@@ -1,0 +1,143 @@
+%------------------------------------------------------------------------------
+% File     : ITP035+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : listRange+2.ax [Gau20]
+%          : HL4035+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   16 (   2 unt;   0 def)
+%            Number of atoms       :   53 (  11 equ)
+%            Maximal formula atoms :    6 (   3 avg)
+%            Number of connectives :   37 (   0   ~;   0   |;   2   &)
+%                                         (   2 <=>;  33  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :    9 (   5 avg)
+%            Maximal term depth    :    7 (   2 avg)
+%            Number of predicates  :    3 (   2 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   22 (  22 usr;  10 con; 0-2 aty)
+%            Number of variables   :   29 (  29   !;   0   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(mem_c_2ElistRange_2ElistRangeINC,axiom,
+    mem(c_2ElistRange_2ElistRangeINC,arr(ty_2Enum_2Enum,arr(ty_2Enum_2Enum,ty_2Elist_2Elist(ty_2Enum_2Enum)))) ).
+
+fof(mem_c_2ElistRange_2ElistRangeLHI,axiom,
+    mem(c_2ElistRange_2ElistRangeLHI,arr(ty_2Enum_2Enum,arr(ty_2Enum_2Enum,ty_2Elist_2Elist(ty_2Enum_2Enum)))) ).
+
+fof(lameq_f535,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ! [V2i] : ap(f535(V0m),V2i) = ap(ap(c_2Earithmetic_2E_2B,V0m),V2i) ) ).
+
+fof(ax_thm_2ElistRange_2ElistRangeINC__def,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ! [V1n] :
+          ( mem(V1n,ty_2Enum_2Enum)
+         => ap(ap(c_2ElistRange_2ElistRangeINC,V0m),V1n) = ap(ap(c_2Elist_2EGENLIST(ty_2Enum_2Enum),f535(V0m)),ap(ap(c_2Earithmetic_2E_2D,ap(ap(c_2Earithmetic_2E_2B,V1n),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V0m)) ) ) ).
+
+fof(conj_thm_2ElistRange_2ElistRangeINC__SING,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ap(ap(c_2ElistRange_2ElistRangeINC,V0m),V0m) = ap(ap(c_2Elist_2ECONS(ty_2Enum_2Enum),V0m),c_2Elist_2ENIL(ty_2Enum_2Enum)) ) ).
+
+fof(conj_thm_2ElistRange_2EMEM__listRangeINC,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Enum_2Enum)
+     => ! [V1m] :
+          ( mem(V1m,ty_2Enum_2Enum)
+         => ! [V2n] :
+              ( mem(V2n,ty_2Enum_2Enum)
+             => ( p(ap(ap(c_2Ebool_2EIN(ty_2Enum_2Enum),V0x),ap(c_2Elist_2ELIST__TO__SET(ty_2Enum_2Enum),ap(ap(c_2ElistRange_2ElistRangeINC,V1m),V2n))))
+              <=> ( p(ap(ap(c_2Earithmetic_2E_3C_3D,V1m),V0x))
+                  & p(ap(ap(c_2Earithmetic_2E_3C_3D,V0x),V2n)) ) ) ) ) ) ).
+
+fof(conj_thm_2ElistRange_2ElistRangeINC__CONS,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ! [V1n] :
+          ( mem(V1n,ty_2Enum_2Enum)
+         => ( p(ap(ap(c_2Earithmetic_2E_3C_3D,V0m),V1n))
+           => ap(ap(c_2ElistRange_2ElistRangeINC,V0m),V1n) = ap(ap(c_2Elist_2ECONS(ty_2Enum_2Enum),V0m),ap(ap(c_2ElistRange_2ElistRangeINC,ap(ap(c_2Earithmetic_2E_2B,V0m),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V1n)) ) ) ) ).
+
+fof(conj_thm_2ElistRange_2ElistRangeINC__EMPTY,axiom,
+    ! [V0n] :
+      ( mem(V0n,ty_2Enum_2Enum)
+     => ! [V1m] :
+          ( mem(V1m,ty_2Enum_2Enum)
+         => ( p(ap(ap(c_2Eprim__rec_2E_3C,V0n),V1m))
+           => ap(ap(c_2ElistRange_2ElistRangeINC,V1m),V0n) = c_2Elist_2ENIL(ty_2Enum_2Enum) ) ) ) ).
+
+fof(ax_thm_2ElistRange_2ElistRangeLHI__def,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ! [V1n] :
+          ( mem(V1n,ty_2Enum_2Enum)
+         => ap(ap(c_2ElistRange_2ElistRangeLHI,V0m),V1n) = ap(ap(c_2Elist_2EGENLIST(ty_2Enum_2Enum),f535(V0m)),ap(ap(c_2Earithmetic_2E_2D,V1n),V0m)) ) ) ).
+
+fof(conj_thm_2ElistRange_2ElistRangeLHI__EQ,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ap(ap(c_2ElistRange_2ElistRangeLHI,V0m),V0m) = c_2Elist_2ENIL(ty_2Enum_2Enum) ) ).
+
+fof(conj_thm_2ElistRange_2EMEM__listRangeLHI,axiom,
+    ! [V0x] :
+      ( mem(V0x,ty_2Enum_2Enum)
+     => ! [V1m] :
+          ( mem(V1m,ty_2Enum_2Enum)
+         => ! [V2n] :
+              ( mem(V2n,ty_2Enum_2Enum)
+             => ( p(ap(ap(c_2Ebool_2EIN(ty_2Enum_2Enum),V0x),ap(c_2Elist_2ELIST__TO__SET(ty_2Enum_2Enum),ap(ap(c_2ElistRange_2ElistRangeLHI,V1m),V2n))))
+              <=> ( p(ap(ap(c_2Earithmetic_2E_3C_3D,V1m),V0x))
+                  & p(ap(ap(c_2Eprim__rec_2E_3C,V0x),V2n)) ) ) ) ) ) ).
+
+fof(conj_thm_2ElistRange_2ElistRangeLHI__EMPTY,axiom,
+    ! [V0hi] :
+      ( mem(V0hi,ty_2Enum_2Enum)
+     => ! [V1lo] :
+          ( mem(V1lo,ty_2Enum_2Enum)
+         => ( p(ap(ap(c_2Earithmetic_2E_3C_3D,V0hi),V1lo))
+           => ap(ap(c_2ElistRange_2ElistRangeLHI,V1lo),V0hi) = c_2Elist_2ENIL(ty_2Enum_2Enum) ) ) ) ).
+
+fof(conj_thm_2ElistRange_2ElistRangeLHI__CONS,axiom,
+    ! [V0lo] :
+      ( mem(V0lo,ty_2Enum_2Enum)
+     => ! [V1hi] :
+          ( mem(V1hi,ty_2Enum_2Enum)
+         => ( p(ap(ap(c_2Eprim__rec_2E_3C,V0lo),V1hi))
+           => ap(ap(c_2ElistRange_2ElistRangeLHI,V0lo),V1hi) = ap(ap(c_2Elist_2ECONS(ty_2Enum_2Enum),V0lo),ap(ap(c_2ElistRange_2ElistRangeLHI,ap(ap(c_2Earithmetic_2E_2B,V0lo),ap(c_2Earithmetic_2ENUMERAL,ap(c_2Earithmetic_2EBIT1,c_2Earithmetic_2EZERO)))),V1hi)) ) ) ) ).
+
+fof(conj_thm_2ElistRange_2ElistRangeLHI__ALL__DISTINCT,axiom,
+    ! [V0lo] :
+      ( mem(V0lo,ty_2Enum_2Enum)
+     => ! [V1hi] :
+          ( mem(V1hi,ty_2Enum_2Enum)
+         => p(ap(c_2Elist_2EALL__DISTINCT(ty_2Enum_2Enum),ap(ap(c_2ElistRange_2ElistRangeLHI,V0lo),V1hi))) ) ) ).
+
+fof(conj_thm_2ElistRange_2ELENGTH__listRangeLHI,axiom,
+    ! [V0lo] :
+      ( mem(V0lo,ty_2Enum_2Enum)
+     => ! [V1hi] :
+          ( mem(V1hi,ty_2Enum_2Enum)
+         => ap(c_2Elist_2ELENGTH(ty_2Enum_2Enum),ap(ap(c_2ElistRange_2ElistRangeLHI,V0lo),V1hi)) = ap(ap(c_2Earithmetic_2E_2D,V1hi),V0lo) ) ) ).
+
+fof(conj_thm_2ElistRange_2EEL__listRangeLHI,axiom,
+    ! [V0lo] :
+      ( mem(V0lo,ty_2Enum_2Enum)
+     => ! [V1i] :
+          ( mem(V1i,ty_2Enum_2Enum)
+         => ! [V2hi] :
+              ( mem(V2hi,ty_2Enum_2Enum)
+             => ( p(ap(ap(c_2Eprim__rec_2E_3C,ap(ap(c_2Earithmetic_2E_2B,V0lo),V1i)),V2hi))
+               => ap(ap(c_2Elist_2EEL(ty_2Enum_2Enum),V1i),ap(ap(c_2ElistRange_2ElistRangeLHI,V0lo),V2hi)) = ap(ap(c_2Earithmetic_2E_2B,V0lo),V1i) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

@@ -1,0 +1,151 @@
+name: Full CI
+
+permissions:
+  pull-requests: write
+
+on:
+  pull_request:
+    types: [labeled]
+
+env:
+  goVersion: '>=1.22.0'
+  GOMEMLIMIT: '3GiB'
+  GOMAXPROCS: '3'
+
+jobs:
+  RemoveLabel:
+    if: github.event.label.name == 'request:benchs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mondeja/remove-labels-gh-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            request:benchs
+
+  CASCSet1:
+    if: github.event.label.name == 'request:benchs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.goVersion }}
+      - run: go install golang.org/x/tools/cmd/goyacc@latest
+      - run: cd src && make
+      - name: First set of benchs
+        id: benchs-1
+        run: |
+          cd devtools
+          chmod +x run-benchs.sh
+          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/1 >> "$GITHUB_OUTPUT"
+
+  CASCSet2:
+    if: github.event.label.name == 'request:benchs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.goVersion }}
+      - run: go install golang.org/x/tools/cmd/goyacc@latest
+      - run: cd src && make
+      - name: Second set of benchs
+        id: benchs-2
+        run: |
+          cd devtools
+          chmod +x run-benchs.sh
+          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/2 >> "$GITHUB_OUTPUT"
+
+  CASCSet3:
+    if: github.event.label.name == 'request:benchs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.goVersion }}
+      - run: go install golang.org/x/tools/cmd/goyacc@latest
+      - run: cd src && make
+      - name: Third set of benchs
+        id: benchs-3
+        run: |
+          cd devtools
+          chmod +x run-benchs.sh
+          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/3 >> "$GITHUB_OUTPUT"
+
+  CASCSet4:
+    if: github.event.label.name == 'request:benchs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.goVersion }}
+      - run: go install golang.org/x/tools/cmd/goyacc@latest
+      - run: cd src && make
+      - name: Fourth set of benchs
+        id: benchs-4
+        run: |
+          cd devtools
+          chmod +x run-benchs.sh
+          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/4 >> "$GITHUB_OUTPUT"
+
+  CASCSet5:
+    if: github.event.label.name == 'request:benchs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.goVersion }}
+      - run: go install golang.org/x/tools/cmd/goyacc@latest
+      - run: cd src && make
+      - name: Fifth set of benchs
+        id: benchs-5
+        run: |
+          cd devtools
+          chmod +x run-benchs.sh
+          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/5 >> "$GITHUB_OUTPUT"
+
+  CASCSet6:
+    if: github.event.label.name == 'request:benchs'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: ${{ env.goVersion }}
+      - run: go install golang.org/x/tools/cmd/goyacc@latest
+      - run: cd src && make
+      - name: Sixth set of benchs
+        id: benchs-6
+        run: |
+          cd devtools
+          chmod +x run-benchs.sh
+          ./run-benchs.sh ../.github/benchs ../.github/benchs/CASC-J12/6 >> "$GITHUB_OUTPUT"
+
+  WriteCASCRecap:
+    needs:
+      - CASCSet1
+      - CASCSet2
+      - CASCSet3
+      - CASCSet4
+      - CASCSet5
+      - CASCSet6
+    runs-on: ubuntu-latest
+    name: Add recap of CASC benchs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            Result of set 1: **${{ steps.benchs-1.outputs.recap }}**
+            Result of set 2: **${{ steps.benchs-2.outputs.recap }}**
+            Result of set 3: **${{ steps.benchs-3.outputs.recap }}**
+            Result of set 4: **${{ steps.benchs-4.outputs.recap }}**
+            Result of set 5: **${{ steps.benchs-5.outputs.recap }}**
+            Result of set 6: **${{ steps.benchs-6.outputs.recap }}**

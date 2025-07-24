@@ -1,0 +1,1740 @@
+%------------------------------------------------------------------------------
+% File     : SET007+315 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Oriented Metric-Affine Plane - Part I
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : analort [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   76 (   2 unt;   0 def)
+%            Number of atoms       : 1119 (  61 equ)
+%            Maximal formula atoms :   24 (  14 avg)
+%            Number of connectives : 1187 ( 144   ~;   5   |; 576   &)
+%                                         (  13 <=>; 449  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   31 (  16 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   21 (  19 usr;   1 prp; 0-7 aty)
+%            Number of functors    :   20 (  20 usr;   1 con; 0-4 aty)
+%            Number of variables   :  462 ( 446   !;  16   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_analort,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ( ~ v3_struct_0(k6_analort(A,B,C))
+        & v1_analoaf(k6_analort(A,B,C)) ) ) ).
+
+fof(fc2_analort,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ( ~ v3_struct_0(k7_analort(A,B,C))
+        & v1_analoaf(k7_analort(A,B,C)) ) ) ).
+
+fof(d1_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => k2_analort(A,B,C,D) = k1_analort(A,k3_rlvect_1(A,B,k2_geomtrap(A,B,C,D)),k3_rlvect_1(A,C,k1_real_1(k3_geomtrap(A,B,C,D)))) ) ) ) ) ).
+
+fof(t1_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_analmetr(A,B,C)
+                       => k2_analort(A,B,C,k1_analort(A,D,E)) = k1_analort(A,k2_analort(A,B,C,D),k2_analort(A,B,C,E)) ) ) ) ) ) ) ).
+
+fof(t2_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ( r1_analmetr(A,B,C)
+                       => k2_analort(A,B,C,k3_rlvect_1(A,D,E)) = k3_rlvect_1(A,k2_analort(A,B,C,D),E) ) ) ) ) ) ) ).
+
+fof(t3_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_analmetr(A,B,C)
+               => k2_analort(A,B,C,k1_rlvect_1(A)) = k1_rlvect_1(A) ) ) ) ) ).
+
+fof(t4_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_analmetr(A,B,C)
+                   => k2_analort(A,B,C,k5_rlvect_1(A,D)) = k5_rlvect_1(A,k2_analort(A,B,C,D)) ) ) ) ) ) ).
+
+fof(t5_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_analmetr(A,B,C)
+                       => k2_analort(A,B,C,k6_rlvect_1(A,D,E)) = k6_rlvect_1(A,k2_analort(A,B,C,D),k2_analort(A,B,C,E)) ) ) ) ) ) ) ).
+
+fof(t6_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( ( r1_analmetr(A,B,C)
+                          & k2_analort(A,B,C,D) = k2_analort(A,B,C,E) )
+                       => D = E ) ) ) ) ) ) ).
+
+fof(t7_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_analmetr(A,B,C)
+                   => k2_analort(A,B,C,k2_analort(A,B,C,D)) = D ) ) ) ) ) ).
+
+fof(t8_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ~ ( r1_analmetr(A,B,C)
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => D != k2_analort(A,B,C,E) ) ) ) ) ) ) ).
+
+fof(d2_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => k3_analort(A,B,C,D) = k1_analort(A,k3_rlvect_1(A,B,k3_geomtrap(A,B,C,D)),k3_rlvect_1(A,C,k1_real_1(k2_geomtrap(A,B,C,D)))) ) ) ) ) ).
+
+fof(t9_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_analmetr(A,B,C)
+                   => k3_analort(A,B,C,k5_rlvect_1(A,D)) = k5_rlvect_1(A,k3_analort(A,B,C,D)) ) ) ) ) ) ).
+
+fof(t10_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_analmetr(A,B,C)
+                       => k3_analort(A,B,C,k1_analort(A,D,E)) = k1_analort(A,k3_analort(A,B,C,D),k3_analort(A,B,C,E)) ) ) ) ) ) ) ).
+
+fof(t11_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_analmetr(A,B,C)
+                       => k3_analort(A,B,C,k6_rlvect_1(A,D,E)) = k6_rlvect_1(A,k3_analort(A,B,C,D),k3_analort(A,B,C,E)) ) ) ) ) ) ) ).
+
+fof(t12_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ( r1_analmetr(A,B,C)
+                       => k3_analort(A,B,C,k3_rlvect_1(A,D,E)) = k3_rlvect_1(A,k3_analort(A,B,C,D),E) ) ) ) ) ) ) ).
+
+fof(t13_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( ( r1_analmetr(A,B,C)
+                          & k3_analort(A,B,C,D) = k3_analort(A,B,C,E) )
+                       => D = E ) ) ) ) ) ) ).
+
+fof(t14_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ( r1_analmetr(A,B,C)
+                   => k3_analort(A,B,C,k3_analort(A,B,C,D)) = k5_rlvect_1(A,D) ) ) ) ) ) ).
+
+fof(t15_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ~ ( r1_analmetr(A,B,C)
+                      & ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => k3_analort(A,B,C,E) != D ) ) ) ) ) ) ).
+
+fof(d3_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( r1_analort(A,B,C,D,E,F,G)
+                              <=> r1_analoaf(A,k3_analort(A,B,C,D),k3_analort(A,B,C,E),F,G) ) ) ) ) ) ) ) ) ).
+
+fof(d4_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( r2_analort(A,B,C,D,E,F,G)
+                              <=> r1_analoaf(A,k2_analort(A,B,C,D),k2_analort(A,B,C,E),F,G) ) ) ) ) ) ) ) ) ).
+
+fof(t16_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( ( r1_analmetr(A,B,C)
+                                  & r1_analoaf(A,D,E,F,G) )
+                               => r1_analoaf(A,k3_analort(A,B,C,D),k3_analort(A,B,C,E),k3_analort(A,B,C,F),k3_analort(A,B,C,G)) ) ) ) ) ) ) ) ) ).
+
+fof(t17_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( ( r1_analmetr(A,B,C)
+                                  & r1_analoaf(A,D,E,F,G) )
+                               => r1_analoaf(A,k2_analort(A,B,C,D),k2_analort(A,B,C,E),k2_analort(A,B,C,F),k2_analort(A,B,C,G)) ) ) ) ) ) ) ) ) ).
+
+fof(t18_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( ( r1_analmetr(A,B,C)
+                                  & r1_analort(A,B,C,D,E,F,G) )
+                               => r1_analort(A,B,C,F,G,E,D) ) ) ) ) ) ) ) ) ).
+
+fof(t19_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( ( r1_analmetr(A,B,C)
+                                  & r2_analort(A,B,C,D,E,F,G) )
+                               => r2_analort(A,B,C,F,G,D,E) ) ) ) ) ) ) ) ) ).
+
+fof(t20_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => r1_analort(A,E,F,B,B,C,D) ) ) ) ) ) ) ).
+
+fof(t21_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => r2_analort(A,E,F,B,B,C,D) ) ) ) ) ) ) ).
+
+fof(t22_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => r1_analort(A,E,F,B,C,D,D) ) ) ) ) ) ) ).
+
+fof(t23_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => r2_analort(A,E,F,B,C,D,D) ) ) ) ) ) ) ).
+
+fof(t24_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ( r1_analmetr(A,B,C)
+                       => r3_analmetr(A,D,E,k3_analort(A,B,C,D),k3_analort(A,B,C,E),B,C) ) ) ) ) ) ) ).
+
+fof(t25_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => r1_analort(A,D,E,B,C,k3_analort(A,D,E,B),k3_analort(A,D,E,C)) ) ) ) ) ) ).
+
+fof(t26_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => r2_analort(A,D,E,B,C,k2_analort(A,D,E,B),k2_analort(A,D,E,C)) ) ) ) ) ) ).
+
+fof(t27_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( r1_analmetr(A,B,C)
+                               => ( r1_analoaf(A,D,E,F,G)
+                                <=> ? [H] :
+                                      ( m1_subset_1(H,u1_struct_0(A))
+                                      & ? [I] :
+                                          ( m1_subset_1(I,u1_struct_0(A))
+                                          & H != I
+                                          & r1_analort(A,B,C,H,I,D,E)
+                                          & r1_analort(A,B,C,H,I,F,G) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t28_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( r1_analmetr(A,B,C)
+                               => ( r1_analoaf(A,D,E,F,G)
+                                <=> ? [H] :
+                                      ( m1_subset_1(H,u1_struct_0(A))
+                                      & ? [I] :
+                                          ( m1_subset_1(I,u1_struct_0(A))
+                                          & H != I
+                                          & r2_analort(A,B,C,H,I,D,E)
+                                          & r2_analort(A,B,C,H,I,F,G) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t29_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( r1_analmetr(A,B,C)
+                               => ( r3_analmetr(A,D,E,F,G,B,C)
+                                <=> ( r1_analort(A,B,C,D,E,F,G)
+                                    | r1_analort(A,B,C,D,E,G,F) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t30_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ~ ( r1_analmetr(A,B,C)
+                                  & r1_analort(A,B,C,D,E,F,G)
+                                  & r1_analort(A,B,C,D,E,G,F)
+                                  & D != E
+                                  & F != G ) ) ) ) ) ) ) ) ).
+
+fof(t31_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ~ ( r1_analmetr(A,B,C)
+                                  & r2_analort(A,B,C,D,E,F,G)
+                                  & r2_analort(A,B,C,D,E,G,F)
+                                  & D != E
+                                  & F != G ) ) ) ) ) ) ) ) ).
+
+fof(t32_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ~ ( r1_analmetr(A,B,C)
+                                      & r1_analort(A,B,C,D,E,F,G)
+                                      & r1_analort(A,B,C,D,E,F,H)
+                                      & ~ r1_analort(A,B,C,D,E,G,H)
+                                      & ~ r1_analort(A,B,C,D,E,H,G) ) ) ) ) ) ) ) ) ) ).
+
+fof(t33_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ~ ( r1_analmetr(A,B,C)
+                                      & r2_analort(A,B,C,D,E,F,G)
+                                      & r2_analort(A,B,C,D,E,F,H)
+                                      & ~ r2_analort(A,B,C,D,E,G,H)
+                                      & ~ r2_analort(A,B,C,D,E,H,G) ) ) ) ) ) ) ) ) ) ).
+
+fof(t34_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( r1_analort(A,F,G,B,C,D,E)
+                               => r1_analort(A,F,G,C,B,E,D) ) ) ) ) ) ) ) ) ).
+
+fof(t35_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ( r2_analort(A,F,G,B,C,D,E)
+                               => r2_analort(A,F,G,C,B,E,D) ) ) ) ) ) ) ) ) ).
+
+fof(t36_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ( ( r1_analmetr(A,B,C)
+                                      & r1_analort(A,B,C,D,E,F,G)
+                                      & r1_analort(A,B,C,D,E,G,H) )
+                                   => r1_analort(A,B,C,D,E,F,H) ) ) ) ) ) ) ) ) ) ).
+
+fof(t37_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ( ( r1_analmetr(A,B,C)
+                                      & r2_analort(A,B,C,D,E,F,G)
+                                      & r2_analort(A,B,C,D,E,G,H) )
+                                   => r2_analort(A,B,C,D,E,F,H) ) ) ) ) ) ) ) ) ) ).
+
+fof(t38_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_analmetr(A,B,C)
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ? [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                                & F != G
+                                & r1_analort(A,B,C,F,G,D,E) ) ) ) ) ) ) ) ) ).
+
+fof(t39_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_analmetr(A,B,C)
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ? [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                                & F != G
+                                & r2_analort(A,B,C,F,G,D,E) ) ) ) ) ) ) ) ) ).
+
+fof(t40_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_analmetr(A,B,C)
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ? [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                                & F != G
+                                & r1_analort(A,B,C,D,E,F,G) ) ) ) ) ) ) ) ) ).
+
+fof(t41_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_analmetr(A,B,C)
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ? [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                                & F != G
+                                & r2_analort(A,B,C,D,E,F,G) ) ) ) ) ) ) ) ) ).
+
+fof(t42_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(A))
+                                             => ~ ( r1_analmetr(A,B,C)
+                                                  & r1_analort(A,B,C,D,E,F,G)
+                                                  & r1_analort(A,B,C,H,I,F,G)
+                                                  & r1_analort(A,B,C,H,I,J,K)
+                                                  & H != I
+                                                  & F != G
+                                                  & ~ r1_analort(A,B,C,D,E,J,K) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t43_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(A))
+                                             => ~ ( r1_analmetr(A,B,C)
+                                                  & r2_analort(A,B,C,D,E,F,G)
+                                                  & r2_analort(A,B,C,H,I,F,G)
+                                                  & r2_analort(A,B,C,H,I,J,K)
+                                                  & H != I
+                                                  & F != G
+                                                  & ~ r2_analort(A,B,C,D,E,J,K) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t44_analort,axiom,
+    $true ).
+
+fof(t45_analort,axiom,
+    $true ).
+
+fof(t46_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(A))
+                                             => ~ ( r1_analmetr(A,B,C)
+                                                  & r1_analort(A,B,C,D,E,F,G)
+                                                  & r1_analort(A,B,C,F,G,H,I)
+                                                  & r1_analort(A,B,C,J,K,H,I)
+                                                  & ~ r1_analort(A,B,C,D,E,J,K)
+                                                  & F != G
+                                                  & H != I ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t47_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(A))
+                                             => ~ ( r1_analmetr(A,B,C)
+                                                  & r2_analort(A,B,C,D,E,F,G)
+                                                  & r2_analort(A,B,C,F,G,H,I)
+                                                  & r2_analort(A,B,C,J,K,H,I)
+                                                  & ~ r2_analort(A,B,C,D,E,J,K)
+                                                  & F != G
+                                                  & H != I ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t48_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(A))
+                                             => ~ ( r1_analmetr(A,B,C)
+                                                  & r1_analort(A,B,C,D,E,F,G)
+                                                  & r1_analort(A,B,C,F,G,H,I)
+                                                  & r1_analort(A,B,C,D,E,J,K)
+                                                  & ~ r1_analort(A,B,C,J,K,H,I)
+                                                  & F != G
+                                                  & D != E ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t49_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(A))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(A))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(A))
+                                             => ~ ( r1_analmetr(A,B,C)
+                                                  & r2_analort(A,B,C,D,E,F,G)
+                                                  & r2_analort(A,B,C,F,G,H,I)
+                                                  & r2_analort(A,B,C,D,E,J,K)
+                                                  & ~ r2_analort(A,B,C,J,K,H,I)
+                                                  & F != G
+                                                  & D != E ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t50_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_analmetr(A,B,C)
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ! [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(A))
+                                   => ~ ( ~ r1_analort(A,B,C,D,G,E,F)
+                                        & ~ r1_analort(A,B,C,D,G,F,E)
+                                        & r1_analort(A,B,C,F,H,F,E)
+                                        & ! [I] :
+                                            ( m1_subset_1(I,u1_struct_0(A))
+                                           => ~ ( ( r1_analort(A,B,C,D,G,D,I)
+                                                  | r1_analort(A,B,C,D,G,I,D) )
+                                                & ( r1_analort(A,B,C,F,H,F,I)
+                                                  | r1_analort(A,B,C,F,H,I,F) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t51_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ~ ( r1_analmetr(A,B,C)
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                             => ~ ( r1_analort(A,B,C,D,E,D,F)
+                                  & ! [G] :
+                                      ( m1_subset_1(G,u1_struct_0(A))
+                                     => ! [H] :
+                                          ( m1_subset_1(H,u1_struct_0(A))
+                                         => ~ ( r1_analort(A,B,C,G,H,D,E)
+                                              & ~ ( ~ r1_analort(A,B,C,G,H,D,F)
+                                                  & ~ r1_analort(A,B,C,G,H,F,D) )
+                                              & G != H ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t52_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( r1_analmetr(A,B,C)
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ! [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(A))
+                                   => ~ ( ~ r2_analort(A,B,C,D,G,E,F)
+                                        & ~ r2_analort(A,B,C,D,G,F,E)
+                                        & r2_analort(A,B,C,F,H,F,E)
+                                        & ! [I] :
+                                            ( m1_subset_1(I,u1_struct_0(A))
+                                           => ~ ( ( r2_analort(A,B,C,D,G,D,I)
+                                                  | r2_analort(A,B,C,D,G,I,D) )
+                                                & ( r2_analort(A,B,C,F,H,F,I)
+                                                  | r2_analort(A,B,C,F,H,I,F) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t53_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ~ ( r1_analmetr(A,B,C)
+                  & ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ! [E] :
+                          ( m1_subset_1(E,u1_struct_0(A))
+                         => ! [F] :
+                              ( m1_subset_1(F,u1_struct_0(A))
+                             => ~ ( r2_analort(A,B,C,D,E,D,F)
+                                  & ! [G] :
+                                      ( m1_subset_1(G,u1_struct_0(A))
+                                     => ! [H] :
+                                          ( m1_subset_1(H,u1_struct_0(A))
+                                         => ~ ( r2_analort(A,B,C,G,H,D,E)
+                                              & ~ ( ~ r2_analort(A,B,C,G,H,D,F)
+                                                  & ~ r2_analort(A,B,C,G,H,F,D) )
+                                              & G != H ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d5_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_relset_1(D,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                 => ( D = k4_analort(A,B,C)
+                  <=> ! [E,F] :
+                        ( r2_hidden(k4_tarski(E,F),D)
+                      <=> ? [G] :
+                            ( m1_subset_1(G,u1_struct_0(A))
+                            & ? [H] :
+                                ( m1_subset_1(H,u1_struct_0(A))
+                                & ? [I] :
+                                    ( m1_subset_1(I,u1_struct_0(A))
+                                    & ? [J] :
+                                        ( m1_subset_1(J,u1_struct_0(A))
+                                        & E = k4_tarski(G,H)
+                                        & F = k4_tarski(I,J)
+                                        & r1_analort(A,B,C,G,H,I,J) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d6_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_relset_1(D,k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)))
+                 => ( D = k5_analort(A,B,C)
+                  <=> ! [E,F] :
+                        ( r2_hidden(k4_tarski(E,F),D)
+                      <=> ? [G] :
+                            ( m1_subset_1(G,u1_struct_0(A))
+                            & ? [H] :
+                                ( m1_subset_1(H,u1_struct_0(A))
+                                & ? [I] :
+                                    ( m1_subset_1(I,u1_struct_0(A))
+                                    & ? [J] :
+                                        ( m1_subset_1(J,u1_struct_0(A))
+                                        & E = k4_tarski(G,H)
+                                        & F = k4_tarski(I,J)
+                                        & r2_analort(A,B,C,G,H,I,J) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d7_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k6_analort(A,B,C) = g1_analoaf(u1_struct_0(A),k4_analort(A,B,C)) ) ) ) ).
+
+fof(d8_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => k7_analort(A,B,C) = g1_analoaf(u1_struct_0(A),k5_analort(A,B,C)) ) ) ) ).
+
+fof(t54_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k6_analort(A,B,C)))
+                <=> m1_subset_1(D,u1_struct_0(A)) ) ) ) ) ).
+
+fof(t55_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(k7_analort(A,B,C)))
+                <=> m1_subset_1(D,u1_struct_0(A)) ) ) ) ) ).
+
+fof(t56_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(k6_analort(A,F,G)))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(k6_analort(A,F,G)))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(k6_analort(A,F,G)))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(k6_analort(A,F,G)))
+                                             => ( ( B = H
+                                                  & C = I
+                                                  & D = J
+                                                  & E = K )
+                                               => ( r2_analoaf(k6_analort(A,F,G),H,I,J,K)
+                                                <=> r1_analort(A,F,G,B,C,D,E) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t57_analort,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(k7_analort(A,F,G)))
+                                 => ! [I] :
+                                      ( m1_subset_1(I,u1_struct_0(k7_analort(A,F,G)))
+                                     => ! [J] :
+                                          ( m1_subset_1(J,u1_struct_0(k7_analort(A,F,G)))
+                                         => ! [K] :
+                                              ( m1_subset_1(K,u1_struct_0(k7_analort(A,F,G)))
+                                             => ( ( B = H
+                                                  & C = I
+                                                  & D = J
+                                                  & E = K )
+                                               => ( r2_analoaf(k7_analort(A,F,G),H,I,J,K)
+                                                <=> r2_analort(A,F,G,B,C,D,E) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(dt_k1_analort,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & l1_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m1_subset_1(k1_analort(A,B,C),u1_struct_0(A)) ) ).
+
+fof(commutativity_k1_analort,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & l1_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k1_analort(A,B,C) = k1_analort(A,C,B) ) ).
+
+fof(redefinition_k1_analort,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & l1_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => k1_analort(A,B,C) = k2_rlvect_1(A,B,C) ) ).
+
+fof(dt_k2_analort,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A))
+        & m1_subset_1(D,u1_struct_0(A)) )
+     => m1_subset_1(k2_analort(A,B,C,D),u1_struct_0(A)) ) ).
+
+fof(dt_k3_analort,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A))
+        & m1_subset_1(D,u1_struct_0(A)) )
+     => m1_subset_1(k3_analort(A,B,C,D),u1_struct_0(A)) ) ).
+
+fof(dt_k4_analort,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m2_relset_1(k4_analort(A,B,C),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) ) ).
+
+fof(dt_k5_analort,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => m2_relset_1(k5_analort(A,B,C),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A)),k2_zfmisc_1(u1_struct_0(A),u1_struct_0(A))) ) ).
+
+fof(dt_k6_analort,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ( v1_analoaf(k6_analort(A,B,C))
+        & l1_analoaf(k6_analort(A,B,C)) ) ) ).
+
+fof(dt_k7_analort,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,u1_struct_0(A))
+        & m1_subset_1(C,u1_struct_0(A)) )
+     => ( v1_analoaf(k7_analort(A,B,C))
+        & l1_analoaf(k7_analort(A,B,C)) ) ) ).
+
+%------------------------------------------------------------------------------

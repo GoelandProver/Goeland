@@ -1,0 +1,435 @@
+%------------------------------------------------------------------------------
+% File     : SET007+590 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Full Subtracter Circuit. Part I
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : fscirc_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   44 (  13 unt;   0 def)
+%            Number of atoms       :  211 (  54 equ)
+%            Maximal formula atoms :   12 (   4 avg)
+%            Number of connectives :  227 (  60   ~;   0   |;  61   &)
+%                                         (   0 <=>; 106  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   9 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :   20 (  19 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   43 (  43 usr;   6 con; 0-4 aty)
+%            Number of variables   :  174 ( 174   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(d1_fscirc_1,axiom,
+    ! [A,B,C] : k1_fscirc_1(A,B,C) = k13_facirc_1(A,B,C,k1_facirc_1) ).
+
+fof(d2_fscirc_1,axiom,
+    ! [A,B,C] : k2_fscirc_1(A,B,C) = k14_facirc_1(A,B,C,k1_facirc_1) ).
+
+fof(d3_fscirc_1,axiom,
+    ! [A,B,C] : k3_fscirc_1(A,B,C) = k3_circcomb(k3_circcomb(k7_circcomb(k3_twoscomp,k6_facirc_1(A,B)),k7_circcomb(k2_twoscomp,k6_facirc_1(B,C))),k7_circcomb(k3_twoscomp,k6_facirc_1(A,C))) ).
+
+fof(d4_fscirc_1,axiom,
+    ! [A,B,C] : k4_fscirc_1(A,B,C) = k3_circcomb(k3_fscirc_1(A,B,C),k7_circcomb(k4_facirc_1,k7_facirc_1(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),k4_tarski(k6_facirc_1(B,C),k2_twoscomp),k4_tarski(k6_facirc_1(A,C),k3_twoscomp)))) ).
+
+fof(d5_fscirc_1,axiom,
+    ! [A,B,C] : k5_fscirc_1(A,B,C) = k4_circcomb(k3_circcomb(k7_circcomb(k3_twoscomp,k6_facirc_1(A,B)),k7_circcomb(k2_twoscomp,k6_facirc_1(B,C))),k7_circcomb(k3_twoscomp,k6_facirc_1(A,C)),k4_circcomb(k7_circcomb(k3_twoscomp,k6_facirc_1(A,B)),k7_circcomb(k2_twoscomp,k6_facirc_1(B,C)),k10_facirc_1(A,B,k3_twoscomp),k10_facirc_1(B,C,k2_twoscomp)),k10_facirc_1(A,C,k3_twoscomp)) ).
+
+fof(t1_fscirc_1,axiom,
+    ! [A,B,C] : v1_relat_1(k4_msafree2(k4_fscirc_1(A,B,C))) ).
+
+fof(t2_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ~ v2_facirc_1(k2_msafree2(k4_fscirc_1(A,B,C))) ) ) ) ).
+
+fof(t3_fscirc_1,axiom,
+    ! [A,B,C,D] :
+      ( m1_subset_1(D,k4_card_3(u4_msualg_1(k3_fscirc_1(A,B,C),k5_fscirc_1(A,B,C))))
+     => ! [E] :
+          ( m1_subset_1(E,k10_circcomb)
+         => ! [F] :
+              ( m1_subset_1(F,k10_circcomb)
+             => ( ( E = k1_funct_1(D,A)
+                  & F = k1_funct_1(D,B) )
+               => k1_funct_1(k6_circuit2(k3_fscirc_1(A,B,C),k5_fscirc_1(A,B,C),D),k4_tarski(k6_facirc_1(A,B),k3_twoscomp)) = k12_margrel1(k11_margrel1(E),F) ) ) ) ) ).
+
+fof(t4_fscirc_1,axiom,
+    ! [A,B,C,D] :
+      ( m1_subset_1(D,k4_card_3(u4_msualg_1(k3_fscirc_1(A,B,C),k5_fscirc_1(A,B,C))))
+     => ! [E] :
+          ( m1_subset_1(E,k10_circcomb)
+         => ! [F] :
+              ( m1_subset_1(F,k10_circcomb)
+             => ( ( E = k1_funct_1(D,B)
+                  & F = k1_funct_1(D,C) )
+               => k1_funct_1(k6_circuit2(k3_fscirc_1(A,B,C),k5_fscirc_1(A,B,C),D),k4_tarski(k6_facirc_1(B,C),k2_twoscomp)) = k12_margrel1(E,F) ) ) ) ) ).
+
+fof(t5_fscirc_1,axiom,
+    ! [A,B,C,D] :
+      ( m1_subset_1(D,k4_card_3(u4_msualg_1(k3_fscirc_1(A,B,C),k5_fscirc_1(A,B,C))))
+     => ! [E] :
+          ( m1_subset_1(E,k10_circcomb)
+         => ! [F] :
+              ( m1_subset_1(F,k10_circcomb)
+             => ( ( E = k1_funct_1(D,A)
+                  & F = k1_funct_1(D,C) )
+               => k1_funct_1(k6_circuit2(k3_fscirc_1(A,B,C),k5_fscirc_1(A,B,C),D),k4_tarski(k6_facirc_1(A,C),k3_twoscomp)) = k12_margrel1(k11_margrel1(E),F) ) ) ) ) ).
+
+fof(d6_fscirc_1,axiom,
+    ! [A,B,C] : k6_fscirc_1(A,B,C) = k4_tarski(k7_facirc_1(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),k4_tarski(k6_facirc_1(B,C),k2_twoscomp),k4_tarski(k6_facirc_1(A,C),k3_twoscomp)),k4_facirc_1) ).
+
+fof(d7_fscirc_1,axiom,
+    ! [A,B,C] : k7_fscirc_1(A,B,C) = k4_circcomb(k3_fscirc_1(A,B,C),k7_circcomb(k4_facirc_1,k7_facirc_1(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),k4_tarski(k6_facirc_1(B,C),k2_twoscomp),k4_tarski(k6_facirc_1(A,C),k3_twoscomp))),k5_fscirc_1(A,B,C),k11_facirc_1(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),k4_tarski(k6_facirc_1(B,C),k2_twoscomp),k4_tarski(k6_facirc_1(A,C),k3_twoscomp),k4_facirc_1)) ).
+
+fof(t6_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(A,u1_struct_0(k4_fscirc_1(A,B,C)))
+      & r2_hidden(B,u1_struct_0(k4_fscirc_1(A,B,C)))
+      & r2_hidden(C,u1_struct_0(k4_fscirc_1(A,B,C))) ) ).
+
+fof(t7_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),k4_msafree2(k4_fscirc_1(A,B,C)))
+      & r2_hidden(k4_tarski(k6_facirc_1(B,C),k2_twoscomp),k4_msafree2(k4_fscirc_1(A,B,C)))
+      & r2_hidden(k4_tarski(k6_facirc_1(A,C),k3_twoscomp),k4_msafree2(k4_fscirc_1(A,B,C))) ) ).
+
+fof(t8_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ( r2_hidden(A,k2_msafree2(k4_fscirc_1(A,B,C)))
+                & r2_hidden(B,k2_msafree2(k4_fscirc_1(A,B,C)))
+                & r2_hidden(C,k2_msafree2(k4_fscirc_1(A,B,C))) ) ) ) ) ).
+
+fof(t9_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ( k2_msafree2(k4_fscirc_1(A,B,C)) = k1_enumset1(A,B,C)
+                & k4_msafree2(k4_fscirc_1(A,B,C)) = k2_xboole_0(k1_enumset1(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),k4_tarski(k6_facirc_1(B,C),k2_twoscomp),k4_tarski(k6_facirc_1(A,C),k3_twoscomp)),k1_struct_0(k4_fscirc_1(A,B,C),k6_fscirc_1(A,B,C))) ) ) ) ) ).
+
+fof(t10_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ! [F] :
+                          ( m1_subset_1(F,k10_circcomb)
+                         => ( ( E = k1_funct_1(D,A)
+                              & F = k1_funct_1(D,B) )
+                           => k1_funct_1(k6_circuit2(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),D),k4_tarski(k6_facirc_1(A,B),k3_twoscomp)) = k12_margrel1(k11_margrel1(E),F) ) ) ) ) ) ) ) ).
+
+fof(t11_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ! [F] :
+                          ( m1_subset_1(F,k10_circcomb)
+                         => ( ( E = k1_funct_1(D,B)
+                              & F = k1_funct_1(D,C) )
+                           => k1_funct_1(k6_circuit2(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),D),k4_tarski(k6_facirc_1(B,C),k2_twoscomp)) = k12_margrel1(E,F) ) ) ) ) ) ) ) ).
+
+fof(t12_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ! [F] :
+                          ( m1_subset_1(F,k10_circcomb)
+                         => ( ( E = k1_funct_1(D,A)
+                              & F = k1_funct_1(D,C) )
+                           => k1_funct_1(k6_circuit2(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),D),k4_tarski(k6_facirc_1(A,C),k3_twoscomp)) = k12_margrel1(k11_margrel1(E),F) ) ) ) ) ) ) ) ).
+
+fof(t13_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ! [F] :
+                          ( m1_subset_1(F,k10_circcomb)
+                         => ! [G] :
+                              ( m1_subset_1(G,k10_circcomb)
+                             => ( ( E = k1_funct_1(D,k4_tarski(k6_facirc_1(A,B),k3_twoscomp))
+                                  & F = k1_funct_1(D,k4_tarski(k6_facirc_1(B,C),k2_twoscomp))
+                                  & G = k1_funct_1(D,k4_tarski(k6_facirc_1(A,C),k3_twoscomp)) )
+                               => k15_facirc_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),k6_circuit2(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),D),k6_fscirc_1(A,B,C)) = k3_binarith(k3_binarith(E,F),G) ) ) ) ) ) ) ) ) ).
+
+fof(t14_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ! [F] :
+                          ( m1_subset_1(F,k10_circcomb)
+                         => ( ( E = k1_funct_1(D,A)
+                              & F = k1_funct_1(D,B) )
+                           => k1_funct_1(k9_facirc_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),D,np__2),k4_tarski(k6_facirc_1(A,B),k3_twoscomp)) = k12_margrel1(k11_margrel1(E),F) ) ) ) ) ) ) ) ).
+
+fof(t15_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ! [F] :
+                          ( m1_subset_1(F,k10_circcomb)
+                         => ( ( E = k1_funct_1(D,B)
+                              & F = k1_funct_1(D,C) )
+                           => k1_funct_1(k9_facirc_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),D,np__2),k4_tarski(k6_facirc_1(B,C),k2_twoscomp)) = k12_margrel1(E,F) ) ) ) ) ) ) ) ).
+
+fof(t16_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ! [F] :
+                          ( m1_subset_1(F,k10_circcomb)
+                         => ( ( E = k1_funct_1(D,A)
+                              & F = k1_funct_1(D,C) )
+                           => k1_funct_1(k9_facirc_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),D,np__2),k4_tarski(k6_facirc_1(A,C),k3_twoscomp)) = k12_margrel1(k11_margrel1(E),F) ) ) ) ) ) ) ) ).
+
+fof(t17_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ! [F] :
+                          ( m1_subset_1(F,k10_circcomb)
+                         => ! [G] :
+                              ( m1_subset_1(G,k10_circcomb)
+                             => ( ( E = k1_funct_1(D,A)
+                                  & F = k1_funct_1(D,B)
+                                  & G = k1_funct_1(D,C) )
+                               => k15_facirc_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),k9_facirc_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),D,np__2),k6_fscirc_1(A,B,C)) = k3_binarith(k3_binarith(k12_margrel1(k11_margrel1(E),F),k12_margrel1(F,G)),k12_margrel1(k11_margrel1(E),G)) ) ) ) ) ) ) ) ) ).
+
+fof(t18_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C))))
+                 => v1_circuit2(k9_facirc_1(k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C),D,np__2),k4_fscirc_1(A,B,C),k7_fscirc_1(A,B,C)) ) ) ) ) ).
+
+fof(d8_fscirc_1,axiom,
+    ! [A,B,C] : k8_fscirc_1(A,B,C) = k3_circcomb(k12_facirc_1(A,B,C,k1_facirc_1),k4_fscirc_1(A,B,C)) ).
+
+fof(t19_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => k2_msafree2(k8_fscirc_1(A,B,C)) = k1_enumset1(A,B,C) ) ) ) ).
+
+fof(t20_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => k4_msafree2(k8_fscirc_1(A,B,C)) = k2_xboole_0(k2_xboole_0(k2_tarski(k4_tarski(k6_facirc_1(A,B),k1_facirc_1),k13_facirc_1(A,B,C,k1_facirc_1)),k1_enumset1(k4_tarski(k6_facirc_1(A,B),k3_twoscomp),k4_tarski(k6_facirc_1(B,C),k2_twoscomp),k4_tarski(k6_facirc_1(A,C),k3_twoscomp))),k1_struct_0(k4_fscirc_1(A,B,C),k6_fscirc_1(A,B,C))) ) ) ) ).
+
+fof(t21_fscirc_1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(D)
+        & l1_msualg_1(D) )
+     => ( D = k8_fscirc_1(A,B,C)
+       => ( r2_hidden(A,u1_struct_0(D))
+          & r2_hidden(B,u1_struct_0(D))
+          & r2_hidden(C,u1_struct_0(D)) ) ) ) ).
+
+fof(d9_fscirc_1,axiom,
+    ! [A,B,C] : k9_fscirc_1(A,B,C) = k4_circcomb(k12_facirc_1(A,B,C,k1_facirc_1),k4_fscirc_1(A,B,C),k2_fscirc_1(A,B,C),k7_fscirc_1(A,B,C)) ).
+
+fof(t22_fscirc_1,axiom,
+    ! [A,B,C] : v1_relat_1(k4_msafree2(k8_fscirc_1(A,B,C))) ).
+
+fof(t23_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ~ v2_facirc_1(k2_msafree2(k8_fscirc_1(A,B,C))) ) ) ) ).
+
+fof(t24_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( r2_hidden(k1_fscirc_1(A,B,C),k4_msafree2(k8_fscirc_1(A,B,C)))
+      & r2_hidden(k6_fscirc_1(A,B,C),k4_msafree2(k8_fscirc_1(A,B,C))) ) ).
+
+fof(t25_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k8_fscirc_1(A,B,C),k9_fscirc_1(A,B,C))))
+                 => ! [E] :
+                      ( m1_subset_1(E,k10_circcomb)
+                     => ! [F] :
+                          ( m1_subset_1(F,k10_circcomb)
+                         => ! [G] :
+                              ( m1_subset_1(G,k10_circcomb)
+                             => ( ( E = k1_funct_1(D,A)
+                                  & F = k1_funct_1(D,B)
+                                  & G = k1_funct_1(D,C) )
+                               => ( k1_funct_1(k9_facirc_1(k8_fscirc_1(A,B,C),k9_fscirc_1(A,B,C),D,np__2),k1_fscirc_1(A,B,C)) = k4_binarith(k4_binarith(E,F),G)
+                                  & k1_funct_1(k9_facirc_1(k8_fscirc_1(A,B,C),k9_fscirc_1(A,B,C),D,np__2),k6_fscirc_1(A,B,C)) = k3_binarith(k3_binarith(k12_margrel1(k11_margrel1(E),F),k12_margrel1(F,G)),k12_margrel1(k11_margrel1(E),G)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t26_fscirc_1,axiom,
+    ! [A] :
+      ( ~ v1_facirc_1(A)
+     => ! [B] :
+          ( ~ v1_facirc_1(B)
+         => ! [C] :
+              ( ~ v1_facirc_1(C)
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u4_msualg_1(k8_fscirc_1(A,B,C),k9_fscirc_1(A,B,C))))
+                 => v1_circuit2(k9_facirc_1(k8_fscirc_1(A,B,C),k9_fscirc_1(A,B,C),D,np__2),k8_fscirc_1(A,B,C),k9_fscirc_1(A,B,C)) ) ) ) ) ).
+
+fof(dt_k1_fscirc_1,axiom,
+    ! [A,B,C] : m1_struct_0(k1_fscirc_1(A,B,C),k12_facirc_1(A,B,C,k1_facirc_1),k4_msafree2(k12_facirc_1(A,B,C,k1_facirc_1))) ).
+
+fof(dt_k2_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( v4_msualg_1(k2_fscirc_1(A,B,C),k12_facirc_1(A,B,C,k1_facirc_1))
+      & v4_msafree2(k2_fscirc_1(A,B,C),k12_facirc_1(A,B,C,k1_facirc_1))
+      & v4_circcomb(k2_fscirc_1(A,B,C),k12_facirc_1(A,B,C,k1_facirc_1))
+      & v6_circcomb(k2_fscirc_1(A,B,C),k12_facirc_1(A,B,C,k1_facirc_1))
+      & l3_msualg_1(k2_fscirc_1(A,B,C),k12_facirc_1(A,B,C,k1_facirc_1)) ) ).
+
+fof(dt_k3_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( ~ v3_struct_0(k3_fscirc_1(A,B,C))
+      & v1_msualg_1(k3_fscirc_1(A,B,C))
+      & ~ v2_msualg_1(k3_fscirc_1(A,B,C))
+      & v1_circcomb(k3_fscirc_1(A,B,C))
+      & v2_circcomb(k3_fscirc_1(A,B,C))
+      & v3_circcomb(k3_fscirc_1(A,B,C))
+      & l1_msualg_1(k3_fscirc_1(A,B,C)) ) ).
+
+fof(dt_k4_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( ~ v3_struct_0(k4_fscirc_1(A,B,C))
+      & v1_msualg_1(k4_fscirc_1(A,B,C))
+      & ~ v2_msualg_1(k4_fscirc_1(A,B,C))
+      & v1_circcomb(k4_fscirc_1(A,B,C))
+      & v2_circcomb(k4_fscirc_1(A,B,C))
+      & v3_circcomb(k4_fscirc_1(A,B,C))
+      & l1_msualg_1(k4_fscirc_1(A,B,C)) ) ).
+
+fof(dt_k5_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( v4_msualg_1(k5_fscirc_1(A,B,C),k3_fscirc_1(A,B,C))
+      & v4_msafree2(k5_fscirc_1(A,B,C),k3_fscirc_1(A,B,C))
+      & v4_circcomb(k5_fscirc_1(A,B,C),k3_fscirc_1(A,B,C))
+      & v6_circcomb(k5_fscirc_1(A,B,C),k3_fscirc_1(A,B,C))
+      & l3_msualg_1(k5_fscirc_1(A,B,C),k3_fscirc_1(A,B,C)) ) ).
+
+fof(dt_k6_fscirc_1,axiom,
+    ! [A,B,C] : m1_struct_0(k6_fscirc_1(A,B,C),k4_fscirc_1(A,B,C),k4_msafree2(k4_fscirc_1(A,B,C))) ).
+
+fof(dt_k7_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( v4_msualg_1(k7_fscirc_1(A,B,C),k4_fscirc_1(A,B,C))
+      & v4_msafree2(k7_fscirc_1(A,B,C),k4_fscirc_1(A,B,C))
+      & v4_circcomb(k7_fscirc_1(A,B,C),k4_fscirc_1(A,B,C))
+      & v6_circcomb(k7_fscirc_1(A,B,C),k4_fscirc_1(A,B,C))
+      & l3_msualg_1(k7_fscirc_1(A,B,C),k4_fscirc_1(A,B,C)) ) ).
+
+fof(dt_k8_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( ~ v3_struct_0(k8_fscirc_1(A,B,C))
+      & v1_msualg_1(k8_fscirc_1(A,B,C))
+      & ~ v2_msualg_1(k8_fscirc_1(A,B,C))
+      & v1_circcomb(k8_fscirc_1(A,B,C))
+      & v2_circcomb(k8_fscirc_1(A,B,C))
+      & v3_circcomb(k8_fscirc_1(A,B,C))
+      & l1_msualg_1(k8_fscirc_1(A,B,C)) ) ).
+
+fof(dt_k9_fscirc_1,axiom,
+    ! [A,B,C] :
+      ( v4_msualg_1(k9_fscirc_1(A,B,C),k8_fscirc_1(A,B,C))
+      & v4_msafree2(k9_fscirc_1(A,B,C),k8_fscirc_1(A,B,C))
+      & v4_circcomb(k9_fscirc_1(A,B,C),k8_fscirc_1(A,B,C))
+      & v6_circcomb(k9_fscirc_1(A,B,C),k8_fscirc_1(A,B,C))
+      & l3_msualg_1(k9_fscirc_1(A,B,C),k8_fscirc_1(A,B,C)) ) ).
+
+%------------------------------------------------------------------------------

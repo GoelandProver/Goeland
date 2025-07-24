@@ -1,0 +1,1418 @@
+%------------------------------------------------------------------------------
+% File     : SET007+663 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The J'onsson Theorem about the Representation of Modular Lattices
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : lattice8 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   71 (   8 unt;   0 def)
+%            Number of atoms       : 1003 (  67 equ)
+%            Maximal formula atoms :   39 (  14 avg)
+%            Number of connectives : 1014 (  82   ~;   5   |; 663   &)
+%                                         (  12 <=>; 252  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   34 (  13 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :   59 (  57 usr;   1 prp; 0-6 aty)
+%            Number of functors    :   57 (  57 usr;   6 con; 0-5 aty)
+%            Number of variables   :  282 ( 265   !;  17   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_lattice8,axiom,
+    ? [A] :
+      ( l1_orders_2(A)
+      & ~ v3_struct_0(A)
+      & v2_orders_2(A)
+      & v3_orders_2(A)
+      & v4_orders_2(A)
+      & v1_yellow_0(A)
+      & v2_yellow_0(A)
+      & v3_yellow_0(A)
+      & v1_lattice3(A)
+      & v2_lattice3(A)
+      & v3_lattice3(A)
+      & v1_yellow11(A)
+      & v2_waybel_1(A)
+      & v6_group_1(A) ) ).
+
+fof(rc2_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_realset1(A)
+     => ? [B] :
+          ( m1_yellow_0(B,k1_lattice5(A))
+          & ~ v3_struct_0(B)
+          & v2_orders_2(B)
+          & v3_orders_2(B)
+          & v4_orders_2(B)
+          & v4_yellow_0(B,k1_lattice5(A))
+          & v5_yellow_0(B,k1_lattice5(A))
+          & v6_yellow_0(B,k1_lattice5(A))
+          & v1_lattice3(B)
+          & v2_lattice3(B)
+          & ~ v3_realset2(B)
+          & v1_lattice8(B) ) ) ).
+
+fof(fc1_lattice8,axiom,
+    ! [A] : ~ v1_xboole_0(k1_lattice8(A)) ).
+
+fof(fc2_lattice8,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v3_ordinal1(B) )
+     => ~ v1_xboole_0(k3_lattice8(A,B)) ) ).
+
+fof(fc3_lattice8,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & l1_orders_2(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+     => ~ v1_xboole_0(k7_lattice8(A,B,C)) ) ).
+
+fof(d1_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_relset_1(B,A,A)
+         => ! [C] :
+              ( m2_relset_1(C,A,A)
+             => ( r1_lattice8(A,B,C)
+              <=> ! [D] :
+                    ( m1_subset_1(D,A)
+                   => ! [E] :
+                        ( m1_subset_1(E,A)
+                       => ( r2_hidden(k1_domain_1(A,A,D,E),B)
+                         => r2_hidden(k1_domain_1(A,A,D,E),C) ) ) ) ) ) ) ) ).
+
+fof(d2_lattice8,axiom,
+    ! [A] :
+      ( l1_orders_2(A)
+     => ( v1_lattice8(A)
+      <=> ? [B] :
+            ( ~ v1_xboole_0(B)
+            & ! [C] :
+                ( r2_hidden(C,u1_struct_0(A))
+               => ( v1_partfun1(C,B,B)
+                  & v3_relat_2(C)
+                  & v8_relat_2(C)
+                  & m2_relset_1(C,B,B) ) )
+            & ? [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+                & ! [D] :
+                    ( ( v1_partfun1(D,B,B)
+                      & v3_relat_2(D)
+                      & v8_relat_2(D)
+                      & m2_relset_1(D,B,B) )
+                   => ! [E] :
+                        ( ( v1_partfun1(E,B,B)
+                          & v3_relat_2(E)
+                          & v8_relat_2(E)
+                          & m2_relset_1(E,B,B) )
+                       => ! [F,G] :
+                            ~ ( r2_hidden(D,u1_struct_0(A))
+                              & r2_hidden(E,u1_struct_0(A))
+                              & r2_hidden(k4_tarski(F,G),k5_eqrel_1(B,D,E))
+                              & ! [H] :
+                                  ( ( ~ v1_xboole_0(H)
+                                    & m2_finseq_1(H,B) )
+                                 => ~ ( k3_finseq_1(H) = C
+                                      & r1_lattice5(B,H,F,G,D,E) ) ) ) ) ) ) ) ) ) ).
+
+fof(d3_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_lattice8(A,B)
+          <=> ? [C] :
+                ( ~ v1_realset1(C)
+                & ? [D] :
+                    ( v1_funct_1(D)
+                    & v1_funct_2(D,u1_struct_0(A),u1_struct_0(k1_lattice5(C)))
+                    & v19_waybel_0(D,A,k1_lattice5(C))
+                    & v20_waybel_0(D,A,k1_lattice5(C))
+                    & m2_relset_1(D,u1_struct_0(A),u1_struct_0(k1_lattice5(C)))
+                    & v2_funct_1(D)
+                    & v1_lattice8(k2_lattice5(A,k1_lattice5(C),D))
+                    & ? [E] :
+                        ( v1_partfun1(E,C,C)
+                        & v3_relat_2(E)
+                        & v8_relat_2(E)
+                        & m2_relset_1(E,C,C)
+                        & r2_hidden(E,u1_struct_0(k2_lattice5(A,k1_lattice5(C),D)))
+                        & E != k6_partfun1(C) )
+                    & r1_xreal_0(k3_lattice5(C,k2_lattice5(A,k1_lattice5(C),D)),B) ) ) ) ) ) ).
+
+fof(t1_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & v1_lattice5(C,A,B)
+                & v2_lattice5(C,A,B)
+                & v3_lattice5(C,A,B)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => r1_ordinal1(k1_ordinal1(k1_xboole_0),k8_lattice5(A,B,C)) ) ) ) ).
+
+fof(t2_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v2_lattice3(A)
+        & v3_realset2(A)
+        & l1_orders_2(A) )
+     => v1_yellow11(A) ) ).
+
+fof(t3_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v5_yellow_0(B,k1_lattice5(A))
+            & v6_yellow_0(B,k1_lattice5(A))
+            & m1_yellow_0(B,k1_lattice5(A)) )
+         => ~ ( ~ v3_realset2(B)
+              & ! [C] :
+                  ( ( v1_partfun1(C,A,A)
+                    & v3_relat_2(C)
+                    & v8_relat_2(C)
+                    & m2_relset_1(C,A,A) )
+                 => ~ ( r2_hidden(C,u1_struct_0(B))
+                      & C != k6_partfun1(A) ) ) ) ) ) ).
+
+fof(t4_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => ( ( v17_waybel_0(C,A,B)
+                  & v18_waybel_0(C,A,B) )
+               => ( v19_waybel_0(C,A,B)
+                  & v20_waybel_0(C,A,B) ) ) ) ) ) ).
+
+fof(t5_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ( ( r5_waybel_1(A,B)
+              & v1_yellow11(A) )
+           => v1_yellow11(B) ) ) ) ).
+
+fof(t6_lattice8,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),u1_struct_0(B))
+                & v5_orders_3(C,A,B)
+                & m2_relset_1(C,u1_struct_0(A),u1_struct_0(B)) )
+             => v1_yellow_0(k2_yellow_2(A,B,C)) ) ) ) ).
+
+fof(t7_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( ~ v1_xboole_0(D)
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,u1_struct_0(A),u1_struct_0(k1_lattice5(D)))
+                        & v19_waybel_0(E,A,k1_lattice5(D))
+                        & v20_waybel_0(E,A,k1_lattice5(D))
+                        & m2_relset_1(E,u1_struct_0(A),u1_struct_0(k1_lattice5(D))) )
+                     => ( ( v2_funct_1(E)
+                          & r3_orders_2(k2_yellow_2(A,k1_lattice5(D),E),k1_waybel_0(A,k2_yellow_2(A,k1_lattice5(D),E),k2_waybel_1(A,k1_lattice5(D),E),B),k1_waybel_0(A,k2_yellow_2(A,k1_lattice5(D),E),k2_waybel_1(A,k1_lattice5(D),E),C)) )
+                       => r3_orders_2(A,B,C) ) ) ) ) ) ) ).
+
+fof(t8_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_realset1(A)
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & v4_yellow_0(B,k1_lattice5(A))
+            & v5_yellow_0(B,k1_lattice5(A))
+            & v6_yellow_0(B,k1_lattice5(A))
+            & v1_lattice8(B)
+            & m1_yellow_0(B,k1_lattice5(A)) )
+         => ! [C] :
+              ( ( v1_partfun1(C,A,A)
+                & v3_relat_2(C)
+                & v8_relat_2(C)
+                & m2_relset_1(C,A,A) )
+             => ( ( r2_hidden(C,u1_struct_0(B))
+                  & r1_xreal_0(k3_lattice5(A,B),np__2) )
+               => ( C = k6_partfun1(A)
+                  | v1_yellow11(B) ) ) ) ) ) ).
+
+fof(t9_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ( r2_lattice8(A,np__2)
+       => v1_yellow11(A) ) ) ).
+
+fof(d4_lattice8,axiom,
+    ! [A] : k1_lattice8(A) = k2_xboole_0(A,k2_tarski(k1_tarski(A),k1_tarski(k1_tarski(A)))) ).
+
+fof(d5_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_subset_1(D,k4_zfmisc_1(A,A,u1_struct_0(B),u1_struct_0(B)))
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k2_zfmisc_1(k1_lattice8(A),k1_lattice8(A)),u1_struct_0(B))
+                        & m2_relset_1(E,k2_zfmisc_1(k1_lattice8(A),k1_lattice8(A)),u1_struct_0(B)) )
+                     => ( E = k2_lattice8(A,B,C,D)
+                      <=> ( ! [F] :
+                              ( m1_subset_1(F,A)
+                             => ! [G] :
+                                  ( m1_subset_1(G,A)
+                                 => k1_binop_1(E,F,G) = k4_lattice5(A,B,C,F,G) ) )
+                          & k1_binop_1(E,k1_tarski(A),k1_tarski(A)) = k3_yellow_0(B)
+                          & k1_binop_1(E,k1_tarski(k1_tarski(A)),k1_tarski(k1_tarski(A))) = k3_yellow_0(B)
+                          & k1_binop_1(E,k1_tarski(A),k1_tarski(k1_tarski(A))) = k12_lattice3(B,k13_lattice3(B,k4_lattice5(A,B,C,k8_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D),k9_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)),k10_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)),k11_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D))
+                          & k1_binop_1(E,k1_tarski(k1_tarski(A)),k1_tarski(A)) = k12_lattice3(B,k13_lattice3(B,k4_lattice5(A,B,C,k8_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D),k9_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)),k10_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)),k11_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D))
+                          & ! [F] :
+                              ( m1_subset_1(F,A)
+                             => ( k1_binop_1(E,F,k1_tarski(A)) = k13_lattice3(B,k4_lattice5(A,B,C,F,k8_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)),k10_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D))
+                                & k1_binop_1(E,k1_tarski(A),F) = k13_lattice3(B,k4_lattice5(A,B,C,F,k8_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)),k10_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D))
+                                & k1_binop_1(E,F,k1_tarski(k1_tarski(A))) = k13_lattice3(B,k4_lattice5(A,B,C,F,k9_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)),k10_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D))
+                                & k1_binop_1(E,k1_tarski(k1_tarski(A)),F) = k13_lattice3(B,k4_lattice5(A,B,C,F,k9_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)),k10_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)) ) ) ) ) ) ) ) ) ) ).
+
+fof(t10_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ( v2_lattice5(C,A,B)
+               => ! [D] :
+                    ( m1_subset_1(D,k4_zfmisc_1(A,A,u1_struct_0(B),u1_struct_0(B)))
+                   => v2_lattice5(k2_lattice8(A,B,C,D),k1_lattice8(A),B) ) ) ) ) ) ).
+
+fof(t11_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ( v1_lattice5(C,A,B)
+               => ! [D] :
+                    ( m1_subset_1(D,k4_zfmisc_1(A,A,u1_struct_0(B),u1_struct_0(B)))
+                   => v1_lattice5(k2_lattice8(A,B,C,D),k1_lattice8(A),B) ) ) ) ) ) ).
+
+fof(t12_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ( v1_yellow11(B)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                  & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+               => ( ( v1_lattice5(C,A,B)
+                    & v3_lattice5(C,A,B) )
+                 => ! [D] :
+                      ( m1_subset_1(D,k4_zfmisc_1(A,A,u1_struct_0(B),u1_struct_0(B)))
+                     => ( r3_orders_2(B,k4_lattice5(A,B,C,k8_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D),k9_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)),k13_lattice3(B,k10_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D),k11_mcart_1(A,A,u1_struct_0(B),u1_struct_0(B),D)))
+                       => v3_lattice5(k2_lattice8(A,B,C,D),k1_lattice8(A),B) ) ) ) ) ) ) ) ).
+
+fof(t13_lattice8,axiom,
+    ! [A] : r1_tarski(A,k1_lattice8(A)) ).
+
+fof(t14_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_subset_1(D,k4_zfmisc_1(A,A,u1_struct_0(B),u1_struct_0(B)))
+                 => r1_tarski(C,k2_lattice8(A,B,C,D)) ) ) ) ) ).
+
+fof(d6_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ! [C] :
+              ( C = k3_lattice8(A,B)
+            <=> ? [D] :
+                  ( v1_relat_1(D)
+                  & v1_funct_1(D)
+                  & v5_ordinal1(D)
+                  & C = k1_ordinal2(D)
+                  & k1_relat_1(D) = k1_ordinal1(B)
+                  & k1_funct_1(D,k1_xboole_0) = A
+                  & ! [E] :
+                      ( v3_ordinal1(E)
+                     => ( r2_hidden(k1_ordinal1(E),k1_ordinal1(B))
+                       => k1_funct_1(D,k1_ordinal1(E)) = k1_lattice8(k1_funct_1(D,E)) ) )
+                  & ! [E] :
+                      ( v3_ordinal1(E)
+                     => ( ( r2_hidden(E,k1_ordinal1(B))
+                          & v4_ordinal1(E) )
+                       => ( E = k1_xboole_0
+                          | k1_funct_1(D,E) = k3_tarski(k2_relat_1(k2_ordinal1(D,E))) ) ) ) ) ) ) ) ).
+
+fof(t15_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => k3_lattice8(A,k1_xboole_0) = A ) ).
+
+fof(t16_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => k3_lattice8(A,k1_ordinal1(B)) = k1_lattice8(k3_lattice8(A,B)) ) ) ).
+
+fof(t17_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C)
+                & v5_ordinal1(C) )
+             => ( ( v4_ordinal1(B)
+                  & k1_relat_1(C) = B
+                  & ! [D] :
+                      ( v3_ordinal1(D)
+                     => ( r2_hidden(D,B)
+                       => k1_funct_1(C,D) = k3_lattice8(A,D) ) ) )
+               => ( B = k1_xboole_0
+                  | k3_lattice8(A,B) = k3_tarski(k2_relat_1(C)) ) ) ) ) ) ).
+
+fof(t18_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => r1_tarski(A,k3_lattice8(A,B)) ) ) ).
+
+fof(d7_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice5(D,A,B,C)
+                 => ! [E] :
+                      ( v3_ordinal1(E)
+                     => ( r2_hidden(E,k1_relat_1(D))
+                       => k4_lattice8(A,B,C,D,E) = k1_funct_1(D,E) ) ) ) ) ) ) ).
+
+fof(d8_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice5(D,A,B,C)
+                 => ! [E] :
+                      ( v3_ordinal1(E)
+                     => ! [F] :
+                          ( F = k5_lattice8(A,B,C,D,E)
+                        <=> ? [G] :
+                              ( v1_relat_1(G)
+                              & v1_funct_1(G)
+                              & v5_ordinal1(G)
+                              & F = k1_ordinal2(G)
+                              & k1_relat_1(G) = k1_ordinal1(E)
+                              & k1_funct_1(G,k1_xboole_0) = C
+                              & ! [H] :
+                                  ( v3_ordinal1(H)
+                                 => ( r2_hidden(k1_ordinal1(H),k1_ordinal1(E))
+                                   => k1_funct_1(G,k1_ordinal1(H)) = k2_lattice8(k3_lattice8(A,H),B,k11_lattice5(k3_lattice8(A,H),B,k1_funct_1(G,H)),k4_lattice8(A,B,C,D,H)) ) )
+                              & ! [H] :
+                                  ( v3_ordinal1(H)
+                                 => ( ( r2_hidden(H,k1_ordinal1(E))
+                                      & v4_ordinal1(H) )
+                                   => ( H = k1_xboole_0
+                                      | k1_funct_1(G,H) = k3_tarski(k2_relat_1(k2_ordinal1(G,H))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t19_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice5(D,A,B,C)
+                 => k5_lattice8(A,B,C,D,k1_xboole_0) = C ) ) ) ) ).
+
+fof(t20_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice5(D,A,B,C)
+                 => ! [E] :
+                      ( v3_ordinal1(E)
+                     => k5_lattice8(A,B,C,D,k1_ordinal1(E)) = k2_lattice8(k3_lattice8(A,E),B,k11_lattice5(k3_lattice8(A,E),B,k5_lattice8(A,B,C,D,E)),k4_lattice8(A,B,C,D,E)) ) ) ) ) ) ).
+
+fof(t21_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice5(D,A,B,C)
+                 => ! [E] :
+                      ( ( v1_relat_1(E)
+                        & v1_funct_1(E)
+                        & v5_ordinal1(E) )
+                     => ! [F] :
+                          ( v3_ordinal1(F)
+                         => ( ( v4_ordinal1(F)
+                              & k1_relat_1(E) = F
+                              & ! [G] :
+                                  ( v3_ordinal1(G)
+                                 => ( r2_hidden(G,F)
+                                   => k1_funct_1(E,G) = k5_lattice8(A,B,C,D,G) ) ) )
+                           => ( F = k1_xboole_0
+                              | k5_lattice8(A,B,C,D,F) = k3_tarski(k2_relat_1(E)) ) ) ) ) ) ) ) ) ).
+
+fof(t22_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( v3_ordinal1(B)
+         => ! [C] :
+              ( v3_ordinal1(C)
+             => ! [D] :
+                  ( v3_ordinal1(D)
+                 => ( r1_ordinal1(C,D)
+                   => r1_tarski(k3_lattice8(A,C),k3_lattice8(A,D)) ) ) ) ) ) ).
+
+fof(t23_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice5(D,A,B,C)
+                 => ! [E] :
+                      ( v3_ordinal1(E)
+                     => ( v1_funct_1(k5_lattice8(A,B,C,D,E))
+                        & v1_funct_2(k5_lattice8(A,B,C,D,E),k2_zfmisc_1(k3_lattice8(A,E),k3_lattice8(A,E)),u1_struct_0(B))
+                        & m2_relset_1(k5_lattice8(A,B,C,D,E),k2_zfmisc_1(k3_lattice8(A,E),k3_lattice8(A,E)),u1_struct_0(B)) ) ) ) ) ) ) ).
+
+fof(t24_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice5(D,A,B,C)
+                 => ! [E] :
+                      ( v3_ordinal1(E)
+                     => r1_tarski(C,k6_lattice8(A,B,C,D,E)) ) ) ) ) ) ).
+
+fof(t25_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( v3_ordinal1(D)
+                 => ! [E] :
+                      ( v3_ordinal1(E)
+                     => ! [F] :
+                          ( m1_lattice5(F,A,B,C)
+                         => ( r1_ordinal1(D,E)
+                           => r1_tarski(k6_lattice8(A,B,C,F,D),k6_lattice8(A,B,C,F,E)) ) ) ) ) ) ) ) ).
+
+fof(t26_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ( v2_lattice5(C,A,B)
+               => ! [D] :
+                    ( m1_lattice5(D,A,B,C)
+                   => ! [E] :
+                        ( v3_ordinal1(E)
+                       => v2_lattice5(k6_lattice8(A,B,C,D,E),k3_lattice8(A,E),B) ) ) ) ) ) ) ).
+
+fof(t27_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ( v1_lattice5(C,A,B)
+               => ! [D] :
+                    ( m1_lattice5(D,A,B,C)
+                   => ! [E] :
+                        ( v3_ordinal1(E)
+                       => v1_lattice5(k6_lattice8(A,B,C,D,E),k3_lattice8(A,E),B) ) ) ) ) ) ) ).
+
+fof(t28_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ( v1_yellow11(B)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                  & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+               => ( ( v1_lattice5(C,A,B)
+                    & v3_lattice5(C,A,B) )
+                 => ! [D] :
+                      ( v3_ordinal1(D)
+                     => ! [E] :
+                          ( m1_lattice5(E,A,B,C)
+                         => ( r1_ordinal1(D,k8_lattice5(A,B,C))
+                           => v3_lattice5(k6_lattice8(A,B,C,E,D),k3_lattice8(A,D),B) ) ) ) ) ) ) ) ) ).
+
+fof(t29_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & v1_yellow11(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & v1_lattice5(C,A,B)
+                & v2_lattice5(C,A,B)
+                & v3_lattice5(C,A,B)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( v3_ordinal1(D)
+                 => ! [E] :
+                      ( m1_lattice5(E,A,B,C)
+                     => ( r1_ordinal1(D,k8_lattice5(A,B,C))
+                       => ( v1_funct_1(k6_lattice8(A,B,C,E,D))
+                          & v1_funct_2(k6_lattice8(A,B,C,E,D),k2_zfmisc_1(k3_lattice8(A,D),k3_lattice8(A,D)),u1_struct_0(B))
+                          & v1_lattice5(k6_lattice8(A,B,C,E,D),k3_lattice8(A,D),B)
+                          & v2_lattice5(k6_lattice8(A,B,C,E,D),k3_lattice8(A,D),B)
+                          & v3_lattice5(k6_lattice8(A,B,C,E,D),k3_lattice8(A,D),B)
+                          & m2_relset_1(k6_lattice8(A,B,C,E,D),k2_zfmisc_1(k3_lattice8(A,D),k3_lattice8(A,D)),u1_struct_0(B)) ) ) ) ) ) ) ) ).
+
+fof(d9_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => k7_lattice8(A,B,C) = k3_lattice8(A,k8_lattice5(A,B,C)) ) ) ) ).
+
+fof(d10_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice5(D,A,B,C)
+                 => k8_lattice8(A,B,C,D) = k6_lattice8(A,B,C,D,k8_lattice5(A,B,C)) ) ) ) ) ).
+
+fof(d11_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & v1_lattice5(C,A,B)
+                & v2_lattice5(C,A,B)
+                & v3_lattice5(C,A,B)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( ~ v1_xboole_0(D)
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k2_zfmisc_1(D,D),u1_struct_0(B))
+                        & v1_lattice5(E,D,B)
+                        & v2_lattice5(E,D,B)
+                        & v3_lattice5(E,D,B)
+                        & m2_relset_1(E,k2_zfmisc_1(D,D),u1_struct_0(B)) )
+                     => ( r3_lattice8(A,B,C,D,E)
+                      <=> ? [F] :
+                            ( m1_lattice5(F,A,B,C)
+                            & D = k7_lattice8(A,B,C)
+                            & E = k8_lattice8(A,B,C,F) ) ) ) ) ) ) ) ).
+
+fof(t30_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & v1_lattice5(C,A,B)
+                & v2_lattice5(C,A,B)
+                & v3_lattice5(C,A,B)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( ~ v1_xboole_0(D)
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,k2_zfmisc_1(D,D),u1_struct_0(B))
+                        & v1_lattice5(E,D,B)
+                        & v2_lattice5(E,D,B)
+                        & v3_lattice5(E,D,B)
+                        & m2_relset_1(E,k2_zfmisc_1(D,D),u1_struct_0(B)) )
+                     => ( r3_lattice8(A,B,C,D,E)
+                       => ! [F] :
+                            ( m1_subset_1(F,A)
+                           => ! [G] :
+                                ( m1_subset_1(G,A)
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(B))
+                                   => ! [I] :
+                                        ( m1_subset_1(I,u1_struct_0(B))
+                                       => ~ ( r3_orders_2(B,k4_lattice5(A,B,C,F,G),k13_lattice3(B,H,I))
+                                            & ! [J] :
+                                                ( m1_subset_1(J,D)
+                                               => ! [K] :
+                                                    ( m1_subset_1(K,D)
+                                                   => ~ ( k1_binop_1(E,F,J) = H
+                                                        & k4_lattice5(D,B,E,J,K) = k12_lattice3(B,k13_lattice3(B,k4_lattice5(A,B,C,F,G),H),I)
+                                                        & k1_binop_1(E,K,G) = H ) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d12_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & v1_yellow11(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & v1_lattice5(C,A,B)
+                & v2_lattice5(C,A,B)
+                & v3_lattice5(C,A,B)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( ( v1_relat_1(D)
+                    & v1_funct_1(D) )
+                 => ( m1_lattice8(D,A,B,C)
+                  <=> ( k1_relat_1(D) = k5_numbers
+                      & k1_funct_1(D,np__0) = k4_tarski(A,C)
+                      & ! [E] :
+                          ( m2_subset_1(E,k1_numbers,k5_numbers)
+                         => ? [F] :
+                              ( ~ v1_xboole_0(F)
+                              & ? [G] :
+                                  ( v1_funct_1(G)
+                                  & v1_funct_2(G,k2_zfmisc_1(F,F),u1_struct_0(B))
+                                  & v1_lattice5(G,F,B)
+                                  & v2_lattice5(G,F,B)
+                                  & v3_lattice5(G,F,B)
+                                  & m2_relset_1(G,k2_zfmisc_1(F,F),u1_struct_0(B))
+                                  & ? [H] :
+                                      ( ~ v1_xboole_0(H)
+                                      & ? [I] :
+                                          ( v1_funct_1(I)
+                                          & v1_funct_2(I,k2_zfmisc_1(H,H),u1_struct_0(B))
+                                          & v1_lattice5(I,H,B)
+                                          & v2_lattice5(I,H,B)
+                                          & v3_lattice5(I,H,B)
+                                          & m2_relset_1(I,k2_zfmisc_1(H,H),u1_struct_0(B))
+                                          & r3_lattice8(F,B,G,H,I)
+                                          & k1_funct_1(D,E) = k4_tarski(F,G)
+                                          & k1_funct_1(D,k1_nat_1(E,np__1)) = k4_tarski(H,I) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t31_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & v1_yellow11(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & v1_lattice5(C,A,B)
+                & v2_lattice5(C,A,B)
+                & v3_lattice5(C,A,B)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice8(D,A,B,C)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( r1_xreal_0(E,F)
+                           => r1_tarski(k1_mcart_1(k1_funct_1(D,E)),k1_mcart_1(k1_funct_1(D,F))) ) ) ) ) ) ) ) ).
+
+fof(t32_lattice8,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_orders_2(B)
+            & v3_orders_2(B)
+            & v4_orders_2(B)
+            & v1_yellow_0(B)
+            & v1_lattice3(B)
+            & v2_lattice3(B)
+            & v1_yellow11(B)
+            & l1_orders_2(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+                & v1_lattice5(C,A,B)
+                & v2_lattice5(C,A,B)
+                & v3_lattice5(C,A,B)
+                & m2_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+             => ! [D] :
+                  ( m1_lattice8(D,A,B,C)
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( r1_xreal_0(E,F)
+                           => r1_tarski(k2_mcart_1(k1_funct_1(D,E)),k2_mcart_1(k1_funct_1(D,F))) ) ) ) ) ) ) ) ).
+
+fof(t36_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v1_yellow11(A)
+        & l1_orders_2(A) )
+     => r2_lattice8(A,np__2) ) ).
+
+fof(t37_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & l1_orders_2(A) )
+     => ( r2_lattice8(A,np__2)
+      <=> v1_yellow11(A) ) ) ).
+
+fof(dt_m1_lattice8,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & v1_yellow11(B)
+        & l1_orders_2(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & v1_lattice5(C,A,B)
+        & v2_lattice5(C,A,B)
+        & v3_lattice5(C,A,B)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+     => ! [D] :
+          ( m1_lattice8(D,A,B,C)
+         => ( v1_relat_1(D)
+            & v1_funct_1(D) ) ) ) ).
+
+fof(existence_m1_lattice8,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & v1_yellow11(B)
+        & l1_orders_2(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & v1_lattice5(C,A,B)
+        & v2_lattice5(C,A,B)
+        & v3_lattice5(C,A,B)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B)) )
+     => ? [D] : m1_lattice8(D,A,B,C) ) ).
+
+fof(reflexivity_r1_lattice8,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_relset_1(B,A,A)
+        & m1_relset_1(C,A,A) )
+     => r1_lattice8(A,B,B) ) ).
+
+fof(redefinition_r1_lattice8,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_relset_1(B,A,A)
+        & m1_relset_1(C,A,A) )
+     => ( r1_lattice8(A,B,C)
+      <=> r1_tarski(B,C) ) ) ).
+
+fof(dt_k1_lattice8,axiom,
+    $true ).
+
+fof(dt_k2_lattice8,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & l1_orders_2(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_subset_1(D,k4_zfmisc_1(A,A,u1_struct_0(B),u1_struct_0(B))) )
+     => ( v1_funct_1(k2_lattice8(A,B,C,D))
+        & v1_funct_2(k2_lattice8(A,B,C,D),k2_zfmisc_1(k1_lattice8(A),k1_lattice8(A)),u1_struct_0(B))
+        & m2_relset_1(k2_lattice8(A,B,C,D),k2_zfmisc_1(k1_lattice8(A),k1_lattice8(A)),u1_struct_0(B)) ) ) ).
+
+fof(dt_k3_lattice8,axiom,
+    $true ).
+
+fof(dt_k4_lattice8,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & l1_orders_2(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_lattice5(D,A,B,C)
+        & v3_ordinal1(E) )
+     => m1_subset_1(k4_lattice8(A,B,C,D,E),k4_zfmisc_1(k3_lattice8(A,E),k3_lattice8(A,E),u1_struct_0(B),u1_struct_0(B))) ) ).
+
+fof(dt_k5_lattice8,axiom,
+    $true ).
+
+fof(dt_k6_lattice8,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & l1_orders_2(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_lattice5(D,A,B,C)
+        & v3_ordinal1(E) )
+     => ( v1_funct_1(k6_lattice8(A,B,C,D,E))
+        & v1_funct_2(k6_lattice8(A,B,C,D,E),k2_zfmisc_1(k3_lattice8(A,E),k3_lattice8(A,E)),u1_struct_0(B))
+        & m2_relset_1(k6_lattice8(A,B,C,D,E),k2_zfmisc_1(k3_lattice8(A,E),k3_lattice8(A,E)),u1_struct_0(B)) ) ) ).
+
+fof(redefinition_k6_lattice8,axiom,
+    ! [A,B,C,D,E] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & l1_orders_2(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_lattice5(D,A,B,C)
+        & v3_ordinal1(E) )
+     => k6_lattice8(A,B,C,D,E) = k5_lattice8(A,B,C,D,E) ) ).
+
+fof(dt_k7_lattice8,axiom,
+    $true ).
+
+fof(dt_k8_lattice8,axiom,
+    $true ).
+
+fof(dt_k9_lattice8,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & v1_yellow11(B)
+        & l1_orders_2(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & v1_lattice5(C,A,B)
+        & v2_lattice5(C,A,B)
+        & v3_lattice5(C,A,B)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_lattice5(D,A,B,C) )
+     => ( v1_funct_1(k9_lattice8(A,B,C,D))
+        & v1_funct_2(k9_lattice8(A,B,C,D),k2_zfmisc_1(k7_lattice8(A,B,C),k7_lattice8(A,B,C)),u1_struct_0(B))
+        & v1_lattice5(k9_lattice8(A,B,C,D),k7_lattice8(A,B,C),B)
+        & v2_lattice5(k9_lattice8(A,B,C,D),k7_lattice8(A,B,C),B)
+        & v3_lattice5(k9_lattice8(A,B,C,D),k7_lattice8(A,B,C),B)
+        & m2_relset_1(k9_lattice8(A,B,C,D),k2_zfmisc_1(k7_lattice8(A,B,C),k7_lattice8(A,B,C)),u1_struct_0(B)) ) ) ).
+
+fof(redefinition_k9_lattice8,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & v1_yellow11(B)
+        & l1_orders_2(B)
+        & v1_funct_1(C)
+        & v1_funct_2(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & v1_lattice5(C,A,B)
+        & v2_lattice5(C,A,B)
+        & v3_lattice5(C,A,B)
+        & m1_relset_1(C,k2_zfmisc_1(A,A),u1_struct_0(B))
+        & m1_lattice5(D,A,B,C) )
+     => k9_lattice8(A,B,C,D) = k8_lattice8(A,B,C,D) ) ).
+
+fof(t33_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v1_yellow11(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_lattice8(B,u1_struct_0(A),A,k17_lattice5(A))
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ( C = k3_tarski(a_2_0_lattice8(A,B))
+               => ( v1_funct_1(k3_tarski(a_2_1_lattice8(A,B)))
+                  & v1_funct_2(k3_tarski(a_2_1_lattice8(A,B)),k2_zfmisc_1(C,C),u1_struct_0(A))
+                  & v1_lattice5(k3_tarski(a_2_1_lattice8(A,B)),C,A)
+                  & v2_lattice5(k3_tarski(a_2_1_lattice8(A,B)),C,A)
+                  & v3_lattice5(k3_tarski(a_2_1_lattice8(A,B)),C,A)
+                  & m2_relset_1(k3_tarski(a_2_1_lattice8(A,B)),k2_zfmisc_1(C,C),u1_struct_0(A)) ) ) ) ) ) ).
+
+fof(t34_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v1_yellow11(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_lattice8(B,u1_struct_0(A),A,k17_lattice5(A))
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k2_zfmisc_1(C,C),u1_struct_0(A))
+                    & v1_lattice5(D,C,A)
+                    & v2_lattice5(D,C,A)
+                    & v3_lattice5(D,C,A)
+                    & m2_relset_1(D,k2_zfmisc_1(C,C),u1_struct_0(A)) )
+                 => ! [E] :
+                      ( m1_subset_1(E,C)
+                     => ! [F] :
+                          ( m1_subset_1(F,C)
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(A))
+                             => ! [H] :
+                                  ( m1_subset_1(H,u1_struct_0(A))
+                                 => ~ ( C = k3_tarski(a_2_0_lattice8(A,B))
+                                      & D = k3_tarski(a_2_1_lattice8(A,B))
+                                      & r3_orders_2(A,k4_lattice5(C,A,D,E,F),k13_lattice3(A,G,H))
+                                      & ! [I] :
+                                          ( m1_subset_1(I,C)
+                                         => ! [J] :
+                                              ( m1_subset_1(J,C)
+                                             => ~ ( k4_lattice5(C,A,D,E,I) = G
+                                                  & k4_lattice5(C,A,D,I,J) = k12_lattice3(A,k13_lattice3(A,k4_lattice5(C,A,D,E,F),G),H)
+                                                  & k4_lattice5(C,A,D,J,F) = G ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t35_lattice8,axiom,
+    ! [A] :
+      ( ( v2_orders_2(A)
+        & v3_orders_2(A)
+        & v4_orders_2(A)
+        & v1_yellow_0(A)
+        & v1_lattice3(A)
+        & v2_lattice3(A)
+        & v1_yellow11(A)
+        & l1_orders_2(A) )
+     => ! [B] :
+          ( m1_lattice8(B,u1_struct_0(A),A,k17_lattice5(A))
+         => ! [C] :
+              ( ~ v1_xboole_0(C)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & v1_funct_2(D,k2_zfmisc_1(C,C),u1_struct_0(A))
+                    & v1_lattice5(D,C,A)
+                    & v2_lattice5(D,C,A)
+                    & v3_lattice5(D,C,A)
+                    & m2_relset_1(D,k2_zfmisc_1(C,C),u1_struct_0(A)) )
+                 => ! [E] :
+                      ( ( v1_funct_1(E)
+                        & v1_funct_2(E,u1_struct_0(A),u1_struct_0(k1_lattice5(C)))
+                        & v19_waybel_0(E,A,k1_lattice5(C))
+                        & v20_waybel_0(E,A,k1_lattice5(C))
+                        & m2_relset_1(E,u1_struct_0(A),u1_struct_0(k1_lattice5(C))) )
+                     => ! [F] :
+                          ( ( v1_partfun1(F,C,C)
+                            & v3_relat_2(F)
+                            & v8_relat_2(F)
+                            & m2_relset_1(F,C,C) )
+                         => ! [G] :
+                              ( ( v1_partfun1(G,C,C)
+                                & v3_relat_2(G)
+                                & v8_relat_2(G)
+                                & m2_relset_1(G,C,C) )
+                             => ! [H,I] :
+                                  ~ ( E = k5_lattice5(C,A,D)
+                                    & C = k3_tarski(a_2_0_lattice8(A,B))
+                                    & D = k3_tarski(a_2_1_lattice8(A,B))
+                                    & r2_hidden(F,u1_struct_0(k2_lattice5(A,k1_lattice5(C),E)))
+                                    & r2_hidden(G,u1_struct_0(k2_lattice5(A,k1_lattice5(C),E)))
+                                    & r2_hidden(k4_tarski(H,I),k5_eqrel_1(C,F,G))
+                                    & ! [J] :
+                                        ( ( ~ v1_xboole_0(J)
+                                          & m2_finseq_1(J,C) )
+                                       => ~ ( k3_finseq_1(J) = k1_nat_1(np__2,np__2)
+                                            & r1_lattice5(C,J,H,I,F,G) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(fraenkel_a_2_0_lattice8,axiom,
+    ! [A,B,C] :
+      ( ( v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & v1_yellow11(B)
+        & l1_orders_2(B)
+        & m1_lattice8(C,u1_struct_0(B),B,k17_lattice5(B)) )
+     => ( r2_hidden(A,a_2_0_lattice8(B,C))
+      <=> ? [D] :
+            ( m2_subset_1(D,k1_numbers,k5_numbers)
+            & A = k1_mcart_1(k1_funct_1(C,D)) ) ) ) ).
+
+fof(fraenkel_a_2_1_lattice8,axiom,
+    ! [A,B,C] :
+      ( ( v2_orders_2(B)
+        & v3_orders_2(B)
+        & v4_orders_2(B)
+        & v1_yellow_0(B)
+        & v1_lattice3(B)
+        & v2_lattice3(B)
+        & v1_yellow11(B)
+        & l1_orders_2(B)
+        & m1_lattice8(C,u1_struct_0(B),B,k17_lattice5(B)) )
+     => ( r2_hidden(A,a_2_1_lattice8(B,C))
+      <=> ? [D] :
+            ( m2_subset_1(D,k1_numbers,k5_numbers)
+            & A = k2_mcart_1(k1_funct_1(C,D)) ) ) ) ).
+
+%------------------------------------------------------------------------------

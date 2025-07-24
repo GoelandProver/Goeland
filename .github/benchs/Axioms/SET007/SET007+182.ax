@@ -1,0 +1,565 @@
+%------------------------------------------------------------------------------
+% File     : SET007+182 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Preliminaries to Circuits, I
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : pre_circ [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   50 (   7 unt;   0 def)
+%            Number of atoms       :  331 (  45 equ)
+%            Maximal formula atoms :   26 (   6 avg)
+%            Number of connectives :  313 (  32   ~;   2   |; 167   &)
+%                                         (   6 <=>; 106  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   23 (   7 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   37 (  35 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   61 (  61 usr;  14 con; 0-4 aty)
+%            Number of variables   :  131 ( 121   !;  10   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_pre_circ,axiom,
+    ? [A] :
+      ( ~ v1_xboole_0(A)
+      & v1_finset_1(A)
+      & v1_membered(A)
+      & v2_membered(A)
+      & v3_membered(A)
+      & v4_membered(A)
+      & v5_membered(A) ) ).
+
+fof(fc1_pre_circ,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v5_membered(A) )
+     => ( v4_ordinal2(k2_seq_4(A))
+        & v1_xcmplx_0(k2_seq_4(A))
+        & v1_xreal_0(k2_seq_4(A)) ) ) ).
+
+fof(rc2_pre_circ,axiom,
+    ! [A] :
+    ? [B] :
+      ( m1_pboole(B,A)
+      & v1_relat_1(B)
+      & v2_relat_1(B)
+      & v1_funct_1(B)
+      & v1_pre_circ(B,A) ) ).
+
+fof(fc2_pre_circ,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(A)
+        & v2_relat_1(A)
+        & v1_funct_1(A) )
+     => ( v1_relat_1(k7_relat_1(A,B))
+        & v2_relat_1(k7_relat_1(A,B))
+        & v1_funct_1(k7_relat_1(A,B)) ) ) ).
+
+fof(fc3_pre_circ,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(A)
+        & v2_relat_1(A)
+        & v1_funct_1(A)
+        & v1_relat_1(B)
+        & v1_funct_1(B) )
+     => ( v1_relat_1(k5_relat_1(B,A))
+        & v2_relat_1(k5_relat_1(B,A))
+        & v1_funct_1(k5_relat_1(B,A)) ) ) ).
+
+fof(cc1_pre_circ,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_subset_1(B,k5_trees_3(A))
+         => v1_finset_1(B) ) ) ).
+
+fof(fc4_pre_circ,axiom,
+    ! [A,B] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finset_1(A)
+        & v3_trees_2(A)
+        & m1_subset_1(B,k1_relat_1(A)) )
+     => ( v1_relat_1(k5_trees_2(A,B))
+        & v1_funct_1(k5_trees_2(A,B))
+        & v1_finset_1(k5_trees_2(A,B))
+        & v3_trees_2(k5_trees_2(A,B)) ) ) ).
+
+fof(fc5_pre_circ,axiom,
+    ! [A,B,C] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finset_1(A)
+        & v3_trees_2(A)
+        & m1_subset_1(B,k1_relat_1(A))
+        & v1_relat_1(C)
+        & v1_funct_1(C)
+        & v1_finset_1(C)
+        & v3_trees_2(C) )
+     => ( v1_relat_1(k8_trees_2(A,B,C))
+        & v1_funct_1(k8_trees_2(A,B,C))
+        & v1_finset_1(k8_trees_2(A,B,C))
+        & v3_trees_2(k8_trees_2(A,B,C)) ) ) ).
+
+fof(fc6_pre_circ,axiom,
+    ! [A] :
+      ( v1_relat_1(k1_trees_4(A))
+      & v1_funct_1(k1_trees_4(A))
+      & v1_finset_1(k1_trees_4(A))
+      & v3_trees_2(k1_trees_4(A)) ) ).
+
+fof(t1_pre_circ,axiom,
+    $true ).
+
+fof(t2_pre_circ,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C] :
+          ( ( k1_relat_1(A) = k1_tarski(B)
+            & k2_relat_1(A) = k1_tarski(C) )
+         => A = k1_tarski(k4_tarski(B,C)) ) ) ).
+
+fof(t3_pre_circ,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ( r1_tarski(A,B)
+               => r1_tarski(k1_funct_4(A,C),k1_funct_4(B,C)) ) ) ) ) ).
+
+fof(t4_pre_circ,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ( ( r1_tarski(A,B)
+                  & r1_xboole_0(k1_relat_1(A),k1_relat_1(C)) )
+               => r1_tarski(A,k1_funct_4(B,C)) ) ) ) ) ).
+
+fof(d1_pre_circ,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v2_membered(A) )
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( B = k1_pre_circ(A)
+          <=> ( r2_hidden(B,A)
+              & ! [C] :
+                  ( v1_xreal_0(C)
+                 => ( r2_hidden(C,A)
+                   => r1_xreal_0(C,B) ) ) ) ) ) ) ).
+
+fof(t5_pre_circ,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => k1_funct_1(k6_pboole(A,B),k6_finseq_1(A)) = k1_tarski(k1_xboole_0) ) ).
+
+fof(d2_pre_circ,axiom,
+    $true ).
+
+fof(d3_pre_circ,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ( v1_pre_circ(B,A)
+      <=> ! [C] :
+            ( r2_hidden(C,A)
+           => v1_finset_1(k1_funct_1(B,C)) ) ) ) ).
+
+fof(t6_pre_circ,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m1_pboole(B,A) )
+         => ~ v1_xboole_0(k3_tarski(k2_relat_1(B))) ) ) ).
+
+fof(t7_pre_circ,axiom,
+    ! [A] : k4_funct_5(k2_pre_circ(A,k1_xboole_0)) = k1_xboole_0 ).
+
+fof(t8_pre_circ,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B,C] :
+          ( ( v2_relat_1(C)
+            & m1_pboole(C,A) )
+         => ! [D] :
+              ( m3_pboole(D,A,k2_pre_circ(A,B),C)
+             => k1_relat_1(k10_funct_6(D)) = B ) ) ) ).
+
+fof(t9_pre_circ,axiom,
+    ! [A,B] :
+      ( ( v2_relat_1(B)
+        & m1_pboole(B,A) )
+     => ! [C] :
+          ( ( v1_relat_1(C)
+            & v1_funct_1(C) )
+         => ! [D] :
+              ( m1_subset_1(D,k4_card_3(B))
+             => ( ( r1_tarski(k1_relat_1(C),k1_relat_1(B))
+                  & ! [E] :
+                      ( r2_hidden(E,k1_relat_1(C))
+                     => r2_hidden(k1_funct_1(C,E),k1_funct_1(B,E)) ) )
+               => m1_subset_1(k1_funct_4(D,C),k4_card_3(B)) ) ) ) ) ).
+
+fof(t10_pre_circ,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ~ v1_xboole_0(B)
+         => ! [C] :
+              ( ( v2_relat_1(C)
+                & m1_pboole(C,A) )
+             => ! [D] :
+                  ( m3_pboole(D,A,k2_pre_circ(A,B),C)
+                 => ! [E] :
+                      ( m1_subset_1(E,B)
+                     => ? [F] :
+                          ( m1_pboole(F,A)
+                          & F = k1_funct_1(k10_funct_6(D),E)
+                          & r3_pboole(A,F,C) ) ) ) ) ) ) ).
+
+fof(t11_pre_circ,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( ( v1_relat_1(C)
+            & v1_funct_1(C) )
+         => ! [D] :
+              ( ( v1_relat_1(D)
+                & v1_funct_1(D) )
+             => ( r2_hidden(C,k4_card_3(B))
+               => r2_hidden(k5_relat_1(D,C),k4_card_3(k5_relat_1(D,B))) ) ) ) ) ).
+
+fof(t12_pre_circ,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] : k4_card_3(k2_finseq_2(A,k1_tarski(B))) = k1_tarski(k2_finseq_2(A,B)) ) ).
+
+fof(t15_pre_circ,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v1_trees_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B)
+            & v1_trees_1(B) )
+         => ! [C] :
+              ( m1_trees_1(C,A)
+             => ! [D] :
+                  ( m2_finseq_1(D,k5_numbers)
+                 => ~ ( r2_hidden(D,k5_trees_1(A,C,B))
+                      & r1_tarski(C,D)
+                      & ! [E] :
+                          ( m1_trees_1(E,B)
+                         => D != k8_finseq_1(k5_numbers,C,E) ) ) ) ) ) ) ).
+
+fof(t16_pre_circ,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A)
+        & v4_trees_3(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_hidden(k1_nat_1(B,np__1),k4_finseq_1(A))
+           => k4_trees_1(k13_trees_3(A),k12_finseq_1(k5_numbers,B)) = k1_funct_1(A,k1_nat_1(B,np__1)) ) ) ) ).
+
+fof(t17_pre_circ,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A)
+        & v6_trees_3(A) )
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( r2_hidden(k1_nat_1(B,np__1),k4_finseq_1(A))
+           => r2_hidden(k12_finseq_1(k5_numbers,B),k13_trees_3(k2_funct_6(A))) ) ) ) ).
+
+fof(t18_pre_circ,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A)
+        & v4_trees_3(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finseq_1(B)
+            & v4_trees_3(B) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( k3_finseq_1(A) = k3_finseq_1(B)
+                  & r2_hidden(k1_nat_1(C,np__1),k4_finseq_1(A))
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( r2_hidden(D,k4_finseq_1(A))
+                       => ( D = k1_nat_1(C,np__1)
+                          | k1_funct_1(A,D) = k1_funct_1(B,D) ) ) ) )
+               => ! [D] :
+                    ( ( ~ v1_xboole_0(D)
+                      & v1_trees_1(D) )
+                   => ( k1_funct_1(B,k1_nat_1(C,np__1)) = D
+                     => k13_trees_3(B) = k5_trees_1(k13_trees_3(A),k12_finseq_1(k5_numbers,C),D) ) ) ) ) ) ) ).
+
+fof(t19_pre_circ,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finset_1(A)
+        & v3_trees_2(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finset_1(B)
+            & v3_trees_2(B) )
+         => ! [C,D] :
+              ( m2_subset_1(D,k1_numbers,k5_numbers)
+             => ! [E] :
+                  ( ( v1_relat_1(E)
+                    & v1_funct_1(E)
+                    & v1_finseq_1(E)
+                    & v6_trees_3(E) )
+                 => ~ ( r2_hidden(k12_finseq_1(k5_numbers,D),k1_relat_1(A))
+                      & A = k4_trees_4(C,E)
+                      & ! [F] :
+                          ( ( v1_relat_1(F)
+                            & v1_funct_1(F)
+                            & v1_finseq_1(F)
+                            & v6_trees_3(F) )
+                         => ~ ( k8_trees_2(A,k12_finseq_1(k5_numbers,D),B) = k4_trees_4(C,F)
+                              & k3_finseq_1(F) = k3_finseq_1(E)
+                              & k1_funct_1(F,k1_nat_1(D,np__1)) = B
+                              & ! [G] :
+                                  ( m2_subset_1(G,k1_numbers,k5_numbers)
+                                 => ( r2_hidden(G,k4_finseq_1(E))
+                                   => ( G = k1_nat_1(D,np__1)
+                                      | k1_funct_1(F,G) = k1_funct_1(E,G) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t20_pre_circ,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v1_trees_1(A) )
+     => ! [B] :
+          ( m1_trees_1(B,A)
+         => ~ ( B != k1_xboole_0
+              & r1_xreal_0(k4_card_1(A),k4_card_1(k4_trees_1(A,B))) ) ) ) ).
+
+fof(t21_pre_circ,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => k1_card_1(A) = k1_card_1(k1_relat_1(A)) ) ).
+
+fof(t22_pre_circ,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v1_trees_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B)
+            & v1_trees_1(B) )
+         => ! [C] :
+              ( m1_trees_1(C,A)
+             => k1_nat_1(k4_card_1(k5_trees_1(A,C,B)),k4_card_1(k4_trees_1(A,C))) = k1_nat_1(k4_card_1(A),k4_card_1(B)) ) ) ) ).
+
+fof(t23_pre_circ,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finset_1(A)
+        & v3_trees_2(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B)
+            & v1_finset_1(B)
+            & v3_trees_2(B) )
+         => ! [C] :
+              ( m1_trees_1(C,k1_relat_1(A))
+             => k1_nat_1(k4_card_1(k8_trees_2(A,C,B)),k4_card_1(k5_trees_2(A,C))) = k1_nat_1(k4_card_1(A),k4_card_1(B)) ) ) ) ).
+
+fof(t24_pre_circ,axiom,
+    ! [A] : k4_card_1(k1_trees_4(A)) = np__1 ).
+
+fof(s2_pre_circ,axiom,
+    ? [A] :
+      ( m1_pboole(A,f1_s2_pre_circ)
+      & ! [B] :
+          ( m1_subset_1(B,f1_s2_pre_circ)
+         => ( r2_hidden(B,f1_s2_pre_circ)
+           => ( ( p1_s2_pre_circ(B)
+               => k1_funct_1(A,B) = f2_s2_pre_circ(B) )
+              & ( ~ p1_s2_pre_circ(B)
+               => k1_funct_1(A,B) = f3_s2_pre_circ(B) ) ) ) ) ) ).
+
+fof(s3_pre_circ,axiom,
+    ( ? [A] :
+        ( v1_funct_1(A)
+        & v1_funct_2(A,k5_numbers,f1_s3_pre_circ)
+        & m2_relset_1(A,k5_numbers,f1_s3_pre_circ)
+        & k8_funct_2(k5_numbers,f1_s3_pre_circ,A,np__0) = f2_s3_pre_circ
+        & ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => k8_funct_2(k5_numbers,f1_s3_pre_circ,A,k1_nat_1(B,np__1)) = f3_s3_pre_circ(B,k8_funct_2(k5_numbers,f1_s3_pre_circ,A,B)) ) )
+    & ! [A] :
+        ( ( v1_funct_1(A)
+          & v1_funct_2(A,k5_numbers,f1_s3_pre_circ)
+          & m2_relset_1(A,k5_numbers,f1_s3_pre_circ) )
+       => ! [B] :
+            ( ( v1_funct_1(B)
+              & v1_funct_2(B,k5_numbers,f1_s3_pre_circ)
+              & m2_relset_1(B,k5_numbers,f1_s3_pre_circ) )
+           => ( ( k8_funct_2(k5_numbers,f1_s3_pre_circ,A,np__0) = f2_s3_pre_circ
+                & ! [C] :
+                    ( m2_subset_1(C,k1_numbers,k5_numbers)
+                   => k8_funct_2(k5_numbers,f1_s3_pre_circ,A,k1_nat_1(C,np__1)) = f3_s3_pre_circ(C,k8_funct_2(k5_numbers,f1_s3_pre_circ,A,C)) )
+                & k8_funct_2(k5_numbers,f1_s3_pre_circ,B,np__0) = f2_s3_pre_circ
+                & ! [C] :
+                    ( m2_subset_1(C,k1_numbers,k5_numbers)
+                   => k8_funct_2(k5_numbers,f1_s3_pre_circ,B,k1_nat_1(C,np__1)) = f3_s3_pre_circ(C,k8_funct_2(k5_numbers,f1_s3_pre_circ,B,C)) ) )
+             => A = B ) ) ) ) ).
+
+fof(s4_pre_circ,axiom,
+    ( ! [A] :
+        ( m1_subset_1(A,f1_s4_pre_circ)
+       => ( r2_hidden(A,f2_s4_pre_circ)
+         => ( v1_funct_1(f5_s4_pre_circ(A))
+            & v1_funct_2(f5_s4_pre_circ(A),k1_funct_1(f3_s4_pre_circ,A),k1_funct_1(f4_s4_pre_circ,A))
+            & m2_relset_1(f5_s4_pre_circ(A),k1_funct_1(f3_s4_pre_circ,A),k1_funct_1(f4_s4_pre_circ,A)) ) ) )
+   => ? [A] :
+        ( m3_pboole(A,f2_s4_pre_circ,f3_s4_pre_circ,f4_s4_pre_circ)
+        & ! [B] :
+            ( m1_subset_1(B,f1_s4_pre_circ)
+           => ( r2_hidden(B,f2_s4_pre_circ)
+             => k1_funct_1(A,B) = f5_s4_pre_circ(B) ) ) ) ) ).
+
+fof(dt_k1_pre_circ,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v2_membered(A) )
+     => v1_xreal_0(k1_pre_circ(A)) ) ).
+
+fof(redefinition_k1_pre_circ,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v2_membered(A) )
+     => k1_pre_circ(A) = k2_seq_4(A) ) ).
+
+fof(dt_k2_pre_circ,axiom,
+    ! [A,B] : m1_pboole(k2_pre_circ(A,B),A) ).
+
+fof(redefinition_k2_pre_circ,axiom,
+    ! [A,B] : k2_pre_circ(A,B) = k2_funcop_1(A,B) ).
+
+fof(dt_k3_pre_circ,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => m1_pboole(k3_pre_circ(A,B,C),C) ) ).
+
+fof(redefinition_k3_pre_circ,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & m1_subset_1(C,k1_zfmisc_1(A)) )
+     => k3_pre_circ(A,B,C) = k7_relat_1(B,C) ) ).
+
+fof(t13_pre_circ,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v1_trees_1(A) )
+     => ! [B] :
+          ( m1_trees_1(B,A)
+         => r2_tarski(k4_trees_1(A,B),a_2_0_pre_circ(A,B)) ) ) ).
+
+fof(t14_pre_circ,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v1_trees_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B)
+            & v1_trees_1(B) )
+         => ! [C] :
+              ( m1_trees_1(C,A)
+             => k5_trees_1(A,C,B) = k2_xboole_0(a_2_1_pre_circ(A,C),a_3_0_pre_circ(A,B,C)) ) ) ) ).
+
+fof(s1_pre_circ,axiom,
+    v1_finset_1(a_0_0_pre_circ) ).
+
+fof(fraenkel_a_2_0_pre_circ,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & v1_trees_1(B)
+        & m1_trees_1(C,B) )
+     => ( r2_hidden(A,a_2_0_pre_circ(B,C))
+      <=> ? [D] :
+            ( m1_trees_1(D,B)
+            & A = D
+            & r1_tarski(C,D) ) ) ) ).
+
+fof(fraenkel_a_2_1_pre_circ,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & v1_trees_1(B)
+        & m1_trees_1(C,B) )
+     => ( r2_hidden(A,a_2_1_pre_circ(B,C))
+      <=> ? [D] :
+            ( m1_trees_1(D,B)
+            & A = D
+            & ~ r1_tarski(C,D) ) ) ) ).
+
+fof(fraenkel_a_3_0_pre_circ,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & v1_trees_1(B)
+        & ~ v1_xboole_0(C)
+        & v1_finset_1(C)
+        & v1_trees_1(C)
+        & m1_trees_1(D,B) )
+     => ( r2_hidden(A,a_3_0_pre_circ(B,C,D))
+      <=> ? [E] :
+            ( m1_trees_1(E,C)
+            & A = k8_finseq_1(k5_numbers,D,E) ) ) ) ).
+
+fof(fraenkel_a_0_0_pre_circ,axiom,
+    ! [A] :
+      ( r2_hidden(A,a_0_0_pre_circ)
+    <=> ? [B] :
+          ( m1_subset_1(B,f1_s1_pre_circ)
+          & A = f2_s1_pre_circ(B)
+          & p1_s1_pre_circ(B) ) ) ).
+
+%------------------------------------------------------------------------------

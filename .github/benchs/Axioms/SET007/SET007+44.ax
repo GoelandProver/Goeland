@@ -1,0 +1,176 @@
+%------------------------------------------------------------------------------
+% File     : SET007+44 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Strong Arithmetic of Real Numbers
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : axioms [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   31 (  24 unt;   0 def)
+%            Number of atoms       :   63 (   5 equ)
+%            Maximal formula atoms :   14 (   2 avg)
+%            Number of connectives :   38 (   6   ~;   0   |;  13   &)
+%                                         (   1 <=>;  18  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (   3 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :    9 (   7 usr;   1 prp; 0-3 aty)
+%            Number of functors    :    8 (   8 usr;   4 con; 0-2 aty)
+%            Number of variables   :   19 (  15   !;   4   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_axioms,axiom,
+    $true ).
+
+fof(t2_axioms,axiom,
+    $true ).
+
+fof(t3_axioms,axiom,
+    $true ).
+
+fof(t4_axioms,axiom,
+    $true ).
+
+fof(t5_axioms,axiom,
+    $true ).
+
+fof(t6_axioms,axiom,
+    $true ).
+
+fof(t7_axioms,axiom,
+    $true ).
+
+fof(t8_axioms,axiom,
+    $true ).
+
+fof(t9_axioms,axiom,
+    $true ).
+
+fof(t10_axioms,axiom,
+    $true ).
+
+fof(t11_axioms,axiom,
+    $true ).
+
+fof(t12_axioms,axiom,
+    $true ).
+
+fof(t13_axioms,axiom,
+    $true ).
+
+fof(t14_axioms,axiom,
+    $true ).
+
+fof(t15_axioms,axiom,
+    $true ).
+
+fof(t16_axioms,axiom,
+    $true ).
+
+fof(t17_axioms,axiom,
+    $true ).
+
+fof(t18_axioms,axiom,
+    $true ).
+
+fof(t19_axioms,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ? [B] :
+          ( v1_xreal_0(B)
+          & k2_xcmplx_0(A,B) = np__0 ) ) ).
+
+fof(t20_axioms,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ~ ( A != np__0
+          & ! [B] :
+              ( v1_xreal_0(B)
+             => k3_xcmplx_0(A,B) != np__1 ) ) ) ).
+
+fof(t21_axioms,axiom,
+    $true ).
+
+fof(t22_axioms,axiom,
+    $true ).
+
+fof(t23_axioms,axiom,
+    $true ).
+
+fof(t24_axioms,axiom,
+    $true ).
+
+fof(t25_axioms,axiom,
+    $true ).
+
+fof(t26_axioms,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_numbers))
+         => ~ ( ! [C] :
+                  ( v1_xreal_0(C)
+                 => ! [D] :
+                      ( v1_xreal_0(D)
+                     => ( ( r2_hidden(C,A)
+                          & r2_hidden(D,B) )
+                       => r1_xreal_0(C,D) ) ) )
+              & ! [C] :
+                  ( v1_xreal_0(C)
+                 => ? [D] :
+                      ( v1_xreal_0(D)
+                      & ? [E] :
+                          ( v1_xreal_0(E)
+                          & r2_hidden(D,A)
+                          & r2_hidden(E,B)
+                          & ~ ( r1_xreal_0(D,C)
+                              & r1_xreal_0(C,E) ) ) ) ) ) ) ) ).
+
+fof(t27_axioms,axiom,
+    $true ).
+
+fof(t28_axioms,axiom,
+    ! [A] :
+      ( v1_xreal_0(A)
+     => ! [B] :
+          ( v1_xreal_0(B)
+         => ( ( r2_hidden(A,k5_numbers)
+              & r2_hidden(B,k5_numbers) )
+           => r2_hidden(k2_xcmplx_0(A,B),k5_numbers) ) ) ) ).
+
+fof(t29_axioms,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k1_numbers))
+     => ( ( r2_hidden(np__0,A)
+          & ! [B] :
+              ( v1_xreal_0(B)
+             => ( r2_hidden(B,A)
+               => r2_hidden(k2_xcmplx_0(B,np__1),A) ) ) )
+       => r1_tarski(k5_numbers,A) ) ) ).
+
+fof(t30_axioms,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => A = a_1_0_axioms(A) ) ).
+
+fof(fraenkel_a_1_0_axioms,axiom,
+    ! [A,B] :
+      ( v4_ordinal2(B)
+     => ( r2_hidden(A,a_1_0_axioms(B))
+      <=> ? [C] :
+            ( m2_subset_1(C,k1_numbers,k5_numbers)
+            & A = C
+            & ~ r1_xreal_0(B,C) ) ) ) ).
+
+%------------------------------------------------------------------------------

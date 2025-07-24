@@ -1,0 +1,644 @@
+%------------------------------------------------------------------------------
+% File     : SET007+841 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : The Hall Marriage Theorem
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : hallmar1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   57 (   1 unt;   0 def)
+%            Number of atoms       :  338 (  33 equ)
+%            Maximal formula atoms :   14 (   5 avg)
+%            Number of connectives :  319 (  38   ~;   6   |;  85   &)
+%                                         (  11 <=>; 179  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   18 (   9 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   24 (  22 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   21 (  21 usr;   6 con; 0-4 aty)
+%            Number of variables   :  209 ( 199   !;  10   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_hallmar1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ? [B] :
+          ( m1_finseq_1(B,k1_zfmisc_1(A))
+          & ~ v1_xboole_0(B)
+          & v1_relat_1(B)
+          & v2_relat_1(B)
+          & v1_funct_1(B)
+          & v1_finset_1(B)
+          & v1_finseq_1(B) ) ) ).
+
+fof(fc1_hallmar1,axiom,
+    ! [A,B,C] :
+      ( ( v1_finset_1(A)
+        & m1_finseq_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k5_numbers) )
+     => v1_finset_1(k1_funct_1(B,C)) ) ).
+
+fof(fc2_hallmar1,axiom,
+    ! [A,B,C] :
+      ( ( v1_finset_1(A)
+        & m1_finseq_1(B,k1_zfmisc_1(A)) )
+     => v1_finset_1(k1_hallmar1(A,B,C)) ) ).
+
+fof(cc1_hallmar1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & ~ v1_xboole_0(B)
+        & m1_finseq_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k5_numbers) )
+     => ! [D] :
+          ( m3_hallmar1(D,A,B,C)
+         => ( ~ v1_xboole_0(D)
+            & v1_relat_1(D) ) ) ) ).
+
+fof(cc2_hallmar1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & ~ v1_xboole_0(B)
+        & m1_finseq_1(B,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( m4_hallmar1(C,A,B)
+         => ( ~ v1_xboole_0(C)
+            & v1_relat_1(C) ) ) ) ).
+
+fof(t1_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( v1_finset_1(B)
+         => k1_nat_1(k4_card_1(k2_xboole_0(A,B)),k4_card_1(k3_xboole_0(A,B))) = k1_nat_1(k4_card_1(A),k4_card_1(B)) ) ) ).
+
+fof(t2_hallmar1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( r2_hidden(C,k4_finseq_1(B))
+                  & k1_funct_1(B,C) = k1_xboole_0 ) ) ) ) ).
+
+fof(d1_hallmar1,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,k1_zfmisc_1(A))
+     => ! [C,D] :
+          ( D = k1_hallmar1(A,B,C)
+        <=> ! [E] :
+              ( r2_hidden(E,D)
+            <=> ? [F] :
+                  ( r2_hidden(F,C)
+                  & r2_hidden(F,k4_finseq_1(B))
+                  & r2_hidden(E,k1_funct_1(B,F)) ) ) ) ) ).
+
+fof(t3_hallmar1,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,k1_zfmisc_1(A))
+     => ! [C] : r1_tarski(k1_hallmar1(A,B,C),A) ) ).
+
+fof(t4_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C,D] :
+              ( r1_tarski(C,D)
+             => r1_tarski(k1_hallmar1(A,B,C),k1_hallmar1(A,B,D)) ) ) ) ).
+
+fof(t5_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( r2_hidden(C,k4_finseq_1(B))
+               => k1_hallmar1(A,B,k1_tarski(C)) = k1_funct_1(B,C) ) ) ) ) ).
+
+fof(t6_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( r2_hidden(C,k4_finseq_1(B))
+                      & r2_hidden(D,k4_finseq_1(B)) )
+                   => k1_hallmar1(A,B,k2_tarski(C,D)) = k2_xboole_0(k1_funct_1(B,C),k1_funct_1(B,D)) ) ) ) ) ) ).
+
+fof(t7_hallmar1,axiom,
+    ! [A,B] :
+      ( v1_finset_1(B)
+     => ! [C] :
+          ( m2_finseq_1(C,k1_zfmisc_1(B))
+         => ! [D] :
+              ( m2_subset_1(D,k1_numbers,k5_numbers)
+             => ( ( r2_hidden(D,A)
+                  & r2_hidden(D,k4_finseq_1(C)) )
+               => r1_tarski(k1_funct_1(C,D),k1_hallmar1(B,C,A)) ) ) ) ) ).
+
+fof(t8_hallmar1,axiom,
+    ! [A,B] :
+      ( v1_finset_1(B)
+     => ! [C] :
+          ( m2_subset_1(C,k1_numbers,k5_numbers)
+         => ! [D] :
+              ( m2_finseq_1(D,k1_zfmisc_1(B))
+             => ( ( r2_hidden(C,A)
+                  & r2_hidden(C,k4_finseq_1(D)) )
+               => k1_hallmar1(B,D,A) = k2_xboole_0(k1_hallmar1(B,D,k4_xboole_0(A,k1_tarski(C))),k1_funct_1(D,C)) ) ) ) ) ).
+
+fof(t9_hallmar1,axiom,
+    ! [A,B,C] :
+      ( v1_finset_1(C)
+     => ! [D] :
+          ( m2_subset_1(D,k1_numbers,k5_numbers)
+         => ! [E] :
+              ( m2_finseq_1(E,k1_zfmisc_1(C))
+             => ( r2_hidden(D,k4_finseq_1(E))
+               => k1_hallmar1(C,E,k2_xboole_0(k2_xboole_0(k1_tarski(D),A),B)) = k2_xboole_0(k1_funct_1(E,D),k1_hallmar1(C,E,k2_xboole_0(A,B))) ) ) ) ) ).
+
+fof(t10_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D,E] :
+                  ( ( r2_hidden(D,k1_funct_1(B,C))
+                    & r2_hidden(E,k1_funct_1(B,C)) )
+                 => ( D = E
+                    | k2_xboole_0(k4_xboole_0(k1_funct_1(B,C),k1_tarski(D)),k4_xboole_0(k1_funct_1(B,C),k1_tarski(E))) = k1_funct_1(B,C) ) ) ) ) ) ).
+
+fof(d2_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D,E] :
+                  ( m2_finseq_1(E,k1_zfmisc_1(A))
+                 => ( E = k2_hallmar1(A,B,C,D)
+                  <=> ( k4_finseq_1(E) = k4_finseq_1(B)
+                      & ! [F] :
+                          ( m2_subset_1(F,k1_numbers,k5_numbers)
+                         => ( r2_hidden(F,k4_finseq_1(E))
+                           => ( ( C = F
+                               => k1_funct_1(E,F) = k4_xboole_0(k1_funct_1(B,F),k1_tarski(D)) )
+                              & ( C != F
+                               => k1_funct_1(E,F) = k1_funct_1(B,F) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t11_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( ( r2_hidden(C,k4_finseq_1(B))
+                    & r2_hidden(D,k1_funct_1(B,C)) )
+                 => k4_card_1(k1_funct_1(k2_hallmar1(A,B,C,D),C)) = k5_real_1(k4_card_1(k1_funct_1(B,C)),np__1) ) ) ) ) ).
+
+fof(t12_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D,E] : k1_hallmar1(A,k2_hallmar1(A,B,C,D),k4_xboole_0(E,k1_tarski(C))) = k1_hallmar1(A,B,k4_xboole_0(E,k1_tarski(C))) ) ) ) ).
+
+fof(t13_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D,E] :
+                  ( ~ r2_hidden(C,E)
+                 => k1_hallmar1(A,B,E) = k1_hallmar1(A,k2_hallmar1(A,B,C,D),E) ) ) ) ) ).
+
+fof(t14_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D,E] :
+                  ( ( r2_hidden(C,k4_finseq_1(k2_hallmar1(A,B,C,D)))
+                    & r1_tarski(E,k4_finseq_1(k2_hallmar1(A,B,C,D)))
+                    & r2_hidden(C,E) )
+                 => k1_hallmar1(A,k2_hallmar1(A,B,C,D),E) = k2_xboole_0(k1_hallmar1(A,B,k4_xboole_0(E,k1_tarski(C))),k4_xboole_0(k1_funct_1(B,C),k1_tarski(D))) ) ) ) ) ).
+
+fof(d3_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( r1_hallmar1(A,B,C)
+            <=> ? [D] :
+                  ( m2_finseq_1(D,A)
+                  & D = C
+                  & k4_finseq_1(B) = k4_finseq_1(D)
+                  & ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( r2_hidden(E,k4_finseq_1(D))
+                       => r2_hidden(k1_funct_1(D,E),k1_funct_1(B,E)) ) )
+                  & v2_funct_1(D) ) ) ) ) ).
+
+fof(d4_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ( v1_hallmar1(B,A)
+          <=> ! [C] :
+                ( v1_finset_1(C)
+               => ( r1_tarski(C,k4_finseq_1(B))
+                 => r1_xreal_0(k4_card_1(C),k4_card_1(k1_hallmar1(A,B,C))) ) ) ) ) ) ).
+
+fof(t15_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ( v1_hallmar1(B,A)
+           => v2_relat_1(B) ) ) ) ).
+
+fof(t16_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r2_hidden(C,k4_finseq_1(B))
+                  & v1_hallmar1(B,A) )
+               => r1_xreal_0(np__1,k4_card_1(k1_funct_1(B,C))) ) ) ) ) ).
+
+fof(t17_hallmar1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ~ ( ! [C] :
+                  ( m2_subset_1(C,k1_numbers,k5_numbers)
+                 => ( r2_hidden(C,k4_finseq_1(B))
+                   => k4_card_1(k1_funct_1(B,C)) = np__1 ) )
+              & v1_hallmar1(B,A)
+              & ! [C] : ~ r1_hallmar1(A,B,C) ) ) ) ).
+
+fof(t18_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ( ? [C] : r1_hallmar1(A,B,C)
+           => v1_hallmar1(B,A) ) ) ) ).
+
+fof(d5_hallmar1,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( m2_subset_1(C,k1_numbers,k5_numbers)
+         => ! [D] :
+              ( m2_finseq_1(D,k1_zfmisc_1(A))
+             => ( m1_hallmar1(D,A,B,C)
+              <=> ( k4_finseq_1(D) = k4_finseq_1(B)
+                  & ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( r2_hidden(E,k4_finseq_1(B))
+                       => ( E = C
+                          | k1_funct_1(B,E) = k1_funct_1(D,E) ) ) )
+                  & r1_tarski(k1_funct_1(D,C),k1_funct_1(B,C)) ) ) ) ) ) ).
+
+fof(d6_hallmar1,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( m2_finseq_1(C,k1_zfmisc_1(A))
+         => ( m2_hallmar1(C,A,B)
+          <=> ( k4_finseq_1(C) = k4_finseq_1(B)
+              & ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( r2_hidden(D,k4_finseq_1(B))
+                   => r1_tarski(k1_funct_1(C,D),k1_funct_1(B,D)) ) ) ) ) ) ) ).
+
+fof(d7_hallmar1,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( m2_subset_1(C,k1_numbers,k5_numbers)
+         => ( r2_hidden(C,k4_finseq_1(B))
+           => ( k1_funct_1(B,C) = k1_xboole_0
+              | ! [D] :
+                  ( m2_hallmar1(D,A,B)
+                 => ( m3_hallmar1(D,A,B,C)
+                  <=> k1_card_1(k1_funct_1(D,C)) = np__1 ) ) ) ) ) ) ).
+
+fof(t19_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m1_hallmar1(D,A,B,C)
+                 => m2_hallmar1(D,A,B) ) ) ) ) ).
+
+fof(t20_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( ( r2_hidden(C,k4_finseq_1(B))
+                    & r2_hidden(D,k1_funct_1(B,C)) )
+                 => m1_hallmar1(k2_hallmar1(A,B,C,D),A,B,C) ) ) ) ) ).
+
+fof(t21_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( ( r2_hidden(C,k4_finseq_1(B))
+                    & r2_hidden(D,k1_funct_1(B,C)) )
+                 => m2_hallmar1(k2_hallmar1(A,B,C,D),A,B) ) ) ) ) ).
+
+fof(t22_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_hallmar1(C,A,B)
+             => ! [D] :
+                  ( m2_hallmar1(D,A,C)
+                 => m2_hallmar1(D,A,B) ) ) ) ) ).
+
+fof(t23_hallmar1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m3_hallmar1(D,A,B,C)
+                 => ~ ( r2_hidden(C,k4_finseq_1(B))
+                      & k1_funct_1(D,C) = k1_xboole_0 ) ) ) ) ) ).
+
+fof(t24_hallmar1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v2_relat_1(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m3_hallmar1(E,A,B,C)
+                     => ! [F] :
+                          ( m3_hallmar1(F,A,E,D)
+                         => ( ( r2_hidden(C,k4_finseq_1(B))
+                              & r2_hidden(D,k4_finseq_1(B)) )
+                           => ( k1_funct_1(F,C) = k1_xboole_0
+                              | k1_funct_1(E,D) = k1_xboole_0
+                              | ( m3_hallmar1(F,A,B,D)
+                                & m3_hallmar1(F,A,B,C) ) ) ) ) ) ) ) ) ) ).
+
+fof(t25_hallmar1,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( m2_subset_1(C,k1_numbers,k5_numbers)
+         => m1_hallmar1(B,A,B,C) ) ) ).
+
+fof(t26_hallmar1,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,k1_zfmisc_1(A))
+     => m2_hallmar1(B,A,B) ) ).
+
+fof(d8_hallmar1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ( v2_relat_1(B)
+           => ! [C] :
+                ( m2_hallmar1(C,A,B)
+               => ( m4_hallmar1(C,A,B)
+                <=> ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( r2_hidden(D,k4_finseq_1(B))
+                       => k1_card_1(k1_funct_1(C,D)) = np__1 ) ) ) ) ) ) ) ).
+
+fof(t27_hallmar1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v2_relat_1(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ! [C] :
+              ( ( v1_relat_1(C)
+                & v1_funct_1(C) )
+             => ( m4_hallmar1(C,A,B)
+              <=> ( k1_relat_1(C) = k4_finseq_1(B)
+                  & ! [D] :
+                      ( m2_subset_1(D,k1_numbers,k5_numbers)
+                     => ( r2_hidden(D,k4_finseq_1(B))
+                       => m3_hallmar1(C,A,B,D) ) ) ) ) ) ) ) ).
+
+fof(t28_hallmar1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ! [C,D] :
+              ( m2_hallmar1(D,A,B)
+             => ( r1_hallmar1(A,D,C)
+               => r1_hallmar1(A,B,C) ) ) ) ) ).
+
+fof(t29_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ( v1_hallmar1(B,A)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => ~ ( r1_xreal_0(np__2,k4_card_1(k1_funct_1(B,C)))
+                    & ! [D] :
+                        ~ ( r2_hidden(D,k1_funct_1(B,C))
+                          & v1_hallmar1(k2_hallmar1(A,B,C,D),A) ) ) ) ) ) ) ).
+
+fof(t30_hallmar1,axiom,
+    ! [A] :
+      ( v1_finset_1(A)
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( r2_hidden(C,k4_finseq_1(B))
+                  & v1_hallmar1(B,A)
+                  & ! [D] :
+                      ( m3_hallmar1(D,A,B,C)
+                     => ~ v1_hallmar1(D,A) ) ) ) ) ) ).
+
+fof(t31_hallmar1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ~ ( v1_hallmar1(B,A)
+              & ! [C] :
+                  ( m4_hallmar1(C,A,B)
+                 => ~ v1_hallmar1(C,A) ) ) ) ) ).
+
+fof(t32_hallmar1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ( ? [C] : r1_hallmar1(A,B,C)
+          <=> v1_hallmar1(B,A) ) ) ) ).
+
+fof(s1_hallmar1,axiom,
+    ( ( p1_s1_hallmar1(f1_s1_hallmar1)
+      & r1_xreal_0(np__2,f1_s1_hallmar1)
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => ( ( r1_xreal_0(np__1,A)
+              & p1_s1_hallmar1(k1_nat_1(A,np__1)) )
+           => ( r1_xreal_0(f1_s1_hallmar1,A)
+              | p1_s1_hallmar1(A) ) ) ) )
+   => ! [A] :
+        ( m2_subset_1(A,k1_numbers,k5_numbers)
+       => ( ( r1_xreal_0(np__1,A)
+            & r1_xreal_0(A,f1_s1_hallmar1) )
+         => p1_s1_hallmar1(A) ) ) ) ).
+
+fof(s2_hallmar1,axiom,
+    ( ( ? [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+          & ~ r1_xreal_0(A,np__1)
+          & p1_s2_hallmar1(A) )
+      & ! [A] :
+          ( m2_subset_1(A,k1_numbers,k5_numbers)
+         => ( ( r1_xreal_0(np__1,A)
+              & p1_s2_hallmar1(k1_nat_1(A,np__1)) )
+           => p1_s2_hallmar1(A) ) ) )
+   => p1_s2_hallmar1(np__1) ) ).
+
+fof(dt_m1_hallmar1,axiom,
+    ! [A,B,C] :
+      ( ( m1_finseq_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k5_numbers) )
+     => ! [D] :
+          ( m1_hallmar1(D,A,B,C)
+         => m2_finseq_1(D,k1_zfmisc_1(A)) ) ) ).
+
+fof(existence_m1_hallmar1,axiom,
+    ! [A,B,C] :
+      ( ( m1_finseq_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k5_numbers) )
+     => ? [D] : m1_hallmar1(D,A,B,C) ) ).
+
+fof(dt_m2_hallmar1,axiom,
+    ! [A,B] :
+      ( m1_finseq_1(B,k1_zfmisc_1(A))
+     => ! [C] :
+          ( m2_hallmar1(C,A,B)
+         => m2_finseq_1(C,k1_zfmisc_1(A)) ) ) ).
+
+fof(existence_m2_hallmar1,axiom,
+    ! [A,B] :
+      ( m1_finseq_1(B,k1_zfmisc_1(A))
+     => ? [C] : m2_hallmar1(C,A,B) ) ).
+
+fof(dt_m3_hallmar1,axiom,
+    ! [A,B,C] :
+      ( ( m1_finseq_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k5_numbers) )
+     => ! [D] :
+          ( m3_hallmar1(D,A,B,C)
+         => m2_hallmar1(D,A,B) ) ) ).
+
+fof(existence_m3_hallmar1,axiom,
+    ! [A,B,C] :
+      ( ( m1_finseq_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k5_numbers) )
+     => ? [D] : m3_hallmar1(D,A,B,C) ) ).
+
+fof(dt_m4_hallmar1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_finseq_1(B,k1_zfmisc_1(A)) )
+     => ! [C] :
+          ( m4_hallmar1(C,A,B)
+         => m2_hallmar1(C,A,B) ) ) ).
+
+fof(existence_m4_hallmar1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_finseq_1(B,k1_zfmisc_1(A)) )
+     => ? [C] : m4_hallmar1(C,A,B) ) ).
+
+fof(dt_k1_hallmar1,axiom,
+    $true ).
+
+fof(dt_k2_hallmar1,axiom,
+    ! [A,B,C,D] :
+      ( ( v1_finset_1(A)
+        & m1_finseq_1(B,k1_zfmisc_1(A))
+        & m1_subset_1(C,k5_numbers) )
+     => m2_finseq_1(k2_hallmar1(A,B,C,D),k1_zfmisc_1(A)) ) ).
+
+%------------------------------------------------------------------------------

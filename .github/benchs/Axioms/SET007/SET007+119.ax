@@ -1,0 +1,1243 @@
+%------------------------------------------------------------------------------
+% File     : SET007+119 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Infimum and Supremum of the Set of Real Numbers
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : supinf_1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :  179 (  65 unt;   0 def)
+%            Number of atoms       :  619 (  71 equ)
+%            Maximal formula atoms :   15 (   3 avg)
+%            Number of connectives :  539 (  99   ~;   5   |; 129   &)
+%                                         (  27 <=>; 279  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   14 (   5 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :   20 (  18 usr;   1 prp; 0-2 aty)
+%            Number of functors    :   22 (  22 usr;   7 con; 0-3 aty)
+%            Number of variables   :  244 ( 223   !;  21   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_supinf_1,axiom,
+    ? [A] : v1_supinf_1(A) ).
+
+fof(rc2_supinf_1,axiom,
+    ? [A] : v2_supinf_1(A) ).
+
+fof(rc3_supinf_1,axiom,
+    ? [A] : v3_supinf_1(A) ).
+
+fof(cc1_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => v3_supinf_1(A) ) ).
+
+fof(cc2_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ( v1_xcmplx_0(A)
+        & v1_xreal_0(A)
+        & v3_supinf_1(A) ) ) ).
+
+fof(fc1_supinf_1,axiom,
+    ~ v1_xboole_0(k3_supinf_1) ).
+
+fof(fc2_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ~ v1_xboole_0(k7_supinf_1(A)) ) ).
+
+fof(fc3_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ~ v1_xboole_0(k8_supinf_1(A)) ) ).
+
+fof(fc4_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ~ v1_xboole_0(k13_supinf_1(A)) ) ).
+
+fof(fc5_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ~ v1_xboole_0(k14_supinf_1(A)) ) ).
+
+fof(d1_supinf_1,axiom,
+    k1_supinf_1 = k1_numbers ).
+
+fof(t1_supinf_1,axiom,
+    $true ).
+
+fof(t2_supinf_1,axiom,
+    ~ r2_hidden(k1_supinf_1,k1_numbers) ).
+
+fof(d2_supinf_1,axiom,
+    ! [A] :
+      ( v1_supinf_1(A)
+    <=> A = k1_supinf_1 ) ).
+
+fof(t3_supinf_1,axiom,
+    $true ).
+
+fof(t4_supinf_1,axiom,
+    v1_supinf_1(k1_supinf_1) ).
+
+fof(d3_supinf_1,axiom,
+    k2_supinf_1 = k1_tarski(k1_numbers) ).
+
+fof(t5_supinf_1,axiom,
+    $true ).
+
+fof(t6_supinf_1,axiom,
+    ~ r2_hidden(k2_supinf_1,k1_numbers) ).
+
+fof(d4_supinf_1,axiom,
+    ! [A] :
+      ( v2_supinf_1(A)
+    <=> A = k2_supinf_1 ) ).
+
+fof(t7_supinf_1,axiom,
+    $true ).
+
+fof(t8_supinf_1,axiom,
+    v2_supinf_1(k2_supinf_1) ).
+
+fof(d5_supinf_1,axiom,
+    ! [A] :
+      ( v3_supinf_1(A)
+    <=> r2_hidden(A,k2_xboole_0(k1_numbers,k2_tarski(k2_supinf_1,k1_supinf_1))) ) ).
+
+fof(d6_supinf_1,axiom,
+    k3_supinf_1 = k2_xboole_0(k1_numbers,k2_tarski(k2_supinf_1,k1_supinf_1)) ).
+
+fof(t9_supinf_1,axiom,
+    $true ).
+
+fof(t10_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => m1_subset_1(A,k3_supinf_1) ) ).
+
+fof(t11_supinf_1,axiom,
+    ! [A] :
+      ( ( A = k2_supinf_1
+        | A = k1_supinf_1 )
+     => m1_subset_1(A,k3_supinf_1) ) ).
+
+fof(t12_supinf_1,axiom,
+    $true ).
+
+fof(t13_supinf_1,axiom,
+    $true ).
+
+fof(t14_supinf_1,axiom,
+    k5_supinf_1 != k4_supinf_1 ).
+
+fof(d7_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( ( ( r2_hidden(A,k1_numbers)
+                & r2_hidden(B,k1_numbers) )
+             => ( r1_supinf_1(A,B)
+              <=> ? [C] :
+                    ( m1_subset_1(C,k1_numbers)
+                    & ? [D] :
+                        ( m1_subset_1(D,k1_numbers)
+                        & C = A
+                        & D = B
+                        & r1_xreal_0(C,D) ) ) ) )
+            & ( ~ ( r2_hidden(A,k1_numbers)
+                  & r2_hidden(B,k1_numbers) )
+             => ( r1_supinf_1(A,B)
+              <=> ( A = k5_supinf_1
+                  | B = k4_supinf_1 ) ) ) ) ) ) ).
+
+fof(t15_supinf_1,axiom,
+    $true ).
+
+fof(t16_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( ( m1_subset_1(A,k1_numbers)
+              & m1_subset_1(B,k1_numbers) )
+           => ( r1_supinf_1(A,B)
+            <=> ? [C] :
+                  ( m1_subset_1(C,k1_numbers)
+                  & ? [D] :
+                      ( m1_subset_1(D,k1_numbers)
+                      & C = A
+                      & D = B
+                      & r1_xreal_0(C,D) ) ) ) ) ) ) ).
+
+fof(t17_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ~ ( r2_hidden(A,k1_numbers)
+          & r1_supinf_1(A,k5_supinf_1) ) ) ).
+
+fof(t18_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ~ ( r2_hidden(A,k1_numbers)
+          & r1_supinf_1(k4_supinf_1,A) ) ) ).
+
+fof(t19_supinf_1,axiom,
+    ~ r1_supinf_1(k4_supinf_1,k5_supinf_1) ).
+
+fof(t20_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => r1_supinf_1(A,k4_supinf_1) ) ).
+
+fof(t21_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => r1_supinf_1(k5_supinf_1,A) ) ).
+
+fof(t22_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( ( r1_supinf_1(A,B)
+              & r1_supinf_1(B,A) )
+           => A = B ) ) ) ).
+
+fof(t23_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ( r1_supinf_1(A,k5_supinf_1)
+       => A = k5_supinf_1 ) ) ).
+
+fof(t24_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ( r1_supinf_1(k4_supinf_1,A)
+       => A = k4_supinf_1 ) ) ).
+
+fof(t25_supinf_1,axiom,
+    $true ).
+
+fof(t26_supinf_1,axiom,
+    ~ v1_xboole_0(k3_supinf_1) ).
+
+fof(t27_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+    <=> r2_hidden(A,k3_supinf_1) ) ).
+
+fof(t28_supinf_1,axiom,
+    $true ).
+
+fof(t29_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( r1_supinf_1(A,B)
+                  & r1_supinf_1(B,C) )
+               => r1_supinf_1(A,C) ) ) ) ) ).
+
+fof(t30_supinf_1,axiom,
+    $true ).
+
+fof(t31_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ( r2_hidden(A,k1_numbers)
+       => ( ~ r1_supinf_1(A,k5_supinf_1)
+          & ~ r1_supinf_1(k4_supinf_1,A) ) ) ) ).
+
+fof(d8_supinf_1,axiom,
+    $true ).
+
+fof(d9_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( m1_supinf_1(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( r2_hidden(C,A)
+                 => r1_supinf_1(C,B) ) ) ) ) ) ).
+
+fof(t32_supinf_1,axiom,
+    $true ).
+
+fof(t33_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => m1_supinf_1(k4_supinf_1,A) ) ).
+
+fof(t34_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( r1_tarski(A,B)
+           => ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( m1_supinf_1(C,B)
+                 => m1_supinf_1(C,A) ) ) ) ) ) ).
+
+fof(d10_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( m2_supinf_1(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( r2_hidden(C,A)
+                 => r1_supinf_1(B,C) ) ) ) ) ) ).
+
+fof(t35_supinf_1,axiom,
+    $true ).
+
+fof(t36_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => m2_supinf_1(k5_supinf_1,A) ) ).
+
+fof(t37_supinf_1,axiom,
+    $true ).
+
+fof(t38_supinf_1,axiom,
+    $true ).
+
+fof(t39_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( r1_tarski(A,B)
+           => ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( m2_supinf_1(C,B)
+                 => m2_supinf_1(C,A) ) ) ) ) ) ).
+
+fof(t40_supinf_1,axiom,
+    $true ).
+
+fof(t41_supinf_1,axiom,
+    m1_supinf_1(k4_supinf_1,k6_supinf_1) ).
+
+fof(t42_supinf_1,axiom,
+    m2_supinf_1(k5_supinf_1,k6_supinf_1) ).
+
+fof(d11_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ( v4_supinf_1(A)
+      <=> ? [B] :
+            ( m1_supinf_1(B,A)
+            & r2_hidden(B,k6_supinf_1) ) ) ) ).
+
+fof(t43_supinf_1,axiom,
+    $true ).
+
+fof(t44_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( ( r1_tarski(A,B)
+              & v4_supinf_1(B) )
+           => v4_supinf_1(A) ) ) ) ).
+
+fof(t45_supinf_1,axiom,
+    ~ v4_supinf_1(k6_supinf_1) ).
+
+fof(d12_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ( v5_supinf_1(A)
+      <=> ? [B] :
+            ( m2_supinf_1(B,A)
+            & r2_hidden(B,k6_supinf_1) ) ) ) ).
+
+fof(t46_supinf_1,axiom,
+    $true ).
+
+fof(t47_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( ( r1_tarski(A,B)
+              & v5_supinf_1(B) )
+           => v5_supinf_1(A) ) ) ) ).
+
+fof(t48_supinf_1,axiom,
+    ~ v5_supinf_1(k6_supinf_1) ).
+
+fof(d13_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ( v6_supinf_1(A)
+      <=> ( v4_supinf_1(A)
+          & v5_supinf_1(A) ) ) ) ).
+
+fof(t49_supinf_1,axiom,
+    $true ).
+
+fof(t50_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( ( r1_tarski(A,B)
+              & v6_supinf_1(B) )
+           => v6_supinf_1(A) ) ) ) ).
+
+fof(t51_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ? [B] :
+          ( ~ v1_xboole_0(B)
+          & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+          & ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( r2_hidden(C,B)
+              <=> m1_supinf_1(C,A) ) ) ) ) ).
+
+fof(d14_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( B = k7_supinf_1(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( r2_hidden(C,B)
+                <=> m1_supinf_1(C,A) ) ) ) ) ) ).
+
+fof(t52_supinf_1,axiom,
+    $true ).
+
+fof(t53_supinf_1,axiom,
+    $true ).
+
+fof(t54_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( r1_tarski(A,B)
+           => ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( r2_hidden(C,k7_supinf_1(B))
+                 => r2_hidden(C,k7_supinf_1(A)) ) ) ) ) ) ).
+
+fof(t55_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ? [B] :
+          ( ~ v1_xboole_0(B)
+          & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+          & ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( r2_hidden(C,B)
+              <=> m2_supinf_1(C,A) ) ) ) ) ).
+
+fof(d15_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( B = k8_supinf_1(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( r2_hidden(C,B)
+                <=> m2_supinf_1(C,A) ) ) ) ) ) ).
+
+fof(t56_supinf_1,axiom,
+    $true ).
+
+fof(t57_supinf_1,axiom,
+    $true ).
+
+fof(t58_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( r1_tarski(A,B)
+           => ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( r2_hidden(C,k8_supinf_1(B))
+                 => r2_hidden(C,k8_supinf_1(A)) ) ) ) ) ) ).
+
+fof(t59_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ~ ( v4_supinf_1(A)
+          & A != k1_tarski(k5_supinf_1)
+          & ! [B] :
+              ( m1_subset_1(B,k1_numbers)
+             => ~ ( r2_hidden(B,A)
+                  & B != k5_supinf_1 ) ) ) ) ).
+
+fof(t60_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ~ ( v5_supinf_1(A)
+          & A != k1_tarski(k4_supinf_1)
+          & ! [B] :
+              ( m1_subset_1(B,k1_numbers)
+             => ~ ( r2_hidden(B,A)
+                  & B != k4_supinf_1 ) ) ) ) ).
+
+fof(t61_supinf_1,axiom,
+    $true ).
+
+fof(t62_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ~ ( v4_supinf_1(A)
+          & A != k1_tarski(k5_supinf_1)
+          & ! [B] :
+              ( m1_subset_1(B,k3_supinf_1)
+             => ~ ( m1_supinf_1(B,A)
+                  & ! [C] :
+                      ( m1_subset_1(C,k3_supinf_1)
+                     => ( m1_supinf_1(C,A)
+                       => r1_supinf_1(B,C) ) ) ) ) ) ) ).
+
+fof(t63_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ~ ( v5_supinf_1(A)
+          & A != k1_tarski(k4_supinf_1)
+          & ! [B] :
+              ( m1_subset_1(B,k3_supinf_1)
+             => ~ ( m2_supinf_1(B,A)
+                  & ! [C] :
+                      ( m1_subset_1(C,k3_supinf_1)
+                     => ( m2_supinf_1(C,A)
+                       => r1_supinf_1(C,B) ) ) ) ) ) ) ).
+
+fof(t64_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ( A = k1_tarski(k5_supinf_1)
+       => v4_supinf_1(A) ) ) ).
+
+fof(t65_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ( A = k1_tarski(k4_supinf_1)
+       => v5_supinf_1(A) ) ) ).
+
+fof(t66_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ~ ( A = k1_tarski(k5_supinf_1)
+          & ! [B] :
+              ( m1_subset_1(B,k3_supinf_1)
+             => ~ ( m1_supinf_1(B,A)
+                  & ! [C] :
+                      ( m1_subset_1(C,k3_supinf_1)
+                     => ( m1_supinf_1(C,A)
+                       => r1_supinf_1(B,C) ) ) ) ) ) ) ).
+
+fof(t67_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ~ ( A = k1_tarski(k4_supinf_1)
+          & ! [B] :
+              ( m1_subset_1(B,k3_supinf_1)
+             => ~ ( m2_supinf_1(B,A)
+                  & ! [C] :
+                      ( m1_subset_1(C,k3_supinf_1)
+                     => ( m2_supinf_1(C,A)
+                       => r1_supinf_1(C,B) ) ) ) ) ) ) ).
+
+fof(t68_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ~ ( v4_supinf_1(A)
+          & ! [B] :
+              ( m1_subset_1(B,k3_supinf_1)
+             => ~ ( m1_supinf_1(B,A)
+                  & ! [C] :
+                      ( m1_subset_1(C,k3_supinf_1)
+                     => ( m1_supinf_1(C,A)
+                       => r1_supinf_1(B,C) ) ) ) ) ) ) ).
+
+fof(t69_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ~ ( v5_supinf_1(A)
+          & ! [B] :
+              ( m1_subset_1(B,k3_supinf_1)
+             => ~ ( m2_supinf_1(B,A)
+                  & ! [C] :
+                      ( m1_subset_1(C,k3_supinf_1)
+                     => ( m2_supinf_1(C,A)
+                       => r1_supinf_1(C,B) ) ) ) ) ) ) ).
+
+fof(t70_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ( ~ v4_supinf_1(A)
+       => ! [B] :
+            ( m1_subset_1(B,k3_supinf_1)
+           => ( m1_supinf_1(B,A)
+             => B = k4_supinf_1 ) ) ) ) ).
+
+fof(t71_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ( ~ v5_supinf_1(A)
+       => ! [B] :
+            ( m1_subset_1(B,k3_supinf_1)
+           => ( m2_supinf_1(B,A)
+             => B = k5_supinf_1 ) ) ) ) ).
+
+fof(t72_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ? [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+          & m1_supinf_1(B,A)
+          & ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( m1_supinf_1(C,A)
+               => r1_supinf_1(B,C) ) ) ) ) ).
+
+fof(t73_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ? [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+          & m2_supinf_1(B,A)
+          & ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( m2_supinf_1(C,A)
+               => r1_supinf_1(C,B) ) ) ) ) ).
+
+fof(d16_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( B = k9_supinf_1(A)
+          <=> ( m1_supinf_1(B,A)
+              & ! [C] :
+                  ( m1_subset_1(C,k3_supinf_1)
+                 => ( m1_supinf_1(C,A)
+                   => r1_supinf_1(B,C) ) ) ) ) ) ) ).
+
+fof(t74_supinf_1,axiom,
+    $true ).
+
+fof(t75_supinf_1,axiom,
+    $true ).
+
+fof(t76_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( r2_hidden(B,A)
+           => r1_supinf_1(B,k9_supinf_1(A)) ) ) ) ).
+
+fof(d17_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( B = k10_supinf_1(A)
+          <=> ( m2_supinf_1(B,A)
+              & ! [C] :
+                  ( m1_subset_1(C,k3_supinf_1)
+                 => ( m2_supinf_1(C,A)
+                   => r1_supinf_1(C,B) ) ) ) ) ) ) ).
+
+fof(t77_supinf_1,axiom,
+    $true ).
+
+fof(t78_supinf_1,axiom,
+    $true ).
+
+fof(t79_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( r2_hidden(B,A)
+           => r1_supinf_1(k10_supinf_1(A),B) ) ) ) ).
+
+fof(t80_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_supinf_1(B,A)
+         => ( r2_hidden(B,A)
+           => B = k9_supinf_1(A) ) ) ) ).
+
+fof(t81_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m2_supinf_1(B,A)
+         => ( r2_hidden(B,A)
+           => B = k10_supinf_1(A) ) ) ) ).
+
+fof(t82_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ( k9_supinf_1(A) = k10_supinf_1(k7_supinf_1(A))
+        & k10_supinf_1(A) = k9_supinf_1(k8_supinf_1(A)) ) ) ).
+
+fof(t83_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ( v4_supinf_1(A)
+       => ( A = k1_tarski(k5_supinf_1)
+          | r2_hidden(k9_supinf_1(A),k6_supinf_1) ) ) ) ).
+
+fof(t84_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ( v5_supinf_1(A)
+       => ( A = k1_tarski(k4_supinf_1)
+          | r2_hidden(k10_supinf_1(A),k6_supinf_1) ) ) ) ).
+
+fof(t85_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => k9_supinf_1(k11_supinf_1(A)) = A ) ).
+
+fof(t86_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => k10_supinf_1(k11_supinf_1(A)) = A ) ).
+
+fof(t87_supinf_1,axiom,
+    $true ).
+
+fof(t88_supinf_1,axiom,
+    $true ).
+
+fof(t89_supinf_1,axiom,
+    $true ).
+
+fof(t90_supinf_1,axiom,
+    $true ).
+
+fof(t91_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ( r1_tarski(A,B)
+           => r1_supinf_1(k9_supinf_1(A),k9_supinf_1(B)) ) ) ) ).
+
+fof(t92_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( r1_supinf_1(A,C)
+                  & r1_supinf_1(B,C) )
+               => r1_supinf_1(k9_supinf_1(k12_supinf_1(A,B)),C) ) ) ) ) ).
+
+fof(t93_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( ( r1_supinf_1(A,B)
+             => k9_supinf_1(k12_supinf_1(A,B)) = B )
+            & ( r1_supinf_1(B,A)
+             => k9_supinf_1(k12_supinf_1(A,B)) = A ) ) ) ) ).
+
+fof(t94_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ( r1_tarski(A,B)
+           => r1_supinf_1(k10_supinf_1(B),k10_supinf_1(A)) ) ) ) ).
+
+fof(t95_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( m1_subset_1(C,k3_supinf_1)
+             => ( ( r1_supinf_1(C,A)
+                  & r1_supinf_1(C,B) )
+               => r1_supinf_1(C,k10_supinf_1(k12_supinf_1(A,B))) ) ) ) ) ).
+
+fof(t96_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( ( r1_supinf_1(A,B)
+             => k10_supinf_1(k12_supinf_1(A,B)) = A )
+            & ( r1_supinf_1(B,A)
+             => k10_supinf_1(k12_supinf_1(A,B)) = B ) ) ) ) ).
+
+fof(t97_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( ? [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+                & r2_hidden(C,A)
+                & r1_supinf_1(B,C) )
+           => r1_supinf_1(B,k9_supinf_1(A)) ) ) ) ).
+
+fof(t98_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( ? [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+                & r2_hidden(C,A)
+                & r1_supinf_1(C,B) )
+           => r1_supinf_1(k10_supinf_1(A),B) ) ) ) ).
+
+fof(t99_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ( ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ~ ( r2_hidden(C,A)
+                    & ! [D] :
+                        ( m1_subset_1(D,k3_supinf_1)
+                       => ~ ( r2_hidden(D,B)
+                            & r1_supinf_1(C,D) ) ) ) )
+           => r1_supinf_1(k9_supinf_1(A),k9_supinf_1(B)) ) ) ) ).
+
+fof(t100_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ( ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ~ ( r2_hidden(C,B)
+                    & ! [D] :
+                        ( m1_subset_1(D,k3_supinf_1)
+                       => ~ ( r2_hidden(D,A)
+                            & r1_supinf_1(D,C) ) ) ) )
+           => r1_supinf_1(k10_supinf_1(A),k10_supinf_1(B)) ) ) ) ).
+
+fof(t101_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ! [C] :
+              ( m1_supinf_1(C,A)
+             => ! [D] :
+                  ( m1_supinf_1(D,B)
+                 => m1_supinf_1(k9_supinf_1(k12_supinf_1(C,D)),k4_subset_1(k3_supinf_1,A,B)) ) ) ) ) ).
+
+fof(t102_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ! [C] :
+              ( m2_supinf_1(C,A)
+             => ! [D] :
+                  ( m2_supinf_1(D,B)
+                 => m2_supinf_1(k10_supinf_1(k12_supinf_1(C,D)),k4_subset_1(k3_supinf_1,A,B)) ) ) ) ) ).
+
+fof(t103_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k3_supinf_1))
+             => ! [D] :
+                  ( m1_supinf_1(D,A)
+                 => ! [E] :
+                      ( m1_supinf_1(E,B)
+                     => ( C = k5_subset_1(k3_supinf_1,A,B)
+                       => m1_supinf_1(k10_supinf_1(k12_supinf_1(D,E)),C) ) ) ) ) ) ) ).
+
+fof(t104_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k3_supinf_1))
+             => ! [D] :
+                  ( m2_supinf_1(D,A)
+                 => ! [E] :
+                      ( m2_supinf_1(E,B)
+                     => ( C = k5_subset_1(k3_supinf_1,A,B)
+                       => m2_supinf_1(k9_supinf_1(k12_supinf_1(D,E)),C) ) ) ) ) ) ) ).
+
+fof(t105_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => k9_supinf_1(k4_subset_1(k3_supinf_1,A,B)) = k9_supinf_1(k12_supinf_1(k9_supinf_1(A),k9_supinf_1(B))) ) ) ).
+
+fof(t106_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => k10_supinf_1(k4_subset_1(k3_supinf_1,A,B)) = k10_supinf_1(k12_supinf_1(k10_supinf_1(A),k10_supinf_1(B))) ) ) ).
+
+fof(t107_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & m1_subset_1(C,k1_zfmisc_1(k3_supinf_1)) )
+             => ( C = k5_subset_1(k3_supinf_1,A,B)
+               => r1_supinf_1(k9_supinf_1(C),k10_supinf_1(k12_supinf_1(k9_supinf_1(A),k9_supinf_1(B)))) ) ) ) ) ).
+
+fof(t108_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & m1_subset_1(C,k1_zfmisc_1(k3_supinf_1)) )
+             => ( C = k5_subset_1(k3_supinf_1,A,B)
+               => r1_supinf_1(k9_supinf_1(k12_supinf_1(k10_supinf_1(A),k10_supinf_1(B))),k10_supinf_1(C)) ) ) ) ) ).
+
+fof(d18_supinf_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m3_supinf_1(B,A)
+        <=> ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(A)))
+            & ! [C] :
+                ( r2_hidden(C,B)
+               => ~ v1_xboole_0(C) ) ) ) ) ).
+
+fof(d19_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( B = k13_supinf_1(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( r2_hidden(C,B)
+                <=> ? [D] :
+                      ( ~ v1_xboole_0(D)
+                      & m1_subset_1(D,k1_zfmisc_1(k3_supinf_1))
+                      & r2_hidden(D,A)
+                      & C = k9_supinf_1(D) ) ) ) ) ) ) ).
+
+fof(t109_supinf_1,axiom,
+    $true ).
+
+fof(t110_supinf_1,axiom,
+    $true ).
+
+fof(t111_supinf_1,axiom,
+    $true ).
+
+fof(t112_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ( B = k3_tarski(A)
+           => m1_supinf_1(k9_supinf_1(B),k13_supinf_1(A)) ) ) ) ).
+
+fof(t113_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( B = k3_tarski(A)
+           => m1_supinf_1(k9_supinf_1(k13_supinf_1(A)),B) ) ) ) ).
+
+fof(t114_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ( B = k3_tarski(A)
+           => k9_supinf_1(B) = k9_supinf_1(k13_supinf_1(A)) ) ) ) ).
+
+fof(d20_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( B = k14_supinf_1(A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k3_supinf_1)
+               => ( r2_hidden(C,B)
+                <=> ? [D] :
+                      ( ~ v1_xboole_0(D)
+                      & m1_subset_1(D,k1_zfmisc_1(k3_supinf_1))
+                      & r2_hidden(D,A)
+                      & C = k10_supinf_1(D) ) ) ) ) ) ) ).
+
+fof(t115_supinf_1,axiom,
+    $true ).
+
+fof(t116_supinf_1,axiom,
+    $true ).
+
+fof(t117_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ( B = k3_tarski(A)
+           => m2_supinf_1(k10_supinf_1(B),k14_supinf_1(A)) ) ) ) ).
+
+fof(t118_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k3_supinf_1))
+         => ( B = k3_tarski(A)
+           => m2_supinf_1(k10_supinf_1(k14_supinf_1(A)),B) ) ) ) ).
+
+fof(t119_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(k3_supinf_1)) )
+         => ( B = k3_tarski(A)
+           => k10_supinf_1(B) = k10_supinf_1(k14_supinf_1(A)) ) ) ) ).
+
+fof(t120_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ! [C] :
+              ( v1_xreal_0(C)
+             => ! [D] :
+                  ( v1_xreal_0(D)
+                 => ( ( A = C
+                      & B = D )
+                   => ( r1_xreal_0(C,D)
+                    <=> r1_supinf_1(A,B) ) ) ) ) ) ) ).
+
+fof(s1_supinf_1,axiom,
+    ? [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k2_xboole_0(k1_numbers,k2_tarski(k5_supinf_1,k4_supinf_1))))
+      & ! [B] :
+          ( m1_subset_1(B,k3_supinf_1)
+         => ( r2_hidden(B,A)
+          <=> p1_s1_supinf_1(B) ) ) ) ).
+
+fof(dt_m1_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m1_supinf_1(B,A)
+         => m1_subset_1(B,k3_supinf_1) ) ) ).
+
+fof(existence_m1_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ? [B] : m1_supinf_1(B,A) ) ).
+
+fof(dt_m2_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ! [B] :
+          ( m2_supinf_1(B,A)
+         => m1_subset_1(B,k3_supinf_1) ) ) ).
+
+fof(existence_m2_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => ? [B] : m2_supinf_1(B,A) ) ).
+
+fof(dt_m3_supinf_1,axiom,
+    $true ).
+
+fof(existence_m3_supinf_1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ? [B] : m3_supinf_1(B,A) ) ).
+
+fof(reflexivity_r1_supinf_1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k3_supinf_1)
+        & m1_subset_1(B,k3_supinf_1) )
+     => r1_supinf_1(A,A) ) ).
+
+fof(connectedness_r1_supinf_1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k3_supinf_1)
+        & m1_subset_1(B,k3_supinf_1) )
+     => ( r1_supinf_1(A,B)
+        | r1_supinf_1(B,A) ) ) ).
+
+fof(dt_k1_supinf_1,axiom,
+    $true ).
+
+fof(dt_k2_supinf_1,axiom,
+    $true ).
+
+fof(dt_k3_supinf_1,axiom,
+    $true ).
+
+fof(dt_k4_supinf_1,axiom,
+    m1_subset_1(k4_supinf_1,k3_supinf_1) ).
+
+fof(redefinition_k4_supinf_1,axiom,
+    k4_supinf_1 = k1_supinf_1 ).
+
+fof(dt_k5_supinf_1,axiom,
+    m1_subset_1(k5_supinf_1,k3_supinf_1) ).
+
+fof(redefinition_k5_supinf_1,axiom,
+    k5_supinf_1 = k2_supinf_1 ).
+
+fof(dt_k6_supinf_1,axiom,
+    ( ~ v1_xboole_0(k6_supinf_1)
+    & m1_subset_1(k6_supinf_1,k1_zfmisc_1(k3_supinf_1)) ) ).
+
+fof(redefinition_k6_supinf_1,axiom,
+    k6_supinf_1 = k1_numbers ).
+
+fof(dt_k7_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => m1_subset_1(k7_supinf_1(A),k1_zfmisc_1(k3_supinf_1)) ) ).
+
+fof(dt_k8_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_zfmisc_1(k3_supinf_1))
+     => m1_subset_1(k8_supinf_1(A),k1_zfmisc_1(k3_supinf_1)) ) ).
+
+fof(dt_k9_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => m1_subset_1(k9_supinf_1(A),k3_supinf_1) ) ).
+
+fof(dt_k10_supinf_1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m1_subset_1(A,k1_zfmisc_1(k3_supinf_1)) )
+     => m1_subset_1(k10_supinf_1(A),k3_supinf_1) ) ).
+
+fof(dt_k11_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => m1_subset_1(k11_supinf_1(A),k1_zfmisc_1(k3_supinf_1)) ) ).
+
+fof(redefinition_k11_supinf_1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k3_supinf_1)
+     => k11_supinf_1(A) = k1_tarski(A) ) ).
+
+fof(dt_k12_supinf_1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k3_supinf_1)
+        & m1_subset_1(B,k3_supinf_1) )
+     => m1_subset_1(k12_supinf_1(A,B),k1_zfmisc_1(k3_supinf_1)) ) ).
+
+fof(commutativity_k12_supinf_1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k3_supinf_1)
+        & m1_subset_1(B,k3_supinf_1) )
+     => k12_supinf_1(A,B) = k12_supinf_1(B,A) ) ).
+
+fof(redefinition_k12_supinf_1,axiom,
+    ! [A,B] :
+      ( ( m1_subset_1(A,k3_supinf_1)
+        & m1_subset_1(B,k3_supinf_1) )
+     => k12_supinf_1(A,B) = k2_tarski(A,B) ) ).
+
+fof(dt_k13_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => m1_subset_1(k13_supinf_1(A),k1_zfmisc_1(k3_supinf_1)) ) ).
+
+fof(dt_k14_supinf_1,axiom,
+    ! [A] :
+      ( m3_supinf_1(A,k3_supinf_1)
+     => m1_subset_1(k14_supinf_1(A),k1_zfmisc_1(k3_supinf_1)) ) ).
+
+%------------------------------------------------------------------------------

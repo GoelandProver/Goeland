@@ -1,0 +1,823 @@
+%------------------------------------------------------------------------------
+% File     : SET007+746 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Convex Sets and Convex Combinations
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : convex1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   55 (   0 unt;   0 def)
+%            Number of atoms       :  513 (  59 equ)
+%            Maximal formula atoms :   21 (   9 avg)
+%            Number of connectives :  537 (  79   ~;  10   |; 254   &)
+%                                         (  11 <=>; 183  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   19 (  10 avg)
+%            Maximal term depth    :    6 (   1 avg)
+%            Number of predicates  :   32 (  31 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   45 (  45 usr;   5 con; 0-4 aty)
+%            Number of variables   :  188 ( 179   !;   9   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ? [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+          & ~ v1_xboole_0(B)
+          & v1_convex1(B,A) ) ) ).
+
+fof(rc2_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ? [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+          & v1_xboole_0(B)
+          & v1_membered(B)
+          & v2_membered(B)
+          & v3_membered(B)
+          & v4_membered(B)
+          & v5_membered(B)
+          & v1_convex1(B,A) ) ) ).
+
+fof(d2_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v1_convex1(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,k1_numbers)
+                       => ( ( r2_hidden(C,B)
+                            & r2_hidden(D,B) )
+                         => ( r1_xreal_0(E,np__0)
+                            | r1_xreal_0(np__1,E)
+                            | r2_hidden(k2_rlvect_1(A,k3_rlvect_1(A,C,E),k3_rlvect_1(A,D,k5_real_1(np__1,E))),B) ) ) ) ) ) ) ) ) ).
+
+fof(t1_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ( v1_convex1(B,A)
+               => v1_convex1(k1_convex1(A,B,C),A) ) ) ) ) ).
+
+fof(t2_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v1_convex1(B,A)
+                  & v1_convex1(C,A) )
+               => v1_convex1(k7_rusub_4(A,B,C),A) ) ) ) ) ).
+
+fof(t3_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v1_convex1(B,A)
+                  & v1_convex1(C,A) )
+               => v1_convex1(k1_rusub_5(A,B,C),A) ) ) ) ) ).
+
+fof(t4_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v1_convex1(B,A)
+          <=> ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => ~ ( ~ r1_xreal_0(C,np__0)
+                    & ~ r1_xreal_0(np__1,C)
+                    & ~ r1_tarski(k6_rusub_4(A,k1_convex1(A,B,C),k1_convex1(A,B,k5_real_1(np__1,C))),B) ) ) ) ) ) ).
+
+fof(t5_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v1_convex1(B,A)
+           => ! [C] :
+                ( m1_subset_1(C,k1_numbers)
+               => ~ ( ~ r1_xreal_0(C,np__0)
+                    & ~ r1_xreal_0(np__1,C)
+                    & ~ r1_tarski(k7_rusub_4(A,k1_convex1(A,B,k5_real_1(np__1,C)),k1_convex1(A,B,C)),B) ) ) ) ) ) ).
+
+fof(t6_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( ( v1_convex1(B,A)
+                  & v1_convex1(C,A) )
+               => ! [D] :
+                    ( m1_subset_1(D,k1_numbers)
+                   => v1_convex1(k7_rusub_4(A,k1_convex1(A,B,D),k1_convex1(A,C,k5_real_1(np__1,D))),A) ) ) ) ) ) ).
+
+fof(t7_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ( v1_convex1(B,A)
+              <=> v1_convex1(k5_rusub_4(A,B,C),A) ) ) ) ) ).
+
+fof(t8_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => v1_convex1(k3_rusub_4(A,k1_rlsub_1(A)),A) ) ).
+
+fof(t9_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => v1_convex1(k3_rusub_4(A,k2_rlsub_1(A)),A) ) ).
+
+fof(t10_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( B = k1_xboole_0
+           => v1_convex1(B,A) ) ) ) ).
+
+fof(t11_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ( ( v1_convex1(B,A)
+                          & v1_convex1(C,A) )
+                       => v1_convex1(k7_rusub_4(A,k1_convex1(A,B,D),k1_convex1(A,C,E)),A) ) ) ) ) ) ) ).
+
+fof(t12_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => r1_tarski(k1_convex1(A,B,k3_real_1(C,D)),k6_rusub_4(A,k1_convex1(A,B,C),k1_convex1(A,B,D))) ) ) ) ) ).
+
+fof(t13_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( ( r1_xreal_0(np__0,C)
+                      & r1_xreal_0(np__0,D)
+                      & v1_convex1(B,A) )
+                   => k7_rusub_4(A,k1_convex1(A,B,C),k1_convex1(A,B,D)) = k1_convex1(A,B,k3_real_1(C,D)) ) ) ) ) ) ).
+
+fof(t14_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => ! [E] :
+                      ( m1_subset_1(E,k1_numbers)
+                     => ! [F] :
+                          ( m1_subset_1(F,k1_numbers)
+                         => ! [G] :
+                              ( m1_subset_1(G,k1_numbers)
+                             => ( ( v1_convex1(B,A)
+                                  & v1_convex1(C,A)
+                                  & v1_convex1(D,A) )
+                               => v1_convex1(k7_rusub_4(A,k7_rusub_4(A,k1_convex1(A,B,E),k1_convex1(A,C,F)),k1_convex1(A,D,G)),A) ) ) ) ) ) ) ) ) ).
+
+fof(t15_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+         => ( ! [C] :
+                ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+               => ( r2_hidden(C,B)
+                 => v1_convex1(C,A) ) )
+           => v1_convex1(k6_setfam_1(u1_struct_0(A),B),A) ) ) ) ).
+
+fof(t16_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v2_rusub_4(B,A)
+           => v1_convex1(B,A) ) ) ) ).
+
+fof(d3_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ( v2_convex1(B,A)
+          <=> ? [C] :
+                ( m2_finseq_1(C,u1_struct_0(A))
+                & v2_funct_1(C)
+                & k2_relat_1(C) = k10_rlvect_2(A,B)
+                & ? [D] :
+                    ( m2_finseq_1(D,k1_numbers)
+                    & k3_finseq_1(D) = k3_finseq_1(C)
+                    & k15_rvsum_1(D) = np__1
+                    & ! [E] :
+                        ( m2_subset_1(E,k1_numbers,k5_numbers)
+                       => ( r2_hidden(E,k4_finseq_1(D))
+                         => ( k1_funct_1(D,E) = k1_funct_1(B,k1_funct_1(C,E))
+                            & r1_xreal_0(np__0,k1_funct_1(D,E)) ) ) ) ) ) ) ) ) ).
+
+fof(t21_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ~ ( v2_convex1(B,A)
+              & k10_rlvect_2(A,B) = k1_xboole_0 ) ) ) ).
+
+fof(t22_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ~ ( v2_convex1(B,A)
+                  & r1_xreal_0(k8_funct_2(u1_struct_0(A),k1_numbers,B,C),np__0)
+                  & r2_hidden(C,k10_rlvect_2(A,B)) ) ) ) ) ).
+
+fof(t23_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_rlvect_2(B,A)
+         => ~ ( v2_convex1(B,A)
+              & B = k11_rlvect_2(A) ) ) ) ).
+
+fof(t24_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m2_rlvect_2(C,A,k7_rlvect_2(A,B))
+             => ( v2_convex1(C,A)
+               => ( k8_funct_2(u1_struct_0(A),k1_numbers,C,B) = np__1
+                  & k13_rlvect_2(A,C) = k3_rlvect_1(A,B,k8_funct_2(u1_struct_0(A),k1_numbers,C,B)) ) ) ) ) ) ).
+
+fof(t25_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m2_rlvect_2(D,A,k8_rlvect_2(A,B,C))
+                 => ( v2_convex1(D,A)
+                   => ( B = C
+                      | ( k3_real_1(k8_funct_2(u1_struct_0(A),k1_numbers,D,B),k8_funct_2(u1_struct_0(A),k1_numbers,D,C)) = np__1
+                        & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,D,B))
+                        & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,D,C))
+                        & k13_rlvect_2(A,D) = k4_rlvect_1(A,k3_rlvect_1(A,B,k8_funct_2(u1_struct_0(A),k1_numbers,D,B)),k3_rlvect_1(A,C,k8_funct_2(u1_struct_0(A),k1_numbers,D,C))) ) ) ) ) ) ) ) ).
+
+fof(t26_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m2_rlvect_2(E,A,k9_rlvect_2(A,B,C,D))
+                     => ( v2_convex1(E,A)
+                       => ( B = C
+                          | C = D
+                          | D = B
+                          | ( k3_real_1(k3_real_1(k8_funct_2(u1_struct_0(A),k1_numbers,E,B),k8_funct_2(u1_struct_0(A),k1_numbers,E,C)),k8_funct_2(u1_struct_0(A),k1_numbers,E,D)) = np__1
+                            & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,E,B))
+                            & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,E,C))
+                            & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,E,D))
+                            & k13_rlvect_2(A,E) = k4_rlvect_1(A,k4_rlvect_1(A,k3_rlvect_1(A,B,k8_funct_2(u1_struct_0(A),k1_numbers,E,B)),k3_rlvect_1(A,C,k8_funct_2(u1_struct_0(A),k1_numbers,E,C))),k3_rlvect_1(A,D,k8_funct_2(u1_struct_0(A),k1_numbers,E,D))) ) ) ) ) ) ) ) ) ).
+
+fof(t27_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_rlvect_2(C,A)
+             => ( ( v2_convex1(C,A)
+                  & k10_rlvect_2(A,C) = k7_rlvect_2(A,B) )
+               => k8_funct_2(u1_struct_0(A),k1_numbers,C,B) = np__1 ) ) ) ) ).
+
+fof(t28_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_rlvect_2(D,A)
+                 => ( ( v2_convex1(D,A)
+                      & k10_rlvect_2(A,D) = k8_rlvect_2(A,B,C) )
+                   => ( B = C
+                      | ( k3_real_1(k8_funct_2(u1_struct_0(A),k1_numbers,D,B),k8_funct_2(u1_struct_0(A),k1_numbers,D,C)) = np__1
+                        & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,D,B))
+                        & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,D,C)) ) ) ) ) ) ) ) ).
+
+fof(t29_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_rlvect_2(E,A)
+                     => ( ( v2_convex1(E,A)
+                          & k10_rlvect_2(A,E) = k9_rlvect_2(A,B,C,D) )
+                       => ( B = C
+                          | C = D
+                          | D = B
+                          | ( k3_real_1(k3_real_1(k8_funct_2(u1_struct_0(A),k1_numbers,E,B),k8_funct_2(u1_struct_0(A),k1_numbers,E,C)),k8_funct_2(u1_struct_0(A),k1_numbers,E,D)) = np__1
+                            & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,E,B))
+                            & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,E,C))
+                            & r1_xreal_0(np__0,k8_funct_2(u1_struct_0(A),k1_numbers,E,D))
+                            & k13_rlvect_2(A,E) = k4_rlvect_1(A,k4_rlvect_1(A,k3_rlvect_1(A,B,k8_funct_2(u1_struct_0(A),k1_numbers,E,B)),k3_rlvect_1(A,C,k8_funct_2(u1_struct_0(A),k1_numbers,E,C))),k3_rlvect_1(A,D,k8_funct_2(u1_struct_0(A),k1_numbers,E,D))) ) ) ) ) ) ) ) ) ).
+
+fof(d4_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A))))
+             => ( C = k2_convex1(A,B)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                   => ( r2_hidden(D,C)
+                    <=> ( v1_convex1(D,A)
+                        & r1_tarski(B,D) ) ) ) ) ) ) ) ).
+
+fof(d5_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k3_convex1(A,B) = k6_setfam_1(u1_struct_0(A),k2_convex1(A,B)) ) ) ).
+
+fof(t30_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( ( v1_convex1(C,A)
+                & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A))) )
+             => ( r1_tarski(B,C)
+               => r1_tarski(k3_convex1(A,B),C) ) ) ) ) ).
+
+fof(t31_convex1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ! [B,C,D] :
+          ~ ( v2_funct_1(A)
+            & k2_relat_1(A) = k1_enumset1(B,C,D)
+            & B != C
+            & C != D
+            & D != B
+            & A != k11_finseq_1(B,C,D)
+            & A != k11_finseq_1(B,D,C)
+            & A != k11_finseq_1(C,B,D)
+            & A != k11_finseq_1(C,D,B)
+            & A != k11_finseq_1(D,B,C)
+            & A != k11_finseq_1(D,C,B) ) ) ).
+
+fof(t32_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k1_convex1(A,B,np__1) = B ) ) ).
+
+fof(t33_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => k1_convex1(A,B,C) = k1_xboole_0 ) ) ) ).
+
+fof(t34_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => k1_convex1(A,B,np__0) = k7_rlvect_2(A,k1_rlvect_1(A)) ) ) ).
+
+fof(t35_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v5_rlvect_1(A)
+        & l1_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => k6_rusub_4(A,B,k7_rlvect_2(A,k1_rlvect_1(A))) = B ) ) ).
+
+fof(t36_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v4_rlvect_1(A)
+        & l1_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A)))
+                 => k6_rusub_4(A,k6_rusub_4(A,B,C),D) = k6_rusub_4(A,B,k6_rusub_4(A,C,D)) ) ) ) ) ).
+
+fof(t37_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => k1_convex1(A,k1_convex1(A,B,D),C) = k1_convex1(A,B,k4_real_1(C,D)) ) ) ) ) ).
+
+fof(t38_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => k1_convex1(A,k6_rusub_4(A,B,C),D) = k6_rusub_4(A,k1_convex1(A,B,D),k1_convex1(A,C,D)) ) ) ) ) ).
+
+fof(t39_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( r1_tarski(B,C)
+                   => r1_tarski(k1_convex1(A,B,D),k1_convex1(A,C,D)) ) ) ) ) ) ).
+
+fof(t40_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l1_rlvect_1(A) )
+     => ! [B] :
+          ( ( v1_xboole_0(B)
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => k6_rusub_4(A,B,C) = k1_xboole_0 ) ) ) ).
+
+fof(dt_k1_convex1,axiom,
+    ! [A,B,C] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+        & m1_subset_1(C,k1_numbers) )
+     => m1_subset_1(k1_convex1(A,B,C),k1_zfmisc_1(u1_struct_0(A))) ) ).
+
+fof(dt_k2_convex1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => m1_subset_1(k2_convex1(A,B),k1_zfmisc_1(k1_zfmisc_1(u1_struct_0(A)))) ) ).
+
+fof(dt_k3_convex1,axiom,
+    ! [A,B] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A)
+        & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) )
+     => ( v1_convex1(k3_convex1(A,B),A)
+        & m1_subset_1(k3_convex1(A,B),k1_zfmisc_1(u1_struct_0(A))) ) ) ).
+
+fof(d1_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,k1_numbers)
+             => k1_convex1(A,B,C) = a_3_0_convex1(A,B,C) ) ) ) ).
+
+fof(t17_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( B = a_3_1_convex1(A,C,D)
+                   => v1_convex1(B,A) ) ) ) ) ) ).
+
+fof(t18_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( B = a_3_2_convex1(A,C,D)
+                   => v1_convex1(B,A) ) ) ) ) ) ).
+
+fof(t19_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( B = a_3_3_convex1(A,C,D)
+                   => v1_convex1(B,A) ) ) ) ) ) ).
+
+fof(t20_convex1,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,k1_numbers)
+                 => ( B = a_3_4_convex1(A,C,D)
+                   => v1_convex1(B,A) ) ) ) ) ) ).
+
+fof(fraenkel_a_3_0_convex1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & l2_rlvect_1(B)
+        & m1_subset_1(C,k1_zfmisc_1(u1_struct_0(B)))
+        & m1_subset_1(D,k1_numbers) )
+     => ( r2_hidden(A,a_3_0_convex1(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(B))
+            & A = k3_rlvect_1(B,E,D)
+            & r2_hidden(E,C) ) ) ) ).
+
+fof(fraenkel_a_3_1_convex1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & v2_bhsp_1(B)
+        & l1_bhsp_1(B)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,k1_numbers) )
+     => ( r2_hidden(A,a_3_1_convex1(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(B))
+            & A = E
+            & r1_xreal_0(D,k1_bhsp_1(B,E,C)) ) ) ) ).
+
+fof(fraenkel_a_3_2_convex1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & v2_bhsp_1(B)
+        & l1_bhsp_1(B)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,k1_numbers) )
+     => ( r2_hidden(A,a_3_2_convex1(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(B))
+            & A = E
+            & ~ r1_xreal_0(k1_bhsp_1(B,E,C),D) ) ) ) ).
+
+fof(fraenkel_a_3_3_convex1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & v2_bhsp_1(B)
+        & l1_bhsp_1(B)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,k1_numbers) )
+     => ( r2_hidden(A,a_3_3_convex1(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(B))
+            & A = E
+            & r1_xreal_0(k1_bhsp_1(B,E,C),D) ) ) ) ).
+
+fof(fraenkel_a_3_4_convex1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v3_struct_0(B)
+        & v2_bhsp_1(B)
+        & l1_bhsp_1(B)
+        & m1_subset_1(C,u1_struct_0(B))
+        & m1_subset_1(D,k1_numbers) )
+     => ( r2_hidden(A,a_3_4_convex1(B,C,D))
+      <=> ? [E] :
+            ( m1_subset_1(E,u1_struct_0(B))
+            & A = E
+            & ~ r1_xreal_0(D,k1_bhsp_1(B,E,C)) ) ) ) ).
+
+%------------------------------------------------------------------------------

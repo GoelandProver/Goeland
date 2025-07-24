@@ -1,0 +1,937 @@
+%------------------------------------------------------------------------------
+% File     : SET007+167 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Introduction to Theory of Rearrangement
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : rearran1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   51 (   0 unt;   0 def)
+%            Number of atoms       :  617 (  87 equ)
+%            Maximal formula atoms :   20 (  12 avg)
+%            Number of connectives :  653 (  87   ~;   3   |; 336   &)
+%                                         (   6 <=>; 221  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   17 (  12 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   22 (  21 usr;   0 prp; 1-4 aty)
+%            Number of functors    :   39 (  39 usr;   5 con; 0-4 aty)
+%            Number of variables   :  199 ( 196   !;   3   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(rc1_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ? [B] :
+          ( m1_finseq_1(B,k1_zfmisc_1(A))
+          & v1_relat_1(B)
+          & v1_funct_1(B)
+          & v1_finset_1(B)
+          & v1_finseq_1(B)
+          & v1_rearran1(B)
+          & v2_rearran1(B)
+          & v3_rearran1(B,k1_zfmisc_1(A)) ) ) ).
+
+fof(d1_rearran1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ( v1_rearran1(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ( ( r1_xreal_0(np__1,B)
+                & r1_xreal_0(B,k3_finseq_1(A)) )
+             => ! [C] :
+                  ( v1_finset_1(C)
+                 => ( C = k1_funct_1(A,B)
+                   => k4_card_1(C) = B ) ) ) ) ) ) ).
+
+fof(d2_rearran1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ( v2_rearran1(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ( ( r1_xreal_0(np__1,B)
+                & r1_xreal_0(B,k5_real_1(k3_finseq_1(A),np__1)) )
+             => r1_tarski(k1_funct_1(A,B),k1_funct_1(A,k1_nat_1(B,np__1))) ) ) ) ) ).
+
+fof(d3_rearran1,axiom,
+    ! [A,B] :
+      ( m2_finseq_1(B,A)
+     => ( v3_rearran1(B,A)
+      <=> ? [C] :
+            ( v1_finset_1(C)
+            & C = k3_tarski(A)
+            & k3_finseq_1(B) = k4_card_1(C) ) ) ) ).
+
+fof(t1_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( m2_finseq_1(B,k1_zfmisc_1(A))
+         => ( v3_rearran1(B,k1_zfmisc_1(A))
+          <=> k3_finseq_1(B) = k4_card_1(A) ) ) ) ).
+
+fof(t2_rearran1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A)
+        & v1_finseq_1(A) )
+     => ( v2_rearran1(A)
+      <=> ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => ( ( r1_xreal_0(B,C)
+                    & r2_hidden(B,k4_finseq_1(A))
+                    & r2_hidden(C,k4_finseq_1(A)) )
+                 => r1_tarski(k1_funct_1(A,B),k1_funct_1(A,C)) ) ) ) ) ) ).
+
+fof(t3_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v1_rearran1(B)
+            & v3_rearran1(B,k1_zfmisc_1(A))
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => k1_funct_1(B,k3_finseq_1(B)) = A ) ) ).
+
+fof(t4_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v3_rearran1(B,k1_zfmisc_1(A))
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => k3_finseq_1(B) != np__0 ) ) ).
+
+fof(t5_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v1_rearran1(B)
+            & v2_rearran1(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ~ ( r2_hidden(C,k4_finseq_1(B))
+                      & r2_hidden(D,k4_finseq_1(B))
+                      & C != D
+                      & k1_funct_1(B,C) = k1_funct_1(B,D) ) ) ) ) ) ).
+
+fof(t6_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v1_rearran1(B)
+            & v2_rearran1(B)
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ~ ( r1_xreal_0(np__1,C)
+                  & r1_xreal_0(C,k5_real_1(k3_finseq_1(B),np__1))
+                  & k1_funct_1(B,C) = k1_funct_1(B,k1_nat_1(C,np__1)) ) ) ) ) ).
+
+fof(t7_rearran1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_rearran1(C)
+                & m2_finseq_1(C,k1_zfmisc_1(B)) )
+             => ~ ( r2_hidden(A,k4_finseq_1(C))
+                  & k1_funct_1(C,A) = k1_xboole_0 ) ) ) ) ).
+
+fof(t8_rearran1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_rearran1(C)
+                & m2_finseq_1(C,k1_zfmisc_1(B)) )
+             => ~ ( r1_xreal_0(np__1,A)
+                  & r1_xreal_0(A,k5_real_1(k3_finseq_1(C),np__1))
+                  & k4_xboole_0(k1_funct_1(C,k1_nat_1(A,np__1)),k1_funct_1(C,A)) = k1_xboole_0 ) ) ) ) ).
+
+fof(t9_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v1_rearran1(B)
+            & v3_rearran1(B,k1_zfmisc_1(A))
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ? [C] :
+              ( m1_subset_1(C,A)
+              & k1_funct_1(B,np__1) = k1_tarski(C) ) ) ) ).
+
+fof(t10_rearran1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_rearran1(C)
+                & v2_rearran1(C)
+                & m2_finseq_1(C,k1_zfmisc_1(B)) )
+             => ~ ( r1_xreal_0(np__1,A)
+                  & r1_xreal_0(A,k5_real_1(k3_finseq_1(C),np__1))
+                  & ! [D] :
+                      ( m1_subset_1(D,B)
+                     => ~ ( k4_xboole_0(k1_funct_1(C,k1_nat_1(A,np__1)),k1_funct_1(C,A)) = k1_tarski(D)
+                          & k1_funct_1(C,k1_nat_1(A,np__1)) = k2_xboole_0(k1_funct_1(C,A),k1_tarski(D))
+                          & k4_xboole_0(k1_funct_1(C,k1_nat_1(A,np__1)),k1_tarski(D)) = k1_funct_1(C,A) ) ) ) ) ) ) ).
+
+fof(d4_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v1_rearran1(B)
+            & v2_rearran1(B)
+            & v3_rearran1(B,k1_zfmisc_1(A))
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => ! [C] :
+              ( ( v1_rearran1(C)
+                & v2_rearran1(C)
+                & v3_rearran1(C,k1_zfmisc_1(A))
+                & m2_finseq_1(C,k1_zfmisc_1(A)) )
+             => ( C = k2_rearran1(A,B)
+              <=> ! [D] :
+                    ( m2_subset_1(D,k1_numbers,k5_numbers)
+                   => ( ( r1_xreal_0(np__1,D)
+                        & r1_xreal_0(D,k5_real_1(k3_finseq_1(C),np__1)) )
+                     => k1_funct_1(C,D) = k4_xboole_0(A,k1_funct_1(B,k5_real_1(k3_finseq_1(B),D))) ) ) ) ) ) ) ).
+
+fof(t11_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( v1_rearran1(B)
+            & v2_rearran1(B)
+            & v3_rearran1(B,k1_zfmisc_1(A))
+            & m2_finseq_1(B,k1_zfmisc_1(A)) )
+         => k2_rearran1(A,k2_rearran1(A,B)) = B ) ) ).
+
+fof(t12_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => k3_finseq_1(k2_rfinseq(k22_rfunct_3(A,C,A))) = k3_finseq_1(k16_rfunct_3(B,D)) ) ) ) ) ) ).
+
+fof(d5_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_rearran1(C)
+                & v2_rearran1(C)
+                & v3_rearran1(C,k1_zfmisc_1(B))
+                & m2_finseq_1(C,k1_zfmisc_1(B)) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k1_numbers) )
+                 => k3_rearran1(A,B,C,D) = k15_rfunct_3(B,k17_rfunct_3(B,k16_rfunct_3(B,C),k2_rfinseq(k22_rfunct_3(A,D,A)))) ) ) ) ) ).
+
+fof(d6_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_rearran1(C)
+                & v2_rearran1(C)
+                & v3_rearran1(C,k1_zfmisc_1(B))
+                & m2_finseq_1(C,k1_zfmisc_1(B)) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,A,k1_numbers) )
+                 => k4_rearran1(A,B,C,D) = k15_rfunct_3(B,k17_rfunct_3(B,k16_rfunct_3(B,k2_rearran1(B,C)),k2_rfinseq(k22_rfunct_3(A,D,A)))) ) ) ) ) ).
+
+fof(t13_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => k4_relset_1(B,k1_numbers,k3_rearran1(A,B,D,C)) = B ) ) ) ) ) ).
+
+fof(t14_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,A)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(A))
+                        & m2_finseq_1(E,k1_zfmisc_1(A)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(A) = k4_card_1(B) )
+                       => ( ( r2_hidden(C,k1_funct_1(E,np__1))
+                           => k18_rfunct_3(A,k17_rfunct_3(A,k16_rfunct_3(A,E),k2_rfinseq(k22_rfunct_3(B,D,B))),C) = k2_rfinseq(k22_rfunct_3(B,D,B)) )
+                          & ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => ( ( r1_xreal_0(np__1,F)
+                                  & r2_hidden(C,k4_xboole_0(k1_funct_1(E,k1_nat_1(F,np__1)),k1_funct_1(E,F))) )
+                               => ( r1_xreal_0(k3_finseq_1(E),F)
+                                  | k18_rfunct_3(A,k17_rfunct_3(A,k16_rfunct_3(A,E),k2_rfinseq(k22_rfunct_3(B,D,B))),C) = k8_finseq_1(k1_numbers,k4_finseqop(k1_numbers,F,np__0),k2_rfinseq(k1_rfinseq(k1_numbers,k22_rfunct_3(B,D,B),F))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t15_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,A)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(A))
+                        & m2_finseq_1(E,k1_zfmisc_1(A)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(A) = k4_card_1(B) )
+                       => ( ( r2_hidden(C,k1_funct_1(E,np__1))
+                           => k2_seq_1(A,k1_numbers,k3_rearran1(B,A,E,D),C) = k2_seq_1(k5_numbers,k1_numbers,k22_rfunct_3(B,D,B),np__1) )
+                          & ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => ( ( r1_xreal_0(np__1,F)
+                                  & r2_hidden(C,k4_xboole_0(k1_funct_1(E,k1_nat_1(F,np__1)),k1_funct_1(E,F))) )
+                               => ( r1_xreal_0(k3_finseq_1(E),F)
+                                  | k2_seq_1(A,k1_numbers,k3_rearran1(B,A,E,D),C) = k2_seq_1(k5_numbers,k1_numbers,k22_rfunct_3(B,D,B),k1_nat_1(F,np__1)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t16_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => k5_relset_1(B,k1_numbers,k3_rearran1(A,B,D,C)) = k5_relset_1(k5_numbers,k1_numbers,k22_rfunct_3(A,C,A)) ) ) ) ) ) ).
+
+fof(t17_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => r1_rfinseq(k3_rearran1(A,B,D,C),k22_rfunct_3(A,C,A)) ) ) ) ) ) ).
+
+fof(t18_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => k22_rfunct_3(B,k3_rearran1(A,B,D,C),B) = k22_rfunct_3(A,C,A) ) ) ) ) ) ).
+
+fof(t19_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => k24_rfunct_3(B,k3_rearran1(A,B,D,C),B) = k24_rfunct_3(A,C,A) ) ) ) ) ) ).
+
+fof(t20_rearran1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(C) = k4_card_1(B) )
+                       => ( k22_rfunct_3(C,k21_rfunct_3(C,k3_rearran1(B,C,E,D),A),C) = k22_rfunct_3(B,k21_rfunct_3(B,D,A),B)
+                          & k24_rfunct_3(C,k21_rfunct_3(C,k3_rearran1(B,C,E,D),A),C) = k24_rfunct_3(B,k21_rfunct_3(B,D,A),B) ) ) ) ) ) ) ) ).
+
+fof(t21_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => k4_relset_1(B,k1_numbers,k4_rearran1(A,B,D,C)) = B ) ) ) ) ) ).
+
+fof(t22_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( m1_subset_1(C,A)
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(A))
+                        & m2_finseq_1(E,k1_zfmisc_1(A)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(A) = k4_card_1(B) )
+                       => ( ( r2_hidden(C,k1_funct_1(k2_rearran1(A,E),np__1))
+                           => k2_seq_1(A,k1_numbers,k4_rearran1(B,A,E,D),C) = k2_seq_1(k5_numbers,k1_numbers,k22_rfunct_3(B,D,B),np__1) )
+                          & ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => ( ( r1_xreal_0(np__1,F)
+                                  & r2_hidden(C,k4_xboole_0(k1_funct_1(k2_rearran1(A,E),k1_nat_1(F,np__1)),k1_funct_1(k2_rearran1(A,E),F))) )
+                               => ( r1_xreal_0(k3_finseq_1(k2_rearran1(A,E)),F)
+                                  | k2_seq_1(A,k1_numbers,k4_rearran1(B,A,E,D),C) = k2_seq_1(k5_numbers,k1_numbers,k22_rfunct_3(B,D,B),k1_nat_1(F,np__1)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t23_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => k5_relset_1(B,k1_numbers,k4_rearran1(A,B,D,C)) = k5_relset_1(k5_numbers,k1_numbers,k22_rfunct_3(A,C,A)) ) ) ) ) ) ).
+
+fof(t24_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => r1_rfinseq(k4_rearran1(A,B,D,C),k22_rfunct_3(A,C,A)) ) ) ) ) ) ).
+
+fof(t25_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => k22_rfunct_3(B,k4_rearran1(A,B,D,C),B) = k22_rfunct_3(A,C,A) ) ) ) ) ) ).
+
+fof(t26_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => k24_rfunct_3(B,k4_rearran1(A,B,D,C),B) = k24_rfunct_3(A,C,A) ) ) ) ) ) ).
+
+fof(t27_rearran1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(C) = k4_card_1(B) )
+                       => ( k22_rfunct_3(C,k21_rfunct_3(C,k4_rearran1(B,C,E,D),A),C) = k22_rfunct_3(B,k21_rfunct_3(B,D,A),B)
+                          & k24_rfunct_3(C,k21_rfunct_3(C,k4_rearran1(B,C,E,D),A),C) = k24_rfunct_3(B,k21_rfunct_3(B,D,A),B) ) ) ) ) ) ) ) ).
+
+fof(t28_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(B) = k4_card_1(A) )
+                   => ( r1_rfinseq(k4_rearran1(A,B,D,C),k3_rearran1(A,B,D,C))
+                      & k22_rfunct_3(B,k4_rearran1(A,B,D,C),B) = k22_rfunct_3(B,k3_rearran1(A,B,D,C),B)
+                      & k24_rfunct_3(B,k4_rearran1(A,B,D,C),B) = k24_rfunct_3(B,k3_rearran1(A,B,D,C),B) ) ) ) ) ) ) ).
+
+fof(t29_rearran1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(C) = k4_card_1(B) )
+                       => ( r1_rfinseq(k19_rfunct_3(C,k21_rfunct_3(C,k3_rearran1(B,C,E,D),A)),k19_rfunct_3(B,k21_rfunct_3(B,D,A)))
+                          & k22_rfunct_3(C,k19_rfunct_3(C,k21_rfunct_3(C,k3_rearran1(B,C,E,D),A)),C) = k22_rfunct_3(B,k19_rfunct_3(B,k21_rfunct_3(B,D,A)),B)
+                          & k24_rfunct_3(C,k19_rfunct_3(C,k21_rfunct_3(C,k3_rearran1(B,C,E,D),A)),C) = k24_rfunct_3(B,k19_rfunct_3(B,k21_rfunct_3(B,D,A)),B) ) ) ) ) ) ) ) ).
+
+fof(t30_rearran1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(C) = k4_card_1(B) )
+                       => ( r1_rfinseq(k20_rfunct_3(C,k21_rfunct_3(C,k3_rearran1(B,C,E,D),A)),k20_rfunct_3(B,k21_rfunct_3(B,D,A)))
+                          & k22_rfunct_3(C,k20_rfunct_3(C,k21_rfunct_3(C,k3_rearran1(B,C,E,D),A)),C) = k22_rfunct_3(B,k20_rfunct_3(B,k21_rfunct_3(B,D,A)),B)
+                          & k24_rfunct_3(C,k20_rfunct_3(C,k21_rfunct_3(C,k3_rearran1(B,C,E,D),A)),C) = k24_rfunct_3(B,k20_rfunct_3(B,k21_rfunct_3(B,D,A)),B) ) ) ) ) ) ) ) ).
+
+fof(t31_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(A) = k4_card_1(B) )
+                   => ( k3_finseq_1(k22_rfunct_3(B,k3_rearran1(A,B,D,C),B)) = k4_card_1(B)
+                      & r1_xreal_0(np__1,k3_finseq_1(k22_rfunct_3(B,k3_rearran1(A,B,D,C),B))) ) ) ) ) ) ) ).
+
+fof(t32_rearran1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(B) = k4_card_1(C)
+                          & r2_hidden(A,k4_finseq_1(E)) )
+                       => k16_finseq_1(k1_numbers,k22_rfunct_3(C,k3_rearran1(B,C,E,D),C),A) = k22_rfunct_3(C,k3_rearran1(B,C,E,D),k1_funct_1(E,A)) ) ) ) ) ) ) ).
+
+fof(t33_rearran1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(B) = k4_card_1(C) )
+                       => k3_rearran1(B,C,E,k21_rfunct_3(B,D,A)) = k21_rfunct_3(C,k3_rearran1(B,C,E,D),A) ) ) ) ) ) ) ).
+
+fof(t34_rearran1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(C) = k4_card_1(B) )
+                       => ( r1_rfinseq(k19_rfunct_3(C,k21_rfunct_3(C,k4_rearran1(B,C,E,D),A)),k19_rfunct_3(B,k21_rfunct_3(B,D,A)))
+                          & k22_rfunct_3(C,k19_rfunct_3(C,k21_rfunct_3(C,k4_rearran1(B,C,E,D),A)),C) = k22_rfunct_3(B,k19_rfunct_3(B,k21_rfunct_3(B,D,A)),B)
+                          & k24_rfunct_3(C,k19_rfunct_3(C,k21_rfunct_3(C,k4_rearran1(B,C,E,D),A)),C) = k24_rfunct_3(B,k19_rfunct_3(B,k21_rfunct_3(B,D,A)),B) ) ) ) ) ) ) ) ).
+
+fof(t35_rearran1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(C) = k4_card_1(B) )
+                       => ( r1_rfinseq(k20_rfunct_3(C,k21_rfunct_3(C,k4_rearran1(B,C,E,D),A)),k20_rfunct_3(B,k21_rfunct_3(B,D,A)))
+                          & k22_rfunct_3(C,k20_rfunct_3(C,k21_rfunct_3(C,k4_rearran1(B,C,E,D),A)),C) = k22_rfunct_3(B,k20_rfunct_3(B,k21_rfunct_3(B,D,A)),B)
+                          & k24_rfunct_3(C,k20_rfunct_3(C,k21_rfunct_3(C,k4_rearran1(B,C,E,D),A)),C) = k24_rfunct_3(B,k20_rfunct_3(B,k21_rfunct_3(B,D,A)),B) ) ) ) ) ) ) ) ).
+
+fof(t36_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(A) = k4_card_1(B) )
+                   => ( k3_finseq_1(k22_rfunct_3(B,k4_rearran1(A,B,D,C),B)) = k4_card_1(B)
+                      & r1_xreal_0(np__1,k3_finseq_1(k22_rfunct_3(B,k4_rearran1(A,B,D,C),B))) ) ) ) ) ) ) ).
+
+fof(t37_rearran1,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(B) = k4_card_1(C)
+                          & r2_hidden(A,k4_finseq_1(E)) )
+                       => k16_finseq_1(k1_numbers,k22_rfunct_3(C,k4_rearran1(B,C,E,D),C),A) = k22_rfunct_3(C,k4_rearran1(B,C,E,D),k1_funct_1(k2_rearran1(C,E),A)) ) ) ) ) ) ) ).
+
+fof(t38_rearran1,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k1_numbers)
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( ~ v1_xboole_0(C)
+                & v1_finset_1(C) )
+             => ! [D] :
+                  ( ( v1_funct_1(D)
+                    & m2_relset_1(D,B,k1_numbers) )
+                 => ! [E] :
+                      ( ( v1_rearran1(E)
+                        & v2_rearran1(E)
+                        & v3_rearran1(E,k1_zfmisc_1(C))
+                        & m2_finseq_1(E,k1_zfmisc_1(C)) )
+                     => ( ( v1_partfun1(D,B,k1_numbers)
+                          & k4_card_1(B) = k4_card_1(C) )
+                       => k4_rearran1(B,C,E,k21_rfunct_3(B,D,A)) = k21_rfunct_3(C,k4_rearran1(B,C,E,D),A) ) ) ) ) ) ) ).
+
+fof(t39_rearran1,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A) )
+     => ! [B] :
+          ( ( ~ v1_xboole_0(B)
+            & v1_finset_1(B) )
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & m2_relset_1(C,A,k1_numbers) )
+             => ! [D] :
+                  ( ( v1_rearran1(D)
+                    & v2_rearran1(D)
+                    & v3_rearran1(D,k1_zfmisc_1(B))
+                    & m2_finseq_1(D,k1_zfmisc_1(B)) )
+                 => ( ( v1_partfun1(C,A,k1_numbers)
+                      & k4_card_1(A) = k4_card_1(B) )
+                   => ( r1_rfinseq(k3_rearran1(A,B,D,C),C)
+                      & r1_rfinseq(k4_rearran1(A,B,D,C),C)
+                      & k5_relset_1(B,k1_numbers,k3_rearran1(A,B,D,C)) = k5_relset_1(A,k1_numbers,C)
+                      & k5_relset_1(B,k1_numbers,k4_rearran1(A,B,D,C)) = k5_relset_1(A,k1_numbers,C) ) ) ) ) ) ) ).
+
+fof(dt_k1_rearran1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_membered(B)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,B)
+        & m1_subset_1(D,k1_numbers) )
+     => m2_rfunct_3(k1_rearran1(A,B,C,D),A,k1_numbers,k4_rfunct_3(A,k1_numbers)) ) ).
+
+fof(redefinition_k1_rearran1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v2_membered(B)
+        & v1_funct_1(C)
+        & m1_relset_1(C,A,B)
+        & m1_subset_1(D,k1_numbers) )
+     => k1_rearran1(A,B,C,D) = k12_seq_1(C,D) ) ).
+
+fof(dt_k2_rearran1,axiom,
+    ! [A,B] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & v1_rearran1(B)
+        & v2_rearran1(B)
+        & v3_rearran1(B,k1_zfmisc_1(A))
+        & m1_finseq_1(B,k1_zfmisc_1(A)) )
+     => ( v1_rearran1(k2_rearran1(A,B))
+        & v2_rearran1(k2_rearran1(A,B))
+        & v3_rearran1(k2_rearran1(A,B),k1_zfmisc_1(A))
+        & m2_finseq_1(k2_rearran1(A,B),k1_zfmisc_1(A)) ) ) ).
+
+fof(dt_k3_rearran1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & v1_rearran1(C)
+        & v2_rearran1(C)
+        & v3_rearran1(C,k1_zfmisc_1(B))
+        & m1_finseq_1(C,k1_zfmisc_1(B))
+        & v1_funct_1(D)
+        & m1_relset_1(D,A,k1_numbers) )
+     => ( v1_funct_1(k3_rearran1(A,B,C,D))
+        & m2_relset_1(k3_rearran1(A,B,C,D),B,k1_numbers) ) ) ).
+
+fof(dt_k4_rearran1,axiom,
+    ! [A,B,C,D] :
+      ( ( ~ v1_xboole_0(A)
+        & v1_finset_1(A)
+        & ~ v1_xboole_0(B)
+        & v1_finset_1(B)
+        & v1_rearran1(C)
+        & v2_rearran1(C)
+        & v3_rearran1(C,k1_zfmisc_1(B))
+        & m1_finseq_1(C,k1_zfmisc_1(B))
+        & v1_funct_1(D)
+        & m1_relset_1(D,A,k1_numbers) )
+     => ( v1_funct_1(k4_rearran1(A,B,C,D))
+        & m2_relset_1(k4_rearran1(A,B,C,D),B,k1_numbers) ) ) ).
+
+%------------------------------------------------------------------------------

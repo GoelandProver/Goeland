@@ -1,0 +1,656 @@
+%------------------------------------------------------------------------------
+% File     : SET007+286 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Fanoian, Pappian and Desarguesian Affine Spaces
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : papdesaf [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   50 (  15 unt;   0 def)
+%            Number of atoms       :  426 (  23 equ)
+%            Maximal formula atoms :   26 (   8 avg)
+%            Number of connectives :  468 (  92   ~;   8   |; 246   &)
+%                                         (  10 <=>; 112  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   26 (   8 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   33 (  31 usr;   1 prp; 0-5 aty)
+%            Number of functors    :   12 (  12 usr;   2 con; 0-3 aty)
+%            Number of variables   :   97 (  92   !;   5   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( ~ v3_struct_0(k2_diraf(A))
+        & ~ v3_realset2(k2_diraf(A))
+        & v1_analoaf(k2_diraf(A))
+        & v1_diraf(k2_diraf(A)) ) ) ).
+
+fof(fc2_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & v3_analoaf(A)
+        & l1_analoaf(A) )
+     => ( ~ v3_struct_0(k2_diraf(A))
+        & ~ v3_realset2(k2_diraf(A))
+        & v1_analoaf(k2_diraf(A))
+        & v1_diraf(k2_diraf(A))
+        & v2_diraf(k2_diraf(A)) ) ) ).
+
+fof(rc1_papdesaf,axiom,
+    ? [A] :
+      ( l1_analoaf(A)
+      & ~ v3_struct_0(A)
+      & ~ v3_realset2(A)
+      & v2_analoaf(A)
+      & v1_papdesaf(A)
+      & v2_papdesaf(A)
+      & v3_papdesaf(A)
+      & v4_papdesaf(A) ) ).
+
+fof(rc2_papdesaf,axiom,
+    ? [A] :
+      ( l1_analoaf(A)
+      & ~ v3_struct_0(A)
+      & ~ v3_realset2(A)
+      & v1_analoaf(A)
+      & v1_diraf(A)
+      & v2_diraf(A)
+      & v2_aff_2(A)
+      & v4_aff_2(A)
+      & v7_aff_2(A)
+      & v11_aff_2(A)
+      & v1_translac(A) ) ).
+
+fof(rc3_papdesaf,axiom,
+    ? [A] :
+      ( l1_analoaf(A)
+      & ~ v3_struct_0(A)
+      & ~ v3_realset2(A)
+      & v1_analoaf(A)
+      & v1_diraf(A)
+      & v2_aff_2(A)
+      & v4_aff_2(A)
+      & v7_aff_2(A)
+      & v11_aff_2(A)
+      & v1_translac(A) ) ).
+
+fof(fc3_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( ~ v3_struct_0(k2_diraf(A))
+        & ~ v3_realset2(k2_diraf(A))
+        & v1_analoaf(k2_diraf(A))
+        & v1_diraf(k2_diraf(A))
+        & v1_translac(k2_diraf(A)) ) ) ).
+
+fof(fc4_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & v1_papdesaf(A)
+        & l1_analoaf(A) )
+     => ( ~ v3_struct_0(k2_diraf(A))
+        & ~ v3_realset2(k2_diraf(A))
+        & v1_analoaf(k2_diraf(A))
+        & v1_diraf(k2_diraf(A))
+        & v2_aff_2(k2_diraf(A))
+        & v1_translac(k2_diraf(A)) ) ) ).
+
+fof(fc5_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & v2_papdesaf(A)
+        & l1_analoaf(A) )
+     => ( ~ v3_struct_0(k2_diraf(A))
+        & ~ v3_realset2(k2_diraf(A))
+        & v1_analoaf(k2_diraf(A))
+        & v1_diraf(k2_diraf(A))
+        & v4_aff_2(k2_diraf(A))
+        & v1_translac(k2_diraf(A)) ) ) ).
+
+fof(fc6_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & v3_papdesaf(A)
+        & l1_analoaf(A) )
+     => ( ~ v3_struct_0(k2_diraf(A))
+        & ~ v3_realset2(k2_diraf(A))
+        & v1_analoaf(k2_diraf(A))
+        & v1_diraf(k2_diraf(A))
+        & v7_aff_2(k2_diraf(A))
+        & v1_translac(k2_diraf(A)) ) ) ).
+
+fof(fc7_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & v4_papdesaf(A)
+        & l1_analoaf(A) )
+     => ( ~ v3_struct_0(k2_diraf(A))
+        & ~ v3_realset2(k2_diraf(A))
+        & v1_analoaf(k2_diraf(A))
+        & v1_diraf(k2_diraf(A))
+        & v11_aff_2(k2_diraf(A))
+        & v1_translac(k2_diraf(A)) ) ) ).
+
+fof(t1_papdesaf,axiom,
+    $true ).
+
+fof(t2_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ! [B] :
+          ( ( m1_subset_1(B,u1_struct_0(A))
+           => m1_subset_1(B,u1_struct_0(k2_diraf(A))) )
+          & ( m1_subset_1(B,u1_struct_0(k2_diraf(A)))
+           => m1_subset_1(B,u1_struct_0(A)) )
+          & ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+           => m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k2_diraf(A)))) )
+          & ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k2_diraf(A))))
+           => m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A))) ) ) ) ).
+
+fof(t3_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(k2_diraf(A)))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(k2_diraf(A)))
+                         => ! [G] :
+                              ( m1_subset_1(G,u1_struct_0(k2_diraf(A)))
+                             => ( ( B = E
+                                  & C = F
+                                  & D = G )
+                               => ( r3_diraf(A,B,C,D)
+                                <=> r1_aff_1(k2_diraf(A),E,F,G) ) ) ) ) ) ) ) ) ) ).
+
+fof(t4_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k2_analoaf(A)))
+        <=> m1_subset_1(B,u1_struct_0(A)) ) ) ).
+
+fof(t5_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v3_realset2(B)
+            & v2_analoaf(B)
+            & l1_analoaf(B) )
+         => ( B = k2_analoaf(A)
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(B))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(B))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(B))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(B))
+                           => ! [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(A))
+                                   => ! [I] :
+                                        ( m1_subset_1(I,u1_struct_0(A))
+                                       => ! [J] :
+                                            ( m1_subset_1(J,u1_struct_0(A))
+                                           => ( ( C = G
+                                                & D = H
+                                                & E = I
+                                                & F = J )
+                                             => ( r2_diraf(B,C,D,E,F)
+                                              <=> r1_geomtrap(A,G,H,I,J) ) ) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t6_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v3_realset2(B)
+            & v2_analoaf(B)
+            & l1_analoaf(B) )
+         => ~ ( B = k2_analoaf(A)
+              & ! [C] :
+                  ( m1_subset_1(C,u1_struct_0(A))
+                 => ! [D] :
+                      ( m1_subset_1(D,u1_struct_0(A))
+                     => ? [E] :
+                          ( m1_subset_1(E,k1_numbers)
+                          & ? [F] :
+                              ( m1_subset_1(F,k1_numbers)
+                              & k4_rlvect_1(A,k3_rlvect_1(A,C,E),k3_rlvect_1(A,D,F)) = k1_rlvect_1(A)
+                              & ~ ( E = np__0
+                                  & F = np__0 ) ) ) ) ) ) ) ) ).
+
+fof(d1_papdesaf,axiom,
+    $true ).
+
+fof(d2_papdesaf,axiom,
+    $true ).
+
+fof(d3_papdesaf,axiom,
+    $true ).
+
+fof(d4_papdesaf,axiom,
+    $true ).
+
+fof(d5_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v1_diraf(A)
+        & l1_analoaf(A) )
+     => ( v1_translac(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ( ( r2_analoaf(A,B,C,D,E)
+                            & r2_analoaf(A,B,D,C,E)
+                            & r2_analoaf(A,B,E,C,D) )
+                         => r2_analoaf(A,B,C,B,D) ) ) ) ) ) ) ) ).
+
+fof(d6_papdesaf,axiom,
+    $true ).
+
+fof(d7_papdesaf,axiom,
+    $true ).
+
+fof(d8_papdesaf,axiom,
+    $true ).
+
+fof(d9_papdesaf,axiom,
+    $true ).
+
+fof(d10_papdesaf,axiom,
+    $true ).
+
+fof(d11_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( v1_papdesaf(A)
+      <=> v2_aff_2(k2_diraf(A)) ) ) ).
+
+fof(d12_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( v2_papdesaf(A)
+      <=> v4_aff_2(k2_diraf(A)) ) ) ).
+
+fof(d13_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( v3_papdesaf(A)
+      <=> v7_aff_2(k2_diraf(A)) ) ) ).
+
+fof(d14_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( v4_papdesaf(A)
+      <=> v11_aff_2(k2_diraf(A)) ) ) ).
+
+fof(d15_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( v5_papdesaf(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ! [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(A))
+                                   => ( ( r2_analoaf(A,B,C,B,F)
+                                        & r2_analoaf(A,B,D,B,G)
+                                        & r2_analoaf(A,B,E,B,H)
+                                        & r2_analoaf(A,C,D,F,G)
+                                        & r2_analoaf(A,C,E,F,H) )
+                                     => ( r3_diraf(A,B,C,D)
+                                        | r3_diraf(A,B,C,E)
+                                        | r2_analoaf(A,D,E,G,H) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(d16_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( v6_papdesaf(A)
+      <=> ! [B] :
+            ( m1_subset_1(B,u1_struct_0(A))
+           => ! [C] :
+                ( m1_subset_1(C,u1_struct_0(A))
+               => ! [D] :
+                    ( m1_subset_1(D,u1_struct_0(A))
+                   => ! [E] :
+                        ( m1_subset_1(E,u1_struct_0(A))
+                       => ! [F] :
+                            ( m1_subset_1(F,u1_struct_0(A))
+                           => ! [G] :
+                                ( m1_subset_1(G,u1_struct_0(A))
+                               => ! [H] :
+                                    ( m1_subset_1(H,u1_struct_0(A))
+                                   => ( ( r2_analoaf(A,C,B,B,F)
+                                        & r2_analoaf(A,D,B,B,G)
+                                        & r2_analoaf(A,E,B,B,H)
+                                        & r2_analoaf(A,C,D,G,F)
+                                        & r2_analoaf(A,C,E,H,F) )
+                                     => ( r3_diraf(A,B,C,D)
+                                        | r3_diraf(A,B,C,E)
+                                        | r2_analoaf(A,D,E,H,G) ) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t7_papdesaf,axiom,
+    $true ).
+
+fof(t8_papdesaf,axiom,
+    $true ).
+
+fof(t9_papdesaf,axiom,
+    $true ).
+
+fof(t10_papdesaf,axiom,
+    $true ).
+
+fof(t11_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( v6_papdesaf(A)
+       => v5_papdesaf(A) ) ) ).
+
+fof(t12_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ( ( r2_analoaf(A,C,B,B,E)
+                              & r3_diraf(A,B,D,F)
+                              & r2_diraf(A,C,D,E,F) )
+                           => ( r3_diraf(A,B,C,D)
+                              | ( r2_analoaf(A,D,B,B,F)
+                                & r2_analoaf(A,C,D,F,E) ) ) ) ) ) ) ) ) ) ).
+
+fof(t13_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ( ( r2_analoaf(A,B,C,B,E)
+                              & r3_diraf(A,B,D,F)
+                              & r2_diraf(A,C,D,E,F) )
+                           => ( r3_diraf(A,B,C,D)
+                              | ( r2_analoaf(A,B,D,B,F)
+                                & r2_analoaf(A,C,D,E,F) ) ) ) ) ) ) ) ) ) ).
+
+fof(t14_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => ( v6_papdesaf(A)
+       => v4_aff_2(k2_diraf(A)) ) ) ).
+
+fof(t15_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(A))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(A))
+             => ! [D] :
+                  ( m1_subset_1(D,u1_struct_0(A))
+                 => ! [E] :
+                      ( m1_subset_1(E,u1_struct_0(A))
+                     => ! [F] :
+                          ( m1_subset_1(F,u1_struct_0(A))
+                         => ! [G] :
+                              ( m1_subset_1(G,k1_numbers)
+                             => ( ( k6_rlvect_1(A,B,C) = k3_rlvect_1(A,k6_rlvect_1(A,E,B),G)
+                                  & r1_geomtrap(A,B,D,B,F)
+                                  & r1_geomtrap(A,C,D,E,F) )
+                               => ( G = np__0
+                                  | r1_geomtrap(A,B,C,B,D)
+                                  | ( F = k4_rlvect_1(A,E,k3_rlvect_1(A,k6_rlvect_1(A,D,C),k2_real_1(k1_real_1(G))))
+                                    & F = k4_rlvect_1(A,B,k3_rlvect_1(A,k6_rlvect_1(A,D,B),k2_real_1(k1_real_1(G))))
+                                    & k6_rlvect_1(A,D,C) = k3_rlvect_1(A,k6_rlvect_1(A,F,E),k1_real_1(G)) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t16_papdesaf,axiom,
+    $true ).
+
+fof(t17_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v3_realset2(B)
+            & v2_analoaf(B)
+            & l1_analoaf(B) )
+         => ( B = k2_analoaf(A)
+           => v6_papdesaf(B) ) ) ) ).
+
+fof(t18_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v3_realset2(B)
+            & v2_analoaf(B)
+            & l1_analoaf(B) )
+         => ( B = k2_analoaf(A)
+           => ( v6_papdesaf(B)
+              & v5_papdesaf(B) ) ) ) ) ).
+
+fof(t19_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v3_realset2(B)
+            & v2_analoaf(B)
+            & l1_analoaf(B) )
+         => ( B = k2_analoaf(A)
+           => v2_aff_2(k2_diraf(B)) ) ) ) ).
+
+fof(t20_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v3_realset2(B)
+            & v2_analoaf(B)
+            & l1_analoaf(B) )
+         => ( B = k2_analoaf(A)
+           => v4_aff_2(k2_diraf(B)) ) ) ) ).
+
+fof(t21_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v1_diraf(A)
+        & l1_analoaf(A) )
+     => ( v4_aff_2(A)
+       => v7_aff_2(A) ) ) ).
+
+fof(t22_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v3_realset2(B)
+            & v2_analoaf(B)
+            & l1_analoaf(B) )
+         => ( B = k2_analoaf(A)
+           => v7_aff_2(k2_diraf(B)) ) ) ) ).
+
+fof(t23_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & l2_rlvect_1(A) )
+     => ! [B] :
+          ( ( ~ v3_struct_0(B)
+            & ~ v3_realset2(B)
+            & v2_analoaf(B)
+            & l1_analoaf(B) )
+         => ( B = k2_analoaf(A)
+           => v11_aff_2(k2_diraf(B)) ) ) ) ).
+
+fof(t24_papdesaf,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & ~ v3_realset2(A)
+        & v2_analoaf(A)
+        & l1_analoaf(A) )
+     => v1_translac(k2_diraf(A)) ) ).
+
+%------------------------------------------------------------------------------

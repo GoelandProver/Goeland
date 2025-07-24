@@ -1,0 +1,120 @@
+%------------------------------------------------------------------------------
+% File     : SET007+583 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : On the Components of the Complement of a Special Polygonal Curve
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : sprect_4 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    8 (   1 unt;   0 def)
+%            Number of atoms       :   55 (   5 equ)
+%            Maximal formula atoms :   10 (   6 avg)
+%            Number of connectives :   60 (  13   ~;   2   |;  25   &)
+%                                         (   0 <=>;  20  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   12 (   8 avg)
+%            Maximal term depth    :    8 (   2 avg)
+%            Number of predicates  :   23 (  21 usr;   1 prp; 0-5 aty)
+%            Number of functors    :   23 (  23 usr;   5 con; 0-4 aty)
+%            Number of variables   :   16 (  16   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(cc1_sprect_4,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v2_pre_topc(A)
+        & v3_compts_1(A)
+        & l1_pre_topc(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v6_compts_1(B,A)
+           => v4_pre_topc(B,A) ) ) ) ).
+
+fof(t1_sprect_4,axiom,
+    ! [A] :
+      ( ( v4_topreal1(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( ( v4_pre_topc(B,k15_euclid(np__2))
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+         => ~ ( ~ r1_xboole_0(k5_topreal1(np__2,A),B)
+              & ~ r2_hidden(k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,np__1),B)
+              & k5_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,k4_jordan3(A,k1_jordan5c(k5_topreal1(np__2,A),B,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,np__1),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,k3_finseq_1(A))))),B) != k1_struct_0(k15_euclid(np__2),k1_jordan5c(k5_topreal1(np__2,A),B,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,np__1),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,k3_finseq_1(A)))) ) ) ) ).
+
+fof(t2_sprect_4,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ( ( v4_topreal1(A)
+              & B = k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,k3_finseq_1(A)) )
+           => k5_topreal1(np__2,k3_jordan3(A,B)) = k1_xboole_0 ) ) ) ).
+
+fof(t3_sprect_4,axiom,
+    $true ).
+
+fof(t4_sprect_4,axiom,
+    ! [A] :
+      ( ( v4_topreal1(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ( ( r1_xreal_0(np__1,C)
+                  & r2_hidden(B,k5_topreal1(np__2,k1_jordan3(u1_struct_0(k15_euclid(np__2)),A,C,k3_finseq_1(A)))) )
+               => ( r1_xreal_0(k3_finseq_1(A),C)
+                  | r1_jordan5c(k5_topreal1(np__2,A),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,np__1),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,k3_finseq_1(A)),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,C),B) ) ) ) ) ) ).
+
+fof(t5_sprect_4,axiom,
+    ! [A] :
+      ( ( v4_topreal1(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( m1_subset_1(B,u1_struct_0(k15_euclid(np__2)))
+         => ! [C] :
+              ( m1_subset_1(C,u1_struct_0(k15_euclid(np__2)))
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ( ( r1_xreal_0(np__1,D)
+                      & r2_hidden(B,k4_topreal1(np__2,A,D))
+                      & r2_hidden(C,k3_topreal1(np__2,B,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,k1_nat_1(D,np__1)))) )
+                   => ( r1_xreal_0(k3_finseq_1(A),D)
+                      | r1_jordan5c(k5_topreal1(np__2,A),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,np__1),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,k3_finseq_1(A)),B,C) ) ) ) ) ) ) ).
+
+fof(t6_sprect_4,axiom,
+    ! [A] :
+      ( ( v4_topreal1(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => ! [B] :
+          ( ( v4_pre_topc(B,k15_euclid(np__2))
+            & m1_subset_1(B,k1_zfmisc_1(u1_struct_0(k15_euclid(np__2)))) )
+         => ~ ( ~ r1_xboole_0(k5_topreal1(np__2,A),B)
+              & ~ r2_hidden(k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,k3_finseq_1(A)),B)
+              & k5_subset_1(u1_struct_0(k15_euclid(np__2)),k5_topreal1(np__2,k3_jordan3(A,k2_jordan5c(k5_topreal1(np__2,A),B,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,np__1),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,k3_finseq_1(A))))),B) != k1_struct_0(k15_euclid(np__2),k2_jordan5c(k5_topreal1(np__2,A),B,k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,np__1),k4_finseq_4(k5_numbers,u1_struct_0(k15_euclid(np__2)),A,k3_finseq_1(A)))) ) ) ) ).
+
+fof(t7_sprect_4,axiom,
+    ! [A] :
+      ( ( ~ v1_xboole_0(A)
+        & ~ v5_seqm_3(A)
+        & v1_topreal1(A)
+        & v2_topreal1(A)
+        & v1_finseq_6(A,u1_struct_0(k15_euclid(np__2)))
+        & v1_goboard5(A)
+        & v2_goboard5(A)
+        & m2_finseq_1(A,u1_struct_0(k15_euclid(np__2))) )
+     => k2_goboard9(A) != k3_goboard9(A) ) ).
+
+%------------------------------------------------------------------------------

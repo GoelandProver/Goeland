@@ -1,0 +1,896 @@
+%------------------------------------------------------------------------------
+% File     : SET007+187 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Some Basic Properties of Many Sorted Sets
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : pzfmisc1 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   93 (   4 unt;   0 def)
+%            Number of atoms       :  453 (  14 equ)
+%            Maximal formula atoms :    9 (   4 avg)
+%            Number of connectives :  398 (  38   ~;  13   |;  66   &)
+%                                         (  13 <=>; 268  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   16 (   8 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   14 (  12 usr;   1 prp; 0-3 aty)
+%            Number of functors    :   16 (  16 usr;   1 con; 0-3 aty)
+%            Number of variables   :  317 ( 317   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(fc1_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ( v1_relat_1(k1_pzfmisc1(A,B))
+        & v2_relat_1(k1_pzfmisc1(A,B))
+        & v1_funct_1(k1_pzfmisc1(A,B))
+        & v1_pre_circ(k1_pzfmisc1(A,B),A) ) ) ).
+
+fof(fc2_pzfmisc1,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & m1_pboole(C,A) )
+     => ( v1_relat_1(k2_pzfmisc1(A,B,C))
+        & v2_relat_1(k2_pzfmisc1(A,B,C))
+        & v1_funct_1(k2_pzfmisc1(A,B,C))
+        & v1_pre_circ(k2_pzfmisc1(A,B,C),A) ) ) ).
+
+fof(t1_pzfmisc1,axiom,
+    ! [A,B,C,D] :
+      ( m1_pboole(D,A)
+     => ( r2_hidden(B,A)
+       => k1_relat_1(k1_funct_4(D,k3_cqc_lang(B,C))) = A ) ) ).
+
+fof(t2_pzfmisc1,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ( A = k1_xboole_0
+       => m1_pboole(A,k1_xboole_0) ) ) ).
+
+fof(t3_pzfmisc1,axiom,
+    ! [A] :
+      ( ~ v1_xboole_0(A)
+     => ! [B] :
+          ( m1_pboole(B,A)
+         => ~ ( v3_relat_1(B)
+              & v2_relat_1(B) ) ) ) ).
+
+fof(d1_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( C = k1_pzfmisc1(A,B)
+          <=> ! [D] :
+                ( r2_hidden(D,A)
+               => k1_funct_1(C,D) = k1_tarski(k1_funct_1(B,D)) ) ) ) ) ).
+
+fof(d2_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( D = k2_pzfmisc1(A,B,C)
+              <=> ! [E] :
+                    ( r2_hidden(E,A)
+                   => k1_funct_1(D,E) = k2_tarski(k1_funct_1(B,E),k1_funct_1(C,E)) ) ) ) ) ) ).
+
+fof(t4_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,B,k1_pzfmisc1(A,C))
+          <=> ! [D] :
+                ( m1_pboole(D,A)
+               => ( r1_pboole(A,D,B)
+                <=> r6_pboole(A,D,C) ) ) ) ) ) ).
+
+fof(t5_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( ! [E] :
+                    ( m1_pboole(E,A)
+                   => ( r1_pboole(A,E,B)
+                    <=> ( r6_pboole(A,E,C)
+                        | r6_pboole(A,E,D) ) ) )
+               => r6_pboole(A,B,k2_pzfmisc1(A,C,D)) ) ) ) ) ).
+
+fof(t6_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,B,k2_pzfmisc1(A,C,D))
+               => ! [E] :
+                    ( m1_pboole(E,A)
+                   => ( ( r6_pboole(A,E,C)
+                        | r6_pboole(A,E,D) )
+                     => r1_pboole(A,E,B) ) ) ) ) ) ) ).
+
+fof(t7_pzfmisc1,axiom,
+    $true ).
+
+fof(t8_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r1_pboole(A,B,k1_pzfmisc1(A,C))
+           => r6_pboole(A,B,C) ) ) ) ).
+
+fof(t9_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => r1_pboole(A,B,k1_pzfmisc1(A,B)) ) ).
+
+fof(t10_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( ( r6_pboole(A,B,C)
+                  | r6_pboole(A,B,D) )
+               => r1_pboole(A,B,k2_pzfmisc1(A,C,D)) ) ) ) ) ).
+
+fof(t11_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => r6_pboole(A,k2_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C)),k2_pzfmisc1(A,B,C)) ) ) ).
+
+fof(t12_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => r6_pboole(A,k2_pzfmisc1(A,B,B),k1_pzfmisc1(A,B)) ) ).
+
+fof(t13_pzfmisc1,axiom,
+    $true ).
+
+fof(t14_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r2_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C))
+           => r6_pboole(A,B,C) ) ) ) ).
+
+fof(t15_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C))
+           => r6_pboole(A,B,C) ) ) ) ).
+
+fof(t16_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k1_pzfmisc1(A,B),k2_pzfmisc1(A,C,D))
+               => ( r6_pboole(A,B,C)
+                  & r6_pboole(A,B,D) ) ) ) ) ) ).
+
+fof(t17_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k1_pzfmisc1(A,B),k2_pzfmisc1(A,C,D))
+               => r6_pboole(A,C,D) ) ) ) ) ).
+
+fof(t18_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r2_pboole(A,k1_pzfmisc1(A,B),k2_pzfmisc1(A,B,C))
+            & r2_pboole(A,k1_pzfmisc1(A,C),k2_pzfmisc1(A,B,C)) ) ) ) ).
+
+fof(t19_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( ( r6_pboole(A,k2_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C)),k1_pzfmisc1(A,B))
+              | r6_pboole(A,k2_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C)),k1_pzfmisc1(A,C)) )
+           => r6_pboole(A,B,C) ) ) ) ).
+
+fof(t20_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => r6_pboole(A,k2_pboole(A,k1_pzfmisc1(A,B),k2_pzfmisc1(A,B,C)),k2_pzfmisc1(A,B,C)) ) ) ).
+
+fof(t21_pzfmisc1,axiom,
+    $true ).
+
+fof(t22_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ~ ( ~ v1_xboole_0(A)
+              & r6_pboole(A,k3_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C)),k1_pboole(A))
+              & B = C ) ) ) ).
+
+fof(t23_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( ( r6_pboole(A,k3_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C)),k1_pzfmisc1(A,B))
+              | r6_pboole(A,k3_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C)),k1_pzfmisc1(A,C)) )
+           => r6_pboole(A,B,C) ) ) ) ).
+
+fof(t24_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,k3_pboole(A,k1_pzfmisc1(A,B),k2_pzfmisc1(A,B,C)),k1_pzfmisc1(A,B))
+            & r6_pboole(A,k3_pboole(A,k1_pzfmisc1(A,C),k2_pzfmisc1(A,B,C)),k1_pzfmisc1(A,C)) ) ) ) ).
+
+fof(t25_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ~ ( ~ v1_xboole_0(A)
+              & r6_pboole(A,k4_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C)),k1_pzfmisc1(A,B))
+              & B = C ) ) ) ).
+
+fof(t26_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,k4_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C)),k1_pboole(A))
+           => r6_pboole(A,B,C) ) ) ) ).
+
+fof(t27_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,k4_pboole(A,k1_pzfmisc1(A,B),k2_pzfmisc1(A,B,C)),k1_pboole(A))
+            & r6_pboole(A,k4_pboole(A,k1_pzfmisc1(A,C),k2_pzfmisc1(A,B,C)),k1_pboole(A)) ) ) ) ).
+
+fof(t28_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r2_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C))
+           => r6_pboole(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C)) ) ) ) ).
+
+fof(t29_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r2_pboole(A,k2_pzfmisc1(A,B,C),k1_pzfmisc1(A,D))
+               => ( r6_pboole(A,B,D)
+                  & r6_pboole(A,C,D) ) ) ) ) ) ).
+
+fof(t30_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r2_pboole(A,k2_pzfmisc1(A,B,C),k1_pzfmisc1(A,D))
+               => r6_pboole(A,k2_pzfmisc1(A,B,C),k1_pzfmisc1(A,D)) ) ) ) ) ).
+
+fof(t31_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => r6_pboole(A,k1_mboolean(A,k1_pzfmisc1(A,B)),k2_pzfmisc1(A,k1_pboole(A),k1_pzfmisc1(A,B))) ) ).
+
+fof(t32_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => r2_pboole(A,k1_pzfmisc1(A,B),k1_mboolean(A,B)) ) ).
+
+fof(t33_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => r6_pboole(A,k2_mboolean(A,k1_pzfmisc1(A,B)),B) ) ).
+
+fof(t34_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => r6_pboole(A,k2_mboolean(A,k2_pzfmisc1(A,k1_pzfmisc1(A,B),k1_pzfmisc1(A,C))),k2_pzfmisc1(A,B,C)) ) ) ).
+
+fof(t35_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => r6_pboole(A,k2_mboolean(A,k2_pzfmisc1(A,B,C)),k2_pboole(A,B,C)) ) ) ).
+
+fof(t36_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r2_pboole(A,k1_pzfmisc1(A,B),C)
+          <=> r1_pboole(A,B,C) ) ) ) ).
+
+fof(t37_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r2_pboole(A,k2_pzfmisc1(A,B,C),D)
+              <=> ( r1_pboole(A,B,D)
+                  & r1_pboole(A,C,D) ) ) ) ) ) ).
+
+fof(t38_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( ~ ( ~ r6_pboole(A,B,k1_pboole(A))
+                    & ~ r6_pboole(A,B,k1_pzfmisc1(A,C))
+                    & ~ r6_pboole(A,B,k1_pzfmisc1(A,D))
+                    & ~ r6_pboole(A,B,k2_pzfmisc1(A,C,D)) )
+               => r2_pboole(A,B,k2_pzfmisc1(A,C,D)) ) ) ) ) ).
+
+fof(t39_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( ( r1_pboole(A,B,C)
+                  | r6_pboole(A,B,D) )
+               => r1_pboole(A,B,k2_pboole(A,C,k1_pzfmisc1(A,D))) ) ) ) ) ).
+
+fof(t40_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r2_pboole(A,k2_pboole(A,B,k1_pzfmisc1(A,C)),D)
+              <=> ( r1_pboole(A,C,D)
+                  & r2_pboole(A,B,D) ) ) ) ) ) ).
+
+fof(t41_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,k2_pboole(A,k1_pzfmisc1(A,B),C),C)
+           => r1_pboole(A,B,C) ) ) ) ).
+
+fof(t42_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r1_pboole(A,B,C)
+           => r6_pboole(A,k2_pboole(A,k1_pzfmisc1(A,B),C),C) ) ) ) ).
+
+fof(t43_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k2_pboole(A,k2_pzfmisc1(A,B,C),D),D)
+              <=> ( r1_pboole(A,B,D)
+                  & r1_pboole(A,C,D) ) ) ) ) ) ).
+
+fof(t44_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ~ ( ~ v1_xboole_0(A)
+              & k2_pboole(A,k1_pzfmisc1(A,B),C) = k1_pboole(A) ) ) ) ).
+
+fof(t45_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ~ ( ~ v1_xboole_0(A)
+                  & k2_pboole(A,k2_pzfmisc1(A,B,C),D) = k1_pboole(A) ) ) ) ) ).
+
+fof(t46_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,k3_pboole(A,B,k1_pzfmisc1(A,C)),k1_pzfmisc1(A,C))
+           => r1_pboole(A,C,B) ) ) ) ).
+
+fof(t47_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r1_pboole(A,B,C)
+           => r6_pboole(A,k3_pboole(A,C,k1_pzfmisc1(A,B)),k1_pzfmisc1(A,B)) ) ) ) ).
+
+fof(t48_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( ( r1_pboole(A,B,C)
+                  & r1_pboole(A,D,C) )
+              <=> r6_pboole(A,k3_pboole(A,k2_pzfmisc1(A,B,D),C),k2_pzfmisc1(A,B,D)) ) ) ) ) ).
+
+fof(t49_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ~ ( ~ v1_xboole_0(A)
+              & r6_pboole(A,k3_pboole(A,k1_pzfmisc1(A,B),C),k1_pboole(A))
+              & r1_pboole(A,B,C) ) ) ) ).
+
+fof(t50_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k3_pboole(A,k2_pzfmisc1(A,B,C),D),k1_pboole(A))
+               => ( v1_xboole_0(A)
+                  | ( ~ r1_pboole(A,B,D)
+                    & ~ r1_pboole(A,C,D) ) ) ) ) ) ) ).
+
+fof(t51_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r1_pboole(A,B,k4_pboole(A,C,k1_pzfmisc1(A,D)))
+               => r1_pboole(A,B,C) ) ) ) ) ).
+
+fof(t52_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ~ ( ~ v1_xboole_0(A)
+                  & r1_pboole(A,B,k4_pboole(A,C,k1_pzfmisc1(A,D)))
+                  & B = D ) ) ) ) ).
+
+fof(t53_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ~ ( ~ v1_xboole_0(A)
+              & r6_pboole(A,k4_pboole(A,B,k1_pzfmisc1(A,C)),B)
+              & r1_pboole(A,C,B) ) ) ) ).
+
+fof(t54_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ~ ( ~ v1_xboole_0(A)
+              & r6_pboole(A,k4_pboole(A,k1_pzfmisc1(A,B),C),k1_pzfmisc1(A,B))
+              & r1_pboole(A,B,C) ) ) ) ).
+
+fof(t55_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,k4_pboole(A,k1_pzfmisc1(A,B),C),k1_pboole(A))
+          <=> r1_pboole(A,B,C) ) ) ) ).
+
+fof(t56_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ~ ( ~ v1_xboole_0(A)
+                  & r6_pboole(A,k4_pboole(A,k2_pzfmisc1(A,B,C),D),k1_pzfmisc1(A,B))
+                  & r1_pboole(A,B,D) ) ) ) ) ).
+
+fof(t57_pzfmisc1,axiom,
+    $true ).
+
+fof(t58_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k4_pboole(A,k2_pzfmisc1(A,B,C),D),k2_pzfmisc1(A,B,C))
+               => ( v1_xboole_0(A)
+                  | ( ~ r1_pboole(A,B,D)
+                    & ~ r1_pboole(A,C,D) ) ) ) ) ) ) ).
+
+fof(t59_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k4_pboole(A,k2_pzfmisc1(A,B,C),D),k1_pboole(A))
+              <=> ( r1_pboole(A,B,D)
+                  & r1_pboole(A,C,D) ) ) ) ) ) ).
+
+fof(t60_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( ~ ( ~ r6_pboole(A,B,k1_pboole(A))
+                    & ~ r6_pboole(A,B,k1_pzfmisc1(A,C))
+                    & ~ r6_pboole(A,B,k1_pzfmisc1(A,D))
+                    & ~ r6_pboole(A,B,k2_pzfmisc1(A,C,D)) )
+               => r6_pboole(A,k4_pboole(A,B,k2_pzfmisc1(A,C,D)),k1_pboole(A)) ) ) ) ) ).
+
+fof(t61_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( ( r6_pboole(A,B,k1_pboole(A))
+              | r6_pboole(A,C,k1_pboole(A)) )
+           => r6_pboole(A,k11_pboole(A,B,C),k1_pboole(A)) ) ) ) ).
+
+fof(t62_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( ( v2_relat_1(B)
+              & v2_relat_1(C)
+              & r6_pboole(A,k11_pboole(A,B,C),k11_pboole(A,C,B)) )
+           => r6_pboole(A,B,C) ) ) ) ).
+
+fof(t63_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,k11_pboole(A,B,B),k11_pboole(A,C,C))
+           => r6_pboole(A,B,C) ) ) ) ).
+
+fof(t64_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( v2_relat_1(B)
+               => ( ( ~ r2_pboole(A,k11_pboole(A,C,B),k11_pboole(A,D,B))
+                    & ~ r2_pboole(A,k11_pboole(A,B,C),k11_pboole(A,B,D)) )
+                  | r2_pboole(A,C,D) ) ) ) ) ) ).
+
+fof(t65_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r2_pboole(A,B,C)
+               => ( r2_pboole(A,k11_pboole(A,B,D),k11_pboole(A,C,D))
+                  & r2_pboole(A,k11_pboole(A,D,B),k11_pboole(A,D,C)) ) ) ) ) ) ).
+
+fof(t66_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => ( ( r2_pboole(A,B,C)
+                      & r2_pboole(A,D,E) )
+                   => r2_pboole(A,k11_pboole(A,B,D),k11_pboole(A,C,E)) ) ) ) ) ) ).
+
+fof(t67_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k11_pboole(A,k2_pboole(A,B,C),D),k2_pboole(A,k11_pboole(A,B,D),k11_pboole(A,C,D)))
+                & r6_pboole(A,k11_pboole(A,D,k2_pboole(A,B,C)),k2_pboole(A,k11_pboole(A,D,B),k11_pboole(A,D,C))) ) ) ) ) ).
+
+fof(t68_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => r6_pboole(A,k11_pboole(A,k2_pboole(A,B,C),k2_pboole(A,D,E)),k2_pboole(A,k2_pboole(A,k2_pboole(A,k11_pboole(A,B,D),k11_pboole(A,B,E)),k11_pboole(A,C,D)),k11_pboole(A,C,E))) ) ) ) ) ).
+
+fof(t69_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k11_pboole(A,k3_pboole(A,B,C),D),k3_pboole(A,k11_pboole(A,B,D),k11_pboole(A,C,D)))
+                & r6_pboole(A,k11_pboole(A,D,k3_pboole(A,B,C)),k3_pboole(A,k11_pboole(A,D,B),k11_pboole(A,D,C))) ) ) ) ) ).
+
+fof(t70_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => r6_pboole(A,k11_pboole(A,k3_pboole(A,B,C),k3_pboole(A,D,E)),k3_pboole(A,k11_pboole(A,B,D),k11_pboole(A,C,E))) ) ) ) ) ).
+
+fof(t71_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => ( ( r2_pboole(A,B,C)
+                      & r2_pboole(A,D,E) )
+                   => r6_pboole(A,k3_pboole(A,k11_pboole(A,B,E),k11_pboole(A,C,D)),k11_pboole(A,B,D)) ) ) ) ) ) ).
+
+fof(t72_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k11_pboole(A,k4_pboole(A,B,C),D),k4_pboole(A,k11_pboole(A,B,D),k11_pboole(A,C,D)))
+                & r6_pboole(A,k11_pboole(A,D,k4_pboole(A,B,C)),k4_pboole(A,k11_pboole(A,D,B),k11_pboole(A,D,C))) ) ) ) ) ).
+
+fof(t73_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => r6_pboole(A,k4_pboole(A,k11_pboole(A,B,C),k11_pboole(A,D,E)),k2_pboole(A,k11_pboole(A,k4_pboole(A,B,D),C),k11_pboole(A,B,k4_pboole(A,C,E)))) ) ) ) ) ).
+
+fof(t74_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => ( ( r6_pboole(A,k3_pboole(A,B,C),k1_pboole(A))
+                      | r6_pboole(A,k3_pboole(A,D,E),k1_pboole(A)) )
+                   => r6_pboole(A,k3_pboole(A,k11_pboole(A,B,D),k11_pboole(A,C,E)),k1_pboole(A)) ) ) ) ) ) ).
+
+fof(t75_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( v2_relat_1(B)
+           => ( v2_relat_1(k11_pboole(A,k1_pzfmisc1(A,C),B))
+              & v2_relat_1(k11_pboole(A,B,k1_pzfmisc1(A,C))) ) ) ) ) ).
+
+fof(t76_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ( r6_pboole(A,k11_pboole(A,k2_pzfmisc1(A,B,C),D),k2_pboole(A,k11_pboole(A,k1_pzfmisc1(A,B),D),k11_pboole(A,k1_pzfmisc1(A,C),D)))
+                & r6_pboole(A,k11_pboole(A,D,k2_pzfmisc1(A,B,C)),k2_pboole(A,k11_pboole(A,D,k1_pzfmisc1(A,B)),k11_pboole(A,D,k1_pzfmisc1(A,C)))) ) ) ) ) ).
+
+fof(t77_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => ( ( v2_relat_1(B)
+                      & v2_relat_1(C)
+                      & r6_pboole(A,k11_pboole(A,B,C),k11_pboole(A,D,E)) )
+                   => ( r6_pboole(A,B,D)
+                      & r6_pboole(A,C,E) ) ) ) ) ) ) ).
+
+fof(t78_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( ( r2_pboole(A,B,k11_pboole(A,B,C))
+              | r2_pboole(A,B,k11_pboole(A,C,B)) )
+           => r6_pboole(A,B,k1_pboole(A)) ) ) ) ).
+
+fof(t79_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => ! [F] :
+                      ( m1_pboole(F,A)
+                     => ( ( r1_pboole(A,B,k11_pboole(A,C,D))
+                          & r1_pboole(A,B,k11_pboole(A,E,F)) )
+                       => r1_pboole(A,B,k11_pboole(A,k3_pboole(A,C,E),k3_pboole(A,D,F))) ) ) ) ) ) ) ).
+
+fof(t80_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => ( ( r2_pboole(A,k11_pboole(A,B,C),k11_pboole(A,D,E))
+                      & v2_relat_1(k11_pboole(A,B,C)) )
+                   => ( r2_pboole(A,B,D)
+                      & r2_pboole(A,C,E) ) ) ) ) ) ) ).
+
+fof(t81_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r2_pboole(A,B,C)
+           => r2_pboole(A,k11_pboole(A,B,B),k11_pboole(A,C,C)) ) ) ) ).
+
+fof(t82_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r6_pboole(A,k3_pboole(A,B,C),k1_pboole(A))
+           => r6_pboole(A,k3_pboole(A,k11_pboole(A,B,C),k11_pboole(A,C,B)),k1_pboole(A)) ) ) ) ).
+
+fof(t83_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => ( v2_relat_1(B)
+                   => ( ( ~ r2_pboole(A,k11_pboole(A,B,C),k11_pboole(A,D,E))
+                        & ~ r2_pboole(A,k11_pboole(A,C,B),k11_pboole(A,E,D)) )
+                      | r2_pboole(A,C,E) ) ) ) ) ) ) ).
+
+fof(t84_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ! [D] :
+              ( m1_pboole(D,A)
+             => ! [E] :
+                  ( m1_pboole(E,A)
+                 => ! [F] :
+                      ( m1_pboole(F,A)
+                     => ! [G] :
+                          ( m1_pboole(G,A)
+                         => ( ( r2_pboole(A,B,k11_pboole(A,C,D))
+                              & r2_pboole(A,E,k11_pboole(A,F,G)) )
+                           => r2_pboole(A,k2_pboole(A,B,E),k11_pboole(A,k2_pboole(A,C,F),k2_pboole(A,D,G))) ) ) ) ) ) ) ) ).
+
+fof(d3_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => ! [C] :
+          ( m1_pboole(C,A)
+         => ( r1_pzfmisc1(A,B,C)
+          <=> ! [D] :
+                ( ( r2_hidden(D,A)
+                  & k1_funct_1(C,D) = k1_xboole_0 )
+               => k1_funct_1(B,D) = k1_xboole_0 ) ) ) ) ).
+
+fof(reflexivity_r1_pzfmisc1,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & m1_pboole(C,A) )
+     => r1_pzfmisc1(A,B,B) ) ).
+
+fof(dt_k1_pzfmisc1,axiom,
+    ! [A,B] :
+      ( m1_pboole(B,A)
+     => m1_pboole(k1_pzfmisc1(A,B),A) ) ).
+
+fof(dt_k2_pzfmisc1,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & m1_pboole(C,A) )
+     => m1_pboole(k2_pzfmisc1(A,B,C),A) ) ).
+
+fof(commutativity_k2_pzfmisc1,axiom,
+    ! [A,B,C] :
+      ( ( m1_pboole(B,A)
+        & m1_pboole(C,A) )
+     => k2_pzfmisc1(A,B,C) = k2_pzfmisc1(A,C,B) ) ).
+
+%------------------------------------------------------------------------------

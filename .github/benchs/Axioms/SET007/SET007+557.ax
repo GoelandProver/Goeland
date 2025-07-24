@@ -1,0 +1,869 @@
+%------------------------------------------------------------------------------
+% File     : SET007+557 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : Bubble Sort on SCMFSA
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : scmbsort [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   77 (  10 unt;   0 def)
+%            Number of atoms       :  492 ( 131 equ)
+%            Maximal formula atoms :   19 (   6 avg)
+%            Number of connectives :  486 (  71   ~;  12   |; 194   &)
+%                                         (   5 <=>; 204  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   26 (   8 avg)
+%            Maximal term depth    :   12 (   2 avg)
+%            Number of predicates  :   37 (  35 usr;   1 prp; 0-4 aty)
+%            Number of functors    :   98 (  98 usr;  23 con; 0-7 aty)
+%            Number of variables   :  206 ( 201   !;   5   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_scmbsort,axiom,
+    $true ).
+
+fof(t2_scmbsort,axiom,
+    $true ).
+
+fof(t3_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m1_scmfsa_2(B)
+         => ! [C] :
+              ( m1_scmfsa_2(C)
+             => ( r4_scmfsa7b(A,C)
+               => ( B = C
+                  | r4_scmfsa7b(k2_scmfsa8c(B,A),C) ) ) ) ) ) ).
+
+fof(t4_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C,D,E] : k1_funct_1(k1_funct_4(k1_funct_4(A,k3_cqc_lang(B,C)),k3_cqc_lang(E,D)),E) = D ) ).
+
+fof(t5_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C] : k1_funct_1(k1_funct_4(k1_funct_4(A,k3_cqc_lang(B,C)),k3_cqc_lang(C,B)),B) = C ) ).
+
+fof(t6_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B,C,D,E,F] :
+          ~ ( F != E
+            & F != B
+            & k1_funct_1(k1_funct_4(k1_funct_4(A,k3_cqc_lang(B,C)),k3_cqc_lang(E,D)),F) != k1_funct_1(A,F) ) ) ).
+
+fof(t7_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C,D] :
+              ( ( k1_funct_1(A,C) = k1_funct_1(B,D)
+                & k1_funct_1(A,D) = k1_funct_1(B,C)
+                & r2_hidden(C,k1_relat_1(A))
+                & r2_hidden(D,k1_relat_1(A))
+                & k1_relat_1(A) = k1_relat_1(B)
+                & ! [E] :
+                    ( r2_hidden(E,k1_relat_1(A))
+                   => ( E = C
+                      | E = D
+                      | k1_funct_1(A,E) = k1_funct_1(B,E) ) ) )
+             => r1_rfinseq(A,B) ) ) ) ).
+
+fof(t8_scmbsort,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( m1_scmfsa_2(C)
+             => ! [D] :
+                  ( m1_scmfsa_2(D)
+                 => k20_scmfsa_2(k4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k16_scmfsa_2(D,C,B),A),D) = k4_finseq_4(k5_numbers,k4_numbers,k21_scmfsa_2(A,B),k18_complex1(k20_scmfsa_2(A,C))) ) ) ) ) ).
+
+fof(t9_scmbsort,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( m1_scmfsa_2(C)
+             => ! [D] :
+                  ( m1_scmfsa_2(D)
+                 => k21_scmfsa_2(k4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k17_scmfsa_2(D,C,B),A),B) = k2_funct_7(k21_scmfsa_2(A,B),k18_complex1(k20_scmfsa_2(A,C)),k20_scmfsa_2(A,D)) ) ) ) ) ).
+
+fof(t10_scmbsort,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k1_numbers,k5_numbers)
+                 => ! [E] :
+                      ( m1_scmfsa_2(E)
+                     => ( C != k1_nat_1(D,np__1)
+                       => k20_scmfsa_2(k4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k16_scmfsa_2(k4_scmfsa_2(C),E,B),k1_scmfsa6c(A)),k4_scmfsa_2(k1_nat_1(D,np__1))) = k20_scmfsa_2(A,k4_scmfsa_2(k1_nat_1(D,np__1))) ) ) ) ) ) ) ).
+
+fof(t11_scmbsort,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m1_scmfsa_2(D)
+                 => ( B != k1_nat_1(C,np__1)
+                   => k20_scmfsa_2(k4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k8_scmfsa_2(k4_scmfsa_2(B),D),k1_scmfsa6c(A)),k4_scmfsa_2(k1_nat_1(C,np__1))) = k20_scmfsa_2(A,k4_scmfsa_2(k1_nat_1(C,np__1))) ) ) ) ) ) ).
+
+fof(t12_scmbsort,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( ( ~ v1_sf_mastr(C)
+                & m1_scmfsa_2(C) )
+             => ( k20_scmfsa_2(k3_scmfsa6b(k5_scmfsa_4,A),C) = k20_scmfsa_2(A,C)
+                & k21_scmfsa_2(k3_scmfsa6b(k5_scmfsa_4,A),B) = k21_scmfsa_2(A,B) ) ) ) ) ).
+
+fof(t13_scmbsort,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__10)
+          & A != np__0
+          & A != np__1
+          & A != np__2
+          & A != np__3
+          & A != np__4
+          & A != np__5
+          & A != np__6
+          & A != np__7
+          & A != np__8
+          & A != np__9
+          & A != np__10 ) ) ).
+
+fof(t14_scmbsort,axiom,
+    ! [A] :
+      ( v4_ordinal2(A)
+     => ~ ( r1_xreal_0(A,np__12)
+          & A != np__0
+          & A != np__1
+          & A != np__2
+          & A != np__3
+          & A != np__4
+          & A != np__5
+          & A != np__6
+          & A != np__7
+          & A != np__8
+          & A != np__9
+          & A != np__10
+          & A != np__11
+          & A != np__12 ) ) ).
+
+fof(t15_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_relat_1(A)
+        & v1_funct_1(A) )
+     => ! [B] :
+          ( ( v1_relat_1(B)
+            & v1_funct_1(B) )
+         => ! [C] :
+              ( ( k1_relat_1(A) = k1_relat_1(B)
+                & ! [D] :
+                    ( r2_hidden(D,C)
+                   => k1_funct_1(A,D) = k1_funct_1(B,D) ) )
+             => k7_relat_1(A,C) = k7_relat_1(B,C) ) ) ) ).
+
+fof(t16_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m2_subset_1(B,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+         => ! [C] :
+              ( m1_scmfsa_2(C)
+             => ! [D] :
+                  ( m1_scmfsa_2(D)
+                 => ( r2_hidden(B,k2_relat_1(A))
+                   => ( ( B != k8_scmfsa_2(C,D)
+                        & B != k9_scmfsa_2(C,D)
+                        & B != k10_scmfsa_2(C,D)
+                        & B != k11_scmfsa_2(C,D)
+                        & B != k12_scmfsa_2(C,D) )
+                      | ( r2_hidden(C,k2_sf_mastr(A))
+                        & r2_hidden(D,k2_sf_mastr(A)) ) ) ) ) ) ) ) ).
+
+fof(t17_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m2_subset_1(B,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+         => ! [C] :
+              ( m1_scmfsa_2(C)
+             => ! [D] :
+                  ( m1_struct_0(D,k1_scmfsa_2,u2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+                 => ( r2_hidden(B,k2_relat_1(A))
+                   => ( ( B != k14_scmfsa_2(D,C)
+                        & B != k15_scmfsa_2(D,C) )
+                      | r2_hidden(C,k2_sf_mastr(A)) ) ) ) ) ) ) ).
+
+fof(t18_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m2_subset_1(B,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+         => ! [C] :
+              ( m2_scmfsa_2(C)
+             => ! [D] :
+                  ( m1_scmfsa_2(D)
+                 => ! [E] :
+                      ( m1_scmfsa_2(E)
+                     => ( r2_hidden(B,k2_relat_1(A))
+                       => ( ( B != k16_scmfsa_2(D,E,C)
+                            & B != k17_scmfsa_2(D,E,C) )
+                          | ( r2_hidden(E,k2_sf_mastr(A))
+                            & r2_hidden(D,k2_sf_mastr(A)) ) ) ) ) ) ) ) ) ).
+
+fof(t19_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m2_subset_1(B,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+         => ! [C] :
+              ( m2_scmfsa_2(C)
+             => ! [D] :
+                  ( m1_scmfsa_2(D)
+                 => ! [E] :
+                      ( m1_scmfsa_2(E)
+                     => ( r2_hidden(B,k2_relat_1(A))
+                       => ( ( B != k16_scmfsa_2(D,E,C)
+                            & B != k17_scmfsa_2(D,E,C) )
+                          | r2_hidden(C,k4_sf_mastr(A)) ) ) ) ) ) ) ) ).
+
+fof(t20_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m2_subset_1(B,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+         => ! [C] :
+              ( m2_scmfsa_2(C)
+             => ! [D] :
+                  ( m1_scmfsa_2(D)
+                 => ( r2_hidden(B,k2_relat_1(A))
+                   => ( ( B != k18_scmfsa_2(D,C)
+                        & B != k19_scmfsa_2(D,C) )
+                      | r2_hidden(D,k2_sf_mastr(A)) ) ) ) ) ) ) ).
+
+fof(t21_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m2_subset_1(B,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+         => ! [C] :
+              ( m2_scmfsa_2(C)
+             => ! [D] :
+                  ( m1_scmfsa_2(D)
+                 => ( r2_hidden(B,k2_relat_1(A))
+                   => ( ( B != k18_scmfsa_2(D,C)
+                        & B != k19_scmfsa_2(D,C) )
+                      | r2_hidden(C,k4_sf_mastr(A)) ) ) ) ) ) ) ).
+
+fof(t22_scmbsort,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( v1_setfam_1(B)
+         => ! [C] :
+              ( ( ~ v3_struct_0(C)
+                & ~ v2_ami_1(C,B)
+                & v5_ami_1(C,B)
+                & v7_ami_1(C,B)
+                & v8_ami_1(C,B)
+                & l1_ami_1(C,B) )
+             => ! [D] :
+                  ( ( v1_ami_3(D,B,C)
+                    & m1_ami_1(D,B,C) )
+                 => ! [E] :
+                      ( m1_subset_1(E,k4_card_3(u5_ami_1(B,C)))
+                     => ! [F] :
+                          ( m1_subset_1(F,k4_card_3(u5_ami_1(B,C)))
+                         => ( ( r1_tarski(D,E)
+                              & r1_tarski(D,F) )
+                           => k7_relat_1(k11_ami_1(B,C,k10_ami_1(B,C,E),A),k1_relat_1(D)) = k7_relat_1(k11_ami_1(B,C,k10_ami_1(B,C,F),A),k1_relat_1(D)) ) ) ) ) ) ) ) ).
+
+fof(t23_scmbsort,axiom,
+    ! [A] :
+      ( m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => ! [C] :
+              ~ ( r1_tarski(k1_relat_1(A),k1_finsub_1(k1_zfmisc_1(u1_struct_0(k1_scmfsa_2)),k2_scmfsa_2,k3_scmfsa_2))
+                & r2_hidden(C,k2_xboole_0(k2_xboole_0(k1_relat_1(A),k4_sf_mastr(B)),k2_sf_mastr(B)))
+                & ~ m1_scmfsa_2(C)
+                & ~ m2_scmfsa_2(C) ) ) ) ).
+
+fof(t24_scmbsort,axiom,
+    $true ).
+
+fof(t25_scmbsort,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( m1_ami_1(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+             => ! [D] :
+                  ( ( v1_ami_3(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                    & v1_scmfsa_4(D)
+                    & m1_ami_1(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+                 => ! [E] :
+                      ( m1_subset_1(E,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+                     => ! [F] :
+                          ( m1_subset_1(F,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+                         => ( ( r1_xreal_0(B,A)
+                              & r1_tarski(D,E)
+                              & r1_tarski(D,F)
+                              & r1_tarski(k1_relat_1(C),k1_finsub_1(k1_zfmisc_1(u1_struct_0(k1_scmfsa_2)),k2_scmfsa_2,k3_scmfsa_2))
+                              & ! [G] :
+                                  ( m2_subset_1(G,k1_numbers,k5_numbers)
+                                 => ( r2_hidden(k6_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),G)),k1_relat_1(D))
+                                    & r2_hidden(k6_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,F),G)),k1_relat_1(D)) ) )
+                              & k1_funct_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),B),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)) = k1_funct_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,F),B),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+                              & k7_relat_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),B),k2_xboole_0(k2_xboole_0(k1_relat_1(C),k4_sf_mastr(D)),k2_sf_mastr(D))) = k7_relat_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,F),B),k2_xboole_0(k2_xboole_0(k1_relat_1(C),k4_sf_mastr(D)),k2_sf_mastr(D))) )
+                           => ( k1_funct_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),A),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)) = k1_funct_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,F),A),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+                              & k7_relat_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),A),k2_xboole_0(k2_xboole_0(k1_relat_1(C),k4_sf_mastr(D)),k2_sf_mastr(D))) = k7_relat_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,F),A),k2_xboole_0(k2_xboole_0(k1_relat_1(C),k4_sf_mastr(D)),k2_sf_mastr(D))) ) ) ) ) ) ) ) ) ).
+
+fof(t26_scmbsort,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ! [C] :
+              ( ( v1_ami_3(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                & v1_scmfsa_4(C)
+                & m1_ami_1(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+             => ! [D] :
+                  ( m1_subset_1(D,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+                 => ! [E] :
+                      ( m1_subset_1(E,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+                     => ( ( r1_xreal_0(B,A)
+                          & r1_tarski(C,D)
+                          & r1_tarski(C,E)
+                          & ! [F] :
+                              ( m2_subset_1(F,k1_numbers,k5_numbers)
+                             => ( r2_hidden(k6_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,D),F)),k1_relat_1(C))
+                                & r2_hidden(k6_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),F)),k1_relat_1(C)) ) )
+                          & k1_funct_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,D),B),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)) = k1_funct_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),B),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+                          & k7_relat_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,D),B),k2_xboole_0(k4_sf_mastr(C),k2_sf_mastr(C))) = k7_relat_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),B),k2_xboole_0(k4_sf_mastr(C),k2_sf_mastr(C))) )
+                       => ( k1_funct_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,D),A),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)) = k1_funct_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),A),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+                          & k7_relat_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,D),A),k2_xboole_0(k4_sf_mastr(C),k2_sf_mastr(C))) = k7_relat_1(k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,E),A),k2_xboole_0(k4_sf_mastr(C),k2_sf_mastr(C))) ) ) ) ) ) ) ) ).
+
+fof(t27_scmbsort,axiom,
+    $true ).
+
+fof(t28_scmbsort,axiom,
+    $true ).
+
+fof(t29_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => ! [C] :
+              ( m1_scmfsa_2(C)
+             => ( k2_sf_mastr(k1_scmfsa8b(C,A,B)) = k2_xboole_0(k2_xboole_0(k1_struct_0(k1_scmfsa_2,C),k2_sf_mastr(A)),k2_sf_mastr(B))
+                & k2_sf_mastr(k2_scmfsa8b(C,A,B)) = k2_xboole_0(k2_xboole_0(k1_struct_0(k1_scmfsa_2,C),k2_sf_mastr(A)),k2_sf_mastr(B)) ) ) ) ) ).
+
+fof(t30_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m1_struct_0(B,k1_scmfsa_2,u2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+         => k2_sf_mastr(k1_scmfsa8a(A,B)) = k2_sf_mastr(A) ) ) ).
+
+fof(t31_scmbsort,axiom,
+    ! [A] :
+      ( m1_scmfsa_2(A)
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => k2_sf_mastr(k2_scmfsa8c(A,B)) = k2_xboole_0(k2_sf_mastr(B),k2_struct_0(k1_scmfsa_2,A,k4_scmfsa_2(np__0))) ) ) ).
+
+fof(t32_scmbsort,axiom,
+    ! [A,B,C] : k2_xboole_0(k2_tarski(B,A),k2_tarski(C,A)) = k1_enumset1(A,B,C) ).
+
+fof(t33_scmbsort,axiom,
+    $true ).
+
+fof(t34_scmbsort,axiom,
+    $true ).
+
+fof(t35_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => ! [C] :
+              ( m1_scmfsa_2(C)
+             => ( k4_sf_mastr(k1_scmfsa8b(C,A,B)) = k1_finsub_1(k1_zfmisc_1(k3_scmfsa_2),k4_sf_mastr(A),k4_sf_mastr(B))
+                & k4_sf_mastr(k2_scmfsa8b(C,A,B)) = k1_finsub_1(k1_zfmisc_1(k3_scmfsa_2),k4_sf_mastr(A),k4_sf_mastr(B)) ) ) ) ) ).
+
+fof(t36_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m1_struct_0(B,k1_scmfsa_2,u2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+         => k4_sf_mastr(k1_scmfsa8a(A,B)) = k4_sf_mastr(A) ) ) ).
+
+fof(t37_scmbsort,axiom,
+    ! [A] :
+      ( m1_scmfsa_2(A)
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => k4_sf_mastr(k2_scmfsa8c(A,B)) = k4_sf_mastr(B) ) ) ).
+
+fof(t38_scmbsort,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k4_numbers)
+     => m2_finseq_1(A,k1_numbers) ) ).
+
+fof(t39_scmbsort,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k4_numbers)
+     => ? [B] :
+          ( m2_finseq_1(B,k1_numbers)
+          & r1_rfinseq(A,B)
+          & m2_finseq_1(B,k4_numbers)
+          & v1_rfinseq(B) ) ) ).
+
+fof(t40_scmbsort,axiom,
+    k1_relat_1(k1_funct_4(k3_cqc_lang(k4_scmfsa_2(np__0),np__1),k12_ami_3(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k5_scmfsa_2(np__0)))) = k2_struct_0(k1_scmfsa_2,k4_scmfsa_2(np__0),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)) ).
+
+fof(t41_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => k1_relat_1(k3_scmfsa6a(A)) = k2_xboole_0(k1_relat_1(A),k2_struct_0(k1_scmfsa_2,k4_scmfsa_2(np__0),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))) ) ).
+
+fof(t42_scmbsort,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k4_numbers)
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( ( v1_ami_3(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                & v1_scmfsa_4(C)
+                & m1_ami_1(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+             => k1_relat_1(k17_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k3_scmfsa6a(C),k1_scmbsort(B,A))) = k2_xboole_0(k1_relat_1(C),k1_enumset1(k4_scmfsa_2(np__0),k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),B)) ) ) ) ).
+
+fof(t43_scmbsort,axiom,
+    ! [A] :
+      ( m1_struct_0(A,k1_scmfsa_2,u2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+     => k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) != A ) ).
+
+fof(t44_scmbsort,axiom,
+    ! [A] :
+      ( m1_scmfsa_2(A)
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => k4_card_1(k2_scmfsa8c(A,B)) = k1_nat_1(k4_card_1(B),np__12) ) ) ).
+
+fof(t45_scmbsort,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+     => ! [B] :
+          ( m2_subset_1(B,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+         => ! [C] :
+              ( m2_subset_1(C,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+             => k4_card_1(k6_scmfsa6a(k7_scmfsa6a(A,B),C)) = np__6 ) ) ) ).
+
+fof(t46_scmbsort,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k4_numbers)
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( ( v1_ami_3(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                & v1_scmfsa_4(C)
+                & m1_ami_1(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+             => r1_xboole_0(k1_relat_1(k3_scmfsa6a(C)),k1_relat_1(k1_scmbsort(B,A))) ) ) ) ).
+
+fof(t47_scmbsort,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k4_numbers)
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( ( v1_ami_3(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                & v1_scmfsa_4(C)
+                & m1_ami_1(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+             => r3_ami_3(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k17_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k3_scmfsa6a(C),k1_scmbsort(B,A)),k5_scmfsa_2(np__0)) ) ) ) ).
+
+fof(t48_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+                 => ( D = k1_funct_1(B,k5_scmfsa_2(C))
+                   => ( r1_xreal_0(k4_card_1(B),C)
+                      | k1_funct_1(k4_scmfsa6a(A,B),k5_scmfsa_2(k1_nat_1(k4_card_1(A),C))) = k4_scmfsa_4(D,k4_card_1(A)) ) ) ) ) ) ) ).
+
+fof(t49_scmbsort,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( m1_scmfsa_2(C)
+             => ! [D] :
+                  ( m1_scmfsa_2(D)
+                 => ! [E] :
+                      ( m1_struct_0(E,k1_scmfsa_2,u2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+                     => ~ ( ~ ( A != k8_scmfsa_2(C,D)
+                              & A != k9_scmfsa_2(C,D)
+                              & A != k10_scmfsa_2(C,D)
+                              & A != k11_scmfsa_2(C,D)
+                              & A != k12_scmfsa_2(C,D)
+                              & A != k13_scmfsa_2(E)
+                              & A != k14_scmfsa_2(E,C)
+                              & A != k15_scmfsa_2(E,C)
+                              & A != k16_scmfsa_2(D,C,B)
+                              & A != k17_scmfsa_2(D,C,B)
+                              & A != k18_scmfsa_2(C,B)
+                              & A != k19_scmfsa_2(C,B) )
+                          & A = k5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) ) ) ) ) ) ) ).
+
+fof(t50_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => ! [C] :
+              ( m2_subset_1(C,k1_numbers,k5_numbers)
+             => ! [D] :
+                  ( m2_subset_1(D,k2_zfmisc_1(u3_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k13_finseq_1(k2_xboole_0(k3_tarski(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers))),u1_struct_0(k1_scmfsa_2)))),u4_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2))
+                 => ( ( ! [E] :
+                          ( m2_subset_1(E,k1_numbers,k5_numbers)
+                         => k4_scmfsa_4(D,E) = D )
+                      & C = k4_card_1(A) )
+                   => ( D = k5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                      | ( k1_funct_1(k4_scmfsa6a(k6_scmfsa6a(A,D),B),k5_scmfsa_2(C)) = D
+                        & k1_funct_1(k4_scmfsa6a(k6_scmfsa6a(A,D),B),k5_scmfsa_2(k1_nat_1(C,np__1))) = k13_scmfsa_2(k5_scmfsa_2(k1_nat_1(k4_card_1(A),np__2))) ) ) ) ) ) ) ) ).
+
+fof(t51_scmbsort,axiom,
+    ! [A] :
+      ( m1_scmfsa_2(A)
+     => ! [B] :
+          ( m1_scmfsa_2(B)
+         => ! [C] :
+              ( ( v1_ami_3(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                & v1_scmfsa_4(C)
+                & m1_ami_1(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+             => ! [D] :
+                  ( ( v1_ami_3(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                    & v1_scmfsa_4(D)
+                    & m1_ami_1(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( E = k4_card_1(C)
+                       => ( k1_funct_1(k4_scmfsa6a(k6_scmfsa6a(C,k8_scmfsa_2(A,B)),D),k5_scmfsa_2(E)) = k8_scmfsa_2(A,B)
+                          & k1_funct_1(k4_scmfsa6a(k6_scmfsa6a(C,k8_scmfsa_2(A,B)),D),k5_scmfsa_2(k1_nat_1(E,np__1))) = k13_scmfsa_2(k5_scmfsa_2(k1_nat_1(k4_card_1(C),np__2))) ) ) ) ) ) ) ) ).
+
+fof(t52_scmbsort,axiom,
+    ! [A] :
+      ( m2_scmfsa_2(A)
+     => ! [B] :
+          ( m1_scmfsa_2(B)
+         => ! [C] :
+              ( ( v1_ami_3(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                & v1_scmfsa_4(C)
+                & m1_ami_1(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+             => ! [D] :
+                  ( ( v1_ami_3(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                    & v1_scmfsa_4(D)
+                    & m1_ami_1(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+                 => ! [E] :
+                      ( m2_subset_1(E,k1_numbers,k5_numbers)
+                     => ( E = k4_card_1(C)
+                       => ( k1_funct_1(k4_scmfsa6a(k6_scmfsa6a(C,k18_scmfsa_2(B,A)),D),k5_scmfsa_2(E)) = k18_scmfsa_2(B,A)
+                          & k1_funct_1(k4_scmfsa6a(k6_scmfsa6a(C,k18_scmfsa_2(B,A)),D),k5_scmfsa_2(k1_nat_1(E,np__1))) = k13_scmfsa_2(k5_scmfsa_2(k1_nat_1(k4_card_1(C),np__2))) ) ) ) ) ) ) ) ).
+
+fof(t53_scmbsort,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k4_numbers)
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+             => ! [D] :
+                  ( ( v1_ami_3(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                    & v1_scmfsa_4(D)
+                    & m1_ami_1(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+                 => ( r1_tarski(k17_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k3_scmfsa6a(D),k1_scmbsort(B,A)),C)
+                   => r1_tarski(D,C) ) ) ) ) ) ).
+
+fof(t54_scmbsort,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k4_numbers)
+     => ! [B] :
+          ( m2_scmfsa_2(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+             => ! [D] :
+                  ( ( v1_ami_3(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+                    & v1_scmfsa_4(D)
+                    & m1_ami_1(D,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+                 => ( r1_tarski(k17_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k3_scmfsa6a(D),k1_scmbsort(B,A)),C)
+                   => ( k21_scmfsa_2(C,B) = A
+                      & k20_scmfsa_2(C,k4_scmfsa_2(np__0)) = np__1 ) ) ) ) ) ) ).
+
+fof(t55_scmbsort,axiom,
+    ! [A] :
+      ( m2_scmfsa_2(A)
+     => ! [B] :
+          ( m1_scmfsa_2(B)
+         => ! [C] :
+              ( m1_subset_1(C,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+             => r1_tarski(k1_enumset1(B,k2_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),A),k1_relat_1(C)) ) ) ) ).
+
+fof(t56_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ! [B] :
+          ( m1_subset_1(B,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+         => r1_tarski(k2_xboole_0(k4_sf_mastr(A),k2_sf_mastr(A)),k1_relat_1(B)) ) ) ).
+
+fof(t57_scmbsort,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => ! [C] :
+              ( m2_scmfsa_2(C)
+             => k21_scmfsa_2(k12_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k8_ami_5(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,A,k3_scmfsa6a(B))),C) = k21_scmfsa_2(k3_scmfsa6b(B,A),C) ) ) ) ).
+
+fof(d1_scmbsort,axiom,
+    ! [A] :
+      ( m2_scmfsa_2(A)
+     => ! [B] :
+          ( ( v1_ami_3(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+            & v1_scmfsa_4(B)
+            & m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+         => ( B = k2_scmbsort(A)
+          <=> B = k4_scmfsa6a(k6_scmfsa6a(k6_scmfsa6a(k6_scmfsa6a(k6_scmfsa6a(k7_scmfsa6a(k8_scmfsa_2(k4_scmfsa_2(np__2),k4_scmfsa_2(np__0)),k8_scmfsa_2(k4_scmfsa_2(np__3),k4_scmfsa_2(np__0))),k8_scmfsa_2(k4_scmfsa_2(np__4),k4_scmfsa_2(np__0))),k8_scmfsa_2(k4_scmfsa_2(np__5),k4_scmfsa_2(np__0))),k8_scmfsa_2(k4_scmfsa_2(np__6),k4_scmfsa_2(np__0))),k18_scmfsa_2(k4_scmfsa_2(np__1),A)),k2_scmfsa8c(k4_scmfsa_2(np__1),k4_scmfsa6a(k6_scmfsa6a(k7_scmfsa6a(k8_scmfsa_2(k4_scmfsa_2(np__2),k4_scmfsa_2(np__1)),k10_scmfsa_2(k4_scmfsa_2(np__2),k4_scmfsa_2(np__0))),k18_scmfsa_2(k4_scmfsa_2(np__3),A)),k2_scmfsa8c(k4_scmfsa_2(np__2),k4_scmfsa6a(k6_scmfsa6a(k6_scmfsa6a(k6_scmfsa6a(k7_scmfsa6a(k8_scmfsa_2(k4_scmfsa_2(np__4),k4_scmfsa_2(np__3)),k10_scmfsa_2(k4_scmfsa_2(np__3),k4_scmfsa_2(np__0))),k16_scmfsa_2(k4_scmfsa_2(np__5),k4_scmfsa_2(np__3),A)),k16_scmfsa_2(k4_scmfsa_2(np__6),k4_scmfsa_2(np__4),A)),k10_scmfsa_2(k4_scmfsa_2(np__6),k4_scmfsa_2(np__5))),k2_scmfsa8b(k4_scmfsa_2(np__6),k6_scmfsa6a(k7_scmfsa6a(k16_scmfsa_2(k4_scmfsa_2(np__6),k4_scmfsa_2(np__4),A),k17_scmfsa_2(k4_scmfsa_2(np__6),k4_scmfsa_2(np__3),A)),k17_scmfsa_2(k4_scmfsa_2(np__5),k4_scmfsa_2(np__4),A)),k5_scmfsa_4)))))) ) ) ) ).
+
+fof(d2_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_ami_3(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(A)
+        & m1_ami_1(A,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) )
+     => ( A = k3_scmbsort
+      <=> A = k2_scmbsort(k6_scmfsa_2(np__0)) ) ) ).
+
+fof(t58_scmbsort,axiom,
+    ! [A] :
+      ( m2_scmfsa_2(A)
+     => k2_sf_mastr(k2_scmbsort(A)) = k5_enumset1(k4_scmfsa_2(np__0),k4_scmfsa_2(np__1),k4_scmfsa_2(np__2),k4_scmfsa_2(np__3),k4_scmfsa_2(np__4),k4_scmfsa_2(np__5),k4_scmfsa_2(np__6)) ) ).
+
+fof(t59_scmbsort,axiom,
+    ! [A] :
+      ( m2_scmfsa_2(A)
+     => k4_sf_mastr(k2_scmbsort(A)) = k1_struct_0(k1_scmfsa_2,A) ) ).
+
+fof(d3_scmbsort,axiom,
+    ! [A] :
+      ( ( v1_funct_1(A)
+        & m2_relset_1(A,k14_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k14_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)) )
+     => ( A = k4_scmbsort
+      <=> ! [B] :
+            ( m1_ami_1(B,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+           => ! [C] :
+                ( m1_ami_1(C,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+               => ( r2_hidden(k4_tarski(B,C),A)
+                <=> ? [D] :
+                      ( m2_finseq_1(D,k4_numbers)
+                      & ? [E] :
+                          ( m2_finseq_1(E,k1_numbers)
+                          & r1_rfinseq(D,E)
+                          & m2_finseq_1(E,k4_numbers)
+                          & v1_rfinseq(E)
+                          & B = k1_scmbsort(k6_scmfsa_2(np__0),D)
+                          & C = k3_cqc_lang(k6_scmfsa_2(np__0),E) ) ) ) ) ) ) ) ).
+
+fof(t60_scmbsort,axiom,
+    ! [A] :
+      ( r2_hidden(A,k1_relat_1(k4_scmbsort))
+    <=> ? [B] :
+          ( m2_finseq_1(B,k4_numbers)
+          & A = k1_scmbsort(k6_scmfsa_2(np__0),B) ) ) ).
+
+fof(t61_scmbsort,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k4_numbers)
+     => ? [B] :
+          ( m2_finseq_1(B,k1_numbers)
+          & r1_rfinseq(A,B)
+          & v1_rfinseq(B)
+          & m2_finseq_1(B,k4_numbers)
+          & k1_funct_1(k4_scmbsort,k1_scmbsort(k6_scmfsa_2(np__0),A)) = k3_cqc_lang(k6_scmfsa_2(np__0),B) ) ) ).
+
+fof(t62_scmbsort,axiom,
+    ! [A] :
+      ( m2_scmfsa_2(A)
+     => k4_card_1(k2_scmbsort(A)) = np__63 ) ).
+
+fof(t63_scmbsort,axiom,
+    ! [A] :
+      ( m2_scmfsa_2(A)
+     => ! [B] :
+          ( m2_subset_1(B,k1_numbers,k5_numbers)
+         => ( ~ r1_xreal_0(np__63,B)
+           => r2_hidden(k5_scmfsa_2(B),k1_relat_1(k2_scmbsort(A))) ) ) ) ).
+
+fof(t64_scmbsort,axiom,
+    ( v3_scm_halt(k2_scmbsort(k6_scmfsa_2(np__0)))
+    & v2_scm_halt(k2_scmbsort(k6_scmfsa_2(np__0))) ) ).
+
+fof(t65_scmbsort,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+     => ( r1_rfinseq(k21_scmfsa_2(A,k6_scmfsa_2(np__0)),k21_scmfsa_2(k3_scmfsa6b(k2_scmbsort(k6_scmfsa_2(np__0)),A),k6_scmfsa_2(np__0)))
+        & ! [B] :
+            ( m2_subset_1(B,k1_numbers,k5_numbers)
+           => ! [C] :
+                ( m2_subset_1(C,k1_numbers,k5_numbers)
+               => ( ( r1_xreal_0(np__1,B)
+                    & r1_xreal_0(C,k3_finseq_1(k21_scmfsa_2(A,k6_scmfsa_2(np__0)))) )
+                 => ( r1_xreal_0(C,B)
+                    | ! [D] :
+                        ( v1_int_1(D)
+                       => ! [E] :
+                            ( v1_int_1(E)
+                           => ( ( D = k2_seq_1(k5_numbers,k4_numbers,k21_scmfsa_2(k3_scmfsa6b(k2_scmbsort(k6_scmfsa_2(np__0)),A),k6_scmfsa_2(np__0)),B)
+                                & E = k2_seq_1(k5_numbers,k4_numbers,k21_scmfsa_2(k3_scmfsa6b(k2_scmbsort(k6_scmfsa_2(np__0)),A),k6_scmfsa_2(np__0)),C) )
+                             => r1_xreal_0(E,D) ) ) ) ) ) ) ) ) ) ).
+
+fof(t66_scmbsort,axiom,
+    ! [A] :
+      ( m2_subset_1(A,k1_numbers,k5_numbers)
+     => ! [B] :
+          ( m1_subset_1(B,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+         => ! [C] :
+              ( m2_finseq_1(C,k4_numbers)
+             => ( r1_tarski(k17_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k3_scmfsa6a(k3_scmbsort),k1_scmbsort(k6_scmfsa_2(np__0),C)),B)
+               => r2_hidden(k6_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k11_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k10_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,B),A)),k1_relat_1(k3_scmbsort)) ) ) ) ) ).
+
+fof(t67_scmbsort,axiom,
+    ! [A] :
+      ( m1_subset_1(A,k4_card_3(u5_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)))
+     => ! [B] :
+          ( m2_finseq_1(B,k4_numbers)
+         => ~ ( r1_tarski(k17_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k3_scmfsa6a(k3_scmbsort),k1_scmbsort(k6_scmfsa_2(np__0),B)),A)
+              & ! [C] :
+                  ( m2_finseq_1(C,k1_numbers)
+                 => ~ ( r1_rfinseq(B,C)
+                      & v1_rfinseq(C)
+                      & m2_finseq_1(C,k4_numbers)
+                      & k21_scmfsa_2(k12_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,A),k6_scmfsa_2(np__0)) = C ) ) ) ) ) ).
+
+fof(t68_scmbsort,axiom,
+    ! [A] :
+      ( m2_finseq_1(A,k4_numbers)
+     => v11_ami_1(k17_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k3_scmfsa6a(k3_scmbsort),k1_scmbsort(k6_scmfsa_2(np__0),A)),k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) ) ).
+
+fof(t69_scmbsort,axiom,
+    r1_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2,k3_scmfsa6a(k3_scmbsort),k4_scmbsort) ).
+
+fof(dt_k1_scmbsort,axiom,
+    ! [A,B] :
+      ( ( m2_scmfsa_2(A)
+        & m1_finseq_1(B,k4_numbers) )
+     => m1_ami_1(k1_scmbsort(A,B),k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) ) ).
+
+fof(redefinition_k1_scmbsort,axiom,
+    ! [A,B] :
+      ( ( m2_scmfsa_2(A)
+        & m1_finseq_1(B,k4_numbers) )
+     => k1_scmbsort(A,B) = k3_cqc_lang(A,B) ) ).
+
+fof(dt_k2_scmbsort,axiom,
+    ! [A] :
+      ( m2_scmfsa_2(A)
+     => ( v1_ami_3(k2_scmbsort(A),k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+        & v1_scmfsa_4(k2_scmbsort(A))
+        & m1_ami_1(k2_scmbsort(A),k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) ) ) ).
+
+fof(dt_k3_scmbsort,axiom,
+    ( v1_ami_3(k3_scmbsort,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)
+    & v1_scmfsa_4(k3_scmbsort)
+    & m1_ami_1(k3_scmbsort,k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2) ) ).
+
+fof(dt_k4_scmbsort,axiom,
+    ( v1_funct_1(k4_scmbsort)
+    & m2_relset_1(k4_scmbsort,k14_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2),k14_ami_1(k2_tarski(k4_numbers,k3_finseq_2(k4_numbers)),k1_scmfsa_2)) ) ).
+
+%------------------------------------------------------------------------------

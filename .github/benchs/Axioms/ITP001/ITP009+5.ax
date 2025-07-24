@@ -1,0 +1,123 @@
+%------------------------------------------------------------------------------
+% File     : ITP009+5 : TPTP v8.1.2. Bugfixed v7.5.0.
+% Domain   : Interactive Theorem Proving
+% Axioms   : HOL4 set theory export, chainy mode
+% Version  : [BG+19] axioms.
+% English  :
+
+% Refs     : [BG+19] Brown et al. (2019), GRUNGE: A Grand Unified ATP Chall
+%          : [Gau20] Gauthier (2020), Email to Geoff Sutcliffe
+% Source   : [BG+19]
+% Names    : num+2.ax [Gau20]
+%          : HL4009+5.ax [TPAP]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   18 (   9 unt;   0 def)
+%            Number of atoms       :   43 (   8 equ)
+%            Maximal formula atoms :    8 (   2 avg)
+%            Number of connectives :   28 (   3   ~;   0   |;   5   &)
+%                                         (   2 <=>;  18  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   11 (   3 avg)
+%            Maximal term depth    :    4 (   1 avg)
+%            Number of predicates  :    4 (   3 usr;   0 prp; 1-2 aty)
+%            Number of functors    :   15 (  15 usr;  10 con; 0-2 aty)
+%            Number of variables   :   14 (  13   !;   1   ?)
+% SPC      : FOF_SAT_RFO_SEQ
+
+% Comments :
+% Bugfixes : v7.5.0 - Fixes to the axioms.
+%------------------------------------------------------------------------------
+fof(ne_ty_2Enum_2Enum,axiom,
+    ne(ty_2Enum_2Enum) ).
+
+fof(mem_c_2Enum_2E0,axiom,
+    mem(c_2Enum_2E0,ty_2Enum_2Enum) ).
+
+fof(mem_c_2Enum_2EABS__num,axiom,
+    mem(c_2Enum_2EABS__num,arr(ind,ty_2Enum_2Enum)) ).
+
+fof(mem_c_2Enum_2EIS__NUM__REP,axiom,
+    mem(c_2Enum_2EIS__NUM__REP,arr(ind,bool)) ).
+
+fof(mem_c_2Enum_2EREP__num,axiom,
+    mem(c_2Enum_2EREP__num,arr(ty_2Enum_2Enum,ind)) ).
+
+fof(mem_c_2Enum_2ESUC,axiom,
+    mem(c_2Enum_2ESUC,arr(ty_2Enum_2Enum,ty_2Enum_2Enum)) ).
+
+fof(mem_c_2Enum_2ESUC__REP,axiom,
+    mem(c_2Enum_2ESUC__REP,arr(ind,ind)) ).
+
+fof(mem_c_2Enum_2EZERO__REP,axiom,
+    mem(c_2Enum_2EZERO__REP,ind) ).
+
+fof(ax_thm_2Enum_2ESUC__REP__DEF,axiom,
+    ( p(ap(c_2Ebool_2EONE__ONE(ind,ind),c_2Enum_2ESUC__REP))
+    & ~ p(ap(c_2Ebool_2EONTO(ind,ind),c_2Enum_2ESUC__REP)) ) ).
+
+fof(ax_thm_2Enum_2EZERO__REP__DEF,axiom,
+    ! [V0y] :
+      ( mem(V0y,ind)
+     => c_2Enum_2EZERO__REP != ap(c_2Enum_2ESUC__REP,V0y) ) ).
+
+fof(ax_thm_2Enum_2EIS__NUM__REP,axiom,
+    ! [V0m] :
+      ( mem(V0m,ind)
+     => ( p(ap(c_2Enum_2EIS__NUM__REP,V0m))
+      <=> ! [V1P] :
+            ( mem(V1P,arr(ind,bool))
+           => ( ( p(ap(V1P,c_2Enum_2EZERO__REP))
+                & ! [V2n] :
+                    ( mem(V2n,ind)
+                   => ( p(ap(V1P,V2n))
+                     => p(ap(V1P,ap(c_2Enum_2ESUC__REP,V2n))) ) ) )
+             => p(ap(V1P,V0m)) ) ) ) ) ).
+
+fof(ax_thm_2Enum_2Enum__TY__DEF,axiom,
+    ? [V0rep] :
+      ( mem(V0rep,arr(ty_2Enum_2Enum,ind))
+      & p(ap(ap(c_2Ebool_2ETYPE__DEFINITION(ind,ty_2Enum_2Enum),c_2Enum_2EIS__NUM__REP),V0rep)) ) ).
+
+fof(ax_thm_2Enum_2Enum__ISO__DEF,axiom,
+    ( ! [V0a] :
+        ( mem(V0a,ty_2Enum_2Enum)
+       => ap(c_2Enum_2EABS__num,ap(c_2Enum_2EREP__num,V0a)) = V0a )
+    & ! [V1r] :
+        ( mem(V1r,ind)
+       => ( p(ap(c_2Enum_2EIS__NUM__REP,V1r))
+        <=> ap(c_2Enum_2EREP__num,ap(c_2Enum_2EABS__num,V1r)) = V1r ) ) ) ).
+
+fof(ax_thm_2Enum_2EZERO__DEF,axiom,
+    c_2Enum_2E0 = ap(c_2Enum_2EABS__num,c_2Enum_2EZERO__REP) ).
+
+fof(ax_thm_2Enum_2ESUC__DEF,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ap(c_2Enum_2ESUC,V0m) = ap(c_2Enum_2EABS__num,ap(c_2Enum_2ESUC__REP,ap(c_2Enum_2EREP__num,V0m))) ) ).
+
+fof(conj_thm_2Enum_2ENOT__SUC,axiom,
+    ! [V0n] :
+      ( mem(V0n,ty_2Enum_2Enum)
+     => ap(c_2Enum_2ESUC,V0n) != c_2Enum_2E0 ) ).
+
+fof(conj_thm_2Enum_2EINV__SUC,axiom,
+    ! [V0m] :
+      ( mem(V0m,ty_2Enum_2Enum)
+     => ! [V1n] :
+          ( mem(V1n,ty_2Enum_2Enum)
+         => ( ap(c_2Enum_2ESUC,V0m) = ap(c_2Enum_2ESUC,V1n)
+           => V0m = V1n ) ) ) ).
+
+fof(conj_thm_2Enum_2EINDUCTION,axiom,
+    ! [V0P] :
+      ( mem(V0P,arr(ty_2Enum_2Enum,bool))
+     => ( ( p(ap(V0P,c_2Enum_2E0))
+          & ! [V1n] :
+              ( mem(V1n,ty_2Enum_2Enum)
+             => ( p(ap(V0P,V1n))
+               => p(ap(V0P,ap(c_2Enum_2ESUC,V1n))) ) ) )
+       => ! [V2n] :
+            ( mem(V2n,ty_2Enum_2Enum)
+           => p(ap(V0P,V2n)) ) ) ) ).
+
+%------------------------------------------------------------------------------

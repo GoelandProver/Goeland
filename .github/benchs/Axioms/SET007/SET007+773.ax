@@ -1,0 +1,251 @@
+%------------------------------------------------------------------------------
+% File     : SET007+773 : TPTP v8.1.2. Released v3.4.0.
+% Domain   : Set Theory
+% Axioms   : On Some Properties of Real Hilbert Space. Part II
+% Version  : [Urb08] axioms.
+% English  :
+
+% Refs     : [Mat90] Matuszewski (1990), Formalized Mathematics
+%          : [Urb07] Urban (2007), MPTP 0.2: Design, Implementation, and In
+%          : [Urb08] Urban (2006), Email to G. Sutcliffe
+% Source   : [Urb08]
+% Names    : bhsp_7 [Urb08]
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :    8 (   0 unt;   0 def)
+%            Number of atoms       :  167 (   8 equ)
+%            Maximal formula atoms :   29 (  20 avg)
+%            Number of connectives :  181 (  22   ~;   1   |; 101   &)
+%                                         (   2 <=>;  55  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   23 (  15 avg)
+%            Maximal term depth    :    5 (   1 avg)
+%            Number of predicates  :   27 (  26 usr;   0 prp; 1-3 aty)
+%            Number of functors    :   16 (  16 usr;   4 con; 0-5 aty)
+%            Number of variables   :   35 (  35   !;   0   ?)
+% SPC      : 
+
+% Comments : The individual reference can be found in [Mat90] by looking for
+%            the name provided by [Urb08].
+%          : Translated by MPTP from the Mizar Mathematical Library 4.48.930.
+%          : These set theory axioms are used in encodings of problems in
+%            various domains, including ALG, CAT, GRP, LAT, SET, and TOP.
+%------------------------------------------------------------------------------
+fof(t1_bhsp_7,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ! [C] :
+              ( ( v1_funct_1(C)
+                & v1_funct_2(C,u1_struct_0(A),k6_supinf_1)
+                & m2_relset_1(C,u1_struct_0(A),k6_supinf_1) )
+             => ( r1_bhsp_6(A,B,C)
+              <=> ! [D] :
+                    ( m1_subset_1(D,k1_numbers)
+                   => ~ ( ~ r1_xreal_0(D,np__0)
+                        & ! [E] :
+                            ( ( v1_finset_1(E)
+                              & m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A))) )
+                           => ~ ( ~ v1_xboole_0(E)
+                                & r1_tarski(E,B)
+                                & ! [F] :
+                                    ( ( v1_finset_1(F)
+                                      & m1_subset_1(F,k1_zfmisc_1(u1_struct_0(A))) )
+                                   => ~ ( ~ v1_xboole_0(F)
+                                        & r1_tarski(F,B)
+                                        & r1_xboole_0(E,F)
+                                        & r1_xreal_0(D,k18_complex1(k5_bhsp_5(k1_numbers,u1_struct_0(A),k33_binop_2,F,C))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t2_bhsp_7,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ( ( v1_binop_1(u1_rlvect_1(A),u1_struct_0(A))
+          & v2_binop_1(u1_rlvect_1(A),u1_struct_0(A))
+          & v1_setwiseo(u1_rlvect_1(A),u1_struct_0(A)) )
+       => ! [B] :
+            ( ( v1_finset_1(B)
+              & m1_bhsp_5(B,A) )
+           => ( ~ v1_xboole_0(B)
+             => ! [C] :
+                  ( ( v1_funct_1(C)
+                    & v1_funct_2(C,u1_struct_0(A),u1_struct_0(A))
+                    & m2_relset_1(C,u1_struct_0(A),u1_struct_0(A)) )
+                 => ( ( r1_tarski(B,k1_relat_1(C))
+                      & ! [D] :
+                          ( m1_subset_1(D,u1_struct_0(A))
+                         => ( r2_hidden(D,B)
+                           => k8_funct_2(u1_struct_0(A),u1_struct_0(A),C,D) = D ) ) )
+                   => ! [D] :
+                        ( ( v1_funct_1(D)
+                          & v1_funct_2(D,u1_struct_0(A),k1_numbers)
+                          & m2_relset_1(D,u1_struct_0(A),k1_numbers) )
+                       => ( ( r1_tarski(B,k1_relat_1(D))
+                            & ! [E] :
+                                ( m1_subset_1(E,u1_struct_0(A))
+                               => ( r2_hidden(E,B)
+                                 => k8_funct_2(u1_struct_0(A),k1_numbers,D,E) = k2_bhsp_1(A,E,E) ) ) )
+                         => k2_bhsp_1(A,k5_bhsp_5(u1_struct_0(A),u1_struct_0(A),u1_rlvect_1(A),B,C),k5_bhsp_5(u1_struct_0(A),u1_struct_0(A),u1_rlvect_1(A),B,C)) = k5_bhsp_5(k1_numbers,u1_struct_0(A),k33_binop_2,B,D) ) ) ) ) ) ) ) ) ).
+
+fof(t3_bhsp_7,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ( ( v1_binop_1(u1_rlvect_1(A),u1_struct_0(A))
+          & v2_binop_1(u1_rlvect_1(A),u1_struct_0(A))
+          & v1_setwiseo(u1_rlvect_1(A),u1_struct_0(A)) )
+       => ! [B] :
+            ( ( v1_finset_1(B)
+              & m1_bhsp_5(B,A) )
+           => ( ~ v1_xboole_0(B)
+             => ! [C] :
+                  ( ( v1_funct_1(C)
+                    & v1_funct_2(C,u1_struct_0(A),k6_supinf_1)
+                    & m2_relset_1(C,u1_struct_0(A),k6_supinf_1) )
+                 => ( ( r1_tarski(B,k1_relat_1(C))
+                      & ! [D] :
+                          ( m1_subset_1(D,u1_struct_0(A))
+                         => ( r2_hidden(D,B)
+                           => k8_funct_2(u1_struct_0(A),k6_supinf_1,C,D) = k2_bhsp_1(A,D,D) ) ) )
+                   => k2_bhsp_1(A,k1_bhsp_6(A,B),k1_bhsp_6(A,B)) = k5_bhsp_5(k1_numbers,u1_struct_0(A),k33_binop_2,B,C) ) ) ) ) ) ) ).
+
+fof(t4_bhsp_7,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ! [B] :
+          ( m1_bhsp_5(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( m1_subset_1(C,k1_zfmisc_1(B))
+               => m1_bhsp_5(C,A) ) ) ) ) ).
+
+fof(t5_bhsp_7,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ! [B] :
+          ( m2_bhsp_5(B,A)
+         => ! [C] :
+              ( m1_subset_1(C,k1_zfmisc_1(u1_struct_0(A)))
+             => ( m1_subset_1(C,k1_zfmisc_1(B))
+               => m2_bhsp_5(C,A) ) ) ) ) ).
+
+fof(t6_bhsp_7,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ( ( v1_binop_1(u1_rlvect_1(A),u1_struct_0(A))
+          & v2_binop_1(u1_rlvect_1(A),u1_struct_0(A))
+          & v1_setwiseo(u1_rlvect_1(A),u1_struct_0(A))
+          & v4_bhsp_3(A) )
+       => ! [B] :
+            ( m2_bhsp_5(B,A)
+           => ! [C] :
+                ( ( v1_funct_1(C)
+                  & v1_funct_2(C,u1_struct_0(A),k6_supinf_1)
+                  & m2_relset_1(C,u1_struct_0(A),k6_supinf_1) )
+               => ( ( r1_tarski(B,k1_relat_1(C))
+                    & ! [D] :
+                        ( m1_subset_1(D,u1_struct_0(A))
+                       => ( r2_hidden(D,B)
+                         => k8_funct_2(u1_struct_0(A),k6_supinf_1,C,D) = k2_bhsp_1(A,D,D) ) ) )
+                 => ( v1_bhsp_6(B,A)
+                  <=> r1_bhsp_6(A,B,C) ) ) ) ) ) ) ).
+
+fof(t7_bhsp_7,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ! [B] :
+          ( m1_subset_1(B,k1_zfmisc_1(u1_struct_0(A)))
+         => ( v1_bhsp_6(B,A)
+           => ( v1_xboole_0(B)
+              | ! [C] :
+                  ( m1_subset_1(C,k1_numbers)
+                 => ~ ( ~ r1_xreal_0(C,np__0)
+                      & ! [D] :
+                          ( ( v1_finset_1(D)
+                            & m1_subset_1(D,k1_zfmisc_1(u1_struct_0(A))) )
+                         => ~ ( ~ v1_xboole_0(D)
+                              & r1_tarski(D,B)
+                              & ! [E] :
+                                  ( ( v1_finset_1(E)
+                                    & m1_subset_1(E,k1_zfmisc_1(u1_struct_0(A))) )
+                                 => ~ ( r1_tarski(D,E)
+                                      & r1_tarski(E,B)
+                                      & r1_xreal_0(C,k18_complex1(k5_real_1(k2_bhsp_1(A,k2_bhsp_6(A,B),k2_bhsp_6(A,B)),k2_bhsp_1(A,k1_bhsp_6(A,E),k1_bhsp_6(A,E))))) ) ) ) ) ) ) ) ) ) ) ).
+
+fof(t8_bhsp_7,axiom,
+    ! [A] :
+      ( ( ~ v3_struct_0(A)
+        & v3_rlvect_1(A)
+        & v4_rlvect_1(A)
+        & v5_rlvect_1(A)
+        & v6_rlvect_1(A)
+        & v7_rlvect_1(A)
+        & v2_bhsp_1(A)
+        & l1_bhsp_1(A) )
+     => ( ( v1_binop_1(u1_rlvect_1(A),u1_struct_0(A))
+          & v2_binop_1(u1_rlvect_1(A),u1_struct_0(A))
+          & v1_setwiseo(u1_rlvect_1(A),u1_struct_0(A))
+          & v4_bhsp_3(A) )
+       => ! [B] :
+            ( m2_bhsp_5(B,A)
+           => ( ~ v1_xboole_0(B)
+             => ! [C] :
+                  ( ( v1_funct_1(C)
+                    & v1_funct_2(C,u1_struct_0(A),k6_supinf_1)
+                    & m2_relset_1(C,u1_struct_0(A),k6_supinf_1) )
+                 => ( ( r1_tarski(B,k1_relat_1(C))
+                      & ! [D] :
+                          ( m1_subset_1(D,u1_struct_0(A))
+                         => ( r2_hidden(D,B)
+                           => k8_funct_2(u1_struct_0(A),k6_supinf_1,C,D) = k2_bhsp_1(A,D,D) ) )
+                      & v1_bhsp_6(B,A) )
+                   => k2_bhsp_1(A,k2_bhsp_6(A,B),k2_bhsp_6(A,B)) = k3_bhsp_6(A,B,C) ) ) ) ) ) ) ).
+
+%------------------------------------------------------------------------------

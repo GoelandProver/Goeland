@@ -1,0 +1,105 @@
+%------------------------------------------------------------------------------
+% File     : CSR001+1 : TPTP v8.1.2. Released .0.
+% Domain   : Commonsense Reasoning
+% Axioms   : Kitchen sink scenario
+% Version  : [Sha97] axioms : Especial.
+% English  :
+
+% Refs     : [Sha97] Shanahan (1997), Solving the Frame Problem
+% Source   : [Sha97]
+% Names    :
+
+% Status   : Satisfiable
+% Syntax   : Number of formulae    :   13 (   6 unt;   0 def)
+%            Number of atoms       :   39 (  27 equ)
+%            Maximal formula atoms :   11 (   3 avg)
+%            Number of connectives :   32 (   6   ~;   5   |;  14   &)
+%                                         (   5 <=>;   2  =>;   0  <=;   0 <~>)
+%            Maximal formula depth :   11 (   5 avg)
+%            Maximal term depth    :    2 (   1 avg)
+%            Number of predicates  :    7 (   6 usr;   0 prp; 2-4 aty)
+%            Number of functors    :    9 (   9 usr;   7 con; 0-2 aty)
+%            Number of variables   :   25 (  22   !;   3   ?)
+% SPC      : 
+
+% Comments : Requires CSR001+0.ax
+%------------------------------------------------------------------------------
+fof(initiates_all_defn,axiom,
+    ! [Event,Fluent,Time] :
+      ( initiates(Event,Fluent,Time)
+    <=> ( ( Event = tapOn
+          & Fluent = filling )
+        | ( Event = overflow
+          & Fluent = spilling )
+        | ? [Height] :
+            ( holdsAt(waterLevel(Height),Time)
+            & Event = tapOff
+            & Fluent = waterLevel(Height) )
+        | ? [Height] :
+            ( holdsAt(waterLevel(Height),Time)
+            & Event = overflow
+            & Fluent = waterLevel(Height) ) ) ) ).
+
+fof(terminates_all_defn,axiom,
+    ! [Event,Fluent,Time] :
+      ( terminates(Event,Fluent,Time)
+    <=> ( ( Event = tapOff
+          & Fluent = filling )
+        | ( Event = overflow
+          & Fluent = filling ) ) ) ).
+
+%----tapOn event releases all waterLevels at all times
+fof(releases_all_defn,axiom,
+    ! [Event,Fluent,Time] :
+      ( releases(Event,Fluent,Time)
+    <=> ? [Height] :
+          ( Event = tapOn
+          & Fluent = waterLevel(Height) ) ) ).
+
+fof(happens_all_defn,axiom,
+    ! [Event,Time] :
+      ( happens(Event,Time)
+    <=> ( ( Event = tapOn
+          & Time = n0 )
+        | ( holdsAt(waterLevel(n3),Time)
+          & holdsAt(filling,Time)
+          & Event = overflow ) ) ) ).
+
+fof(change_of_waterLevel,axiom,
+    ! [Height1,Time,Height2,Offset] :
+      ( ( holdsAt(waterLevel(Height1),Time)
+        & Height2 = plus(Height1,Offset) )
+     => trajectory(filling,Time,waterLevel(Height2),Offset) ) ).
+
+fof(same_waterLevel,axiom,
+    ! [Time,Height1,Height2] :
+      ( ( holdsAt(waterLevel(Height1),Time)
+        & holdsAt(waterLevel(Height2),Time) )
+     => Height1 = Height2 ) ).
+
+%----Distinct events
+fof(tapOff_not_tapOn,axiom,
+    tapOff != tapOn ).
+
+fof(tapOff_not_overflow,axiom,
+    tapOff != overflow ).
+
+fof(overflow_not_tapOn,axiom,
+    overflow != tapOn ).
+
+%----Distinct fluents
+fof(filling_not_waterLevel,axiom,
+    ! [X] : filling != waterLevel(X) ).
+
+fof(spilling_not_waterLevel,axiom,
+    ! [X] : spilling != waterLevel(X) ).
+
+fof(filling_not_spilling,axiom,
+    filling != spilling ).
+
+fof(distinct_waterLevels,axiom,
+    ! [X,Y] :
+      ( waterLevel(X) = waterLevel(Y)
+    <=> X = Y ) ).
+
+%------------------------------------------------------------------------------
