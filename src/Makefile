@@ -44,7 +44,7 @@ static-linux-release:
 
 parse:
 	@for i in `ls $(PROB)/*.p`; do echo -e "File \033[32m$$i\033[39m: "; \
-        ./$(BIN) $$i; echo; done
+		./$(BIN) $$i; echo; done
 
 clean:
 	rm -f **/*~ $(GOPARSER) y.output

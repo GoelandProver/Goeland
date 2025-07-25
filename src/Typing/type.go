@@ -52,7 +52,7 @@ func SecondPass(form AST.Form) AST.Form {
 func secondPassAux(form AST.Form, vars []AST.Var, types []AST.TypeApp) AST.Form {
 	switch f := form.(type) {
 	case AST.Pred:
-		terms, typeApps := nArySecondPassTerms(f.GetArgs(), vars, types)
+		terms := nArySecondPassTerms(f.GetArgs(), vars, types)
 
 		// Special case: defined predicate. We need to infer types.
 		if f.GetID().Equals(AST.Id_eq) {
@@ -67,7 +67,7 @@ func secondPassAux(form AST.Form, vars []AST.Var, types []AST.TypeApp) AST.Form 
 		}
 
 		// Real case: classical predicate, it should be given
-		return AST.MakePred(f.GetIndex(), f.GetID(), terms, typeApps)
+		return AST.MakePred(f.GetIndex(), f.GetID(), terms, f.GetTypeVars())
 	case AST.And:
 		return AST.MakeAnd(f.GetIndex(), nArySecondPass(f.FormList, vars, types))
 	case AST.Or:
@@ -88,21 +88,10 @@ func secondPassAux(form AST.Form, vars []AST.Var, types []AST.TypeApp) AST.Form 
 	return form
 }
 
-func secondPassTerm(term AST.Term, vars []AST.Var, types []AST.TypeApp) (AST.Term, []AST.TypeApp) {
+func secondPassTerm(term AST.Term, vars []AST.Var, types []AST.TypeApp) AST.Term {
 	switch t := term.(type) {
 	case AST.Fun:
-		// 3 cases:
-		//	- It's a TypeHint
-		if AST.IsPrimitive(t.GetName()) {
-			return nil, []AST.TypeApp{AST.MkTypeHint(t.GetName())}
-		}
-
-		terms, v := nArySecondPassTerms(t.GetArgs(), vars, types)
-
-		// 	- It's a parameterized type
-		if AST.IsParameterizedType(t.GetName()) {
-			return nil, []AST.TypeApp{AST.MkParameterizedType(t.GetName(), v)}
-		}
+		terms := nArySecondPassTerms(t.GetArgs(), vars, types)
 
 		//	- It's a function
 		outType := func(term AST.Term) AST.TypeApp {
@@ -114,22 +103,13 @@ func secondPassTerm(term AST.Term, vars []AST.Var, types []AST.TypeApp) (AST.Ter
 			termsType = append(termsType, outType(tm))
 		}
 
-		return AST.MakerFun(t.GetID(), terms, v, getTypeOfFunction(t.GetName(), v, termsType)), []AST.TypeApp{}
+		return AST.MakerFun(t.GetID(), terms, t.GetTypeVars(),
+			getTypeOfFunction(t.GetName(), t.GetTypeVars(), termsType))
 
 	case AST.Var:
-		for _, v := range types {
-			if v.ToString() == t.GetName() {
-				return nil, []AST.TypeApp{v}
-			}
-		}
-
-		for _, v := range vars {
-			if v.GetName() == t.GetName() && v.GetIndex() == t.GetIndex() {
-				return v, []AST.TypeApp{}
-			}
-		}
+		return t
 	}
-	return term, types
+	return term
 }
 
 func nArySecondPass(forms *AST.FormList, vars []AST.Var, types []AST.TypeApp) *AST.FormList {
@@ -146,20 +126,18 @@ func nArySecondPassTerms(
 	terms Lib.List[AST.Term],
 	vars []AST.Var,
 	types []AST.TypeApp,
-) (Lib.List[AST.Term], []AST.TypeApp) {
-	resTerms, resVars := Lib.NewList[AST.Term](), []AST.TypeApp{}
+) Lib.List[AST.Term] {
+	resTerms := Lib.NewList[AST.Term]()
 
 	for _, term := range terms.GetSlice() {
-		t, v := secondPassTerm(term, vars, types)
+		t := secondPassTerm(term, vars, types)
 
 		if t != nil {
 			resTerms.Append(t)
 		}
-
-		resVars = append(resVars, v...)
 	}
 
-	return resTerms, resVars
+	return resTerms
 }
 
 func getTypeOfFunction(name string, vars []AST.TypeApp, termsType []AST.TypeApp) AST.TypeScheme {

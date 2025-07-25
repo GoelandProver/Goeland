@@ -81,10 +81,10 @@ func launchChildren(sequents []Sequent, root *ProofTree, fatherChan chan Reconst
 	} else {
 		// Create a channel for each child, and launch it in a goroutine.
 		chanTab := make([](chan Reconstruct), len(sequents))
-		for i, sequent := range sequents {
+		for i := range sequents {
 			childChan := make(chan Reconstruct)
 			chanTab[i] = childChan
-			go tryApplyRule(sequent, root.addChildWith(sequent), childChan)
+			go tryApplyRule(sequents[i], root.addChildWith(sequents[i]), childChan)
 		}
 		// If a child dies with an error, stops the typesearch procedure.
 		return selectSequents(chanTab, fatherChan)
@@ -104,7 +104,7 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 	var errorFound error = nil
 
 	forms := make([]AST.Form, len(chansTab))
-	terms := Lib.NewList[AST.Term]()
+	terms := Lib.MkList[AST.Term](len(chansTab))
 
 	// Wait for all children to finish.
 	for remaining > 0 && errorFound == nil {
@@ -119,7 +119,7 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 				errorFound = res.err
 			} else {
 				// Once the child sends back to the father, it should only have one item.
-				if res.forms.Len() == 1 {
+				if res.forms != nil && res.forms.Len() == 1 {
 					forms[index] = res.forms.Get(0)
 				}
 				if res.terms.Len() == 1 {

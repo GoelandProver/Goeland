@@ -29,69 +29,38 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-package Core
 
-import (
-	"strings"
+package Lib
 
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
-	"github.com/GoelandProver/Goeland/Lib"
-)
+/* This file implements the Option type in order to be able to use the exceptional Monad. */
 
-const (
-	is_all = iota
-	is_all_type
-	is_exists
-)
-
-/**
- * Instantiates once the formula fnt.
- */
-func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.Set[AST.Meta]) {
-	var meta AST.Meta
-	terms := fnt.GetTerms()
-
-	switch f := fnt.GetForm().(type) {
-	case AST.Not:
-		if ex, isEx := f.GetForm().(AST.Ex); isEx {
-			fnt, meta = RealInstantiate(ex.GetVarList(), index, is_exists, ex.GetForm(), terms)
-		}
-	case AST.All:
-		fnt, meta = RealInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
-	}
-
-	return fnt, Lib.Singleton(meta)
+type Option[A any] interface {
+	isOpt()
 }
 
-func RealInstantiate(
-	varList []AST.Var,
-	index, status int,
-	subForm AST.Form,
-	terms Lib.List[AST.Term],
-) (FormAndTerms, AST.Meta) {
-	v := varList[0]
-	meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(AST.TypeApp))
-	subForm = subForm.SubstituteVarByMeta(v, meta)
+type Some[A any] struct {
+	Val A
+}
 
-	terms = terms.Copy(AST.Term.Copy)
-	terms.Add(
-		AST.TermEquals,
-		Glob.To[AST.Term](meta),
-	)
+type None[A any] struct{}
 
-	if len(varList) > 1 {
-		if status == is_exists {
-			ex := AST.MakerEx(varList[1:], subForm)
-			subForm = AST.MakerNot(ex)
-		} else {
-			subForm = AST.MakerAll(varList[1:], subForm)
-		}
-	} else {
-		if status == is_exists {
-			subForm = AST.MakerNot(subForm)
-		}
+func (Some[A]) isOpt() {}
+func (None[A]) isOpt() {}
+
+func OptBind[A, B any](u Option[A], f Func[A, B]) Option[B] {
+	switch x := u.(type) {
+	case Some[A]:
+		return Some[B]{f(x.Val)}
+	case None[A]:
+		return None[B]{}
 	}
+	return None[B]{}
+}
 
-	return MakeFormAndTerm(subForm, terms), meta
+func MkSome[A any](x A) Option[A] {
+	return Some[A]{Val: x}
+}
+
+func MkNone[A any]() Option[A] {
+	return None[A]{}
 }

@@ -6,22 +6,32 @@
 
 * [Goéland's Usage](#goeland-s-usage)
   * [Table of Contents](#table-of-contents)
+  * [Recommended Options](#recommended-options)
   * [Commonly-Used Options](#commonly-used-options)
   * [Proof Outputs](#proof-outputs)
   * [Developer Options](#developer-options)
 
-## Commonly-Used Options
+## Recommanded Options
+
+If you want to have the fastest version of Goéland, you can launch it with the following options:
+```
+-dmt -flatten -preinner
+```
+See the next section to understand what these options do.
+
+## Commonly Used Options
 
 The most commonly used options of Goéland are the following ones.
 
 | Parameter flag | Effect |
 |--------------------------|-----------|
-| -ari | Enables the use of (TPTP) arithmetic functions. |
+| -ari | Enables the use of (TPTP) arithmetic functions (needed to typecheck arithmetic problems). |
 | -completeness | Enables completeness mode. |
 | -core_limit *int* | Sets the limit in number of cores (default: **-1**, i.e., all the cores will be used). |
 | -dmt | Enables deduction modulo theory. |
 | -dmt_before_eq | Enables dmt rewriting-steps before equality. |
 | -eagereq | Run equality reasoning every time a new (in)equality is added to the branch. |
+| -flatten | Flattens AND and OR formulas. Incompatible with `-ocoq`, `-osctptp`, `-olp`. |
 | -h | Displays the help text with all the options. |
 | -incr | Enables the incremental search algorithm. |
 | -increq | Run equality reasoning incrementally. |

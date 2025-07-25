@@ -106,13 +106,14 @@ func (r Result) Copy() Result {
 }
 
 /* remove a childre  from a communication list */
-func removeChildren(s []Communication, i int) []Communication {
-	if len(s) > 1 {
-		s[i] = s[len(s)-1]
-		return s[:len(s)-1]
-	} else {
-		return []Communication{}
+func removeChildren(s []Communication, removals Lib.Set[Lib.Int]) []Communication {
+	new_communications := []Communication{}
+	for i, comm := range s {
+		if !removals.Contains(Lib.MkInt(i)) {
+			new_communications = append(new_communications, comm)
+		}
 	}
+	return new_communications
 }
 
 /**
@@ -126,6 +127,7 @@ func closeChildren(children *[]Communication, kill bool) {
 		Lib.MkLazy(func() string { return fmt.Sprintf("Close children : %v,  order : %v", len(*children), kill) }),
 	)
 
+	delayed_removal := Lib.EmptySet[Lib.Int]()
 	for i, v := range *children {
 		select {
 		case v.quit <- kill:
@@ -146,13 +148,14 @@ func closeChildren(children *[]Communication, kill bool) {
 					"CC",
 					Lib.MkLazy(func() string { return "Not send, child already dead" }),
 				)
-				*children = removeChildren(*children, i)
+				delayed_removal = delayed_removal.Add(Lib.MkInt(i))
 			}
 		}
 		if kill {
-			*children = removeChildren(*children, i)
+			delayed_removal = delayed_removal.Add(Lib.MkInt(i))
 		}
 	}
+	*children = removeChildren(*children, delayed_removal)
 }
 
 /* Send a substitution to a list of child */

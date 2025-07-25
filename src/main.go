@@ -49,6 +49,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
+	"github.com/GoelandProver/Goeland/Engine"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/assisted"
@@ -125,17 +126,21 @@ func presearchLoader() (AST.Form, int) {
 	Glob.PrintInfo(main_label, fmt.Sprintf("Problem : %v", problem))
 
 	statements, bound, containsEquality := Parser.ParseTPTPFile(problem)
+	actualStatements := Engine.ToInternalSyntax(statements)
 
 	Glob.PrintDebug(
 		main_label,
-		Lib.MkLazy(func() string { return fmt.Sprintf("Statement : %s", Core.StatementListToString(statements)) }),
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Statement : %s", Core.StatementListToString(actualStatements))
+		}),
 	)
 
 	if Glob.GetLimit() != -1 {
 		bound = Glob.GetLimit()
 	}
 
-	form, bound, contEq := StatementListToFormula(statements, bound, path.Dir(problem))
+	form, bound, contEq := StatementListToFormula(actualStatements, bound, path.Dir(problem))
 	containsEquality = containsEquality || contEq
 
 	if !containsEquality {
@@ -176,6 +181,7 @@ func initEverything() {
 	AST.Init()
 }
 
+// FIXME: eventually, we would want to add an "interpretation" layer between elab and internal representation that does this
 func StatementListToFormula(statements []Core.Statement, old_bound int, problemDir string) (form AST.Form, bound int, containsEquality bool) {
 	and_list := AST.NewFormList()
 	var not_form AST.Form
@@ -198,8 +204,13 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			}
 
 			new_lstm, bound_tmp, contEq := Parser.ParseTPTPFile(realname)
+			actual_new_lstm := Engine.ToInternalSyntax(new_lstm)
 			containsEquality = containsEquality || contEq
-			new_form_list, new_bound, contEq := StatementListToFormula(new_lstm, bound_tmp, path.Join(problemDir, path.Dir(file_name)))
+			new_form_list, new_bound, contEq := StatementListToFormula(
+				actual_new_lstm,
+				bound_tmp,
+				path.Join(problemDir, path.Dir(file_name)),
+			)
 			containsEquality = containsEquality || contEq
 
 			if new_form_list != nil {
@@ -208,13 +219,28 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			}
 
 		case Core.Axiom:
-			and_list = doAxiomStatement(and_list, statement)
+			switch f := statement.GetForm().(type) {
+			case Lib.Some[AST.Form]:
+				and_list = doAxiomStatement(and_list, f.Val)
+			case Lib.None[AST.Form]:
+				Glob.Anomaly("main", "Axiom statement "+statement.ToString()+" has no formula")
+			}
 
 		case Core.Conjecture:
-			not_form = doConjectureStatement(statement)
+			switch f := statement.GetForm().(type) {
+			case Lib.Some[AST.Form]:
+				not_form = doConjectureStatement(f.Val)
+			case Lib.None[AST.Form]:
+				Glob.Anomaly("main", "Conjecture statement "+statement.ToString()+" has no formula")
+			}
 
 		case Core.Type:
-			doTypeStatement(statement)
+			switch ty := statement.GetAtomTyping().(type) {
+			case Lib.Some[Core.TFFAtomTyping]:
+				doTypeStatement(ty.Val)
+			case Lib.None[Core.TFFAtomTyping]:
+				Glob.Anomaly("main", "Type statement "+statement.ToString()+" has no formula")
+			}
 		}
 	}
 
@@ -232,8 +258,8 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 	}
 }
 
-func doAxiomStatement(andList *AST.FormList, statement Core.Statement) *AST.FormList {
-	newForm := statement.GetForm().RenameVariables()
+func doAxiomStatement(andList *AST.FormList, f AST.Form) *AST.FormList {
+	newForm := f.RenameVariables()
 
 	// FIXME: dmt should be a plugin and therefore not checked here.
 	// Ideally, we want to be able to define a hook here and let the plugins do
@@ -253,36 +279,37 @@ func doAxiomStatement(andList *AST.FormList, statement Core.Statement) *AST.Form
 	return andList
 }
 
-func doConjectureStatement(statement Core.Statement) AST.Form {
+func doConjectureStatement(f AST.Form) AST.Form {
 	Glob.SetConjecture(true)
-	return statement.GetForm().RenameVariables()
+	return f.RenameVariables()
 }
 
-func doTypeStatement(statement Core.Statement) {
-	typeScheme := statement.GetAtomTyping().Ts
+func doTypeStatement(atomTyping Core.TFFAtomTyping) {
+	typeScheme := atomTyping.Ts
 
 	if typeScheme == nil {
+		Glob.PrintWarn("main", fmt.Sprintf("The constant %s has no type!", atomTyping.Literal.ToString()))
 		return
 	}
 
 	if typeScheme.Size() == 1 {
 		isNewType := typeScheme.ToString() == "$tType"
 		if isNewType {
-			AST.MkTypeHint(statement.GetAtomTyping().Literal.GetName())
+			AST.MkTypeHint(atomTyping.Literal.GetName())
 		} else {
 			isConstant := !Glob.Is[AST.QuantifiedType](typeScheme)
 			if isConstant {
-				AST.SaveConstant(statement.GetAtomTyping().Literal.GetName(), typeScheme.GetPrimitives()[0])
+				AST.SaveConstant(atomTyping.Literal.GetName(), typeScheme.GetPrimitives()[0])
 			} else {
-				AST.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
+				AST.SavePolymorphScheme(atomTyping.Literal.GetName(), typeScheme)
 			}
 		}
 	} else {
 		switch typeScheme.(type) {
 		case AST.TypeArrow:
-			AST.SaveTypeScheme(statement.GetAtomTyping().Literal.GetName(), AST.GetInputType(typeScheme)[0], AST.GetOutType(typeScheme))
+			AST.SaveTypeScheme(atomTyping.Literal.GetName(), AST.GetInputType(typeScheme)[0], AST.GetOutType(typeScheme))
 		case AST.QuantifiedType:
-			AST.SavePolymorphScheme(statement.GetAtomTyping().Literal.GetName(), typeScheme)
+			AST.SavePolymorphScheme(atomTyping.Literal.GetName(), typeScheme)
 		}
 	}
 }
@@ -316,16 +343,15 @@ func getFile(filename string, dir string) (string, error) {
 }
 
 func checkForTypedProof(form AST.Form) AST.Form {
-	isTypedProof := !AST.EmptyGlobalContext()
+	isTypedProof := !AST.EmptyGlobalContext() && !Glob.NoTypeCheck()
 
 	if isTypedProof {
-		formula, err := Typing.WellFormedVerification(form, Glob.GetTypeProof())
+		err := Typing.WellFormedVerification(form.Copy(), Glob.GetTypeProof())
 
 		if err != nil {
 			Glob.Fatal(main_label, fmt.Sprintf("Typing error: %v", err))
 		} else {
 			Glob.PrintInfo(main_label, "Well typed.")
-			return formula
 		}
 	}
 

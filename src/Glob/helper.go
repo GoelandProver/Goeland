@@ -78,6 +78,8 @@ var preInnerSko = false
 var commit string
 var version = fmt.Sprintf("1.2-dev.r%s", commit)
 var printVersion = false
+var allowFlattening = false
+var type_check = true
 
 var IncrEq = false
 
@@ -271,6 +273,14 @@ func GetPrintVersion() bool {
 	return printVersion
 }
 
+func Flatten() bool {
+	return allowFlattening
+}
+
+func NoTypeCheck() bool {
+	return !type_check
+}
+
 /* Setters */
 func SetDebug(b bool) {
 	debug = b
@@ -396,4 +406,12 @@ func SetPreInnerSko(b bool) {
 
 func SetPrintVersion(b bool) {
 	printVersion = b
+}
+
+func SetFlatteningAllowed() {
+	allowFlattening = true
+}
+
+func SetNoTypeCheck() {
+	type_check = false
 }
