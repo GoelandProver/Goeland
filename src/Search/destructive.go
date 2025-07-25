@@ -702,6 +702,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 	cpt_remaining_children := len(*children)
 	current_subst_seen := false
 	new_current_subst := current_subst.Copy()
+	delayed_removals := Lib.EmptySet[Lib.Int]()
 
 	// Until all the children have answered
 	for cpt_remaining_children > 0 && result_int < QUIT {
@@ -747,7 +748,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 			)
 			if !res.need_answer {
 				Glob.PrintDebug("SLC", Lib.MkLazy(func() string { return fmt.Sprintf("Child %v die", res.id) }))
-				*children = removeChildren(*children, index)
+				delayed_removals = delayed_removals.Add(Lib.MkInt(index))
 			}
 
 			// Manage the substitution sent by this child
@@ -870,6 +871,8 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 			}
 		}
 	}
+
+	*children = removeChildren(*children, delayed_removals)
 
 	Glob.PrintDebug(
 		"SLC",
