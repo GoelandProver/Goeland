@@ -82,7 +82,7 @@ func (v TypedVar) ToTyBoundVar() TyBound {
 	return MkTyBV(v.name, v.index).(TyBound)
 }
 
-func (v TypedVar) SubstTy(old TyBound, new Ty) TypedVar {
+func (v TypedVar) SubstTy(old TyGenVar, new Ty) TypedVar {
 	return TypedVar{v.name, v.index, v.ty.SubstTy(old, new)}
 }
 

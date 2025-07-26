@@ -189,7 +189,7 @@ func (rm *RulesManager) trySubstitutionClosureRules() (applied Rule, subs SubLis
 
 	negTree := new(Unif.Node).MakeDataStruct(negativeRules.GetFormList(), false)
 
-	substitutions := []Unif.MatchingSubstitutions{}
+	substitutions := []Unif.MixedSubstitutions{}
 
 	for _, posRule := range positiveRules {
 		success, currentSubst := negTree.Unify(posRule.GetForm())
@@ -200,7 +200,7 @@ func (rm *RulesManager) trySubstitutionClosureRules() (applied Rule, subs SubLis
 	}
 
 	for _, substitution := range substitutions {
-		subs = append(subs, NewFromOldSub(substitution))
+		subs = append(subs, NewFromOldSub(substitution.MatchingSubstitutions()))
 	}
 
 	return applied, subs

@@ -47,6 +47,6 @@ type DataStructure interface {
 	IsEmpty() bool
 	MakeDataStruct(Lib.List[AST.Form], bool) DataStructure
 	InsertFormulaListToDataStructure(Lib.List[AST.Form]) DataStructure
-	Unify(AST.Form) (bool, []MatchingSubstitutions)
+	Unify(AST.Form) (bool, []MixedSubstitutions)
 	Copy() DataStructure
 }

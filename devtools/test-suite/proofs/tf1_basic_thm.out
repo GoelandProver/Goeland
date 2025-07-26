@@ -1,0 +1,16 @@
+[0] ALPHA_AND : ((! [A14]: ((maybe(A14) ; head(A14;nil(A14;)) = none(A14;)))) & (! [A16 X18 XS20]: ((maybe(A16) ; head(A16;cons(A16;X18, XS20)) = some(A16;X18)))) & ~((maybe($int) ; head($int;cons($int;1, cons($int;2, cons($int;3, nil($int;))))) = some($int;1))))
+	-> [1] (! [A14]: ((maybe(A14) ; head(A14;nil(A14;)) = none(A14;)))), (! [A16 X18 XS20]: ((maybe(A16) ; head(A16;cons(A16;X18, XS20)) = some(A16;X18)))), ~((maybe($int) ; head($int;cons($int;1, cons($int;2, cons($int;3, nil($int;))))) = some($int;1)))
+
+[1] GAMMA_FORALL : (! [A14]: ((maybe(A14) ; head(A14;nil(A14;)) = none(A14;))))
+	-> [2] (maybe(A14_1) ; head(A14_1;nil(A14_1;)) = none(A14_1;))
+
+[2] GAMMA_FORALL : (! [A16 X18 XS20]: ((maybe(A16) ; head(A16;cons(A16;X18, XS20)) = some(A16;X18))))
+	-> [3] (! [X18 XS20]: ((maybe($int) ; head($int;cons($int;X18, XS20)) = some($int;X18))))
+
+[3] GAMMA_FORALL : (! [X18 XS20]: ((maybe($int) ; head($int;cons($int;X18, XS20)) = some($int;X18))))
+	-> [4] (! [XS20]: ((maybe($int) ; head($int;cons($int;1, XS20)) = some($int;1))))
+
+[4] GAMMA_FORALL : (! [XS20]: ((maybe($int) ; head($int;cons($int;1, XS20)) = some($int;1))))
+	-> [5] (maybe($int) ; head($int;cons($int;1, cons($int;2, cons($int;3, nil($int;))))) = some($int;1))
+
+[5] CLOSURE : (maybe($int) ; head($int;cons($int;1, cons($int;2, cons($int;3, nil($int;))))) = some($int;1))
