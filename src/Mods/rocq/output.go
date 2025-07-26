@@ -31,10 +31,10 @@
 **/
 
 /**
-* This file provides a coq output for Goeland's proofs.
+* This file provides a rocq output for Goeland's proofs.
 **/
 
-package coq
+package rocq
 
 import (
 	"strings"
@@ -48,38 +48,38 @@ import (
 
 var contextEnabled bool = false
 
-var CoqOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeCoqOutput, Name: "Coq", Extension: ".v"}
+var RocqOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeRocqOutput, Name: "Rocq", Extension: ".v"}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
 
 // Section: init
-// Functions: MakeCoqOutput
-// Main functions of the coq module.
+// Functions: MakeRocqOutput
+// Main functions of the rocq module.
 // TODO:
 //	* Write the context for TFF problems
 
-func MakeCoqOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
+func MakeRocqOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
-		Glob.PrintError("Coq", "Nothing to output")
+		Glob.PrintError("Rocq", "Nothing to output")
 		return ""
 	}
 
 	// Transform tableaux's proof in GS3 proof
-	return MakeCoqProof(gs3.MakeGS3Proof(prf), meta)
+	return MakeRocqProof(gs3.MakeGS3Proof(prf), meta)
 }
 
-var MakeCoqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
+var MakeRocqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
-	proofString := makeCoqProofFromGS3(proof)
+	proofString := makeRocqProofFromGS3(proof)
 	return contextString + "\n" + proofString
 }
 
-// Replace defined symbols by Coq's defined symbols.
+// Replace defined symbols by Rocq's defined symbols.
 func mapDefault(str string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
 }
-func coqMapConnectors() map[AST.FormulaType]string {
+func rocqMapConnectors() map[AST.FormulaType]string {
 	return map[AST.FormulaType]string{
 		AST.AndConn:        "/\\",
 		AST.OrConn:         "\\/",

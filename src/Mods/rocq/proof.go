@@ -31,10 +31,10 @@
 **/
 
 /**
-* This file provides a coq proof from Goéland's proof.
+* This file provides a rocq proof from Goéland's proof.
 **/
 
-package coq
+package rocq
 
 import (
 	"fmt"
@@ -48,7 +48,7 @@ import (
 
 var dummy int
 
-func makeCoqProofFromGS3(proof *gs3.GS3Sequent) string {
+func makeRocqProofFromGS3(proof *gs3.GS3Sequent) string {
 	dummy = 0
 	axioms, conjecture := processMainFormula(proof.GetTargetForm())
 	totalAxioms := axioms.Len()
@@ -227,7 +227,8 @@ func makeTheorem(axioms *AST.FormList, conjecture AST.Form) string {
 	axiomsWithConj := axioms.Copy()
 	axiomsWithConj.Append(AST.MakerNot(AST.MakerNot(conjecture)))
 	formattedProblem := makeImpChain(axiomsWithConj)
-	return "Theorem goeland_proof_of_" + problemName + " : " + mapDefault(formattedProblem.ToMappedString(coqMapConnectors(), Glob.GetTypeProof())) + ".\n"
+	return "Theorem goeland_proof_of_" + problemName + " : " +
+		mapDefault(formattedProblem.ToMappedString(rocqMapConnectors(), Glob.GetTypeProof())) + ".\n"
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).
@@ -240,9 +241,8 @@ func makeImpChain(forms *AST.FormList) AST.Form {
 	return form
 }
 
-// Introduces a new formula in coq's hypotheses.
+// Introduces a new formula in rocq's hypotheses.
 func introduce(f AST.Form, hypotheses *AST.FormList) (int, *AST.FormList) {
-	//PrintInfo("INTRODUCING", f.ToString())
 	index := hypotheses.Len()
 	hypotheses.Append(f)
 	return index, hypotheses
@@ -256,7 +256,7 @@ func introduceList(fl, hypotheses *AST.FormList) ([]int, *AST.FormList) {
 	return indices, hypotheses
 }
 
-// Makes a Coq's name for a new hypothesis.
+// Makes a Rocq's name for a new hypothesis.
 func introName(i int) string {
 	return fmt.Sprintf("H%d", i)
 }
@@ -297,7 +297,7 @@ func getRealConstantName(constantsCreated []AST.Term, term AST.Term) string {
 	if fun, isFun := term.(AST.Fun); isFun {
 		res := ""
 		if isGroundTerm(fun.GetID()) {
-			res = fun.GetID().ToMappedString(coqMapConnectors(), Glob.GetTypeProof())
+			res = fun.GetID().ToMappedString(rocqMapConnectors(), Glob.GetTypeProof())
 			subterms := make([]string, 0)
 			for _, t := range fun.GetArgs().GetSlice() {
 				subterms = append(subterms, getRealConstantName(constantsCreated, t))
@@ -321,7 +321,7 @@ func findInConstants(constantsCreated []AST.Term, term AST.Term) string {
 		return getConstantName(term.(AST.Fun).GetID())
 	}
 	if isGroundTerm(term) {
-		return "(" + term.ToMappedString(coqMapConnectors(), Glob.GetTypeProof()) + ")"
+		return "(" + term.ToMappedString(rocqMapConnectors(), Glob.GetTypeProof()) + ")"
 	}
 	return "goeland_I"
 }
