@@ -64,7 +64,7 @@ func genFreshSymbol(existingSymbols *Lib.Set[AST.Id], x AST.TypedVar) AST.Id {
 	symbol := AST.MakerNewId(
 		fmt.Sprintf("skolem@%v", x.GetName()),
 	)
-	existingSymbols.Add(symbol)
+	*existingSymbols = existingSymbols.Add(symbol)
 
 	return symbol
 }
