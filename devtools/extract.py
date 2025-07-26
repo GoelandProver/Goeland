@@ -2,14 +2,21 @@ import sys
 import os
 import shutil
 
-if len(sys.argv) != 5:
-    print(f"Usage: python3 {sys.argv[0]} [-thm | -cs] [-fof | -tff | -all] input_folder output_folder")
+if not (5 <= len(sys.argv) <= 7):
+    print(f"Usage: python3 {sys.argv[0]} [-thm | -cs] [-fof | -tff | -all] [-rating n] input_folder output_folder")
     exit(1)
 
 status_filter = sys.argv[1]
 mode = sys.argv[2]
-input_folder = sys.argv[3]
-output_root = sys.argv[4]
+rating = None
+
+if len(sys.argv) == 5:
+    input_folder = sys.argv[3]
+    output_root = sys.argv[4]
+else:
+    rating = sys.argv[4]
+    input_folder = sys.argv[5]
+    output_root = sys.argv[6]
 
 if mode not in ['-fof', '-tff', '-all']:
     print("Error: Mode must be one of -fof, -tff, or -all")
@@ -35,6 +42,8 @@ def should_process(filename):
     return False
 
 status_string = "% Status   : Theorem" if status_filter == '-thm' else "% Status   : CounterSatisfiable"
+if rating:
+    rating = f"% Rating   : {rating}"
 
 total = 0
 
@@ -45,6 +54,7 @@ for parent, _, filenames in os.walk(input_folder):
             try:
                 with open(full_path, 'r', encoding='utf-8') as f:
                     content = f.read()
+                    if rating and rating not in content: continue
                     if status_string in content:
                         relative_path = os.path.relpath(full_path, input_folder)
                         relative_dir = os.path.dirname(relative_path)
