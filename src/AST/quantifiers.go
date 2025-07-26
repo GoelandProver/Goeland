@@ -161,12 +161,12 @@ func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 }
 
 func (q quantifier) replaceTyVar(old TyBound, new Ty) quantifier {
-	f := q.GetForm().ReplaceTyVar(old, new)
+	f := q.GetForm().SubstTy(old, new)
 	return makeQuantifier(
 		q.GetIndex(),
 		Lib.ListMap(
 			q.GetVarList(),
-			func(p TypedVar) TypedVar { return p.ReplaceTyVar(old, new) },
+			func(p TypedVar) TypedVar { return p.SubstTy(old, new) },
 		),
 		f,
 		q.metas.Raw().Copy(),
@@ -186,7 +186,7 @@ func (q quantifier) renameVariables() quantifier {
 		f, replaced := newForm.ReplaceTermByTerm(v.ToBoundVar(), newVar)
 		if !replaced {
 			newBv := MkTyBV(newVar.name, newVar.index)
-			f = f.ReplaceTyVar(v.ToTyBoundVar(), newBv)
+			f = f.SubstTy(v.ToTyBoundVar(), newBv)
 			newTyBv.Append(Lib.MkPair(v.ToTyBoundVar(), newBv))
 		}
 		newForm = f
@@ -198,7 +198,7 @@ func (q quantifier) renameVariables() quantifier {
 			newVarList,
 			func(p TypedVar) TypedVar {
 				for _, pair := range newTyBv.GetSlice() {
-					p = p.ReplaceTyVar(pair.Fst, pair.Snd)
+					p = p.SubstTy(pair.Fst, pair.Snd)
 				}
 				return p
 			},
