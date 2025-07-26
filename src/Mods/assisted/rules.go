@@ -81,7 +81,12 @@ func applyAtomicRule(state Search.State, fatherId uint64, c Search.Communication
 
 		clos_res_after_apply_subst, subst_after_apply_subst := Search.ApplyClosureRules(f.GetForm(), &state)
 		if clos_res_after_apply_subst {
-			boolSubsts, resSubsts := searchAlgo.ManageClosureRule(fatherId, &state, c, Unif.CopySubstList(subst_after_apply_subst), f.Copy(), nodeId, originalNodeId)
+			boolSubsts, resSubsts := searchAlgo.ManageClosureRule(
+				fatherId,
+				&state,
+				c,
+				subst_after_apply_subst.Copy(Lib.ListCpy[Unif.MixedSubstitution]),
+				f.Copy(), nodeId, originalNodeId)
 			if !boolSubsts {
 				finalBool = false
 			}

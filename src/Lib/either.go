@@ -30,71 +30,74 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**
-* This file contains functions and types which describe the term's data structure
-**/
-
-package AST
+package Lib
 
 import (
-	"github.com/GoelandProver/Goeland/Lib"
+	"fmt"
 )
 
-/* Term */
-type Term interface {
-	MappableString
-	Lib.Copyable[Term]
-	GetIndex() int
-	GetName() string
-	IsMeta() bool
-	IsFun() bool
-	ToMeta() Meta
-	GetMetas() Lib.Set[Meta]
-	GetMetaList() Lib.List[Meta] // Metas appearing in the term ORDERED
-	GetSubTerms() Lib.List[Term]
-	ReplaceSubTermBy(original_term, new_term Term) Term
-	SubstTy(old TyGenVar, new Ty) Term
-	Less(any) bool
+/* This file implements the Either type (sum type). */
+
+type Either[A, B any] interface {
+	isEither()
 }
 
-/*** Makers ***/
-func MakeId(i int, s string) Id {
-	fms := &MappedString{}
-	id := Id{fms, i, s}
-	fms.MappableString = &id
-	return id
+type Left[A, B any] struct {
+	Val A
 }
 
-func MakeQuotedId(i int, s string) Id {
-	fms := &MappedString{}
-	id := Id{fms, i, "" + s + "'"}
-	fms.MappableString = &id
-	return id
+type Right[A, B any] struct {
+	Val B
 }
 
-func MakeVar(i int, s string) Var {
-	fms := &MappedString{}
-	newVar := Var{fms, i, s}
-	fms.MappableString = &newVar
-	return newVar
+func (Left[A, B]) isEither()  {}
+func (Right[A, B]) isEither() {}
+
+func MkLeft[A, B any](x A) Either[A, B] {
+	return Left[A, B]{Val: x}
 }
 
-func MakeMeta(index, occurence int, s string, f int, ty Ty) Meta {
-	fms := &MappedString{}
-	meta := Meta{fms, index, occurence, s, f, ty}
-	fms.MappableString = &meta
-	return meta
+func MkRight[A, B any](y B) Either[A, B] {
+	return Right[A, B]{Val: y}
 }
 
-func MakeFun(p Id, ty_args Lib.List[Ty], args Lib.List[Term], metas Lib.Set[Meta]) Fun {
-	fms := &MappedString{}
-	fun := Fun{fms, p, ty_args, args, Lib.MkCache(metas, Fun.forceGetMetas)}
-	fms.MappableString = fun
-	return fun
+func EitherToString[A, B Stringable](u Either[A, B], left, right string) string {
+	switch x := u.(type) {
+	case Left[A, B]:
+		return fmt.Sprintf("%s(%s)", left, x.Val.ToString())
+	case Right[A, B]:
+		return fmt.Sprintf("%s(%s)", right, x.Val.ToString())
+	}
+	return ""
 }
 
-/*** Functions **/
+func EitherEquals[A, B Comparable](u, v Either[A, B]) bool {
+	switch x := u.(type) {
+	case Left[A, B]:
+		switch y := v.(type) {
+		case Left[A, B]:
+			return x.Val.Equals(y.Val)
+		case Right[A, B]:
+			return false
+		}
+	case Right[A, B]:
+		switch y := v.(type) {
+		case Left[A, B]:
+			return false
+		case Right[A, B]:
+			return x.Val.Equals(y.Val)
+		}
+	}
 
-func TermEquals(x, y Term) bool {
-	return x.Equals(y)
+	return false
+}
+
+func EitherCpy[A Copyable[A], B Copyable[B]](u Either[A, B]) Either[A, B] {
+	switch x := u.(type) {
+	case Left[A, B]:
+		return MkLeft[A, B](x.Val.Copy())
+	case Right[A, B]:
+		return MkRight[A, B](x.Val.Copy())
+	}
+	return u
 }

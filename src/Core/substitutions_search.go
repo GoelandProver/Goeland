@@ -46,18 +46,21 @@ import (
 )
 
 /* Return the list of metavariable from a substitution */
-func GetMetaFromSubst(subs Unif.Substitutions) Lib.Set[AST.Meta] {
+func GetMetaFromSubst(subs Lib.List[Unif.MixedSubstitution]) Lib.Set[AST.Meta] {
 	res := Lib.EmptySet[AST.Meta]()
 
-	for _, singleSubs := range subs {
-		meta, term := singleSubs.Get()
-		res = res.Add(meta)
+	for _, singleSubs := range subs.GetSlice() {
+		switch s := singleSubs.Substitution().(type) {
+		case Lib.Some[Unif.Substitution]:
+			meta, term := s.Val.Get()
+			res = res.Add(meta)
 
-		switch typedTerm := term.(type) {
-		case AST.Meta:
-			res = res.Add(typedTerm)
-		case AST.Fun:
-			res = res.Union(AST.GetMetasOfList(typedTerm.GetArgs()))
+			switch typedTerm := term.(type) {
+			case AST.Meta:
+				res = res.Add(typedTerm)
+			case AST.Fun:
+				res = res.Union(AST.GetMetasOfList(typedTerm.GetArgs()))
+			}
 		}
 	}
 
@@ -65,7 +68,10 @@ func GetMetaFromSubst(subs Unif.Substitutions) Lib.Set[AST.Meta] {
 }
 
 /* Remove substitution without mm */
-func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.Substitutions {
+func RemoveElementWithoutMM(
+	subs Lib.List[Unif.MixedSubstitution],
+	mm Lib.Set[AST.Meta],
+) Lib.List[Unif.MixedSubstitution] {
 	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf(
 			"MM : %v",
@@ -74,8 +80,8 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.
 	}))
 
 	res := Unif.Substitutions{}
+	subst_to_reorganize := Unif.Substitutions{}
 
-	subsToReorganize := Unif.Substitutions{}
 	relevantMetas := mm.Copy()
 	hasChanged := true
 
@@ -87,50 +93,59 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.
 				Lib.ListToString(relevantMetas.Elements(), ",", "[]"),
 			)
 		}))
-		for _, singleSubs := range subs {
-			meta, term := singleSubs.Get()
+		for _, singleSubs := range subs.GetSlice() {
+			switch single_subst := singleSubs.Substitution().(type) {
+			case Lib.Some[Unif.Substitution]:
+				meta, term := single_subst.Val.Get()
 
-			switch typedTerm := term.(type) {
-			case AST.Meta:
-				switch {
-				case relevantMetas.Contains(meta) &&
-					relevantMetas.Contains(typedTerm):
-					res.Set(meta, typedTerm)
+				switch typedTerm := term.(type) {
+				case AST.Meta:
+					switch {
+					case relevantMetas.Contains(meta) &&
+						relevantMetas.Contains(typedTerm):
+						res.Set(meta, typedTerm)
 
-				case relevantMetas.Contains(meta) &&
-					relevantMetas.Contains(typedTerm):
-					subsToReorganize.Set(meta, typedTerm)
-				}
-
-			default:
-				if relevantMetas.Contains(meta) {
-					res.Set(meta, term)
-					for _, candidateMeta := range term.GetMetas().Elements().GetSlice() {
-						if !relevantMetas.Contains(candidateMeta) {
-							hasChanged = true
-						}
+					case relevantMetas.Contains(meta) &&
+						relevantMetas.Contains(typedTerm):
+						subst_to_reorganize.Set(meta, typedTerm)
 					}
-					relevantMetas = relevantMetas.Union(term.GetMetas())
+
+				default:
+					if relevantMetas.Contains(meta) {
+						res.Set(meta, term)
+						for _, candidateMeta := range term.GetMetas().Elements().GetSlice() {
+							if !relevantMetas.Contains(candidateMeta) {
+								hasChanged = true
+							}
+						}
+						relevantMetas = relevantMetas.Union(term.GetMetas())
+					}
 				}
 			}
 		}
 	}
 
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Subst intermédiaire res : %v", res.ToString()) }),
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Intermediary subst res : %s",
+				res.ToString(),
+			)
+		}),
 	)
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
-				"Subst intermédiaire subst_to_reorganize  : %v",
-				subsToReorganize.ToString())
+				"Intermediary subst subst_to_reorganize : %s",
+				subst_to_reorganize.ToString(),
+			)
 		}),
 	)
 
-	subsToReorganize = ReorganizeSubstitution(subsToReorganize)
-	Unif.EliminateMeta(&subsToReorganize)
-	Unif.Eliminate(&subsToReorganize)
-	ms, _ := Unif.MergeSubstitutions(res, subsToReorganize)
+	subst_to_reorganize = ReorganizeSubstitution(subst_to_reorganize)
+	Unif.EliminateMeta(&subst_to_reorganize)
+	Unif.Eliminate(&subst_to_reorganize)
+	ms, _ := Unif.MergeSubstitutions(res, subst_to_reorganize)
 
 	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Finale subst : %v", ms.ToString()) }),
@@ -140,13 +155,25 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.
 		Glob.PrintError("REWM", "MergeSubstitutions returns failure")
 	}
 
-	return ms
+	result := Lib.NewList[Unif.MixedSubstitution]()
+	for _, unif := range ms {
+		result.Append(Unif.MkMixedFromSubst(unif))
+	}
+
+	for _, s := range subs.GetSlice() {
+		switch subst := s.TySubstitution().(type) {
+		case Lib.Some[Unif.TySubstitution]:
+			result.Append(Unif.MkMixedFromTy(subst.Val))
+		}
+	}
+	return result
 
 }
 
-/* *
-* Take a substitution wich conatins elements like (meta_mother, meta_current), returning only relevante substitution like (meta_mother, meta_mother)
-* (X, X2) (Y, X2) -> (X, Y)
+/**
+ *	Take a substitution wich conatins elements like (meta_mother, meta_current), returning only
+ *	relevant substitutions like (meta_mother, meta_mother)
+ *  e.g., (X, X2) (Y, X2) -> (X, Y)
 **/
 func ReorganizeSubstitution(subs Unif.Substitutions) Unif.Substitutions {
 	res := Unif.Substitutions{}
@@ -172,16 +199,22 @@ func ReorganizeSubstitution(subs Unif.Substitutions) Unif.Substitutions {
 }
 
 /* Check if a substitution contains a metavirbale which is inside a given list of metavariable (check for the key, not the value) */
-func ContainsMetaMother(s Unif.Substitutions, mm Lib.Set[AST.Meta]) bool {
-	for _, subst := range s {
-		k, v := subst.Get()
-		if mm.Contains(k) {
+func ContainsMetaMother(s Lib.List[Unif.MixedSubstitution], mm Lib.Set[AST.Meta]) bool {
+	for _, subst := range s.GetSlice() {
+		switch s := subst.Substitution().(type) {
+		case Lib.None[Unif.Substitution]:
+			// In this case, [s] is a TySubstitution and hence it always contains a meta from the top level
 			return true
-		} else {
-			switch vtype := v.(type) {
-			case AST.Meta:
-				if mm.Contains(vtype) {
-					return true
+		case Lib.Some[Unif.Substitution]:
+			k, v := s.Val.Get()
+			if mm.Contains(k) {
+				return true
+			} else {
+				switch vtype := v.(type) {
+				case AST.Meta:
+					if mm.Contains(vtype) {
+						return true
+					}
 				}
 			}
 		}
@@ -218,7 +251,7 @@ func ApplySubstitutionOnTerm(old_symbol AST.Meta, new_symbol, t AST.Term) AST.Te
 
 /* Apply substitutions on a list of terms */
 func ApplySubstitutionsOnTermList(
-	s Unif.Substitutions,
+	s Lib.List[Unif.MixedSubstitution],
 	tl Lib.List[AST.Term],
 ) Lib.List[AST.Term] {
 	res := Lib.MkList[AST.Term](tl.Len())
@@ -231,17 +264,23 @@ func ApplySubstitutionsOnTermList(
 	return res
 }
 
-func ApplySubstitutionsOnTerm(s Unif.Substitutions, t AST.Term) AST.Term {
-	if t != nil {
-		term_res := t.Copy()
-		for _, subst := range s {
-			old_symbol, new_symbol := subst.Get()
-			term_res = ApplySubstitutionOnTerm(old_symbol, new_symbol, term_res)
-		}
-		return term_res
-	} else {
-		return nil
+func ApplySubstitutionsOnTerm(substs Lib.List[Unif.MixedSubstitution], t AST.Term) AST.Term {
+	if t == nil {
+		return t
 	}
+
+	for _, subst := range substs.GetSlice() {
+		switch s := subst.GetMixed().(type) {
+		case Lib.Left[Unif.TySubstitution, Unif.Substitution]:
+			meta, ty := s.Val.Get()
+			t = t.SubstTy(meta, ty)
+		case Lib.Right[Unif.TySubstitution, Unif.Substitution]:
+			meta, term := s.Val.Get()
+			t = t.ReplaceSubTermBy(meta, term)
+		}
+	}
+
+	return t
 }
 
 /* Apply substElement on a term list */
@@ -259,63 +298,29 @@ func ApplySubstitutionOnTermList(
 	return res
 }
 
-/* Apply a substitution on a formula */
-func ApplySubstitutionOnFormula(old_symbol AST.Meta, new_symbol AST.Term, f AST.Form) AST.Form {
-	var res AST.Form
-
-	switch nf := f.(type) {
-	case AST.Pred:
-		res = AST.MakePred(
-			nf.GetIndex(),
-			nf.GetID(),
-			nf.GetTyArgs(),
-			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),
-		)
-	case AST.Not:
-		res = AST.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
-	case AST.And:
-		res_tmp := Lib.NewList[AST.Form]()
-		for _, val := range nf.GetChildFormulas().GetSlice() {
-			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
-		}
-		res = AST.MakeAnd(f.GetIndex(), res_tmp)
-	case AST.Or:
-		res_tmp := Lib.NewList[AST.Form]()
-		for _, val := range nf.GetChildFormulas().GetSlice() {
-			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
-		}
-		res = AST.MakeOr(f.GetIndex(), res_tmp)
-	case AST.Imp:
-		res = AST.MakeImp(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
-	case AST.Equ:
-		res = AST.MakeEqu(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF1()), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetF2()))
-	case AST.Ex:
-		res = AST.MakeEx(f.GetIndex(), nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
-	case AST.All:
-		res = AST.MakeAll(f.GetIndex(), nf.GetVarList(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
-	default:
-		res = f
-	}
-
-	return res
-}
-
 /* Apply substitutions on Formula */
-func ApplySubstitutionsOnFormula(s Unif.Substitutions, f AST.Form) AST.Form {
-	if f != nil {
-		form_res := f.Copy()
-		for _, subst := range s {
-			old_symbol, new_symbol := subst.Get()
-			form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
-		}
-		return form_res
-	} else {
-		return nil
+func ApplySubstitutionsOnFormula(s Lib.List[Unif.MixedSubstitution], f AST.Form) AST.Form {
+	// FIXME: check that line, it shouldn't happen
+	if f == nil {
+		return f
 	}
+
+	for _, subst := range s.GetSlice() {
+		switch s := subst.GetMixed().(type) {
+		case Lib.Left[Unif.TySubstitution, Unif.Substitution]:
+			meta, ty := s.Val.Get()
+			f = f.SubstTy(meta, ty)
+		case Lib.Right[Unif.TySubstitution, Unif.Substitution]:
+			meta, term := s.Val.Get()
+			f = f.ReplaceMetaByTerm(meta, term)
+		}
+	}
+
+	return f
 }
 
 /* For each element of the substitution, apply it on the entire formula list */
-func ApplySubstitutionsOnFormulaList(s Unif.Substitutions, lf Lib.List[AST.Form]) Lib.List[AST.Form] {
+func ApplySubstitutionsOnFormulaList(s Lib.List[Unif.MixedSubstitution], lf Lib.List[AST.Form]) Lib.List[AST.Form] {
 	lf_res := Lib.NewList[AST.Form]()
 	for _, f := range lf.GetSlice() {
 		new_form := ApplySubstitutionsOnFormula(s, f)
@@ -326,20 +331,12 @@ func ApplySubstitutionsOnFormulaList(s Unif.Substitutions, lf Lib.List[AST.Form]
 }
 
 /* Apply substitutions on FormAndTerm */
-func ApplySubstitutionsOnFormAndTerms(s Unif.Substitutions, fat FormAndTerms) FormAndTerms {
-	// if fat != FormAndTerms{} {
-	form_res := fat.GetForm()
-	tl_res := fat.GetTerms()
-	for _, subst := range s {
-		old_symbol, new_symbol := subst.Get()
-		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
-		//tl_res = ApplySubstitutionOnTermList(old_symbol, new_symbol, tl_res)
-	}
-	return MakeFormAndTerm(form_res, tl_res)
+func ApplySubstitutionsOnFormAndTerms(s Lib.List[Unif.MixedSubstitution], fat FormAndTerms) FormAndTerms {
+	return MakeFormAndTerm(ApplySubstitutionsOnFormula(s, fat.GetForm()), fat.GetTerms())
 }
 
 /* For each element of the substitution, apply it on the entire formAndTerms list */
-func ApplySubstitutionsOnFormAndTermsList(s Unif.Substitutions, lf FormAndTermsList) FormAndTermsList {
+func ApplySubstitutionsOnFormAndTermsList(s Lib.List[Unif.MixedSubstitution], lf FormAndTermsList) FormAndTermsList {
 	lf_res := MakeEmptyFormAndTermsList()
 	for _, f := range lf {
 		new_form := ApplySubstitutionsOnFormAndTerms(s, f)
@@ -350,7 +347,7 @@ func ApplySubstitutionsOnFormAndTermsList(s Unif.Substitutions, lf FormAndTermsL
 }
 
 /* Apply a substitution on a metaGenerator list */
-func ApplySubstitutionOnMetaGenList(s Unif.Substitutions, lf []MetaGen) []MetaGen {
+func ApplySubstitutionOnMetaGenList(s Lib.List[Unif.MixedSubstitution], lf []MetaGen) []MetaGen {
 	lf_res := []MetaGen{}
 	for _, f := range lf {
 		new_form := ApplySubstitutionOnMetaGen(s, f)
@@ -362,35 +359,35 @@ func ApplySubstitutionOnMetaGenList(s Unif.Substitutions, lf []MetaGen) []MetaGe
 }
 
 /* Apply a substitution on a metaGen form */
-func ApplySubstitutionOnMetaGen(s Unif.Substitutions, mg MetaGen) MetaGen {
-	form_res := mg.GetForm().GetForm()
-	terms_res := mg.GetForm().Terms
-	for _, subst := range s {
-		old_symbol, new_symbol := subst.Get()
-		form_res = ApplySubstitutionOnFormula(old_symbol, new_symbol, form_res)
-		terms_res = ApplySubstitutionOnTermList(old_symbol, new_symbol, terms_res)
-	}
-	return MakeMetaGen(MakeFormAndTerm(form_res, terms_res), mg.GetCounter())
+func ApplySubstitutionOnMetaGen(s Lib.List[Unif.MixedSubstitution], mg MetaGen) MetaGen {
+	return MakeMetaGen(MakeFormAndTerm(
+		ApplySubstitutionsOnFormula(s, mg.GetForm().GetForm()),
+		ApplySubstitutionsOnTermList(s, mg.f.GetTerms())), mg.GetCounter())
 }
 
 /* Dispatch a list of substitution : containing mm or not */
-func DispatchSubst(subsList []Unif.Substitutions, mm Lib.Set[AST.Meta]) ([]Unif.Substitutions, []Unif.Substitutions, []Unif.Substitutions) {
-	var subsWithMM []Unif.Substitutions
-	var subsWithMMUncleared []Unif.Substitutions
-	var subsWithoutMM []Unif.Substitutions
+func DispatchSubst(
+	subsList Lib.List[Lib.List[Unif.MixedSubstitution]],
+	mm Lib.Set[AST.Meta],
+) (Lib.List[Lib.List[Unif.MixedSubstitution]],
+	Lib.List[Lib.List[Unif.MixedSubstitution]],
+	Lib.List[Lib.List[Unif.MixedSubstitution]]) {
+	subsWithMM := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
+	subsWithMMUncleared := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
+	subsWithoutMM := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
 
-	for _, subs := range subsList {
+	for _, subs := range subsList.GetSlice() {
 		removedSubs := subs
 
 		if Glob.IsDestructive() {
 			removedSubs = RemoveElementWithoutMM(subs, mm)
 		}
 
-		if !removedSubs.IsEmpty() {
-			subsWithMM = Unif.AppendIfNotContainsSubst(subsWithMM, removedSubs)
-			subsWithMMUncleared = Unif.AppendIfNotContainsSubst(subsWithMMUncleared, subs)
+		if !removedSubs.Empty() {
+			subsWithMM.Add(Lib.ListEquals, removedSubs)
+			subsWithMMUncleared.Add(Lib.ListEquals, subs)
 		} else {
-			subsWithoutMM = Unif.AppendIfNotContainsSubst(subsWithoutMM, subs)
+			subsWithoutMM.Add(Lib.ListEquals, subs)
 		}
 	}
 

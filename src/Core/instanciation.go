@@ -82,7 +82,7 @@ func RealInstantiate(
 	var m Lib.Option[AST.Meta]
 
 	if AST.IsTType(v.GetTy()) {
-		meta := AST.MkTyMeta(strings.ToUpper(v.GetName()))
+		meta := AST.MkTyMeta(strings.ToUpper(v.GetName()), index)
 		subForm = subForm.SubstTy(v.ToTyBoundVar(), meta)
 		m = Lib.MkNone[AST.Meta]()
 	} else {

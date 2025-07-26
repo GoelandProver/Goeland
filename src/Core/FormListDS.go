@@ -86,11 +86,11 @@ func (fl FormListDS) IsEmpty() bool {
 	return fl.GetFL().Empty()
 }
 
-func (fl FormListDS) Unify(f AST.Form) (bool, []Unif.MatchingSubstitutions) {
+func (fl FormListDS) Unify(f AST.Form) (bool, []Unif.MixedSubstitutions) {
 	for _, element := range fl.GetFL().GetSlice() {
 		if element.Equals(f) {
-			return true, []Unif.MatchingSubstitutions{}
+			return true, []Unif.MixedSubstitutions{}
 		}
 	}
-	return false, []Unif.MatchingSubstitutions{}
+	return false, []Unif.MixedSubstitutions{}
 }

@@ -54,10 +54,17 @@ func InitDebugger() {
 /*** Unify ***/
 
 /* Helper function to avoid using MakeMachine() outside of this file. */
-func (n Node) Unify(formula AST.Form) (bool, []MatchingSubstitutions) {
+func (n Node) Unify(formula AST.Form) (bool, []MixedSubstitutions) {
 	machine := makeMachine()
 	res := machine.unify(n, formula)
-	return !reflect.DeepEqual(machine.failure, res), res // return found, res
+	// As we have transformed type metas to terms, we get everything in a term substitution.
+	// But externally, we want to have a substitution of both (term) metas to terms and (type) metas to types.
+	// We use MixedSubstitution to properly manage things internally.
+	mixed_substs := []MixedSubstitutions{}
+	for _, subst := range res {
+		mixed_substs = append(mixed_substs, subst.toMixed())
+	}
+	return !reflect.DeepEqual(machine.failure, res), mixed_substs
 }
 
 /* Tries to find the substitutions needed to unify the formulae with the one described by the sequence of instructions. */
@@ -67,11 +74,10 @@ func (m *Machine) unify(node Node, formula AST.Form) []MatchingSubstitutions {
 	switch formula_type := formula.(type) {
 	case AST.Pred:
 		// Transform the predicate to a function to make the tool work properly
-		// FIXME: transform type arguments into terms to unify them
 		m.terms = Lib.MkListV[AST.Term](AST.MakerFun(
 			formula_type.GetID(),
-			formula_type.GetTyArgs(),
-			formula_type.GetArgs(),
+			Lib.NewList[AST.Ty](),
+			getFunctionalArguments(formula_type.GetTyArgs(), formula_type.GetArgs()),
 		))
 		result = m.unifyAux(node)
 
@@ -254,7 +260,7 @@ func (m *Machine) end(instrTerm AST.Term) Status {
 func (m *Machine) right() Status {
 	if m.isUnlocked() {
 		m.q += 1
-		if m.q > m.terms.Len() {
+		if m.q >= m.terms.Len() {
 			return Status(ERROR)
 		}
 		m.topLevelCount += 1

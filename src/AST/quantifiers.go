@@ -160,7 +160,7 @@ func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 	), res
 }
 
-func (q quantifier) replaceTyVar(old TyBound, new Ty) quantifier {
+func (q quantifier) replaceTyVar(old TyGenVar, new Ty) quantifier {
 	f := q.GetForm().SubstTy(old, new)
 	return makeQuantifier(
 		q.GetIndex(),
