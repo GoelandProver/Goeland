@@ -76,13 +76,12 @@ func tryUnifySAndT(s, t AST.Term) (bool, Unif.Substitutions) {
 /* check unfiication */
 func checkUnif(ep EqualityProblem) (found bool, substs_res []Unif.Substitutions) {
 	if ok, subst_found := tryUnifySAndT(ep.GetS(), ep.GetT()); ok {
-		Glob.PrintDebug("ERP", Lib.MkLazy(func() string { return "Unif found !" }))
+		debug(Lib.MkLazy(func() string { return "Unif found !" }))
 		new_subst := Unif.AddUnification(ep.GetS(), ep.GetT(), ep.getC().getSubst())
 		if !new_subst.Equals(Unif.Failure()) {
 			is_consistant := ep.c.getPrec().isConsistantWithSubst(new_subst)
 			if is_consistant {
-				Glob.PrintDebug(
-					"ERP",
+				debug(
 					Lib.MkLazy(func() string {
 						return fmt.Sprintf(
 							"Unif found and consistant : %v", new_subst.ToString())
@@ -91,8 +90,7 @@ func checkUnif(ep EqualityProblem) (found bool, substs_res []Unif.Substitutions)
 				found = true
 				substs_res = append(substs_res, new_subst)
 			} else {
-				Glob.PrintDebug(
-					"ERP",
+				debug(
 					Lib.MkLazy(func() string {
 						return fmt.Sprintf(
 							"Unif found but not consistant : %v", subst_found.ToString())
@@ -100,8 +98,7 @@ func checkUnif(ep EqualityProblem) (found bool, substs_res []Unif.Substitutions)
 				)
 			}
 		} else {
-			Glob.PrintDebug(
-				"ERP",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Unif found but not consistant with other unifications : %v", subst_found.ToString())
@@ -109,7 +106,7 @@ func checkUnif(ep EqualityProblem) (found bool, substs_res []Unif.Substitutions)
 			)
 		}
 	} else {
-		Glob.PrintDebug("ERP", Lib.MkLazy(func() string { return "Unification not found" }))
+		debug(Lib.MkLazy(func() string { return "Unification not found" }))
 	}
 	return found, substs_res
 }

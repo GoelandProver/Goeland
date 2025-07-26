@@ -40,7 +40,6 @@ import (
 	"strings"
 
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -191,7 +190,7 @@ func (n Node) printAux(tab int) {
 		if instr.IsEquivalent(Begin{}) {
 			tab += 1
 		}
-		Glob.PrintDebug("PT", Lib.MkLazy(func() string { return strings.Repeat("\t", tab) + instr.ToString() }))
+		debug(Lib.MkLazy(func() string { return strings.Repeat("\t", tab) + instr.ToString() }))
 
 		if IsEnd(instr) {
 			tab -= 1
@@ -200,10 +199,10 @@ func (n Node) printAux(tab int) {
 
 	if n.isLeaf() {
 		for _, form := range n.formulae.Slice() {
-			Glob.PrintDebug("PT", Lib.MkLazy(func() string { return strings.Repeat("\t", tab+1) + form.ToString() }))
+			debug(Lib.MkLazy(func() string { return strings.Repeat("\t", tab+1) + form.ToString() }))
 		}
 	}
-	Glob.PrintDebug("PT", Lib.MkLazy(func() string { return "\n" }))
+	debug(Lib.MkLazy(func() string { return "\n" }))
 
 	// For each child, print the following sequences with tab = tab + 1
 	for _, child := range n.children {

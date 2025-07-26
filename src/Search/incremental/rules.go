@@ -199,7 +199,7 @@ type AlphaAnd struct {
 
 func (aa *AlphaAnd) apply() []RuleList {
 	resultRules := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(aa.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(aa.FullString) }))
 
 	switch form := aa.GetForm().(type) {
 	case AST.And:
@@ -217,7 +217,7 @@ type AlphaNotNot struct {
 
 func (ann *AlphaNotNot) apply() []RuleList {
 	resultRules := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(ann.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(ann.FullString) }))
 
 	switch form := ann.GetForm().(type) {
 	case AST.Not:
@@ -236,7 +236,7 @@ type AlphaNotOr struct {
 
 func (ano *AlphaNotOr) apply() []RuleList {
 	resultRules := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(ano.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(ano.FullString) }))
 
 	switch form := ano.GetForm().(type) {
 	case AST.Not:
@@ -257,7 +257,7 @@ type AlphaNotImp struct {
 
 func (ani *AlphaNotImp) apply() []RuleList {
 	resultRules := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(ani.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(ani.FullString) }))
 
 	switch form := ani.GetForm().(type) {
 	case AST.Not:
@@ -277,7 +277,7 @@ type BetaNotAnd struct {
 
 func (bna *BetaNotAnd) apply() []RuleList {
 	resultRulesBeta := []RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(bna.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(bna.FullString) }))
 
 	switch form := bna.GetForm().(type) {
 	case AST.Not:
@@ -299,7 +299,7 @@ type BetaNotEqu struct {
 func (bne *BetaNotEqu) apply() []RuleList {
 	resultRules1 := RuleList{}
 	resultRules2 := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(bne.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(bne.FullString) }))
 
 	switch form := bne.GetForm().(type) {
 	case AST.Not:
@@ -322,7 +322,7 @@ type BetaOr struct {
 
 func (bo *BetaOr) apply() []RuleList {
 	resultRulesBeta := []RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(bo.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(bo.FullString) }))
 
 	switch form := bo.GetForm().(type) {
 	case AST.Or:
@@ -341,7 +341,7 @@ type BetaImp struct {
 func (bi *BetaImp) apply() []RuleList {
 	resultRules1 := RuleList{}
 	resultRules2 := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(bi.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(bi.FullString) }))
 
 	switch subForm := bi.GetForm().(type) {
 	case AST.Imp:
@@ -359,7 +359,7 @@ type BetaEqu struct {
 func (be *BetaEqu) apply() []RuleList {
 	resultRules1 := RuleList{}
 	resultRules2 := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(be.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(be.FullString) }))
 
 	switch form := be.GetForm().(type) {
 	case AST.Equ:
@@ -387,7 +387,7 @@ type GammaNotExists struct {
 
 func (gne *GammaNotExists) apply() []RuleList {
 	resultRules := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(gne.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(gne.FullString) }))
 
 	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gne.GetForm(), gne.GetTerms()), 42)
 	newTerms := gne.GetTerms().Copy(AST.Term.Copy)
@@ -428,7 +428,7 @@ type GammaForall struct {
 
 func (gf *GammaForall) apply() []RuleList {
 	resultRules := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(gf.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(gf.FullString) }))
 
 	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gf.GetForm(), gf.GetTerms()), 42)
 	newTerms := gf.GetTerms().Copy(AST.Term.Copy)
@@ -466,7 +466,7 @@ type DeltaNotForall struct {
 
 func (dnf *DeltaNotForall) apply() []RuleList {
 	resultRules := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(dnf.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(dnf.FullString) }))
 
 	skolemizedForm := Core.Skolemize(dnf.GetForm(), dnf.GetForm().GetMetas())
 	skolemizedFnt := Core.MakeFormAndTerm(skolemizedForm, dnf.GetTerms())
@@ -485,7 +485,7 @@ type DeltaExists struct {
 
 func (de *DeltaExists) apply() []RuleList {
 	resultRules := RuleList{}
-	Glob.PrintDebug("SRCH", Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(de.FullString) }))
+	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(de.FullString) }))
 
 	skolemizedForm := Core.Skolemize(de.GetForm(), de.GetForm().GetMetas())
 	skolemizedFnt := Core.MakeFormAndTerm(skolemizedForm, de.GetTerms())

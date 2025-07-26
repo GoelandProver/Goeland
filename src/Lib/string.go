@@ -31,39 +31,30 @@
 **/
 
 /**
-* This file provides the necessary structures to manipulate matching substitutions
-**/
+ * This file offers [String], a wrapper around [string] that allows for writing
+ * methods over strings.
+ **/
 
-package Unif
+package Lib
 
-import (
-	"fmt"
-
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Lib"
-)
-
-type MatchingSubstitutions struct {
-	form  AST.Form
-	subst Substitutions
+type String struct {
+	value string
 }
 
-func (m MatchingSubstitutions) GetForm() AST.Form {
-	return m.form.Copy()
-}
-func (m MatchingSubstitutions) GetSubst() Substitutions {
-	return m.subst.Copy()
-}
-
-func (m MatchingSubstitutions) ToString() string {
-	return m.GetForm().ToString() + " " + m.GetSubst().ToString()
+func (s String) Equals(oth any) bool {
+	if str, ok := oth.(String); ok {
+		return s.value == str.value
+	}
+	return false
 }
 
-func (m MatchingSubstitutions) Print() {
-	debug(Lib.MkLazy(func() string { return fmt.Sprintf(" %s ", m.GetForm().ToString()) }))
-	m.GetSubst().Print()
+func (s String) Less(oth any) bool {
+	if str, ok := oth.(String); ok {
+		return s.value < str.value
+	}
+	return false
 }
 
-func MakeMatchingSubstitutions(form AST.Form, subst Substitutions) MatchingSubstitutions {
-	return MatchingSubstitutions{form.Copy(), subst.Copy()}
+func MkString(s string) String {
+	return String{s}
 }

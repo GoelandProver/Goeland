@@ -39,6 +39,7 @@ package Glob
 import (
 	"bytes"
 	"fmt"
+	"github.com/GoelandProver/Goeland/Lib"
 	"os"
 	"runtime"
 	"strconv"
@@ -83,7 +84,7 @@ var type_check = true
 
 var IncrEq = false
 
-var debug = false
+var debug = Lib.EmptySet[Lib.String]()
 var writeLogs = false
 var silent = false
 
@@ -126,7 +127,7 @@ func GetGID() uint64 {
 
 /* Getters */
 func GetDebug() bool {
-	return debug
+	return !debug.IsEmpty()
 }
 
 func GetSilent() bool {
@@ -282,8 +283,25 @@ func NoTypeCheck() bool {
 }
 
 /* Setters */
-func SetDebug(b bool) {
-	debug = b
+func SetDebug(debug_list string) {
+	if debug_list == "none" {
+		return
+	}
+
+	EnableDebug()
+
+	if debug_list == "" || debug_list == "all" {
+		debug = registered_debuggers
+	} else {
+		for _, s := range strings.Split(debug_list, ",") {
+			str := Lib.MkString(s)
+			if !registered_debuggers.Contains(str) {
+				PrintWarn("debug", fmt.Sprintf("Undefined debugger %s", s))
+			} else {
+				debug = debug.Add(str)
+			}
+		}
+	}
 }
 
 func SetSilent(b bool) {

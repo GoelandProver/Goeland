@@ -66,8 +66,7 @@ func (bes *BasicEqualityStruct) AddGoal(goal []eqStruct.TermPair) {
 }
 
 func (bes *BasicEqualityStruct) Solve() (subs []Unif.Substitutions, success bool) {
-	Glob.PrintDebug(
-		"ERML",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Start of Equality reasoning multilist : %v",
@@ -80,13 +79,11 @@ func (bes *BasicEqualityStruct) Solve() (subs []Unif.Substitutions, success bool
 	for _, goal := range bes.goals.Slice() {
 		epl := makeEqualityProblemList(bes.assumptions.Slice(), goal.Slice())
 
-		Glob.PrintDebug(
-			"ERML",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("iteration on EPL : %v", epl.ToString()) }),
 		)
 		if has_solution, subst_res_tmp := equalityReasoningList(epl); has_solution {
-			Glob.PrintDebug(
-				"ERML",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Solution found for one EPL : %v !",
@@ -100,8 +97,7 @@ func (bes *BasicEqualityStruct) Solve() (subs []Unif.Substitutions, success bool
 		}
 	}
 
-	Glob.PrintDebug(
-		"ERML",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Final subst after ER : %v",
@@ -151,22 +147,19 @@ func RunEqualityReasoning(es eqStruct.EqualityStruct, epml EqualityProblemMultiL
 * Result : true if all of the problem in the list agrees on at least one substitution, and the corresponding substitutions
 **/
 func equalityReasoningList(epl EqualityProblemList) (bool, []Unif.Substitutions) {
-	Glob.PrintDebug(
-		"ERML",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Start of Equality reasoning list : %v", epl.ToString()) }),
 	)
 
 	substs_res := []Unif.Substitutions{}
 
 	for _, ep := range epl {
-		Glob.PrintDebug(
-			"ERL",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Iteration on EP : %v", ep.ToString()) }),
 		)
 		// Each step manage one problem with n subtitutions
 		if has_solution, subst_res_tmp := manageEqualityReasoningProblem(ep.copy(), substs_res); has_solution {
-			Glob.PrintDebug(
-				"ERL",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Solution found for on EP : %v !",
@@ -183,8 +176,7 @@ func equalityReasoningList(epl EqualityProblemList) (bool, []Unif.Substitutions)
 
 /* return true if at least on subst on the subst list returns result, and the corresponding substitution list */
 func manageEqualityReasoningProblem(ep EqualityProblem, sl []Unif.Substitutions) (bool, []Unif.Substitutions) {
-	Glob.PrintDebug(
-		"ERPWAS",
+	debug(
 		Lib.MkLazy(func() string { return "Start on equality reasoning  problem with apply subst" }),
 	)
 	if len(sl) == 0 {

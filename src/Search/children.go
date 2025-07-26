@@ -122,8 +122,7 @@ func removeChildren(s []Communication, removals Lib.Set[Lib.Int]) []Communicatio
 * kill = true : kill the children  false : wait father
 **/
 func closeChildren(children *[]Communication, kill bool) {
-	Glob.PrintDebug(
-		"CC",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Close children : %v,  order : %v", len(*children), kill) }),
 	)
 
@@ -131,10 +130,9 @@ func closeChildren(children *[]Communication, kill bool) {
 	for i, v := range *children {
 		select {
 		case v.quit <- kill:
-			Glob.PrintDebug("CC", Lib.MkLazy(func() string { return "Send close order" }))
+			debug(Lib.MkLazy(func() string { return "Send close order" }))
 		case res := <-v.result:
-			Glob.PrintDebug(
-				"CC",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Receive answer : %v and then send close order",
@@ -144,8 +142,7 @@ func closeChildren(children *[]Communication, kill bool) {
 			if res.need_answer {
 				v.quit <- kill
 			} else {
-				Glob.PrintDebug(
-					"CC",
+				debug(
 					Lib.MkLazy(func() string { return "Not send, child already dead" }),
 				)
 				delayed_removal = delayed_removal.Add(Lib.MkInt(i))
@@ -160,13 +157,11 @@ func closeChildren(children *[]Communication, kill bool) {
 
 /* Send a substitution to a list of child */
 func sendSubToChildren(children []Communication, s Core.SubstAndForm) {
-	Glob.PrintDebug(
-		"SSTC",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Send sub to children : %v", len(children)) }),
 	)
 	for i, v := range children {
-		Glob.PrintDebug(
-			"SSTC",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("children : %v/%v", i+1, len(children)) }),
 		)
 		v.result <- Result{Glob.GetGID(), true, true, s.Copy(), []Core.SubstAndForm{}, Unif.MakeEmptySubstitutionList(), nil, -1, -1, Core.MakeUnifier()}
@@ -175,13 +170,11 @@ func sendSubToChildren(children []Communication, s Core.SubstAndForm) {
 
 /* Send a substitution to a list of child */
 func sendForbiddenToChildren(children []Communication, s []Unif.Substitutions) {
-	Glob.PrintDebug(
-		"SFTC",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Send forbidden to children : %v", len(children)) }),
 	)
 	for i, v := range children {
-		Glob.PrintDebug(
-			"SFTC",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("children : %v/%v", i+1, len(children)) }),
 		)
 		v.result <- Result{Glob.GetGID(), true, true, Core.MakeEmptySubstAndForm(), []Core.SubstAndForm{}, s, nil, -1, -1, Core.MakeUnifier()}
@@ -191,8 +184,7 @@ func sendForbiddenToChildren(children []Communication, s []Unif.Substitutions) {
 /* Send a subst to father. Return true if the process is supposed to die after */
 func (ds *destructiveSearch) sendSubToFather(c Communication, closed, need_answer bool, father_id uint64, st State, given_substs []Core.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int) {
 	subst_for_father := Core.RemoveEmptySubstFromSubstAndFormList(st.GetSubstsFound())
-	Glob.PrintDebug(
-		"SSTF",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Send subst to father : %v, closed : %v, need answer : %v",
@@ -200,16 +192,14 @@ func (ds *destructiveSearch) sendSubToFather(c Communication, closed, need_answe
 				closed, need_answer)
 		}),
 	)
-	Glob.PrintDebug(
-		"SSTF",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Send answer : %v",
 				Core.SubstAndFormListToString(subst_for_father))
 		}),
 	)
-	Glob.PrintDebug(
-		"SSTF",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Id : %v, original node id :%v",
@@ -217,12 +207,10 @@ func (ds *destructiveSearch) sendSubToFather(c Communication, closed, need_answe
 				original_node_id)
 		}),
 	)
-	Glob.PrintDebug(
-		"SSTF",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Send proof : %v", ProofStructListToString(st.GetProof())) }),
 	)
-	Glob.PrintDebug(
-		"SSTF",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Meta to reintroduce: %v",
@@ -235,7 +223,7 @@ func (ds *destructiveSearch) sendSubToFather(c Communication, closed, need_answe
 		if need_answer {
 			ds.waitFather(father_id, st, c, Core.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)
 		} else {
-			Glob.PrintDebug("SSTF", Lib.MkLazy(func() string { return "Die" }))
+			debug(Lib.MkLazy(func() string { return "Die" }))
 		}
 	case quit := <-c.quit:
 		ds.manageQuitOrder(quit, c, father_id, st, []Communication{}, given_substs, node_id, original_node_id, []int{}, meta_to_reintroduce)

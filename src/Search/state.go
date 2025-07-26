@@ -292,69 +292,66 @@ func MakeState(limit int, tp, tn Unif.DataStructure, f AST.Form) State {
 
 /* Print a state */
 func (st State) Print() {
-	Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "==== State ====" }))
-	Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return fmt.Sprintf(" n = %v", st.GetN()) }))
+	debug(Lib.MkLazy(func() string { return "==== State ====" }))
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf(" n = %v", st.GetN()) }))
 
 	if !st.GetLF().IsEmpty() {
-		Glob.PrintDebug("Pst", Lib.MkLazy(func() string { return "Formulas list: " }))
+		debug(Lib.MkLazy(func() string { return "Formulas list: " }))
 		st.GetLF().Print()
 	}
 
 	if !st.GetAtomic().IsEmpty() {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Atomic formulas: " }))
+		debug(Lib.MkLazy(func() string { return "Atomic formulas: " }))
 		st.GetAtomic().Print()
 	}
 
 	if !st.GetAlpha().IsEmpty() {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Alpha formulas: " }))
+		debug(Lib.MkLazy(func() string { return "Alpha formulas: " }))
 		st.GetAlpha().Print()
 	}
 
 	if !st.GetBeta().IsEmpty() {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Beta formulas: " }))
+		debug(Lib.MkLazy(func() string { return "Beta formulas: " }))
 		st.GetBeta().Print()
 	}
 
 	if !st.GetDelta().IsEmpty() {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Delta formulas: " }))
+		debug(Lib.MkLazy(func() string { return "Delta formulas: " }))
 		st.GetDelta().Print()
 	}
 
 	if !st.GetGamma().IsEmpty() {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Gamma formulas: " }))
+		debug(Lib.MkLazy(func() string { return "Gamma formulas: " }))
 		st.GetGamma().Print()
 	}
 
 	if len(st.GetMetaGen()) > 0 {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Meta generator formulas: " }))
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return Core.MetaGenListToString(st.GetMetaGen()) }))
+		debug(Lib.MkLazy(func() string { return "Meta generator formulas: " }))
+		debug(Lib.MkLazy(func() string { return Core.MetaGenListToString(st.GetMetaGen()) }))
 	}
 
 	if !st.GetMM().IsEmpty() {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Meta Mother: " }))
-		Glob.PrintDebug(
-			"Pst",
+		debug(Lib.MkLazy(func() string { return "Meta Mother: " }))
+		debug(
 			Lib.MkLazy(func() string { return Lib.ListToString(st.GetMM().Elements(), ",", "[]") }),
 		)
 	}
 
 	if !st.GetMC().IsEmpty() {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Meta current: " }))
-		Glob.PrintDebug(
-			"Pst",
+		debug(Lib.MkLazy(func() string { return "Meta current: " }))
+		debug(
 			Lib.MkLazy(func() string { return Lib.ListToString(st.GetMC().Elements(), ",", "[]") }),
 		)
 	}
 
 	if !st.GetAppliedSubst().IsEmpty() {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Applied subst: " }))
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return st.GetAppliedSubst().ToString() }))
+		debug(Lib.MkLazy(func() string { return "Applied subst: " }))
+		debug(Lib.MkLazy(func() string { return st.GetAppliedSubst().ToString() }))
 	}
 
 	if len(st.GetSubstsFound()) > 0 {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Subst_found: " }))
-		Glob.PrintDebug(
-			"PSt",
+		debug(Lib.MkLazy(func() string { return "Subst_found: " }))
+		debug(
 			Lib.MkLazy(func() string {
 				return Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))
 			}),
@@ -362,17 +359,16 @@ func (st State) Print() {
 	}
 
 	if !st.GetLastAppliedSubst().IsEmpty() {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Last applied subst:" }))
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return st.GetLastAppliedSubst().ToString() }))
+		debug(Lib.MkLazy(func() string { return "Last applied subst:" }))
+		debug(Lib.MkLazy(func() string { return st.GetLastAppliedSubst().ToString() }))
 	}
 
 	if len(st.forbidden) > 0 {
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return "Forbidden:" }))
-		Glob.PrintDebug("PSt", Lib.MkLazy(func() string { return Unif.SubstListToString(st.forbidden) }))
+		debug(Lib.MkLazy(func() string { return "Forbidden:" }))
+		debug(Lib.MkLazy(func() string { return Unif.SubstListToString(st.forbidden) }))
 	}
 
-	Glob.PrintDebug(
-		"PSt",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("BT on formulas : %v", st.GetBTOnFormulas()) }),
 	)
 
@@ -465,9 +461,8 @@ func (st State) AreRulesApplicable() bool {
 
 /* Put the given formula in the right rule box in the given state */
 func (st *State) DispatchForm(f Core.FormAndTerms) {
-	Glob.PrintDebug("DF", Lib.MkLazy(func() string { return fmt.Sprintf("Dispatch the form : %v ", f.ToString()) }))
-	Glob.PrintDebug(
-		"DF",
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Dispatch the form : %v ", f.ToString()) }))
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Kind of rule : %v ", Core.ShowKindOfRule(f.GetForm())) }),
 	)
 	switch Core.ShowKindOfRule(f.GetForm()) {

@@ -34,8 +34,15 @@ package Core
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
+
+var debug func(Lib.Lazy[string])
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("core")
+}
 
 /***************************/
 /* Structure of statements */

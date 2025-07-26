@@ -38,9 +38,16 @@ import (
 
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Unif"
 )
+
+var debug func(Lib.Lazy[string])
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("plugin.assisted")
+}
 
 var ruleSynonymList = map[string]string{
 	"Atomic": "X",

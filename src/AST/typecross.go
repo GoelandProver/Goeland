@@ -120,10 +120,7 @@ func (tc TypeCross) GetAllUnderlyingTypes() []TypeApp {
  **/
 func MkTypeCross(typeSchemes ...TypeApp) TypeCross {
 	if len(typeSchemes) < 2 {
-		Glob.PrintDebug(
-			"MKTC",
-			Lib.MkLazy(func() string { return "There should be at least two underlying types in a TypeCross." }),
-		)
+		debug(Lib.MkLazy(func() string { return "There should be at least two underlying types in a TypeCross." }))
 		return TypeCross{}
 	}
 	tc := TypeCross{types: make([]TypeApp, len(typeSchemes))}

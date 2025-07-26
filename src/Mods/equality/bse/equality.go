@@ -46,6 +46,12 @@ import (
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
+var debug func(Lib.Lazy[string])
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("plugin.equality")
+}
+
 func Enable() {
 	SetTryEquality()
 	eqStruct.NewEqStruct = NewBasicEqualityStruct
@@ -57,9 +63,9 @@ func SetTryEquality() {
 
 func TryEquality(atomics_for_dmt Core.FormAndTermsList, st Search.State, new_atomics Core.FormAndTermsList, father_id uint64, cha Search.Communication, node_id int, original_node_id int) bool {
 	if !Glob.GetDMTBeforeEq() || len(atomics_for_dmt) == 0 || len(st.GetLF()) == 0 {
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Try apply EQ !" }))
+		debug(Lib.MkLazy(func() string { return "Try apply EQ !" }))
 		if len(new_atomics) > 0 || len(st.GetLF()) == 0 {
-			Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "EQ is applicable !" }))
+			debug(Lib.MkLazy(func() string { return "EQ is applicable !" }))
 			atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 			res_eq, subst_eq := EqualityReasoning(st.GetEqStruct(), st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms(), original_node_id)
 			if res_eq {
@@ -89,7 +95,7 @@ func TryEquality(atomics_for_dmt Core.FormAndTermsList, st Search.State, new_ato
 * returns a bool for success and the corresponding substitution
 **/
 func EqualityReasoning(eqStruct eqStruct.EqualityStruct, tree_pos, tree_neg Unif.DataStructure, atomic *AST.FormList, originalNodeId int) (bool, []Unif.Substitutions) {
-	Glob.PrintDebug("ER", Lib.MkLazy(func() string { return "ER call" }))
+	debug(Lib.MkLazy(func() string { return "ER call" }))
 	problem, equalities := buildEqualityProblemMultiList(atomic, tree_pos, tree_neg)
 	if equalities {
 		return RunEqualityReasoning(eqStruct, problem)

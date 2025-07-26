@@ -125,14 +125,12 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 	go ds.ProofSearch(Glob.GetGID(), state, c, Core.MakeEmptySubstAndForm(), nodeId, nodeId, []int{}, false)
 	Glob.IncrGoRoutine(1)
 
-	Glob.PrintDebug("MAIN", Lib.MkLazy(func() string { return "GO" }))
+	debug(Lib.MkLazy(func() string { return "GO" }))
 
-	Glob.PrintDebug(
-		"MAIN",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Nb of goroutines = %d", Glob.GetNbGoroutines()) }),
 	)
-	Glob.PrintDebug(
-		"MAIN",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("%v goroutines still running", runtime.NumGoroutine()) }),
 	)
 
@@ -156,10 +154,9 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 
 /* Choose a substitution (backtrack) */
 func (ds *destructiveSearch) tryBTSubstitution(spc *([]Core.SubstAndForm), mm Lib.Set[AST.Meta], children []Communication) Core.SubstAndForm {
-	Glob.PrintDebug("TBTS", Lib.MkLazy(func() string { return "Try another substitution." }))
+	debug(Lib.MkLazy(func() string { return "Try another substitution." }))
 	next_subst, new_spc := ds.chooseSubstitutionDestructive(Core.CopySubstAndFormList(*spc), mm)
-	Glob.PrintDebug(
-		"TBTS",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Choose the substitution : %v and send it to children",
@@ -211,8 +208,7 @@ func (ds *destructiveSearch) searchContradictionAfterApplySusbt(father_id uint64
 		return false
 	}
 	for _, f := range st.GetAtomic() {
-		Glob.PrintDebug(
-			"PS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("##### Formula %v #####", f.ToString()) }),
 		)
 		// Check if exists a contradiction after applying the substitution
@@ -229,8 +225,7 @@ func (ds *destructiveSearch) searchContradiction(atomic AST.Form, father_id uint
 	if Glob.GetAssisted() {
 		return false
 	}
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("##### Formula %v #####", atomic.ToString()) }),
 	)
 	clos_res, subst := ApplyClosureRules(atomic, &st)
@@ -253,12 +248,10 @@ func (ds *destructiveSearch) searchContradiction(atomic AST.Form, father_id uint
 * subst_found : Unif.Substitutions found by this process
 **/
 func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communication, s Core.SubstAndForm, node_id int, original_node_id int, meta_to_reintroduce []int, post_dmt_step bool) {
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string { return "---------- New search step ----------" }),
 	)
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Child of %v - node id : %v - original node id : %v",
@@ -267,8 +260,7 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 				original_node_id)
 		}),
 	)
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Meta to reintroduce: %v",
@@ -287,13 +279,11 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 	default:
 		// Apply subst if needed
 		if !s.IsEmpty() {
-			Glob.PrintDebug(
-				"PS",
+			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("Apply Substitution : %v", s.ToString()) }),
 			)
 			ApplySubstitution(&st, s)
-			Glob.PrintDebug(
-				"PS",
+			debug(
 				Lib.MkLazy(func() string { return "Searching contradiction with new atomics" }),
 			)
 			if ds.searchContradictionAfterApplySusbt(father_id, st, cha, node_id, original_node_id) {
@@ -304,8 +294,7 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 		// Print current state
 		st.Print()
 		if len(st.GetSubstsFound()) > 0 {
-			Glob.PrintDebug(
-				"PS",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Current substitutions list: %v",
@@ -313,13 +302,12 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 				}),
 			)
 		}
-		Glob.PrintDebug(
-			"PS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Formulas to be added: %v", st.GetLF().ToString()) }),
 		)
 
 		// Dispatch newly generated formulas into the right category
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Dispatch" }))
+		debug(Lib.MkLazy(func() string { return "Dispatch" }))
 		step_atomics := Core.MakeEmptyFormAndTermsList()
 		for _, f := range st.GetLF() {
 			if Core.ShowKindOfRule(f.GetForm()) == Core.Atomic {
@@ -334,17 +322,14 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 		}
 
 		// DMT --- Retrieve atomics for DMT
-		Glob.PrintDebug(
-			"PS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("New atomics : %v", step_atomics.ToString()) }),
 		)
 		atomics_dmt, atomics_non_dmt := ds.getAtomicsForDMT(step_atomics, &st, s, post_dmt_step)
-		Glob.PrintDebug(
-			"PS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Atomics dmt : %v", atomics_dmt.ToString()) }),
 		)
-		Glob.PrintDebug(
-			"PS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Atomics non-dmt : %v", atomics_non_dmt.ToString()) }),
 		)
 
@@ -358,12 +343,10 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 		// Retrieve new formulas to insert into the trees
 		atomicsPlus := atomics_non_dmt.FilterLitPolarity(Core.Pos)
 		atomicsMinus := atomics_non_dmt.FilterLitPolarity(Core.Neg)
-		Glob.PrintDebug(
-			"PS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Atomic plus : %v", atomicsPlus.ToString()) }),
 		)
-		Glob.PrintDebug(
-			"PS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Atomic minus : %v", atomicsMinus.ToString()) }),
 		)
 		st.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().Merge(atomicsPlus).ExtractForms(), true))
@@ -383,12 +366,12 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 			}
 		}
 
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Tree Pos after insert:" }))
+		debug(Lib.MkLazy(func() string { return "Tree Pos after insert:" }))
 		st.GetTreePos().Print()
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Tree Neg after insert:" }))
+		debug(Lib.MkLazy(func() string { return "Tree Neg after insert:" }))
 		st.GetTreeNeg().Print()
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Let's apply rules !" }))
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string {
+		debug(Lib.MkLazy(func() string { return "Let's apply rules !" }))
+		debug(Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"LF before applyRules : %v",
 				st.GetLF().ToString())
@@ -439,8 +422,7 @@ func (ds *destructiveSearch) waitChildren(args wcdArgs) {
 		ds.manageQuitOrder(quit, args.c, args.fatherId, args.st, args.children, args.givenSubsts, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
 		return
 	default:
-		Glob.PrintDebug(
-			"WC",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Current substs : %v",
@@ -448,8 +430,7 @@ func (ds *destructiveSearch) waitChildren(args wcdArgs) {
 			}),
 		)
 		status, substs, proofs, unifiers := ds.selectChildren(args.c, &args.children, args.currentSubst, args.childOrdering)
-		Glob.PrintDebug(
-			"WC",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"End of select - resulting substs : %v ",
@@ -471,11 +452,11 @@ func (ds *destructiveSearch) waitChildren(args wcdArgs) {
 			ds.passSubstToChildren(args, substs)
 		case QUIT:
 			WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Die")
-			Glob.PrintDebug("WC", Lib.MkLazy(func() string { return "Closing order received" }))
+			debug(Lib.MkLazy(func() string { return "Closing order received" }))
 			ds.manageQuitOrder(true, args.c, args.fatherId, args.st, args.children, []Core.SubstAndForm{}, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
 		case WAIT:
 			WriteExchanges(args.fatherId, args.st, args.givenSubsts, args.currentSubst, "WaitChildren - Wait father")
-			Glob.PrintDebug("WC", Lib.MkLazy(func() string { return "Closing order received, let's wait father" }))
+			debug(Lib.MkLazy(func() string { return "Closing order received, let's wait father" }))
 			closeChildren(&args.children, true)
 			ds.waitFather(args.fatherId, args.st, args.c, args.givenSubsts, args.nodeId, args.originalNodeId, args.childOrdering, args.toReintroduce)
 		case OPENED:
@@ -499,7 +480,7 @@ func (ds *destructiveSearch) waitChildren(args wcdArgs) {
 * 	given_substs : subst send by this node to its father
 **/
 func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communication, given_substs []Core.SubstAndForm, node_id int, original_node_id int, child_order []int, meta_to_reintroduce []int) {
-	Glob.PrintDebug("WF", Lib.MkLazy(func() string { return "Wait father" }))
+	debug(Lib.MkLazy(func() string { return "Wait father" }))
 
 	// CLear subst found
 	st.SetSubstsFound([]Core.SubstAndForm{})
@@ -515,15 +496,13 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 
 		// Update to prune everything that shouldn't happen.
 		WriteExchanges(father_id, st, given_substs, subst, "WaitFather")
-		Glob.PrintDebug(
-			"WF",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Substition received : %v", subst.ToString()) }),
 		)
 
 		// Check if the subst was already seen, returns eventually the subst with new formula(s)
 		if Unif.ContainsSubst(Core.GetSubstListFromSubstAndFormList(given_substs), answer_father.subst_for_children.GetSubst()) {
-			Glob.PrintDebug(
-				"WF",
+			debug(
 				Lib.MkLazy(func() string { return "This substitution was sent by this child" }),
 			)
 			for _, subst_sent := range given_substs {
@@ -552,8 +531,7 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 
 			// Maj forbidden
 			if len(answer_father.forbidden) > 0 {
-				Glob.PrintDebug(
-					"WF",
+				debug(
 					Lib.MkLazy(func() string {
 						return fmt.Sprintf(
 							"Forbidden received : %v",
@@ -561,8 +539,7 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 					}),
 				)
 				st.SetForbiddenSubsts(answer_father.getForbiddenSubsts())
-				Glob.PrintDebug(
-					"WF",
+				debug(
 					Lib.MkLazy(func() string {
 						return fmt.Sprintf(
 							"New forbidden fo this state : %v",
@@ -581,7 +558,7 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 				}
 				// Set to MM
 				st.SetMM(meta_sisters)
-				Glob.PrintDebug("WF", Lib.MkLazy(func() string {
+				debug(Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"MC after sisters : %v",
 						Lib.ListToString(meta_sisters.Elements(), ",", "[]"),
@@ -617,16 +594,14 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 
 			c2 := Communication{make(chan bool), make(chan Result)}
 
-			Glob.PrintDebug(
-				"WF",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Apply substitution on myself and wait : %v",
 						answer_father.getSubstForChildren().GetSubst().ToString())
 				}),
 			)
-			Glob.PrintDebug(
-				"WF",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf("Forbidden : %v", Unif.SubstListToString(st_copy.GetForbiddenSubsts()))
 				}),
@@ -634,7 +609,7 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 			go ds.ProofSearch(Glob.GetGID(), st_copy, c2, answer_father.getSubstForChildren(), node_id, original_node_id, new_meta_to_reintroduce, false)
 			Glob.IncrGoRoutine(1)
 
-			Glob.PrintDebug("WF", Lib.MkLazy(func() string { return "GO !" }))
+			debug(Lib.MkLazy(func() string { return "GO !" }))
 			st.SetBTOnFormulas(false)
 			ds.waitChildren(MakeWcdArgs(father_id, st, c, []Communication{c2}, given_substs, answer_father.getSubstForChildren(), []Core.SubstAndForm{}, []Core.IntSubstAndFormAndTerms{}, node_id, original_node_id, true, []int{original_node_id}, meta_to_reintroduce))
 		}
@@ -647,10 +622,10 @@ func (ds *destructiveSearch) manageQuitOrder(quit bool, c Communication, father_
 		closeChildren(&children, true)
 	}
 	if quit {
-		Glob.PrintDebug("MQO", Lib.MkLazy(func() string { return "Closing order received" }))
-		Glob.PrintDebug("MQO", Lib.MkLazy(func() string { return "Die" }))
+		debug(Lib.MkLazy(func() string { return "Closing order received" }))
+		debug(Lib.MkLazy(func() string { return "Die" }))
 	} else {
-		Glob.PrintDebug("MQO", Lib.MkLazy(func() string { return "Closing order received, let's wait father" }))
+		debug(Lib.MkLazy(func() string { return "Closing order received, let's wait father" }))
 		ds.waitFather(father_id, st, c, given_substs, node_id, original_node_id, child_order, meta_to_reintroduce)
 	}
 }
@@ -706,8 +681,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 
 	// Until all the children have answered
 	for cpt_remaining_children > 0 && result_int < QUIT {
-		Glob.PrintDebug(
-			"SLC",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Size of remaining children : %v",
@@ -716,13 +690,13 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 		)
 
 		index, value, _ := reflect.Select(cases)
-		Glob.PrintDebug("SLC", Lib.MkLazy(func() string { return "Answer received" }))
+		debug(Lib.MkLazy(func() string { return "Answer received" }))
 
 		// Manage quit order
 		if index == index_quit {
-			Glob.PrintDebug("SLC", Lib.MkLazy(func() string { return "Quit order" }))
+			debug(Lib.MkLazy(func() string { return "Quit order" }))
 			if !value.Interface().(bool) {
-				Glob.PrintDebug("SLC", Lib.MkLazy(func() string { return "Quit order says to wait father" }))
+				debug(Lib.MkLazy(func() string { return "Quit order says to wait father" }))
 				result_int = WAIT
 			} else {
 				result_int = QUIT
@@ -742,12 +716,11 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 			proof_tab[index_children] = res.getProof()
 
 			// Remove children from waiting children
-			Glob.PrintDebug(
-				"SLC",
+			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("Child %v has finished", res.id) }),
 			)
 			if !res.need_answer {
-				Glob.PrintDebug("SLC", Lib.MkLazy(func() string { return fmt.Sprintf("Child %v die", res.id) }))
+				debug(Lib.MkLazy(func() string { return fmt.Sprintf("Child %v die", res.id) }))
 				delayed_removals = delayed_removals.Add(Lib.MkInt(index))
 			}
 
@@ -757,8 +730,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 				unifiers = append(unifiers, unif)
 
 				if len(res.subst_list_for_father) != 0 {
-					Glob.PrintDebug(
-						"SLC",
+					debug(
 						Lib.MkLazy(func() string {
 							return fmt.Sprintf(
 								"The child %v has %v substitution(s) !",
@@ -768,8 +740,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 					)
 
 					if len(res.subst_list_for_father) == 1 && res.subst_list_for_father[0].GetSubst().Equals(current_subst.GetSubst()) {
-						Glob.PrintDebug(
-							"SLC",
+						debug(
 							Lib.MkLazy(func() string {
 								return fmt.Sprintf(
 									"The child %v returns the current subst !",
@@ -787,8 +758,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 						for _, current_subst_from_children := range res.subst_list_for_father {
 							for i := range result_subst {
 								if current_subst_from_children.GetSubst().Equals(result_subst[i].GetSubst()) {
-									Glob.PrintDebug(
-										"SLC",
+									debug(
 										Lib.MkLazy(func() string {
 											return fmt.Sprintf(
 												"Subst in common found : %v !",
@@ -802,8 +772,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 
 						// Add new subst to result subst
 						for _, v := range res.subst_list_for_father {
-							Glob.PrintDebug(
-								"SLC",
+							debug(
 								Lib.MkLazy(func() string {
 									return fmt.Sprintf(
 										"Check if the substitution was already found by another child : %v\n",
@@ -812,8 +781,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 							)
 							if !v.GetSubst().Equals(new_current_subst.GetSubst()) {
 								added := false
-								Glob.PrintDebug(
-									"SLC",
+								debug(
 									Lib.MkLazy(func() string {
 										return fmt.Sprintf(
 											"Result_subst :%v",
@@ -823,8 +791,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 								for i := range result_subst {
 									if v.GetSubst().Equals(result_subst[i].GetSubst()) {
 										added = true
-										Glob.PrintDebug(
-											"SLC",
+										debug(
 											Lib.MkLazy(func() string { return "Subst already in result_subst" }),
 										)
 										result_subst[i] = result_subst[i].AddFormulas(v.GetForm())
@@ -832,8 +799,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 								}
 
 								if !added {
-									Glob.PrintDebug(
-										"SLC",
+									debug(
 										Lib.MkLazy(func() string {
 											return fmt.Sprintf(
 												"New susbt found : %v",
@@ -841,8 +807,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 										}),
 									)
 									result_subst = Core.AppendIfNotContainsSubstAndForm(result_subst, v)
-									Glob.PrintDebug(
-										"SLC",
+									debug(
 										Lib.MkLazy(func() string {
 											return fmt.Sprintf(
 												"New result susbt : %v",
@@ -859,8 +824,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 
 			} else {
 				// Signal to children to stop and wait father for a new order
-				Glob.PrintDebug(
-					"SLC",
+				debug(
 					Lib.MkLazy(func() string {
 						return fmt.Sprintf(
 							"Open child found : %v ! - tell to remaining children to wait father",
@@ -874,8 +838,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 
 	*children = removeChildren(*children, delayed_removals)
 
-	Glob.PrintDebug(
-		"SLC",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"All answer received - subst_for_children : %v",
@@ -888,8 +851,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 		case 0:
 			if current_subst_seen {
 				// A child returns current subst and the other nothing
-				Glob.PrintDebug(
-					"SLC",
+				debug(
 					Lib.MkLazy(func() string { return "One on more children returns the current subst" }),
 				)
 				result_int = SUBST_FOR_PARENT
@@ -899,7 +861,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 			}
 		case 1:
 			// A child returns subst(s)
-			Glob.PrintDebug("SLC", Lib.MkLazy(func() string { return "A child returns new subst(s)" }))
+			debug(Lib.MkLazy(func() string { return "A child returns new subst(s)" }))
 			result_int = SUBST_FOR_PARENT
 
 			// Merge the subst with current subst (if not empty)
@@ -918,8 +880,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 				}
 				result_subst = Core.CopySubstAndFormList(new_result_subst)
 			}
-			Glob.PrintDebug(
-				"SLC",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"New subst at the end : %v",
@@ -951,9 +912,8 @@ func (ds *destructiveSearch) DoEndManageBeta(fatherId uint64, state State, c Com
 }
 
 func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state State, c Communication, newAtomics Core.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Try rewrite rule" }))
-	Glob.PrintDebug(
-		"PS - MRR",
+	debug(Lib.MkLazy(func() string { return "Try rewrite rule" }))
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Id : %v, original node id :%v",
@@ -964,14 +924,13 @@ func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state State, c 
 
 	// For each atomic
 	for len(remainingAtomics) > 0 {
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Remaining atomic > 0" }))
+		debug(Lib.MkLazy(func() string { return "Remaining atomic > 0" }))
 
 		// Take the first element in the list of atomics
 		f := remainingAtomics[0].Copy()
 		remainingAtomics = remainingAtomics[1:].Copy()
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return fmt.Sprintf("Choose : %v", f.ToString()) }))
-		Glob.PrintDebug(
-			"PS",
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Choose : %v", f.ToString()) }))
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Remaining atomics %v", remainingAtomics.ToString()) }),
 		)
 
@@ -992,10 +951,9 @@ func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state State, c 
 	ds.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), currentNodeId, originalNodeId, []int{}, true)
 }
 
-// ILL TODO: check if this function does not make the DMT version lose completeness: is the original formula that's rewritten still in the branch or not?
+// FIXME: check if this function does not make the DMT version lose completeness: is the original formula that's rewritten still in the branch or not?
 func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core.FormAndTerms, state *State, remainingAtomics Core.FormAndTermsList, fatherId uint64, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) bool {
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Try to rewrite into :  %v",
@@ -1042,14 +1000,13 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 
 		channelChild := Communication{make(chan bool), make(chan Result)}
 		go ds.ProofSearch(Glob.GetGID(), otherState, channelChild, choosenRewritten.GetSaf().ToSubstAndForm(), childNode, childNode, []int{}, false)
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "GO !" }))
+		debug(Lib.MkLazy(func() string { return "GO !" }))
 		Glob.IncrGoRoutine(1)
 		ds.waitChildren(MakeWcdArgs(fatherId, *state, c, []Communication{channelChild}, []Core.SubstAndForm{}, choosenRewritten.GetSaf().ToSubstAndForm(), []Core.SubstAndForm{}, newRewritten, currentNodeId, originalNodeId, false, []int{childNode}, metaToReintroduce))
 		return true
 	} else {
 		// No rewriting possible
-		Glob.PrintDebug(
-			"PS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("No rewriting possible, dispatch %v", f.ToString()) }),
 		)
 		// Then add f in LF
@@ -1077,8 +1034,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 
 	switch {
 	case len(substs) == 0:
-		Glob.PrintDebug(
-			"MCR",
+		debug(
 			Lib.MkLazy(func() string { return "Branch closed by ¬⊤ or ⊥ or a litteral and its opposite!" }),
 		)
 
@@ -1105,8 +1061,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 		}
 
 	case len(substs_without_mm) > 0:
-		Glob.PrintDebug(
-			"MCR",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Contradiction found (without mm) : %v",
@@ -1140,8 +1095,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 		}
 
 	case len(substs_with_mm) > 0:
-		Glob.PrintDebug(
-			"MCR",
+		debug(
 			Lib.MkLazy(func() string { return "Contradiction found (with mm) !" }),
 		)
 
@@ -1159,16 +1113,14 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 			if subst_for_father.Equals(Unif.Failure()) {
 				Glob.PrintError("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
 			}
-			Glob.PrintDebug(
-				"MCR",
+			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("Formula = : %v", f.ToString()) }),
 			)
 
 			// Create substAndForm with the current form and the subst found
 			subst_and_form_for_father := Core.MakeSubstAndForm(subst_for_father, AST.NewFormList(f.GetForm()))
 
-			Glob.PrintDebug(
-				"MCR",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"SubstAndForm created : %v",
@@ -1192,16 +1144,14 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 		if Glob.GetAssisted() {
 			return true, st.GetSubstsFound()
 		} else {
-			Glob.PrintDebug(
-				"MCR",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Subst found now : %v",
 						Core.SubstAndFormListToString(st.GetSubstsFound()))
 				}),
 			)
-			Glob.PrintDebug(
-				"MCR",
+			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Send subst(s) with mm to father : %v",
@@ -1226,9 +1176,8 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 
 /* Apply rules with priority (closure < rewrite < alpha < delta < closure with mm < beta < gamma) */
 func (ds *destructiveSearch) applyRules(fatherId uint64, state State, c Communication, atomicDMT Core.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
-	Glob.PrintDebug("AR", Lib.MkLazy(func() string { return "ApplyRule" }))
-	Glob.PrintDebug(
-		"AR",
+	debug(Lib.MkLazy(func() string { return "ApplyRule" }))
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Id : %v, original node id :%v, Child of: %v",
@@ -1238,9 +1187,9 @@ func (ds *destructiveSearch) applyRules(fatherId uint64, state State, c Communic
 		}),
 	)
 	state.Print()
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Tree Pos:" }))
+	debug(Lib.MkLazy(func() string { return "Tree Pos:" }))
 	state.GetTreePos().Print()
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Tree Neg:" }))
+	debug(Lib.MkLazy(func() string { return "Tree Neg:" }))
 	state.GetTreeNeg().Print()
 	switch {
 	case len(atomicDMT) > 0 && Glob.IsLoaded("dmt") && len(state.GetSubstsFound()) == 0:
@@ -1265,15 +1214,15 @@ func (ds *destructiveSearch) applyRules(fatherId uint64, state State, c Communic
 		WriteExchanges(fatherId, state, nil, Core.MakeEmptySubstAndForm(), "ApplyRules - SAT")
 		state.SetCurrentProofRule("Sat")
 		state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Nothing found, return sat" }))
+		debug(Lib.MkLazy(func() string { return "Nothing found, return sat" }))
 		ds.sendSubToFather(c, false, false, fatherId, state, []Core.SubstAndForm{}, currentNodeId, originalNodeId, []int{})
 	}
 }
 
 func (ds *destructiveSearch) manageAlphaRules(fatherId uint64, state State, c Communication, originalNodeId int) {
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Alpha rule" }))
+	debug(Lib.MkLazy(func() string { return "Alpha rule" }))
 	hdf := state.GetAlpha()[0]
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
 	state.SetAlpha(state.GetAlpha()[1:])
 	resultForms := ApplyAlphaRules(hdf, &state)
 	state.SetLF(resultForms)
@@ -1288,9 +1237,9 @@ func (ds *destructiveSearch) manageAlphaRules(fatherId uint64, state State, c Co
 }
 
 func (ds *destructiveSearch) manageDeltaRules(fatherId uint64, state State, c Communication, originalNodeId int) {
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Delta rule" }))
+	debug(Lib.MkLazy(func() string { return "Delta rule" }))
 	hdf := state.GetDelta()[0]
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
 	state.SetDelta(state.GetDelta()[1:])
 	resultForms := ApplyDeltaRules(hdf, &state)
 	state.SetLF(resultForms)
@@ -1305,9 +1254,9 @@ func (ds *destructiveSearch) manageDeltaRules(fatherId uint64, state State, c Co
 }
 
 func (ds *destructiveSearch) manageBetaRules(fatherId uint64, state State, c Communication, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Beta rule" }))
+	debug(Lib.MkLazy(func() string { return "Beta rule" }))
 	hdf := state.GetBeta()[0]
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
 	reslf := ApplyBetaRules(hdf, &state)
 	childIds := []int{}
 
@@ -1337,7 +1286,7 @@ func (ds *destructiveSearch) manageBetaRules(fatherId uint64, state State, c Com
 		}
 
 		Glob.IncrGoRoutine(1)
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return fmt.Sprintf("GO %v !", fl.GetI()) }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("GO %v !", fl.GetI()) }))
 
 	}
 
@@ -1345,9 +1294,9 @@ func (ds *destructiveSearch) manageBetaRules(fatherId uint64, state State, c Com
 }
 
 func (ds *destructiveSearch) manageGammaRules(fatherId uint64, state State, c Communication, originalNodeId int) {
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Gamma rule" }))
+	debug(Lib.MkLazy(func() string { return "Gamma rule" }))
 	hdf := state.GetGamma()[0]
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
 	state.SetGamma(state.GetGamma()[1:])
 
 	// Update MetaGen
@@ -1378,9 +1327,8 @@ func (ds *destructiveSearch) manageReintroductionRules(fatherId uint64, state St
 
 	currentMTR := -1
 
-	Glob.PrintDebug("PS", Lib.MkLazy(func() string { return "Reintroduction" }))
-	Glob.PrintDebug(
-		"PS",
+	debug(Lib.MkLazy(func() string { return "Reintroduction" }))
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Meta to reintroduce : %s",
@@ -1389,8 +1337,7 @@ func (ds *destructiveSearch) manageReintroductionRules(fatherId uint64, state St
 	)
 	newMetaGen := state.GetMetaGen()
 	reslf := Core.ReintroduceMeta(&newMetaGen, currentMTR, state.GetN())
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Reintroduce the formula : %s", reslf.ToString()) }),
 	)
 	state.SetLF(Core.MakeSingleElementFormAndTermList(reslf))
@@ -1412,16 +1359,15 @@ func (ds *destructiveSearch) manageReintroductionRules(fatherId uint64, state St
 func (ds *destructiveSearch) manageResult(c Communication) (Core.Unifier, []ProofStruct, bool) {
 	result := <-c.getResult()
 
-	Glob.PrintDebug(
-		"MAIN",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Proof : %v", ProofStructListToString(result.getProof())) }),
 	)
 
 	if result.needsAnswer() {
 		c.getQuit() <- true
-		Glob.PrintDebug("MAIN", Lib.MkLazy(func() string { return "Close order sent" }))
+		debug(Lib.MkLazy(func() string { return "Close order sent" }))
 	} else {
-		Glob.PrintDebug("MAIN", Lib.MkLazy(func() string { return "Close order not sent" }))
+		debug(Lib.MkLazy(func() string { return "Close order not sent" }))
 	}
 
 	return result.getUnifier(), result.getProof(), result.isClosed()

@@ -11,6 +11,12 @@ import (
 
 type incrementalSearch struct{}
 
+var debug func(Lib.Lazy[string])
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("incremental")
+}
+
 func NewIncrementalSearch() Search.SearchAlgorithm {
 	return &incrementalSearch{}
 }

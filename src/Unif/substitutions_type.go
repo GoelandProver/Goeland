@@ -61,8 +61,7 @@ func (s Substitutions) ToStringForProof() string {
 
 /* Helper function, prints the content of a Substitutions object. */
 func (s Substitutions) Print() {
-	Glob.PrintDebug(
-		"Print",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Success. %v ", s.ToString()) }),
 	)
 }
@@ -246,8 +245,7 @@ func isRecursive(t AST.Term, m AST.Meta) bool {
 	case AST.Meta:
 		return t.Equals(m)
 	default:
-		Glob.PrintDebug(
-			"IR",
+		debug(
 			Lib.MkLazy(func() string { return "Error: [[substitution.go:157]] shouldn't be attained." }),
 		)
 	}
@@ -383,8 +381,7 @@ func eliminateList(
 
 /* Eliminates one of the subsitution of a pair like (X, Y) (Y, X). It will keep the first one indexed in the map. */
 func EliminateMeta(subst *Substitutions) {
-	Glob.PrintDebug(
-		"EM",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Eliminate Meta on %v", subst.ToString()) }),
 	)
 	meta := Substitutions{}

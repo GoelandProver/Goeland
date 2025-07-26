@@ -54,13 +54,17 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/assisted"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
+	equality "github.com/GoelandProver/Goeland/Mods/equality/bse"
 	"github.com/GoelandProver/Goeland/Parser"
 	"github.com/GoelandProver/Goeland/Search"
+	"github.com/GoelandProver/Goeland/Search/incremental"
 	"github.com/GoelandProver/Goeland/Typing"
+	"github.com/GoelandProver/Goeland/Unif"
 )
 
 var chAssistant chan bool = make(chan bool)
 var main_label = "Main"
+var debug func(Lib.Lazy[string])
 
 func printChrono(id string, start time.Time) {
 	fmt.Printf("%s Chrono - %s - %d\n", "%", id, time.Since(start).Milliseconds())
@@ -96,7 +100,7 @@ func main() {
 
 // Start solving
 func startSearch(form AST.Form, bound int) {
-	Glob.PrintDebug(main_label, Lib.MkLazy(func() string { return "Start search" }))
+	debug(Lib.MkLazy(func() string { return "Start search" }))
 
 	// FIXME: assisted should be a plugin.
 	// Ideally, we should create a hook here in order to let plugins do what
@@ -128,8 +132,7 @@ func presearchLoader() (AST.Form, int) {
 	statements, bound, containsEquality := Parser.ParseTPTPFile(problem)
 	actualStatements := Engine.ToInternalSyntax(statements)
 
-	Glob.PrintDebug(
-		main_label,
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Statement : %s", Core.StatementListToString(actualStatements))
@@ -175,13 +178,28 @@ func doMemProfile() {
 /* Initializes the options, the loggers and some other Glob variables*/
 func initEverything() {
 	Glob.SetStart(time.Now())
+	// Always init logs before debuggers
 	Glob.InitLogs()
+	// Always init debuggers before options
+	initDebuggers()
 	initOpts()
 	runtime.GOMAXPROCS(Glob.GetCoreLimit())
 	AST.Init()
 }
 
-// FIXME: eventually, we would want to add an "interpretation" layer between elab and internal representation that does this
+func initDebuggers() {
+	debug = Glob.CreateDebugger(main_label)
+	assisted.InitDebugger()
+	AST.InitDebugger()
+	Core.InitDebugger()
+	dmt.InitDebugger()
+	equality.InitDebugger()
+	incremental.InitDebugger()
+	Search.InitDebugger()
+	Typing.InitDebugger()
+	Unif.InitDebugger()
+}
+
 func StatementListToFormula(statements []Core.Statement, old_bound int, problemDir string) (form AST.Form, bound int, containsEquality bool) {
 	and_list := AST.NewFormList()
 	var not_form AST.Form
@@ -193,10 +211,7 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			file_name := statement.GetName()
 
 			realname, err := getFile(file_name, problemDir)
-			Glob.PrintDebug(
-				main_label,
-				Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }),
-			)
+			debug(Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }))
 
 			if err != nil {
 				Glob.PrintError(main_label, err.Error())
