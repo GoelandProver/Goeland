@@ -61,7 +61,7 @@ func (t TermForm) RenameVariables() AST.Form { return t }
 func (t TermForm) ReplaceTermByTerm(AST.Term, AST.Term) (AST.Form, bool) {
 	return t, false
 }
-func (t TermForm) SubstTy(AST.TyBound, AST.Ty) AST.Form {
+func (t TermForm) SubstTy(AST.TyGenVar, AST.Ty) AST.Form {
 	return t
 }
 func (t TermForm) GetIndex() int                                  { return t.index }
@@ -109,6 +109,11 @@ func (t TermForm) ReplaceMetaByTerm(meta AST.Meta, term AST.Term) AST.Form {
 }
 
 func MakerTermForm(t AST.Term) TermForm {
+	switch trm := t.(type) {
+	case AST.Fun:
+		args := getFunctionalArguments(trm.GetTyArgs(), trm.GetArgs())
+		t = AST.MakerFun(trm.GetID(), Lib.NewList[AST.Ty](), args)
+	}
 	return makeTermForm(AST.MakerIndexFormula(), t.Copy())
 }
 
@@ -154,14 +159,39 @@ func ParseFormula(formula AST.Form) Sequence {
 }
 
 /* Parses a predicate to machine instructions */
+func getFunctionalArguments(ty_args Lib.List[AST.Ty], trm_args Lib.List[AST.Term]) Lib.List[AST.Term] {
+	args := Lib.ListMap(ty_args, AST.TyToTerm)
+
+	for _, arg := range trm_args.GetSlice() {
+		switch term := arg.(type) {
+		case AST.Meta:
+			args.Append(arg)
+		case AST.Fun:
+			args.Append(AST.MakerFun(
+				term.GetID(),
+				Lib.NewList[AST.Ty](),
+				getFunctionalArguments(term.GetTyArgs(), term.GetArgs()),
+			))
+		}
+	}
+
+	return args
+}
+
 func parsePred(p AST.Pred, instructions *Sequence) {
 	instructions.add(makeCheck(p.GetID()))
-	if p.GetArgs().Len() > 0 {
+	if !p.GetTyArgs().Empty() || !p.GetArgs().Empty() {
 		instructions.add(Begin{})
 		instructions.add(Down{})
 		varCount := 0
 		postCount := 0
-		parseTerms(p.GetArgs(), instructions, Lib.NewList[AST.Meta](), &varCount, &postCount)
+		parseTerms(
+			getFunctionalArguments(p.GetTyArgs(), p.GetArgs()),
+			instructions,
+			Lib.NewList[AST.Meta](),
+			&varCount,
+			&postCount,
+		)
 		instructions.add(End{})
 	}
 }
@@ -210,7 +240,8 @@ func parseTerms(
 					*postCount++
 				}
 				instructions.add(Down{})
-				subst = parseTerms(t.GetArgs(), instructions, subst, varCount, postCount)
+				subTerms := getFunctionalArguments(t.GetTyArgs(), t.GetArgs())
+				subst = parseTerms(subTerms, instructions, subst, varCount, postCount)
 				if rightDefined(terms, i) {
 					*postCount--
 					instructions.add(Pop{*postCount})

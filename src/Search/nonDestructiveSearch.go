@@ -54,6 +54,17 @@ func NewNonDestructiveSearch() BasicSearchAlgorithm {
 	return nil
 }
 
+func getMetas(substs Lib.List[Unif.MixedSubstitution]) Lib.List[AST.Meta] {
+	metas := Lib.NewList[AST.Meta]()
+	for _, subst := range substs.GetSlice() {
+		switch s := subst.Substitution().(type) {
+		case Lib.Some[Unif.Substitution]:
+			metas.Append(s.Val.Key())
+		}
+	}
+	return metas
+}
+
 func (nds *nonDestructiveSearch) setApplyRules(function func(uint64, State, Communication, Core.FormAndTermsList, int, int, []int)) {
 	Glob.PrintError("NDS", "Non-destructive search not compatible with the assisted plugin for now.")
 }
@@ -69,7 +80,7 @@ func (nds *nonDestructiveSearch) manageRewriteRules(fatherId uint64, state State
 /* Choose substitution - whitout meta in lastAppliedSubst */
 func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []Core.SubstAndForm, ml Lib.List[AST.Meta]) (Core.SubstAndForm, []Core.SubstAndForm) {
 	for i, v := range sl {
-		if !AST.IsIncludeInsideOF(v.GetSubst().GetMeta(), ml) {
+		if !AST.IsIncludeInsideOF(getMetas(v.GetSubst()), ml) {
 			return v, Core.RemoveSubstFromSubstAndFormList(i, sl)
 		}
 	}
@@ -79,7 +90,7 @@ func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestru
 /* Choose substitution - whith meta in lastAppliedSubst */
 func (nds *nonDestructiveSearch) chooseSubstitutionWithtMetaLastApplyNonDestructive(sl []Core.SubstAndForm, last_applied_subst Core.SubstAndForm) (Core.SubstAndForm, []Core.SubstAndForm) {
 	for i, v := range sl {
-		if !v.GetSubst().Equals(last_applied_subst.GetSubst()) {
+		if !Lib.ListEquals(v.GetSubst(), last_applied_subst.GetSubst()) {
 			return v, Core.RemoveSubstFromSubstAndFormList(i, sl)
 		}
 	}
@@ -88,12 +99,12 @@ func (nds *nonDestructiveSearch) chooseSubstitutionWithtMetaLastApplyNonDestruct
 
 /* Choose the best substitution among subst_found_at_this_step and subst_found */
 func (nds *nonDestructiveSearch) chooseSubstitutionNonDestructive(substs_found_this_step []Core.SubstAndForm, st *State) Core.SubstAndForm {
-	res, sl := nds.chooseSubstitutionWithoutMetaLastApplyNonDestructive(substs_found_this_step, st.GetLastAppliedSubst().GetSubst().GetMeta())
+	res, sl := nds.chooseSubstitutionWithoutMetaLastApplyNonDestructive(substs_found_this_step, getMetas(st.GetLastAppliedSubst().GetSubst()))
 	if !res.IsEmpty() { // subst without meta in last applied meta found in substs_found_at_this_step
 		st.SetSubstsFound(append(sl, st.GetSubstsFound()...))
 		return res
 	} else {
-		res, sl = nds.chooseSubstitutionWithoutMetaLastApplyNonDestructive(st.GetSubstsFound(), st.GetLastAppliedSubst().GetSubst().GetMeta())
+		res, sl = nds.chooseSubstitutionWithoutMetaLastApplyNonDestructive(st.GetSubstsFound(), getMetas(st.GetLastAppliedSubst().GetSubst()))
 		if !res.IsEmpty() { // subst without meta in last applied meta found in substs_found
 			st.SetSubstsFound(append(sl, substs_found_this_step...))
 			return res
@@ -121,16 +132,19 @@ func (nds *nonDestructiveSearch) chooseSubstitutionNonDestructive(substs_found_t
 }
 
 /*  Take a substitution, returns the id of the formula which introduce the metavariable */
-func (nds *nonDestructiveSearch) catchFormulaToInstantiate(subst_found Unif.Substitutions) int {
+func (nds *nonDestructiveSearch) catchFormulaToInstantiate(subst_found Lib.List[Unif.MixedSubstitution]) int {
 	meta_to_reintroduce := -1
-	for _, subst := range subst_found {
-		meta, term := subst.Get()
-		if meta.GetFormula() < meta_to_reintroduce || meta_to_reintroduce == -1 {
-			meta_to_reintroduce = meta.GetFormula()
-		}
-		if term.IsMeta() {
-			if term.ToMeta().GetFormula() < meta_to_reintroduce || meta_to_reintroduce == -1 {
-				meta_to_reintroduce = term.ToMeta().GetFormula()
+	for _, subst := range subst_found.GetSlice() {
+		switch s := subst.Substitution().(type) {
+		case Lib.Some[Unif.Substitution]:
+			meta, term := s.Val.Get()
+			if meta.GetFormula() < meta_to_reintroduce || meta_to_reintroduce == -1 {
+				meta_to_reintroduce = meta.GetFormula()
+			}
+			if term.IsMeta() {
+				if term.ToMeta().GetFormula() < meta_to_reintroduce || meta_to_reintroduce == -1 {
+					meta_to_reintroduce = term.ToMeta().GetFormula()
+				}
 			}
 		}
 	}
@@ -142,7 +156,12 @@ func (nds *nonDestructiveSearch) catchFormulaToInstantiate(subst_found Unif.Subs
 **/
 func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Communication, index int, s Core.SubstAndForm) {
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Instantiate with subst : %v ", s.GetSubst().ToString()) }),
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Instantiate with subst : %s",
+				Lib.ListToString(s.GetSubst(), ", ", "(empty subst)"),
+			)
+		}),
 	)
 	newMetaGenerator := state.GetMetaGen()
 	reslf := Core.ReintroduceMeta(&newMetaGenerator, index, state.GetN())
@@ -190,12 +209,15 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 			}
 
 		}
-		if !found { // Vérifier dans substapplied
-			for _, subst := range state.GetAppliedSubst().GetSubst() {
-				original_meta, original_term := subst.Get()
-				if !found && original_meta.GetName() == new_meta.GetName() && !found {
-					association_subst.Set(new_meta, original_term)
-					found = true
+		if !found {
+			for _, subst := range state.GetAppliedSubst().GetSubst().GetSlice() {
+				switch s := subst.Substitution().(type) {
+				case Lib.Some[Unif.Substitution]:
+					original_meta, original_term := s.Val.Get()
+					if !found && original_meta.GetName() == new_meta.GetName() && !found {
+						association_subst.Set(new_meta, original_term)
+						found = true
+					}
 				}
 			}
 		}
@@ -211,58 +233,50 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 		}
 	}
 
-	new_subst, same_key := Unif.MergeSubstitutions(association_subst, state.GetAppliedSubst().GetSubst())
+	mixed_assoc_subst := Lib.NewList[Unif.MixedSubstitution]()
+	for _, subst := range association_subst {
+		mixed_assoc_subst.Append(Unif.MkMixedFromSubst(subst))
+	}
+	new_subst, same_key := Unif.MergeMixedSubstitutions(mixed_assoc_subst, state.GetAppliedSubst().GetSubst())
 	if same_key {
 		Glob.PrintInfo("PS", "Same key in S2 and S1")
-	}
-	if new_subst.Equals(Unif.Failure()) {
-		Glob.PrintError("PS", "MergeSubstitutions return failure")
-	}
-	new_subst, same_key = Unif.MergeSubstitutions(new_subst, s.GetSubst())
-	if same_key {
-		Glob.PrintInfo("PS", "Same key in S2 and S1")
-	}
-	if new_subst.Equals(Unif.Failure()) {
-		Glob.PrintError("PS", "MergeSubstitutions return failure")
 	}
 
-	// Then associate with the substitution (if possible)
-	// for _, new_meta := range new_metas {
-	// 	found := false
-	// 	for original_meta, original_term := range s.GetSubst() {
-	// 		if !found && original_meta.GetName() == new_meta.GetName() && !found {
-	// 			new_subst[new_meta] = original_term
-	// 			found = true
-	// 		} else { // Test inverse pour le cas meta/meta
-	// 			if !found && original_term.IsMeta() && original_term.GetName() == new_meta.GetName() && !found {
-	// 				new_subst[new_meta] = original_term
-	// 				found = true
-	// 			}
-	// 		}
-	// 	}
-	// }
+	if !Unif.UnifSucceeded(new_subst) {
+		Glob.PrintError("PS", "MergeSubstitutions return failure")
+	}
+	new_subst, same_key = Unif.MergeMixedSubstitutions(new_subst, s.GetSubst())
+	if same_key {
+		Glob.PrintInfo("PS", "Same key in S2 and S1")
+	}
+
+	if !Unif.UnifSucceeded(new_subst) {
+		Glob.PrintError("PS", "MergeSubstitutions return failure")
+	}
 
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Applied subst: %s",
-				state.GetAppliedSubst().GetSubst().ToString())
+				Lib.ListToString(state.GetAppliedSubst().GetSubst(), ", ", "(empty subst)"),
+			)
 		}),
 	)
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
-				"Real substitution applied : %s", new_subst.ToString())
+				"Real substitution applied : %s", Lib.ListToString(new_subst, ", ", "(empty subst)"))
 		}),
 	)
 
 	state.SetLF(Core.ApplySubstitutionsOnFormAndTermsList(new_subst, state.GetLF()))
 
-	ms, same_key := Unif.MergeSubstitutions(state.GetAppliedSubst().GetSubst(), new_subst)
+	ms, same_key := Unif.MergeMixedSubstitutions(state.GetAppliedSubst().GetSubst(), new_subst)
 	if same_key {
 		Glob.PrintError("PS", "Same key in S2 and S1")
 	}
-	if ms.Equals(Unif.Failure()) {
+
+	if !Unif.UnifSucceeded(ms) {
 		Glob.PrintError("PS", "MergeSubstitutions return failure")
 	}
 	state.SetAppliedSubst(Core.MakeSubstAndForm(ms, s.GetForm()))
@@ -296,14 +310,14 @@ func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64
 		st.SetSubstsFound(st.GetSubstsFound()[1:])
 	}
 
-	choosenSubstMetas := new_choosen_subst.GetSubst().GetMeta()
+	choosenSubstMetas := getMetas(new_choosen_subst.GetSubst())
 	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf(
 			"Choosen subst : %v - HasInCommon : %v",
-			new_choosen_subst.GetSubst().ToString(),
+			Lib.ListToString(new_choosen_subst.GetSubst(), ", ", "(empty subst)"),
 			AST.HasMetaInCommonWith(
 				choosenSubstMetas,
-				st.GetLastAppliedSubst().GetSubst().GetMeta(),
+				getMetas(st.GetLastAppliedSubst().GetSubst()),
 			),
 		)
 	}))

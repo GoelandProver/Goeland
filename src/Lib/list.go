@@ -226,6 +226,16 @@ func (l List[T]) Any(pred Func[T, bool]) bool {
 	return false
 }
 
+func (l List[T]) Filter(pred Func[T, bool]) List[T] {
+	res := NewList[T]()
+	for _, el := range l.values {
+		if pred(el) {
+			res.Append(el)
+		}
+	}
+	return res
+}
+
 func ToStrictlyOrderedList[T StrictlyOrdered](l List[T]) StrictlyOrderedList[T] {
 	return StrictlyOrderedList[T]{values: l}
 }

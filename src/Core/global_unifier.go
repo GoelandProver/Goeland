@@ -41,7 +41,7 @@ import (
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
-type substitutions = Unif.Substitutions
+type substitutions = Lib.List[Unif.MixedSubstitution]
 
 /*
   - The unifier type is a type that keeps the substitutions that close the whole subtree.
@@ -86,7 +86,7 @@ func (u *Unifier) AddSubstitutions(cleanedSubst, actualSubst substitutions) {
 	}
 	found := false
 	for i, p := range u.localUnifiers {
-		if p.Fst.Equals(cleanedSubst) {
+		if Lib.ListEquals(p.Fst, cleanedSubst) {
 			u.localUnifiers[i].Snd = append(u.localUnifiers[i].Snd, actualSubst)
 			found = true
 		}
@@ -102,8 +102,8 @@ func (u *Unifier) PruneUncompatibleSubstitutions(subst substitutions) {
 	}
 	res := make([]Glob.Pair[substitutions, []substitutions], 0)
 	for _, p := range u.localUnifiers {
-		compat, _ := Unif.MergeSubstitutions(subst, p.Fst)
-		if !compat.Equals(Unif.Failure()) {
+		_, succeeded := Unif.MergeMixedSubstitutions(subst, p.Fst)
+		if succeeded {
 			res = append(res, p)
 		}
 	}
@@ -115,29 +115,34 @@ func (u Unifier) IsEmpty() bool {
 }
 
 func (u Unifier) ToString() string {
-	substsToString := func(index int, element Unif.Substitution) string {
-		return fmt.Sprintf("(%s -> %s)", element.Key().ToString(), element.Value().ToString())
-	}
 	str := "object Unifier{"
 	for _, unifier := range u.localUnifiers {
-		str += "[ " + strings.Join(Glob.MapTo(unifier.Fst, substsToString), ", ") + " ] --> [ " + strings.Join(Glob.MapTo(unifier.Snd, func(_ int, el substitutions) string {
-			return strings.Join(Glob.MapTo(el, substsToString), " ; ")
-		}), " ---- ") + " ], "
+		str += fmt.Sprintf(
+			"[ %s ] --> [ %s ]",
+			Lib.ListToString(unifier.Fst, ", ", ""),
+			strings.Join(Glob.MapTo(
+				unifier.Snd,
+				func(_ int, el substitutions) string {
+					return Lib.ListToString(el, ", ", "")
+				}),
+				" ; ",
+			),
+		)
 	}
 	str += "}"
 	return str
 }
 
 /** Returns a global unifier: MGU of all the unifiers found */
-func (u Unifier) GetUnifier() Unif.Substitutions {
+func (u Unifier) GetUnifier() substitutions {
 	if !Glob.GetProof() || len(u.localUnifiers) == 0 {
-		return Unif.MakeEmptySubstitution()
+		return Lib.NewList[Unif.MixedSubstitution]()
 	}
 	debug(Lib.MkLazy(func() string { return u.ToString() }))
 	if len(u.localUnifiers) > 0 && len(u.localUnifiers[0].Snd) > 0 {
 		return u.localUnifiers[0].Snd[0]
 	}
-	return Unif.MakeEmptySubstitution()
+	return Lib.NewList[Unif.MixedSubstitution]()
 }
 
 func (u Unifier) Copy() Unifier {
@@ -148,9 +153,9 @@ func (u Unifier) Copy() Unifier {
 	for i, unif := range u.localUnifiers {
 		copy := []substitutions{}
 		for _, subst := range unif.Snd {
-			copy = append(copy, subst.Copy())
+			copy = append(copy, Lib.ListCpy(subst))
 		}
-		newLocalUnifier[i] = Glob.MakePair(unif.Fst.Copy(), copy)
+		newLocalUnifier[i] = Glob.MakePair(Lib.ListCpy(unif.Fst), copy)
 	}
 	return Unifier{
 		localUnifiers: newLocalUnifier,
@@ -178,12 +183,12 @@ func (u *Unifier) Merge(other Unifier) {
 	for _, locUnif := range u.localUnifiers {
 		for _, unifier := range other.localUnifiers {
 			newUnifs := []substitutions{}
-			res, _ := Unif.MergeSubstitutions(unifier.Fst.Copy(), locUnif.Fst.Copy())
-			if !res.Equals(Unif.Failure()) {
+			res, succeeded := Unif.MergeMixedSubstitutions(unifier.Fst, locUnif.Fst)
+			if succeeded {
 				for _, subst := range locUnif.Snd {
 					for _, s := range unifier.Snd {
-						merge, _ := Unif.MergeSubstitutions(subst.Copy(), s.Copy())
-						if !merge.Equals(Unif.Failure()) {
+						merge, success := Unif.MergeMixedSubstitutions(subst, s)
+						if success {
 							newUnifs = append(newUnifs, merge)
 						}
 					}
@@ -199,9 +204,18 @@ func (u *Unifier) Merge(other Unifier) {
 func (u *Unifier) PruneMetasInSubsts(metas Lib.Set[AST.Meta]) {
 	for i, unif := range u.localUnifiers {
 		for _, meta := range metas.Elements().GetSlice() {
-			_, index := unif.Fst.Get(meta)
-			if index != -1 {
-				u.localUnifiers[i].Fst.Remove(index)
+			index := Lib.MkNone[int]()
+			for j, subst := range unif.Fst.GetSlice() {
+				switch s := subst.Substitution().(type) {
+				case Lib.Some[Unif.Substitution]:
+					if s.Val.Key().Equals(meta) {
+						index = Lib.MkSome(j)
+					}
+				}
+			}
+			switch id := index.(type) {
+			case Lib.Some[int]:
+				u.localUnifiers[i].Fst.RemoveAt(id.Val)
 			}
 		}
 	}
@@ -214,7 +228,7 @@ func (u *Unifier) PruneMetasInSubsts(metas Lib.Set[AST.Meta]) {
 
 func appendNewUnifiersIfNeeded(unifiers []Glob.Pair[substitutions, []substitutions], res substitutions, newUnifs []substitutions) []Glob.Pair[substitutions, []substitutions] {
 	for i, unif := range unifiers {
-		if unif.Fst.Equals(res) {
+		if Lib.ListEquals(unif.Fst, res) {
 			unifiers[i].Snd = append(unifiers[i].Snd, newUnifs...)
 			return unifiers
 		}

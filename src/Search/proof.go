@@ -404,7 +404,7 @@ func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) Lib.Set[AST.
 }
 
 /* Apply subst on a proof tree */
-func ApplySubstitutionOnProofList(s Unif.Substitutions, proof_list []ProofStruct) []ProofStruct {
+func ApplySubstitutionOnProofList(s Lib.List[Unif.MixedSubstitution], proof_list []ProofStruct) []ProofStruct {
 	new_proof_list := []ProofStruct{}
 
 	for _, p := range proof_list {
@@ -412,7 +412,10 @@ func ApplySubstitutionOnProofList(s Unif.Substitutions, proof_list []ProofStruct
 
 		new_result_formulas := []IntFormAndTermsList{}
 		for _, f := range p.GetResultFormulas() {
-			new_result_formulas = append(new_result_formulas, MakeIntFormAndTermsList(f.GetI(), Core.ApplySubstitutionsOnFormAndTermsList(s, f.GetFL())))
+			new_result_formulas = append(
+				new_result_formulas,
+				MakeIntFormAndTermsList(f.GetI(), Core.ApplySubstitutionsOnFormAndTermsList(s, f.GetFL())),
+			)
 		}
 		p.SetResultFormulasProof(new_result_formulas)
 

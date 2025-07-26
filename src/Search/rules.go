@@ -59,17 +59,9 @@ var strToPrintMap map[string]string = map[string]string{
 	"EXISTS": "∃",
 }
 
-/**
-* ApplyClosureRules
-* Search closure rules (not true or false), and call search conflict if no obvious closure found
-* Datas :
-* 	form : the formula for which we are looking for the contradiction
-* 	state : a state, containing all the formula of the current step
-* Result :
-*	a boolean, true if a contradiction was found, false otherwise
-*	a substitution, the substitution which make the contradiction (possibly empty)
-**/
-func ApplyClosureRules(form AST.Form, state *State) (result bool, substitutions []Unif.Substitutions) {
+func ApplyClosureRules(form AST.Form, state *State) (bool, Lib.List[Lib.List[Unif.MixedSubstitution]]) {
+	result := false
+	substitutions := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
 	debug(Lib.MkLazy(func() string { return "Start ACR" }))
 
 	if searchObviousClosureRule(form) {
@@ -78,10 +70,14 @@ func ApplyClosureRules(form AST.Form, state *State) (result bool, substitutions 
 
 	f := form.Copy()
 
-	substFound, subst := searchInequalities(form)
+	substFound, substs := searchInequalities(form)
 	if substFound {
 		result = true
-		substitutions = append(substitutions, subst)
+		mixed_substs := Lib.NewList[Unif.MixedSubstitution]()
+		for _, subst := range substs {
+			mixed_substs.Append(Unif.MkMixedFromSubst(subst))
+		}
+		substitutions.Append(mixed_substs)
 	}
 
 	substFound, matchSubsts := searchClosureRule(f, *state)
@@ -92,10 +88,10 @@ func ApplyClosureRules(form AST.Form, state *State) (result bool, substitutions 
 		for _, subst := range matchSubsts {
 			debug(Lib.MkLazy(func() string { return fmt.Sprintf("MSL : %v", subst.ToString()) }))
 
-			if subst.GetSubst().Equals(Unif.MakeEmptySubstitution()) {
+			if subst.IsSubstsEmpty() {
 				result = true
 			} else {
-				if !searchForbidden(state, subst) {
+				if !searchForbidden(state, subst.MatchingSubstitutions()) {
 					result = true
 				}
 			}
@@ -104,13 +100,13 @@ func ApplyClosureRules(form AST.Form, state *State) (result bool, substitutions 
 				debug(
 					Lib.MkLazy(func() string {
 						return fmt.Sprintf(
-							"Subst found between : %v and %v : %v",
+							"Subst found between : %s and %s : %s",
 							form.ToString(),
 							subst.GetForm().ToString(),
-							subst.GetSubst().ToString())
+							subst.ToString())
 					}),
 				)
-				substitutions = Unif.AppendIfNotContainsSubst(substitutions, subst.GetSubst())
+				substitutions.Add(Lib.ListEquals[Unif.MixedSubstitution], subst.GetSubsts())
 			}
 		}
 	}
@@ -121,8 +117,15 @@ func ApplyClosureRules(form AST.Form, state *State) (result bool, substitutions 
 func searchForbidden(state *State, s Unif.MatchingSubstitutions) bool {
 	foundForbidden := false
 
-	for _, substForbidden := range state.GetForbiddenSubsts() {
-		forbiddenShared := Core.AreEqualsModuloaLaphaConversion(s.GetSubst(), substForbidden)
+	for _, substForbidden := range state.GetForbiddenSubsts().GetSlice() {
+		substs := Unif.Substitutions{}
+		for _, subst := range substForbidden.GetSlice() {
+			switch s := subst.Substitution().(type) {
+			case Lib.Some[Unif.Substitution]:
+				substs = append(substs, s.Val)
+			}
+		}
+		forbiddenShared := Core.AreEqualsModuloaLaphaConversion(s.GetSubst(), substs)
 
 		if forbiddenShared {
 			foundForbidden = true
@@ -194,7 +197,7 @@ func searchInequalities(form AST.Form) (bool, Unif.Substitutions) {
 }
 
 /* Search a contradiction between a formula and another in the datastructure */
-func searchClosureRule(f AST.Form, st State) (bool, []Unif.MatchingSubstitutions) {
+func searchClosureRule(f AST.Form, st State) (bool, []Unif.MixedSubstitutions) {
 	switch nf := f.(type) {
 	case AST.Pred:
 		return st.GetTreeNeg().Unify(f)
