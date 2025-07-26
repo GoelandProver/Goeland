@@ -1006,7 +1006,7 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 	newRewritten := []Core.IntSubstAndFormAndTerms{}
 	for _, isaf := range rewritten {
 		newFNTs := Core.MakeEmptyFormAndTermsList()
-		for _, isaf_f := range isaf.GetSaf().GetForm().Slice() {
+		for _, isaf_f := range isaf.GetSaf().GetForm().GetSlice() {
 			newFNTs = append(newFNTs, Core.MakeFormAndTerm(isaf_f, f.GetTerms()))
 		}
 		newRewritten = append(newRewritten, Core.MakeIntSubstAndFormAndTerms(isaf.GetId_rewrite(), Core.MakeSubstAndFormAndTerms(isaf.GetSaf().GetSubst(), newFNTs)))
@@ -1165,7 +1165,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 			)
 
 			// Create substAndForm with the current form and the subst found
-			subst_and_form_for_father := Core.MakeSubstAndForm(subst_for_father, AST.NewFormList(f.GetForm()))
+			subst_and_form_for_father := Core.MakeSubstAndForm(subst_for_father, Lib.MkListV(f.GetForm()))
 
 			Glob.PrintDebug(
 				"MCR",

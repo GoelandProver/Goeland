@@ -182,7 +182,7 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 		if !found {
 			// La meta nouvellement générée n'apparaît pas dans la substitution
 			// Trouver celle de la formula de base
-			for _, f := range s.GetForm().Slice() {
+			for _, f := range s.GetForm().GetSlice() {
 				for _, term_formula := range f.GetMetas().Elements().GetSlice() {
 					if !found && term_formula.IsMeta() && term_formula.GetName() == new_meta.GetName() {
 						association_subst.Set(new_meta, term_formula)
@@ -208,7 +208,7 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 					return fmt.Sprintf(
 						"Error : No matching found for %v in new formula : %v\n",
 						new_meta.ToString(),
-						s.GetForm().ToString())
+						Lib.ListToString(s.GetForm(), ", ", "[]"))
 				}),
 			)
 		}

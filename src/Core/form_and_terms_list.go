@@ -111,9 +111,9 @@ func (fl FormAndTermsList) Copy() FormAndTermsList {
 }
 
 /* Create a FaT List from a FormList */
-func MakeFTListFromFormList(l *AST.FormList) FormAndTermsList {
+func MakeFTListFromFormList(l Lib.List[AST.Form]) FormAndTermsList {
 	res := MakeEmptyFormAndTermsList()
-	for _, f := range l.Slice() {
+	for _, f := range l.GetSlice() {
 		res = append(res, MakeFormAndTerm(f.Copy(), Lib.MkList[AST.Term](0)))
 	}
 	return res
@@ -184,10 +184,10 @@ func (l1 FormAndTermsList) Merge(l2 FormAndTermsList) FormAndTermsList {
 	return res
 }
 
-func (fl FormAndTermsList) ExtractForms() *AST.FormList {
-	res := AST.NewFormList()
+func (fl FormAndTermsList) ExtractForms() Lib.List[AST.Form] {
+	res := Lib.NewList[AST.Form]()
 	for _, f := range fl {
-		res.AppendIfNotContains(f.GetForm())
+		res = Lib.ListAdd(res, f.GetForm())
 	}
 	return res
 }

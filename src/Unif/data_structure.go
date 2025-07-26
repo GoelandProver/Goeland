@@ -39,13 +39,14 @@ package Unif
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type DataStructure interface {
 	Print()
 	IsEmpty() bool
-	MakeDataStruct(*AST.FormList, bool) DataStructure
-	InsertFormulaListToDataStructure(*AST.FormList) DataStructure
+	MakeDataStruct(Lib.List[AST.Form], bool) DataStructure
+	InsertFormulaListToDataStructure(Lib.List[AST.Form]) DataStructure
 	Unify(AST.Form) (bool, []MatchingSubstitutions)
 	Copy() DataStructure
 }

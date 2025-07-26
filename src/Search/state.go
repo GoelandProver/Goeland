@@ -116,13 +116,13 @@ func (st State) GetSubstsFound() []Core.SubstAndForm {
 func (s State) GetTreePos() Unif.DataStructure {
 	return s.tree_pos
 }
-func (s *State) AddToTreePos(fl *AST.FormList) {
+func (s *State) AddToTreePos(fl Lib.List[AST.Form]) {
 	s.tree_pos = s.tree_pos.InsertFormulaListToDataStructure(fl)
 }
 func (s State) GetTreeNeg() Unif.DataStructure {
 	return s.tree_neg
 }
-func (s *State) AddToTreeNeg(fl *AST.FormList) {
+func (s *State) AddToTreeNeg(fl Lib.List[AST.Form]) {
 	s.tree_neg = s.tree_neg.InsertFormulaListToDataStructure(fl)
 }
 func (s State) GetProof() []ProofStruct {

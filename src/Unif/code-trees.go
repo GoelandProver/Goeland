@@ -59,11 +59,11 @@ func (c CodeBlock) Copy() CodeBlock {
 type Node struct {
 	value    CodeBlock
 	children []*Node
-	formulae *AST.FormList
+	formulas Lib.List[AST.Form]
 }
 
 func NewNode() *Node {
-	return &Node{CodeBlock{}, []*Node{}, AST.NewFormList()}
+	return &Node{CodeBlock{}, []*Node{}, Lib.NewList[AST.Form]()}
 }
 
 func (n Node) getValue() CodeBlock {
@@ -72,8 +72,8 @@ func (n Node) getValue() CodeBlock {
 func (n Node) getChildren() []*Node {
 	return CopyNodeList(n.children)
 }
-func (n Node) getFormulae() *AST.FormList {
-	return n.formulae.Copy()
+func (n Node) getFormulas() Lib.List[AST.Form] {
+	return Lib.ListCpy(n.formulas)
 }
 
 /* Check if a node is empty */
@@ -82,13 +82,13 @@ func (n Node) IsEmpty() bool {
 }
 
 /* Make data struct */
-func (n Node) MakeDataStruct(fl *AST.FormList, is_pos bool) DataStructure {
+func (n Node) MakeDataStruct(fl Lib.List[AST.Form], is_pos bool) DataStructure {
 	return makeCodeTreeFromAtomic(fl, is_pos)
 }
 
 /* Copy a datastruct */
 func (n Node) Copy() DataStructure {
-	return Node{n.getValue(), n.getChildren(), n.getFormulae()}
+	return Node{n.getValue(), n.getChildren(), n.getFormulas()}
 }
 
 /********************/
@@ -97,14 +97,14 @@ func (n Node) Copy() DataStructure {
 
 /* The Node is a leaf when it contains at least one formulae. */
 func (n Node) isLeaf() bool {
-	return n.getFormulae().Len() > 0
+	return n.getFormulas().Len() > 0
 }
 
 /* Make two code trees (tree_pos and tree_neg) from st.atomic */
-func makeCodeTreeFromAtomic(lf *AST.FormList, is_pos bool) *Node {
-	form := AST.NewFormList()
+func makeCodeTreeFromAtomic(lf Lib.List[AST.Form], is_pos bool) *Node {
+	form := Lib.NewList[AST.Form]()
 
-	for _, f := range lf.Slice() {
+	for _, f := range lf.GetSlice() {
 		switch nf := f.(type) {
 		case AST.Pred:
 			if is_pos {
@@ -127,10 +127,10 @@ func makeCodeTreeFromAtomic(lf *AST.FormList, is_pos bool) *Node {
 }
 
 /* Makes a Code Tree from a Sequence of instructions */
-func makeCodeTree(forms *AST.FormList) *Node {
+func makeCodeTree(forms Lib.List[AST.Form]) *Node {
 	root := makeNode(nil)
 
-	for _, f := range forms.Slice() {
+	for _, f := range forms.GetSlice() {
 		f_tmp := f.Copy()
 		form_tmp := ParseFormula(f_tmp)
 		root.insert(form_tmp)
@@ -153,13 +153,13 @@ func makeNode(block CodeBlock) *Node {
 	n := new(Node)
 	n.value = block.Copy()
 	n.children = []*Node{}
-	n.formulae = AST.NewFormList()
+	n.formulas = Lib.NewList[AST.Form]()
 	return n
 }
 
 /* Insert a lsit of formula into the right tree */
-func (n Node) InsertFormulaListToDataStructure(lf *AST.FormList) DataStructure {
-	for _, f := range lf.Slice() {
+func (n Node) InsertFormulaListToDataStructure(lf Lib.List[AST.Form]) DataStructure {
+	for _, f := range lf.GetSlice() {
 		switch nf := f.Copy().(type) {
 		case AST.Pred:
 			n.insert(ParseFormula(nf))
@@ -199,7 +199,7 @@ func (n Node) printAux(tab int) {
 	}
 
 	if n.isLeaf() {
-		for _, form := range n.formulae.Slice() {
+		for _, form := range n.formulas.GetSlice() {
 			Glob.PrintDebug("PT", Lib.MkLazy(func() string { return strings.Repeat("\t", tab+1) + form.ToString() }))
 		}
 	}
@@ -215,7 +215,7 @@ func (n Node) printAux(tab int) {
 func (n *Node) insert(sequence Sequence) {
 	if len(n.value) == 0 {
 		n.value = sequence.GetInstructions()
-		n.formulae = AST.NewFormList(sequence.GetFormula())
+		n.formulas = Lib.MkListV(sequence.GetFormula())
 	} else {
 		n.followInstructions(sequence.GetInstructions(), sequence.GetFormula())
 	}
@@ -237,8 +237,8 @@ func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
 		//    * It's the end of the CodeBlock, but not of the sequence. In this case, check if the following instruction matches with any child.
 		if instr.IsEquivalent(current.value[oui]) {
 			oui += 1
-			if i == len(instructions)-1 && oui == len(current.value) && !current.formulae.Contains(form) {
-				current.formulae.Append(form)
+			if i == len(instructions)-1 && oui == len(current.value) && !Lib.ListMem(form, current.formulas) {
+				current.formulas.Append(form)
 			} else if i < len(instructions)-1 && oui == len(current.value) {
 
 				// If the instruction matches, then continue the algorithm with the child as the current node.
@@ -253,7 +253,7 @@ func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
 				}
 				if !found {
 					newNode := makeNode(instructions[i+1:])
-					newNode.formulae = AST.NewFormList(form)
+					newNode.formulas = Lib.MkListV(form)
 					current.children = append(current.children, newNode)
 					break
 				}
@@ -264,13 +264,13 @@ func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
 			//    * The second one contains the remaining instructions of the sequence plus the formulae.
 			child1 := makeNode(current.value[oui:])
 			child2 := makeNode(instructions[i:])
-			child2.formulae = AST.NewFormList(form)
+			child2.formulas = Lib.MkListV(form)
 
 			child1.children = current.children
-			child1.formulae = current.formulae
+			child1.formulas = current.formulas
 
 			current.value = current.value[:oui]
-			current.formulae = AST.NewFormList()
+			current.formulas = Lib.NewList[AST.Form]()
 			current.children = []*Node{child1, child2}
 
 			break
@@ -285,7 +285,7 @@ func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
 		child1.children = current.children
 		current.value = current.value[:oui]
 		current.children = []*Node{child1}
-		current.formulae = AST.NewFormList(form.Copy())
+		current.formulas = Lib.MkListV(form.Copy())
 	}
 }
 

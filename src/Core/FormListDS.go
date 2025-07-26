@@ -39,30 +39,34 @@ import (
 )
 
 type FormListDS struct {
-	fl *AST.FormList
+	fl Lib.List[AST.Form]
 }
 
-func (f FormListDS) GetFL() *AST.FormList {
-	return f.fl.Copy()
+func (f FormListDS) GetFL() Lib.List[AST.Form] {
+	return Lib.ListCpy(f.fl)
 }
 
 /* Data struct */
 
 /* Take a list of formula and return a FormList (Datastructure type) */
-func (f FormListDS) MakeDataStruct(lf *AST.FormList, is_pos bool) Unif.DataStructure {
+func (f FormListDS) MakeDataStruct(lf Lib.List[AST.Form], is_pos bool) Unif.DataStructure {
 	return (new(FormListDS)).InsertFormulaListToDataStructure(lf)
 }
 
 /* Insert a list of formula into the given Datastructure (here, FormList) */
-func (f FormListDS) InsertFormulaListToDataStructure(lf *AST.FormList) Unif.DataStructure {
-	for _, v := range lf.Slice() {
+func (f FormListDS) InsertFormulaListToDataStructure(lf Lib.List[AST.Form]) Unif.DataStructure {
+	for _, v := range lf.GetSlice() {
 		switch nf := v.(type) {
 		case AST.Pred:
-			f.fl.AppendIfNotContains(nf)
+			if !Lib.ListMem(nf.Copy(), f.fl) {
+				f.fl.Append(nf)
+			}
 		case AST.Not:
 			switch nf.GetForm().(type) {
 			case AST.Pred:
-				f.fl.AppendIfNotContains(nf.GetForm())
+				if !Lib.ListMem(nf.Copy(), f.fl) {
+					f.fl.Append(nf)
+				}
 			}
 		}
 	}
@@ -70,21 +74,21 @@ func (f FormListDS) InsertFormulaListToDataStructure(lf *AST.FormList) Unif.Data
 }
 
 func (f FormListDS) Print() {
-	for _, f := range f.GetFL().Slice() {
+	for _, f := range f.GetFL().GetSlice() {
 		Glob.PrintDebug("FLTS", Lib.MkLazy(func() string { return f.ToString() }))
 	}
 }
 
 func (f FormListDS) Copy() Unif.DataStructure {
-	return FormListDS{f.GetFL().Copy()}
+	return FormListDS{Lib.ListCpy(f.GetFL())}
 }
 
 func (fl FormListDS) IsEmpty() bool {
-	return fl.GetFL().IsEmpty()
+	return fl.GetFL().Empty()
 }
 
 func (fl FormListDS) Unify(f AST.Form) (bool, []Unif.MatchingSubstitutions) {
-	for _, element := range fl.GetFL().Slice() {
+	for _, element := range fl.GetFL().GetSlice() {
 		if element.Equals(f) {
 			return true, []Unif.MatchingSubstitutions{}
 		}

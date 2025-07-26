@@ -70,7 +70,7 @@ func instanciateForalls(axiom AST.Form) AST.Form {
 func addPosRewriteRule(axiom AST.Form, cons AST.Form) {
 	simplifiedAxiom := AST.RemoveNeg(axiom)
 	positiveTree = positiveTree.InsertFormulaListToDataStructure(
-		AST.NewFormList(simplifiedAxiom),
+		Lib.MkListV(simplifiedAxiom),
 	)
 	addRewriteRule(simplifiedAxiom, cons, true)
 }
@@ -78,7 +78,7 @@ func addPosRewriteRule(axiom AST.Form, cons AST.Form) {
 func addNegRewriteRule(axiom AST.Form, cons AST.Form) {
 	simplifiedAxiom := AST.RemoveNeg(axiom)
 	negativeTree = negativeTree.InsertFormulaListToDataStructure(
-		AST.NewFormList(simplifiedAxiom),
+		Lib.MkListV(simplifiedAxiom),
 	)
 	addRewriteRule(simplifiedAxiom, cons, false)
 }

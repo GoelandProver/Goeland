@@ -37,6 +37,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/gs3"
 )
 
@@ -129,10 +130,10 @@ func getPosAndNeg(target AST.Form) (pos, neg AST.Form) {
 	return target, AST.MakerNot(target)
 }
 
-func allRules(rule string, target AST.Form, composingForms *AST.FormList, nexts []*gs3.GS3Sequent, children []*AST.FormList) string {
+func allRules(rule string, target AST.Form, composingForms Lib.List[AST.Form], nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form]) string {
 	result := rule + "\n"
 
-	for _, composingForm := range composingForms.Slice() {
+	for _, composingForm := range composingForms.GetSlice() {
 		result += "(" + toCorrectString(composingForm) + ")\n"
 	}
 
@@ -143,7 +144,7 @@ func allRules(rule string, target AST.Form, composingForms *AST.FormList, nexts 
 	return result
 }
 
-func allRulesQuantUniv(rule string, target AST.Form, composingForms *AST.FormList, nexts []*gs3.GS3Sequent, children []*AST.FormList, vars []AST.Var, termGen AST.Term) string {
+func allRulesQuantUniv(rule string, target AST.Form, composingForms Lib.List[AST.Form], nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form], vars []AST.Var, termGen AST.Term) string {
 
 	quant := ""
 	typeStr := vars[0].GetTypeApp().ToString()
@@ -159,7 +160,7 @@ func allRulesQuantUniv(rule string, target AST.Form, composingForms *AST.FormLis
 
 	result := rule + "\n"
 	result += "(" + typeStr + ")\n"
-	result += "(%s, " + toCorrectString(composingForms.Get(0)) + ")\n"
+	result += "(%s, " + toCorrectString(composingForms.At(0)) + ")\n"
 
 	varStrs := []string{}
 	for _, singleVar := range vars {
@@ -176,10 +177,10 @@ func allRulesQuantUniv(rule string, target AST.Form, composingForms *AST.FormLis
 	return result
 }
 
-func getRecursionUnivStr(nexts []*gs3.GS3Sequent, children []*AST.FormList) (result string) {
+func getRecursionUnivStr(nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form]) (result string) {
 	for i, next := range nexts {
 		result += "(\n"
-		for _, childForm := range children[i].Slice() {
+		for _, childForm := range children[i].GetSlice() {
 			result += toLambdaString(childForm, toCorrectString(childForm)) + ",\n"
 		}
 		proofStr := makeProofStep(next)
@@ -189,7 +190,7 @@ func getRecursionUnivStr(nexts []*gs3.GS3Sequent, children []*AST.FormList) (res
 	return result
 }
 
-func allRulesQuantExist(rule string, target AST.Form, composingForms *AST.FormList, nexts []*gs3.GS3Sequent, children []*AST.FormList, vars []AST.Var, termGen AST.Term) string {
+func allRulesQuantExist(rule string, target AST.Form, composingForms Lib.List[AST.Form], nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form], vars []AST.Var, termGen AST.Term) string {
 	quant := ""
 	typeStr := vars[0].GetTypeApp().ToString()
 	switch typed := target.(type) {
@@ -204,7 +205,7 @@ func allRulesQuantExist(rule string, target AST.Form, composingForms *AST.FormLi
 
 	result := rule + "\n"
 	result += "(" + typeStr + ")\n"
-	result += "(%s, " + toCorrectString(composingForms.Get(0)) + ")\n"
+	result += "(%s, " + toCorrectString(composingForms.At(0)) + ")\n"
 
 	varStrs := []string{}
 	for _, singleVar := range vars {
@@ -219,7 +220,7 @@ func allRulesQuantExist(rule string, target AST.Form, composingForms *AST.FormLi
 	return result
 }
 
-func getRecursionExistStr(nexts []*gs3.GS3Sequent, children []*AST.FormList, termGen AST.Term) (result string) {
+func getRecursionExistStr(nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form], termGen AST.Term) (result string) {
 	for i, next := range nexts {
 		result += "(\n"
 		typesStr := ""
@@ -227,7 +228,7 @@ func getRecursionExistStr(nexts []*gs3.GS3Sequent, children []*AST.FormList, ter
 			typesStr = mapDefault(typed.GetTypeHint().ToString())
 		}
 		result += toLambdaIntroString(termGen, typesStr) + ",\n"
-		for _, childForm := range children[i].Slice() {
+		for _, childForm := range children[i].GetSlice() {
 			result += toLambdaString(childForm, toCorrectString(childForm)) + ",\n"
 		}
 		proofStr := makeProofStep(next)
@@ -238,7 +239,7 @@ func getRecursionExistStr(nexts []*gs3.GS3Sequent, children []*AST.FormList, ter
 }
 
 func alphaNotNot(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().Get(0).GetChildFormulas()
+	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
 	return allRules("GS3nnot", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
@@ -247,12 +248,12 @@ func alphaAnd(proof *gs3.GS3Sequent) string {
 }
 
 func alphaNotOr(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().Get(0).GetChildFormulas()
+	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
 	return allRules("GS3nor", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
 func alphaNotImp(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().Get(0).GetChildFormulas()
+	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
 	return allRules("GS3nimp", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
@@ -261,7 +262,7 @@ func betaOr(proof *gs3.GS3Sequent) string {
 }
 
 func betaNotAnd(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().Get(0).GetChildFormulas()
+	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
 	return allRules("GS3nand", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
@@ -274,7 +275,7 @@ func betaEqu(proof *gs3.GS3Sequent) string {
 }
 
 func betaNotEqu(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().Get(0).GetChildFormulas()
+	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
 	return allRules("GS3nequ", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
 }
 
@@ -294,7 +295,7 @@ func deltaNotAll(proof *gs3.GS3Sequent) string {
 			formulaAll = form
 		}
 	}
-	composingForms := proof.GetTargetForm().GetChildFormulas().Get(0).GetChildFormulas()
+	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
 
 	return allRulesQuantExist("GS3nall", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
 }
@@ -315,40 +316,40 @@ func gammaNotEx(proof *gs3.GS3Sequent) string {
 			formulaEx = form
 		}
 	}
-	composingForms := proof.GetTargetForm().GetChildFormulas().Get(0).GetChildFormulas()
+	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
 
 	return allRulesQuantUniv("GS3nex", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaEx.GetVarList(), proof.TermGenerated())
 }
 
 // Processes the formula that was proven by Goéland.
-func processMainFormula(form AST.Form) (*AST.FormList, AST.Form) {
-	formList := AST.NewFormList()
+func processMainFormula(form AST.Form) (Lib.List[AST.Form], AST.Form) {
+	formList := Lib.NewList[AST.Form]()
 	switch nf := form.(type) {
 	case AST.Not:
 		form = nf.GetForm()
 	case AST.And:
-		last := nf.FormList.Len() - 1
-		formList = AST.NewFormList(nf.FormList.GetElements(0, last)...)
-		form = nf.FormList.Get(last).(AST.Not).GetForm()
+		last := nf.GetChildFormulas().Len() - 1
+		formList = Lib.MkListV(nf.GetChildFormulas().Get(0, last)...)
+		form = nf.GetChildFormulas().At(last).(AST.Not).GetForm()
 	}
 	return formList, form
 }
 
 // Prints the theorem's name & properly formats the first formula.
-func makeTheorem(axioms *AST.FormList, conjecture AST.Form) string {
+func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
 	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(Glob.GetProblemName(), ".", "_"), "=", "_"), "+", "_")
-	axioms = axioms.Copy()
+	axioms = Lib.ListCpy(axioms)
 	axioms.Append(AST.MakerNot(conjecture))
 	formattedProblem := makeImpChain(axioms)
 	return "symbol goeland_" + problemName + " : \nϵ " + toCorrectString(formattedProblem) + " → ϵ ⊥ ≔ \n"
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).
-func makeImpChain(forms *AST.FormList) AST.Form {
+func makeImpChain(forms Lib.List[AST.Form]) AST.Form {
 	last := forms.Len() - 1
-	form := forms.Get(last)
+	form := forms.At(last)
 	for i := last - 1; i >= 0; i-- {
-		form = AST.MakerImp(forms.Get(i), form)
+		form = AST.MakerImp(forms.At(i), form)
 	}
 	return form
 }

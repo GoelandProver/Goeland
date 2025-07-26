@@ -42,11 +42,12 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
-var positiveRewrite map[string]*AST.FormList /* Stores rewrites of atoms with positive occurrences */
-var negativeRewrite map[string]*AST.FormList /* Stores rewrites of atoms with negative occurrences */
+var positiveRewrite map[string]Lib.List[AST.Form] /* Stores rewrites of atoms with positive occurrences */
+var negativeRewrite map[string]Lib.List[AST.Form] /* Stores rewrites of atoms with negative occurrences */
 
 var positiveTree Unif.DataStructure /* Matches atoms with positive occurrences */
 var negativeTree Unif.DataStructure /* Matches atoms with negative occurrences */
@@ -57,7 +58,7 @@ var preskolemize bool
 var flagPolarized = flag.Bool("polarized", false, "Activate polarized DMT")
 var flagPresko = flag.Bool("presko", false, "Activate preskolemization on DMT")
 
-var registeredAxioms *AST.FormList
+var registeredAxioms Lib.List[AST.Form]
 
 /**
  * Base function needed to initialize any plugin of Goéland.
@@ -79,12 +80,12 @@ func InitPluginTests(polarized, presko bool) {
 }
 
 func initPluginGlobalVariables() {
-	positiveRewrite = make(map[string]*AST.FormList)
-	negativeRewrite = make(map[string]*AST.FormList)
+	positiveRewrite = make(map[string]Lib.List[AST.Form])
+	negativeRewrite = make(map[string]Lib.List[AST.Form])
 	positiveTree = Unif.NewNode()
 	negativeTree = Unif.NewNode()
 
-	registeredAxioms = AST.NewFormList()
+	registeredAxioms = Lib.NewList[AST.Form]()
 }
 
 /**
@@ -115,7 +116,6 @@ func parsePluginOptions() {
 	Glob.PrintInfo("DMT", output)
 }
 
-
-func GetRegisteredAxioms() *AST.FormList {
+func GetRegisteredAxioms() Lib.List[AST.Form] {
 	return registeredAxioms
 }

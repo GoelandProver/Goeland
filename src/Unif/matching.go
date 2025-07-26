@@ -178,7 +178,7 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 	matching := []MatchingSubstitutions{}
 
 	if node.isLeaf() {
-		for _, f := range node.formulae.Slice() {
+		for _, f := range node.formulas.GetSlice() {
 			if reflect.TypeOf(f) == reflect.TypeOf(AST.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(TermForm{}) {
 				// Rebuild final substitution between meta and subst
 				final_subst := computeSubstitutions(CopySubstPairList(m.subst), m.meta.Copy(), f.Copy())
