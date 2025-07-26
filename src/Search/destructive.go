@@ -100,15 +100,16 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 	// proof.ResetProofFile()
 	ResetExchangesFile()
 
-	Glob.PrintInfo("MAIN", fmt.Sprintf("nb_step : %v - limit : %v", Glob.GetNbStep(), limit))
-
 	tp := Unif.NewNode()
 	tn := Unif.NewNode()
 
 	state := MakeState(limit, tp, tn, formula)
 	state.SetCurrentProofNodeId(0)
 
-	Glob.PrintInfo("MAIN", fmt.Sprintf("Launch Gotab with destructive = %v", Glob.IsDestructive()))
+	Glob.PrintInfo(
+		"search",
+		fmt.Sprintf("Launching destructive search with reintroduction limit set to %d.", limit),
+	)
 
 	Glob.SetNbGoroutines(0)
 	state.SetLF(Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(

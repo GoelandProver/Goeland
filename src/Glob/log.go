@@ -101,9 +101,9 @@ var printToLogger = func(logger *log.Logger, function, message string) {
 	toParse += additionalStr
 
 	options = append(options, function)
-	toParse += "[%v]"
+	toParse += "[%s]"
 
-	toParse += " %v\n"
+	toParse += " %s\n"
 	options = append(options, message)
 	logger.Output(3, fmt.Sprintf(toParse, options...))
 }

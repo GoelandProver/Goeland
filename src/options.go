@@ -11,12 +11,12 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/assisted"
-	"github.com/GoelandProver/Goeland/Mods/coq"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 	equality "github.com/GoelandProver/Goeland/Mods/equality/bse"
 	"github.com/GoelandProver/Goeland/Mods/equality/sateq"
 	"github.com/GoelandProver/Goeland/Mods/gs3"
 	"github.com/GoelandProver/Goeland/Mods/lambdapi"
+	"github.com/GoelandProver/Goeland/Mods/rocq"
 	"github.com/GoelandProver/Goeland/Mods/tptp"
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Search/incremental"
@@ -258,13 +258,13 @@ func buildOptions() {
 		func(bool) { Glob.SetCompleteness(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
-		"ocoq",
+		"orocq",
 		false,
-		"Enables the Coq format for proofs instead of text",
+		"Enables the Rocq format for proofs instead of text",
 		func(bool) {
-			Glob.OutputCoq()
+			Glob.OutputRocq()
 			Glob.SetProof(true)
-			Search.AddPrintProofAlgorithm(coq.CoqOutputProofStruct)
+			Search.AddPrintProofAlgorithm(rocq.RocqOutputProofStruct)
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
@@ -302,8 +302,8 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"context",
 		false,
-		"Should only be used with the -ocoq or the -olp parameters. Enables the context for a standalone execution",
-		func(bool) { coq.SetContextEnabled(true) },
+		"Should only be used with the -orocq or the -olp parameters. Enables the context for a standalone execution",
+		func(bool) { rocq.SetContextEnabled(true) },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"inner",
@@ -360,7 +360,7 @@ func buildOptions() {
 	(&option[bool]{}).init(
 		"chrono",
 		false,
-		"Should only be used with the -ocoq, the -olp or the otptp parameters. Enables the chronometer for deskolemization and proof translation",
+		"Should only be used with the -orocq, the -olp or the otptp parameters. Enables the chronometer for deskolemization and proof translation",
 		func(bool) {
 			chronoInit()
 		},
@@ -425,11 +425,11 @@ func buildOptions() {
 }
 
 func chronoInit() {
-	oldCoq := coq.MakeCoqProof
-	coq.MakeCoqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
+	old_rocq := rocq.MakeRocqProof
+	rocq.MakeRocqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
 		start := time.Now()
-		result := oldCoq(proof, meta)
-		printChrono("Coq", start)
+		result := old_rocq(proof, meta)
+		printChrono("Rocq", start)
 		return result
 	}
 

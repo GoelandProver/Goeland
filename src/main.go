@@ -60,7 +60,7 @@ import (
 )
 
 var chAssistant chan bool = make(chan bool)
-var main_label = "Main"
+var main_label = "main"
 
 func printChrono(id string, start time.Time) {
 	fmt.Printf("%s Chrono - %s - %d\n", "%", id, time.Since(start).Milliseconds())
@@ -120,10 +120,16 @@ func presearchLoader() (AST.Form, int) {
 	problem := os.Args[len(os.Args)-1]
 	Glob.SetProblemName(path.Base(problem))
 
-	fmt.Printf("You are running Goeland v.%v\n", Glob.GetVersion())
-	fmt.Printf("Problem: %v\n", Glob.GetProblemName())
-
-	Glob.PrintInfo(main_label, fmt.Sprintf("Problem : %v", problem))
+	Glob.PrintInfo(
+		"preloader",
+		fmt.Sprintf("You are running problem %s on Goeland v.%s", path.Base(problem), Glob.GetVersion()),
+	)
+	Glob.PrintDebug(
+		main_label,
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf("Full problem path: %s", problem)
+		}),
+	)
 
 	statements, bound, containsEquality := Parser.ParseTPTPFile(problem)
 	actualStatements := Engine.ToInternalSyntax(statements)
@@ -349,9 +355,9 @@ func checkForTypedProof(form AST.Form) AST.Form {
 		err := Typing.WellFormedVerification(form.Copy(), Glob.GetTypeProof())
 
 		if err != nil {
-			Glob.Fatal(main_label, fmt.Sprintf("Typing error: %v", err))
+			Glob.Fatal("typechecker", fmt.Sprintf("Typing error: %v", err))
 		} else {
-			Glob.PrintInfo(main_label, "Well typed.")
+			Glob.PrintInfo("typechecker", fmt.Sprintf("The problem %s is well typed.", Glob.GetProblemName()))
 		}
 	}
 

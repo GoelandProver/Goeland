@@ -133,7 +133,7 @@ func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool)
 	for _, vt := range varsType {
 		str := mapping[QuantVarOpen]
 		str += ListToMappedString(q.GetVarList(), varSeparator, "", mapping, false)
-		if displayTypes || Glob.IsCoqOutput() {
+		if displayTypes || Glob.IsRocqOutput() {
 			str += " : " + vt.type_.ToString()
 		}
 		varStrings = append(varStrings, str+mapping[QuantVarClose])

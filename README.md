@@ -96,7 +96,7 @@ pp. 359-368, 2022.
 * The following paper presents an algorithm for deskolemizing proofs, which
   introduces a compatibility layer between tableaux and sequent calculus and
   then allows us to certify the proofs in various proof assistants. Goéland
-  currently outputs proofs for Rocq (`-ocoq`) and LambdaPi (`-olp`). Note that
+  currently outputs proofs for Rocq (`-orocq`) and LambdaPi (`-olp`). Note that
   the implementation is currently outdated w.r.t. the paper's version.
 
   [RBCH24] Johann Rosain, Richard Bonichon, Julie Cailler and Olivier Hermant,

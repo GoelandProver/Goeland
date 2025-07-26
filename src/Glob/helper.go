@@ -47,7 +47,7 @@ import (
 	"time"
 )
 
-var ocoq = false
+var orocq = false
 var olambdapi = false
 var otptp = false
 var osctptp = false
@@ -205,8 +205,8 @@ func IsPrettyPrint() bool {
 	return prettyPrint
 }
 
-func IsCoqOutput() bool {
-	return ocoq
+func IsRocqOutput() bool {
+	return orocq
 }
 
 func IsLambdapiOutput() bool {
@@ -338,8 +338,8 @@ func DisplayPretty() {
 	prettyPrint = true
 }
 
-func OutputCoq() {
-	ocoq = true
+func OutputRocq() {
+	orocq = true
 }
 
 func OutputLambdapi() {
