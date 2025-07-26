@@ -124,13 +124,20 @@ func realSkolemize(
 	metas Lib.Set[AST.Meta],
 	typ int,
 ) AST.Form {
-	sko, res := selectedSkolemization.Skolemize(
-		initialForm,
-		deltaForm,
-		x,
-		metas,
-	)
-	selectedSkolemization = sko
+	var res AST.Form
+
+	if AST.IsTType(x.GetTy()) {
+		id := AST.MakerId("skoTy")
+		res = deltaForm.SubstTy(x.ToTyBoundVar(), AST.MkTyConst(id.ToString()))
+	} else {
+		selectedSkolemization, res = selectedSkolemization.Skolemize(
+			initialForm,
+			deltaForm,
+			x,
+			metas,
+		)
+	}
+
 	switch typ {
 	case isNegAll:
 		if allVars.Len() > 1 {

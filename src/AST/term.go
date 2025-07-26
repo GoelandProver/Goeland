@@ -53,7 +53,7 @@ type Term interface {
 	GetMetaList() Lib.List[Meta] // Metas appearing in the term ORDERED
 	GetSubTerms() Lib.List[Term]
 	ReplaceSubTermBy(original_term, new_term Term) Term
-	ReplaceTyVar(old TyBound, new Ty) Term
+	SubstTy(old TyBound, new Ty) Term
 	Less(any) bool
 }
 

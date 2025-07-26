@@ -39,16 +39,21 @@ package AST
 
 import (
 	"fmt"
+	"sync"
+
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
+
+var meta_mut sync.Mutex
+var count_meta int
 
 type Ty interface {
 	isTy()
 	ToString() string
 	Equals(any) bool
 	Copy() Ty
-	ReplaceTyVar(TyBound, Ty) Ty
+	SubstTy(TyBound, Ty) Ty
 }
 
 // Internal, shouldn't get out so no upper case
@@ -66,7 +71,7 @@ func (v tyVar) Equals(oth any) bool {
 }
 func (v tyVar) Copy() Ty { return tyVar{v.repr} }
 
-func (v tyVar) ReplaceTyVar(TyBound, Ty) Ty { return v }
+func (v tyVar) SubstTy(TyBound, Ty) Ty { return v }
 
 type TyBound struct {
 	name  string
@@ -84,7 +89,7 @@ func (b TyBound) Equals(oth any) bool {
 func (b TyBound) Copy() Ty        { return TyBound{b.name, b.index} }
 func (b TyBound) GetName() string { return b.name }
 
-func (b TyBound) ReplaceTyVar(old TyBound, new Ty) Ty {
+func (b TyBound) SubstTy(old TyBound, new Ty) Ty {
 	if b.Equals(old) {
 		return new
 	}
@@ -92,20 +97,21 @@ func (b TyBound) ReplaceTyVar(old TyBound, new Ty) Ty {
 }
 
 type TyMeta struct {
-	name string
+	name  string
+	index int
 }
 
 func (TyMeta) isTy()              {}
-func (m TyMeta) ToString() string { return m.name }
+func (m TyMeta) ToString() string { return fmt.Sprintf("%s_%d", m.name, m.index) }
 func (m TyMeta) Equals(oth any) bool {
 	if om, ok := oth.(TyMeta); ok {
 		return m.name == om.name
 	}
 	return false
 }
-func (m TyMeta) Copy() Ty { return TyMeta{m.name} }
+func (m TyMeta) Copy() Ty { return TyMeta{m.name, m.index} }
 
-func (m TyMeta) ReplaceTyVar(TyBound, Ty) Ty { return m }
+func (m TyMeta) SubstTy(TyBound, Ty) Ty { return m }
 
 // Type constructors, e.g., list, option, ...
 // Include constants, e.g., $i, $o, ...
@@ -143,10 +149,10 @@ func (c TyConstr) Args() Lib.List[Ty] {
 	return c.args
 }
 
-func (c TyConstr) ReplaceTyVar(old TyBound, new Ty) Ty {
+func (c TyConstr) SubstTy(old TyBound, new Ty) Ty {
 	return TyConstr{
 		c.symbol,
-		Lib.ListMap(c.args, func(t Ty) Ty { return t.ReplaceTyVar(old, new) }),
+		Lib.ListMap(c.args, func(t Ty) Ty { return t.SubstTy(old, new) }),
 	}
 }
 
@@ -175,9 +181,9 @@ func (p TyProd) Copy() Ty {
 	return TyProd{Lib.ListCpy(p.args)}
 }
 
-func (p TyProd) ReplaceTyVar(old TyBound, new Ty) Ty {
+func (p TyProd) SubstTy(old TyBound, new Ty) Ty {
 	return TyProd{
-		Lib.ListMap(p.args, func(t Ty) Ty { return t.ReplaceTyVar(old, new) }),
+		Lib.ListMap(p.args, func(t Ty) Ty { return t.SubstTy(old, new) }),
 	}
 }
 
@@ -200,8 +206,8 @@ func (f TyFunc) Copy() Ty {
 	return TyFunc{f.in.Copy(), f.out.Copy()}
 }
 
-func (f TyFunc) ReplaceTyVar(old TyBound, new Ty) Ty {
-	return TyFunc{f.in.ReplaceTyVar(old, new), f.out.ReplaceTyVar(old, new)}
+func (f TyFunc) SubstTy(old TyBound, new Ty) Ty {
+	return TyFunc{f.in.SubstTy(old, new), f.out.SubstTy(old, new)}
 }
 
 type TyPi struct {
@@ -226,8 +232,8 @@ func (p TyPi) Copy() Ty {
 	return TyPi{p.vars.Copy(func(x string) string { return x }), p.ty.Copy()}
 }
 
-func (p TyPi) ReplaceTyVar(old TyBound, new Ty) Ty {
-	return TyPi{p.vars, p.ty.ReplaceTyVar(old, new)}
+func (p TyPi) SubstTy(old TyBound, new Ty) Ty {
+	return TyPi{p.vars, p.ty.SubstTy(old, new)}
 }
 
 // Makers
@@ -241,7 +247,11 @@ func MkTyBV(name string, index int) Ty {
 }
 
 func MkTyMeta(name string) Ty {
-	return TyMeta{name}
+	meta_mut.Lock()
+	meta := TyMeta{name, count_meta}
+	count_meta += 1
+	meta_mut.Unlock()
+	return meta
 }
 
 func MkTyConstr(symbol string, args Lib.List[Ty]) Ty {

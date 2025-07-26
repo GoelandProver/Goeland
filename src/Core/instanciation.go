@@ -49,7 +49,7 @@ const (
  * Instantiates once the formula fnt.
  */
 func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.Set[AST.Meta]) {
-	var meta AST.Meta
+	var meta Lib.Option[AST.Meta]
 	terms := fnt.GetTerms()
 
 	switch f := fnt.GetForm().(type) {
@@ -61,7 +61,15 @@ func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.Set[AST.Meta]) 
 		fnt, meta = RealInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
-	return fnt, Lib.Singleton(meta)
+	switch m := meta.(type) {
+	case Lib.Some[AST.Meta]:
+		return fnt, Lib.Singleton(m.Val)
+	case Lib.None[AST.Meta]:
+		return fnt, Lib.EmptySet[AST.Meta]()
+	}
+
+	Glob.Anomaly("instantiation", "returned bad option type")
+	return fnt, Lib.EmptySet[AST.Meta]()
 }
 
 func RealInstantiate(
@@ -69,16 +77,24 @@ func RealInstantiate(
 	index, status int,
 	subForm AST.Form,
 	terms Lib.List[AST.Term],
-) (FormAndTerms, AST.Meta) {
+) (FormAndTerms, Lib.Option[AST.Meta]) {
 	v := varList.At(0)
-	meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTy())
-	subForm = subForm.SubstituteVarByMeta(v.ToBoundVar(), meta)
+	var m Lib.Option[AST.Meta]
 
-	terms = terms.Copy(AST.Term.Copy)
-	terms.Add(
-		AST.TermEquals,
-		Glob.To[AST.Term](meta),
-	)
+	if AST.IsTType(v.GetTy()) {
+		meta := AST.MkTyMeta(strings.ToUpper(v.GetName()))
+		subForm = subForm.SubstTy(v.ToTyBoundVar(), meta)
+		m = Lib.MkNone[AST.Meta]()
+	} else {
+		meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTy())
+		subForm = subForm.SubstituteVarByMeta(v.ToBoundVar(), meta)
+		terms = terms.Copy(AST.Term.Copy)
+		terms.Add(
+			AST.TermEquals,
+			Glob.To[AST.Term](meta),
+		)
+		m = Lib.MkSome(meta)
+	}
 
 	if varList.Len() > 1 {
 		if status == is_exists {
@@ -93,5 +109,5 @@ func RealInstantiate(
 		}
 	}
 
-	return MakeFormAndTerm(subForm, terms), meta
+	return MakeFormAndTerm(subForm, terms), m
 }
