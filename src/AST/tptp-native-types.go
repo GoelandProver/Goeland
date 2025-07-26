@@ -60,6 +60,8 @@ func initTPTPNativeTypes() {
 
 	tIndividual = MkTyConst("$i")
 	tProp = MkTyConst("$o")
+
+	count_meta = 0
 }
 
 func TType() Ty {

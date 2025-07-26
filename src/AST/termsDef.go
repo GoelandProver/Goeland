@@ -111,7 +111,7 @@ func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return i
 }
 
-func (i Id) ReplaceTyVar(TyBound, Ty) Term { return i }
+func (i Id) SubstTy(TyBound, Ty) Term { return i }
 
 func (i Id) GetSubTerms() Lib.List[Term] {
 	return Lib.MkListV[Term](i)
@@ -277,14 +277,14 @@ func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
 	}
 }
 
-func (f Fun) ReplaceTyVar(old TyBound, new Ty) Term {
+func (f Fun) SubstTy(old TyBound, new Ty) Term {
 	typed_args := Lib.ListMap(
 		f.tys,
-		func(t Ty) Ty { return t.ReplaceTyVar(old, new) },
+		func(t Ty) Ty { return t.SubstTy(old, new) },
 	)
 	args := Lib.ListMap(
 		f.args,
-		func(t Term) Term { return t.ReplaceTyVar(old, new) },
+		func(t Term) Term { return t.SubstTy(old, new) },
 	)
 	return MakeFun(
 		f.GetID(),
@@ -364,7 +364,7 @@ func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return v
 }
 
-func (v Var) ReplaceTyVar(TyBound, Ty) Term { return v }
+func (v Var) SubstTy(TyBound, Ty) Term { return v }
 
 func (v Var) ToMappedString(map_ MapString, type_ bool) string {
 	return v.GetName()
@@ -454,7 +454,7 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return m
 }
 
-func (m Meta) ReplaceTyVar(TyBound, Ty) Term { return m }
+func (m Meta) SubstTy(TyBound, Ty) Term { return m }
 
 func (m Meta) GetSubTerms() Lib.List[Term] {
 	return Lib.MkListV[Term](m)
