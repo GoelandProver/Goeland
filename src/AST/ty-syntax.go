@@ -48,12 +48,16 @@ import (
 var meta_mut sync.Mutex
 var count_meta int
 
+type TyGenVar interface {
+	isGenVar()
+}
+
 type Ty interface {
 	isTy()
 	ToString() string
 	Equals(any) bool
 	Copy() Ty
-	SubstTy(TyBound, Ty) Ty
+	SubstTy(TyGenVar, Ty) Ty
 }
 
 // Internal, shouldn't get out so no upper case
@@ -71,7 +75,7 @@ func (v tyVar) Equals(oth any) bool {
 }
 func (v tyVar) Copy() Ty { return tyVar{v.repr} }
 
-func (v tyVar) SubstTy(TyBound, Ty) Ty { return v }
+func (v tyVar) SubstTy(TyGenVar, Ty) Ty { return v }
 
 type TyBound struct {
 	name  string
@@ -79,6 +83,7 @@ type TyBound struct {
 }
 
 func (TyBound) isTy()              {}
+func (TyBound) isGenVar()          {}
 func (b TyBound) ToString() string { return b.name }
 func (b TyBound) Equals(oth any) bool {
 	if bv, ok := oth.(TyBound); ok {
@@ -89,7 +94,7 @@ func (b TyBound) Equals(oth any) bool {
 func (b TyBound) Copy() Ty        { return TyBound{b.name, b.index} }
 func (b TyBound) GetName() string { return b.name }
 
-func (b TyBound) SubstTy(old TyBound, new Ty) Ty {
+func (b TyBound) SubstTy(old TyGenVar, new Ty) Ty {
 	if b.Equals(old) {
 		return new
 	}
@@ -97,21 +102,38 @@ func (b TyBound) SubstTy(old TyBound, new Ty) Ty {
 }
 
 type TyMeta struct {
-	name  string
-	index int
+	name    string
+	index   int
+	formula int // for compatibility with term metas
 }
 
 func (TyMeta) isTy()              {}
+func (TyMeta) isGenVar()          {}
 func (m TyMeta) ToString() string { return fmt.Sprintf("%s_%d", m.name, m.index) }
 func (m TyMeta) Equals(oth any) bool {
 	if om, ok := oth.(TyMeta); ok {
-		return m.name == om.name
+		return m.name == om.name && m.index == om.index
 	}
 	return false
 }
-func (m TyMeta) Copy() Ty { return TyMeta{m.name, m.index} }
+func (m TyMeta) Copy() Ty { return TyMeta{m.name, m.index, m.formula} }
 
-func (m TyMeta) SubstTy(TyBound, Ty) Ty { return m }
+func (m TyMeta) SubstTy(v TyGenVar, new Ty) Ty {
+	if m.Equals(v) {
+		return new
+	}
+	return m
+}
+
+func (m TyMeta) ToTermMeta() Meta { return MakeMeta(m.index, -1, m.name, m.formula, tType) }
+
+func TyMetaFromMeta(m Meta) TyMeta {
+	return TyMeta{
+		m.name,
+		m.index,
+		m.formula,
+	}
+}
 
 // Type constructors, e.g., list, option, ...
 // Include constants, e.g., $i, $o, ...
@@ -149,7 +171,7 @@ func (c TyConstr) Args() Lib.List[Ty] {
 	return c.args
 }
 
-func (c TyConstr) SubstTy(old TyBound, new Ty) Ty {
+func (c TyConstr) SubstTy(old TyGenVar, new Ty) Ty {
 	return TyConstr{
 		c.symbol,
 		Lib.ListMap(c.args, func(t Ty) Ty { return t.SubstTy(old, new) }),
@@ -181,7 +203,7 @@ func (p TyProd) Copy() Ty {
 	return TyProd{Lib.ListCpy(p.args)}
 }
 
-func (p TyProd) SubstTy(old TyBound, new Ty) Ty {
+func (p TyProd) SubstTy(old TyGenVar, new Ty) Ty {
 	return TyProd{
 		Lib.ListMap(p.args, func(t Ty) Ty { return t.SubstTy(old, new) }),
 	}
@@ -206,7 +228,7 @@ func (f TyFunc) Copy() Ty {
 	return TyFunc{f.in.Copy(), f.out.Copy()}
 }
 
-func (f TyFunc) SubstTy(old TyBound, new Ty) Ty {
+func (f TyFunc) SubstTy(old TyGenVar, new Ty) Ty {
 	return TyFunc{f.in.SubstTy(old, new), f.out.SubstTy(old, new)}
 }
 
@@ -232,8 +254,12 @@ func (p TyPi) Copy() Ty {
 	return TyPi{p.vars.Copy(func(x string) string { return x }), p.ty.Copy()}
 }
 
-func (p TyPi) SubstTy(old TyBound, new Ty) Ty {
+func (p TyPi) SubstTy(old TyGenVar, new Ty) Ty {
 	return TyPi{p.vars, p.ty.SubstTy(old, new)}
+}
+
+func (p TyPi) VarsLen() int {
+	return p.vars.Len()
 }
 
 // Makers
@@ -246,9 +272,9 @@ func MkTyBV(name string, index int) Ty {
 	return TyBound{name, index}
 }
 
-func MkTyMeta(name string) Ty {
+func MkTyMeta(name string, formula int) Ty {
 	meta_mut.Lock()
-	meta := TyMeta{name, count_meta}
+	meta := TyMeta{name, count_meta, formula}
 	count_meta += 1
 	meta_mut.Unlock()
 	return meta
@@ -399,6 +425,43 @@ func GetOutTy(ty Ty) Ty {
 	Glob.Anomaly(
 		"Ty.GetOutTy",
 		fmt.Sprintf("Tried to extract out type of a non-functional type %s", ty.ToString()),
+	)
+	return nil
+}
+
+func TyToTerm(ty Ty) Term {
+	switch nty := ty.(type) {
+	case TyMeta:
+		return nty.ToTermMeta()
+	case TyConstr:
+		return MakerFun(
+			MakerId(nty.symbol),
+			Lib.NewList[Ty](),
+			Lib.ListMap(nty.args, TyToTerm),
+		)
+	}
+
+	Glob.Anomaly(
+		"AST.Ty",
+		fmt.Sprintf("Trying to convert the non-atomic (or bound var) type %s to a term", ty.ToString()),
+	)
+	return nil
+}
+
+func TermToTy(trm Term) Ty {
+	switch t := trm.(type) {
+	case Meta:
+		return TyMetaFromMeta(t)
+	case Fun:
+		return MkTyConstr(
+			t.GetID().name,
+			Lib.ListMap(t.args, TermToTy),
+		)
+	}
+
+	Glob.Anomaly(
+		"AST.Ty",
+		fmt.Sprintf("Trying to convert the non-atomic (or bound var) term %s to a type", trm.ToString()),
 	)
 	return nil
 }

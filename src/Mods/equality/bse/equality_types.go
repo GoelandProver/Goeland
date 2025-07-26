@@ -120,7 +120,7 @@ func (equs Equalities) removeHalf() Equalities {
 /* Retrieve equalities from a datastructure */
 func retrieveEqualities(dt Unif.DataStructure) Equalities {
 	res := Equalities{}
-	meta_ty := AST.MkTyMeta("META_TY_EQ")
+	meta_ty := AST.MkTyMeta("META_TY_EQ", -1)
 	MetaEQ1 := AST.MakerMeta("METAEQ1", -1, meta_ty)
 	MetaEQ2 := AST.MakerMeta("METAEQ2", -1, meta_ty)
 
@@ -134,7 +134,7 @@ func retrieveEqualities(dt Unif.DataStructure) Equalities {
 	_, eq_list := dt.Unify(eq_pred)
 
 	for _, ms := range eq_list {
-		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaEQ1, MetaEQ2)
+		ms_ordered := orderSubstForRetrieve(ms.MatchingSubstitutions().GetSubst(), MetaEQ1, MetaEQ2)
 		eq1_term, ok_t1 := ms_ordered.Get(MetaEQ1)
 		if ok_t1 == -1 {
 			Glob.PrintError("RI", "Meta_eq_1 not found in map")
@@ -151,7 +151,7 @@ func retrieveEqualities(dt Unif.DataStructure) Equalities {
 /* Retrieve inequalities from a datastructure */
 func retrieveInequalities(dt Unif.DataStructure) Inequalities {
 	res := Inequalities{}
-	meta_ty := AST.MkTyMeta("META_TY_NEQ")
+	meta_ty := AST.MkTyMeta("META_TY_NEQ", -1)
 	MetaNEQ1 := AST.MakerMeta("META_NEQ_1", -1, meta_ty)
 	MetaNEQ2 := AST.MakerMeta("META_NEQ_2", -1, meta_ty)
 
@@ -165,7 +165,7 @@ func retrieveInequalities(dt Unif.DataStructure) Inequalities {
 	_, neq_list := dt.Unify(neq_pred)
 
 	for _, ms := range neq_list {
-		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaNEQ1, MetaNEQ2)
+		ms_ordered := orderSubstForRetrieve(ms.MatchingSubstitutions().GetSubst(), MetaNEQ1, MetaNEQ2)
 		neq1_term, ok_t1 := ms_ordered.Get(MetaNEQ1)
 		if ok_t1 == -1 {
 			Glob.PrintError("RI", "Meta_eq_1 not found in map")

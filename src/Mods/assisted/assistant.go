@@ -38,6 +38,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -185,7 +186,8 @@ func selectStatus() int {
 func printFormListFromState(st *Search.State, id int) {
 	fmt.Printf("\nState nº%d:\n", id)
 
-	printSubList("Applied subs", st.GetAppliedSubst().GetSubst())
+	// FIXME: why is this all fmt.Printf?
+	fmt.Printf("Applied subs: %s", Lib.ListToString(st.GetAppliedSubst().GetSubst(), ", ", "(empty subst)"))
 	printSubList("X - Atomic", st.GetAtomic())
 	printSubList("A - Alpha", st.GetAlpha())
 	printSubList("B - Beta", st.GetBeta())
@@ -211,15 +213,15 @@ func printSubList[T Glob.Stringable](title string, list []T) {
 
 func printGoelandChoice(st *Search.State) {
 	found := false
-	allSubs := []Unif.Substitutions{}
+	allSubs := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
 	withSubs := true
 
 	for _, form := range st.GetAtomic() {
 		canClose, subs := Search.ApplyClosureRules(form.GetForm(), st)
 		if canClose {
 			found = true
-			if len(subs) > 0 && !subs[0].IsEmpty() {
-				allSubs = append(allSubs, subs...)
+			if !subs.Empty() && !subs.At(0).Empty() {
+				allSubs.Append(subs.GetSlice()...)
 			} else {
 				withSubs = false
 			}
@@ -229,7 +231,7 @@ func printGoelandChoice(st *Search.State) {
 	if found {
 		str := " └ Goéland would apply the Closure rule"
 		if withSubs {
-			str += " with the following substitution: " + allSubs[0].ToString()
+			str += " with the following substitution: " + Lib.ListToString(allSubs.At(0), ", ", "(empty subst)")
 		} else {
 			str += " without any subsitutions"
 		}
@@ -358,14 +360,17 @@ func selectFormula(forms Core.FormAndTermsList) int {
 func selectSubstitution(substs []Core.SubstAndForm) int {
 	fmt.Printf("Found closure rule with substitution that is used elsewhere.\n")
 	fmt.Printf("Here is the list of possible substitutions :\n")
-	uniqueSubs := []Unif.Substitutions{}
+	uniqueSubs := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
 
 	for _, sub := range substs {
-		uniqueSubs = Unif.AppendIfNotContainsSubst(uniqueSubs, sub.GetSubst())
+		uniqueSubs.Add(
+			Lib.ListEquals[Unif.MixedSubstitution],
+			sub.GetSubst(),
+		)
 	}
 
-	for i, elem := range uniqueSubs {
-		fmt.Printf("[%d] %v\n", i, elem.ToString())
+	for i, elem := range uniqueSubs.GetSlice() {
+		fmt.Printf("[%d] %v\n", i, Lib.ListToString(elem, ", ", "(empty subst)"))
 	}
 
 	isSubstitutionValid := false
@@ -373,8 +378,10 @@ func selectSubstitution(substs []Core.SubstAndForm) int {
 	for !isSubstitutionValid {
 		fmt.Printf("Select a substitution ~> ")
 		fmt.Scanf("%d", &choice)
-		if choice < len(uniqueSubs) && choice >= 0 {
-			fmt.Printf("You selected the substitution %v.\n", uniqueSubs[choice].ToString())
+		if choice < uniqueSubs.Len() && choice >= 0 {
+			fmt.Printf("You selected the substitution %v.\n",
+				Lib.ListToString(uniqueSubs.At(choice), ", ", "(empty subst)"),
+			)
 			isSubstitutionValid = true
 			fmt.Println("-------------------------")
 		} else {
