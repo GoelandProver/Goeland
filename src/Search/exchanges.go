@@ -83,7 +83,13 @@ func ResetExchangesFile() {
 	}
 }
 
-func makeJsonExchanges(father_uint uint64, st State, ss_subst []Unif.Substitutions, subst_received Unif.Substitutions, calling_function string) exchanges_struct {
+func makeJsonExchanges(
+	father_uint uint64,
+	st State,
+	ss_subst Lib.List[Lib.List[Unif.MixedSubstitution]],
+	subst_received Lib.List[Unif.MixedSubstitution],
+	calling_function string,
+) exchanges_struct {
 	// ID
 	id_process := Glob.GetGID()
 	id := int(id_process)
@@ -109,16 +115,16 @@ func makeJsonExchanges(father_uint uint64, st State, ss_subst []Unif.Substitutio
 
 	// Subt
 	sr := ""
-	if len(st.GetAppliedSubst().GetSubst()) > 0 {
-		sr += st.GetAppliedSubst().GetSubst().ToString()
+	if !st.GetAppliedSubst().GetSubst().Empty() {
+		sr += Lib.ListToString(st.GetAppliedSubst().GetSubst(), ", ", "(empty subst)")
 	}
-	if len(subst_received) > 0 {
-		sr += subst_received.ToString()
+	if !subst_received.Empty() {
+		sr += Lib.ListToString(subst_received, ", ", "(empty subst)")
 	}
 
 	ss := ""
-	if len(ss_subst) > 0 {
-		ss += Unif.SubstListToString(ss_subst)
+	if !ss_subst.Empty() {
+		ss += Unif.SubstsToString(ss_subst)
 	}
 
 	// fmt.Printf("Id = %v, version = %v, father = %v, forms = %v, mm = %v, mc = %v, ss = %v, sr = %v\n", id, version, father, forms, mm, mc, ss, sr)
@@ -135,7 +141,9 @@ func WriteExchanges(father uint64, st State, sub_sent []Core.SubstAndForm, subst
 		} else {
 			file_exchanges.WriteString("[\n")
 		}
-		json_content := makeJsonExchanges(father, st, Core.RemoveEmptySubstFromSubstList(Core.GetSubstListFromSubstAndFormList(sub_sent)), subst_received.GetSubst(), calling_function)
+		json_content := makeJsonExchanges(father, st,
+			Core.RemoveEmptySubstFromSubstList(Core.GetSubstListFromSubstAndFormList(sub_sent)),
+			subst_received.GetSubst(), calling_function)
 		json_string, _ := json.MarshalIndent(json_content, "", " ")
 		file_exchanges.Write(json_string)
 		mutex_file_exchanges.Unlock()

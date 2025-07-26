@@ -54,7 +54,7 @@ type Form interface {
 	MappableString
 
 	ReplaceTermByTerm(old Term, new Term) (Form, bool)
-	SubstTy(old TyBound, new Ty) Form
+	SubstTy(old TyGenVar, new Ty) Form
 	RenameVariables() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
 	ReplaceMetaByTerm(meta Meta, term Term) Form
@@ -136,7 +136,7 @@ func replaceTermInFormList(oldForms Lib.List[Form], oldTerm Term, newTerm Term) 
 	return newForms, res
 }
 
-func replaceTyVarInFormList(oldForms Lib.List[Form], old TyBound, new Ty) Lib.List[Form] {
+func replaceTyVarInFormList(oldForms Lib.List[Form], old TyGenVar, new Ty) Lib.List[Form] {
 	return Lib.ListMap(
 		oldForms,
 		func(f Form) Form { return f.SubstTy(old, new) },

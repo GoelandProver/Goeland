@@ -111,7 +111,7 @@ func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return i
 }
 
-func (i Id) SubstTy(TyBound, Ty) Term { return i }
+func (i Id) SubstTy(TyGenVar, Ty) Term { return i }
 
 func (i Id) GetSubTerms() Lib.List[Term] {
 	return Lib.MkListV[Term](i)
@@ -277,7 +277,7 @@ func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
 	}
 }
 
-func (f Fun) SubstTy(old TyBound, new Ty) Term {
+func (f Fun) SubstTy(old TyGenVar, new Ty) Term {
 	typed_args := Lib.ListMap(
 		f.tys,
 		func(t Ty) Ty { return t.SubstTy(old, new) },
@@ -364,7 +364,7 @@ func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return v
 }
 
-func (v Var) SubstTy(TyBound, Ty) Term { return v }
+func (v Var) SubstTy(TyGenVar, Ty) Term { return v }
 
 func (v Var) ToMappedString(map_ MapString, type_ bool) string {
 	return v.GetName()
@@ -454,7 +454,7 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return m
 }
 
-func (m Meta) SubstTy(TyBound, Ty) Term { return m }
+func (m Meta) SubstTy(TyGenVar, Ty) Term { return m }
 
 func (m Meta) GetSubTerms() Lib.List[Term] {
 	return Lib.MkListV[Term](m)
@@ -471,8 +471,7 @@ func (m Meta) Less(u any) bool {
 }
 
 func MakeEmptyMeta() Meta {
-	// FIXME: nil are bad
-	return MakeMeta(-1, -1, "-1", -1, nil)
+	return MakeMeta(-1, -1, "-1", -1, TIndividual())
 }
 
 func MetaEquals(x, y Meta) bool {

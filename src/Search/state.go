@@ -64,7 +64,7 @@ type State struct {
 	proof                                 []ProofStruct
 	current_proof                         ProofStruct
 	bt_on_formulas                        bool
-	forbidden                             []Unif.Substitutions
+	forbidden                             Lib.List[Lib.List[Unif.MixedSubstitution]]
 	unifier                               Core.Unifier
 	eqStruct                              eqStruct.EqualityStruct
 }
@@ -134,7 +134,7 @@ func (s State) GetCurrentProof() ProofStruct {
 func (s State) GetBTOnFormulas() bool {
 	return s.bt_on_formulas
 }
-func (s State) GetForbiddenSubsts() []Unif.Substitutions {
+func (s State) GetForbiddenSubsts() Lib.List[Lib.List[Unif.MixedSubstitution]] {
 	return s.forbidden
 }
 func (s State) GetGlobUnifier() Core.Unifier {
@@ -245,8 +245,8 @@ func (st *State) SetCurrentProofNodeId(i int) {
 func (st *State) SetBTOnFormulas(b bool) {
 	st.bt_on_formulas = b
 }
-func (st *State) SetForbiddenSubsts(s []Unif.Substitutions) {
-	st.forbidden = Unif.CopySubstList(s)
+func (st *State) SetForbiddenSubsts(s Lib.List[Lib.List[Unif.MixedSubstitution]]) {
+	st.forbidden = s.Copy(Lib.ListCpy[Unif.MixedSubstitution])
 }
 func (s *State) SetGlobUnifier(u Core.Unifier) {
 	s.unifier = u.Copy()
@@ -285,7 +285,7 @@ func MakeState(limit int, tp, tn Unif.DataStructure, f AST.Form) State {
 		[]ProofStruct{},
 		current_proof,
 		false,
-		[]Unif.Substitutions{},
+		Lib.NewList[Lib.List[Unif.MixedSubstitution]](),
 		Core.MakeUnifier(),
 		eqStruct.NewEqStruct()}
 }
@@ -353,7 +353,7 @@ func (st State) Print() {
 		debug(Lib.MkLazy(func() string { return "Subst_found: " }))
 		debug(
 			Lib.MkLazy(func() string {
-				return Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))
+				return Unif.SubstsToString(Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))
 			}),
 		)
 	}
@@ -363,9 +363,16 @@ func (st State) Print() {
 		debug(Lib.MkLazy(func() string { return st.GetLastAppliedSubst().ToString() }))
 	}
 
-	if len(st.forbidden) > 0 {
+	if st.forbidden.Len() > 0 {
 		debug(Lib.MkLazy(func() string { return "Forbidden:" }))
-		debug(Lib.MkLazy(func() string { return Unif.SubstListToString(st.forbidden) }))
+		debug(
+			Lib.MkLazy(func() string {
+				return st.forbidden.ToString(
+					func(m Lib.List[Unif.MixedSubstitution]) string {
+						return Lib.ListToString(m, ", ", "[]")
+					}, " ; ", "[]")
+			}),
+		)
 	}
 
 	debug(

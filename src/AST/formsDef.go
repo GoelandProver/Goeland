@@ -120,7 +120,7 @@ func (a All) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	return All{quant}, isReplaced
 }
 
-func (a All) SubstTy(old TyBound, new Ty) Form {
+func (a All) SubstTy(old TyGenVar, new Ty) Form {
 	return All{a.quantifier.replaceTyVar(old, new)}
 }
 
@@ -172,7 +172,7 @@ func (e Ex) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	return Ex{quant}, isReplaced
 }
 
-func (e Ex) SubstTy(old TyBound, new Ty) Form {
+func (e Ex) SubstTy(old TyGenVar, new Ty) Form {
 	return Ex{e.quantifier.replaceTyVar(old, new)}
 }
 
@@ -279,7 +279,7 @@ func (o Or) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	return no, res
 }
 
-func (o Or) SubstTy(old TyBound, new Ty) Form {
+func (o Or) SubstTy(old TyGenVar, new Ty) Form {
 	formList := replaceTyVarInFormList(o.forms, old, new)
 	return MakeOrSimple(o.GetIndex(), formList, o.metas.Raw())
 }
@@ -420,7 +420,7 @@ func (a And) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	return na, res
 }
 
-func (a And) SubstTy(old TyBound, new Ty) Form {
+func (a And) SubstTy(old TyGenVar, new Ty) Form {
 	formList := replaceTyVarInFormList(a.forms, old, new)
 	return MakeAndSimple(a.GetIndex(), formList, a.metas.Raw())
 }
@@ -536,7 +536,7 @@ func (e Equ) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	return ne, res1 || res2
 }
 
-func (e Equ) SubstTy(old TyBound, new Ty) Form {
+func (e Equ) SubstTy(old TyGenVar, new Ty) Form {
 	return MakeEquSimple(
 		e.GetIndex(),
 		e.f1.SubstTy(old, new),
@@ -666,7 +666,7 @@ func (i Imp) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	return ni, res1 || res2
 }
 
-func (i Imp) SubstTy(old TyBound, new Ty) Form {
+func (i Imp) SubstTy(old TyGenVar, new Ty) Form {
 	return MakeImpSimple(
 		i.GetIndex(),
 		i.f1.SubstTy(old, new),
@@ -793,7 +793,7 @@ func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	return nn, res
 }
 
-func (n Not) SubstTy(old TyBound, new Ty) Form {
+func (n Not) SubstTy(old TyGenVar, new Ty) Form {
 	return MakeNotSimple(
 		n.GetIndex(),
 		n.f.SubstTy(old, new),
@@ -1032,7 +1032,7 @@ func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	return np, res
 }
 
-func (p Pred) SubstTy(old TyBound, new Ty) Form {
+func (p Pred) SubstTy(old TyGenVar, new Ty) Form {
 	typed_args := Lib.ListMap(
 		p.tys,
 		func(t Ty) Ty { return t.SubstTy(old, new) },
@@ -1092,18 +1092,12 @@ func (p Pred) GetChildFormulas() Lib.List[Form] {
 }
 
 func (p Pred) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	newTerms := Lib.MkList[Term](p.args.Len())
-
-	for i, old := range p.args.GetSlice() {
-		// FIXME: old.GetName() == meta.GetName() ??
-		if old.Equals(meta) {
-			newTerms.Upd(i, term)
-		} else {
-			newTerms.Upd(i, old)
-		}
-	}
-
-	return MakePred(p.GetIndex(), p.id, p.tys, newTerms)
+	return MakePred(
+		p.GetIndex(),
+		p.id,
+		p.tys,
+		Lib.ListMap(p.args, func(t Term) Term { return t.ReplaceSubTermBy(meta, term) }),
+	)
 }
 
 // -----------------------------------------------------------------------------
@@ -1141,7 +1135,7 @@ func (t Top) Copy() Form                                  { return MakeTop(t.Get
 func (Top) Equals(f any) bool                             { _, isTop := f.(Top); return isTop }
 func (Top) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
 func (t Top) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeTop(t.GetIndex()), false }
-func (t Top) SubstTy(TyBound, Ty) Form                    { return t }
+func (t Top) SubstTy(TyGenVar, Ty) Form                   { return t }
 func (t Top) RenameVariables() Form                       { return MakeTop(t.GetIndex()) }
 func (t Top) GetIndex() int                               { return t.index }
 func (t Top) GetSubTerms() Lib.List[Term]                 { return Lib.NewList[Term]() }
@@ -1184,7 +1178,7 @@ func (b Bot) Copy() Form                                  { return MakeBot(b.Get
 func (Bot) Equals(f any) bool                             { _, isBot := f.(Bot); return isBot }
 func (Bot) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
 func (b Bot) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeBot(b.GetIndex()), false }
-func (b Bot) SubstTy(TyBound, Ty) Form                    { return b }
+func (b Bot) SubstTy(TyGenVar, Ty) Form                   { return b }
 func (b Bot) RenameVariables() Form                       { return MakeBot(b.GetIndex()) }
 func (b Bot) GetIndex() int                               { return b.index }
 func (b Bot) GetSubTerms() Lib.List[Term]                 { return Lib.NewList[Term]() }

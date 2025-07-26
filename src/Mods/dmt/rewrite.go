@@ -60,7 +60,11 @@ func rewriteGeneric(tree Unif.DataStructure, atomic AST.Form, form AST.Form, pol
 
 	var err error = nil
 	if isUnified, unif := tree.Unify(form); isUnified {
-		rewritten, err = getRewrittenFormulas(rewritten, unif, atomic, polarity)
+		unif_substs := []Unif.MatchingSubstitutions{}
+		for _, substs := range unif {
+			unif_substs = append(unif_substs, substs.MatchingSubstitutions())
+		}
+		rewritten, err = getRewrittenFormulas(rewritten, unif_substs, atomic, polarity)
 	} else {
 		rewritten = rewriteFailure(atomic)
 	}
@@ -86,7 +90,9 @@ func getRewrittenFormulas(rewritten []Core.IntSubstAndForm, unif []Unif.Matching
 
 func addRewrittenFormulas(rewritten []Core.IntSubstAndForm, unif Unif.MatchingSubstitutions, atomic AST.Form, equivalence Lib.List[AST.Form]) []Core.IntSubstAndForm {
 	// Keep only useful substitutions
-	useful_subst := Core.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas())
+	useful_subst := Unif.ToSubstitutions(
+		Core.RemoveElementWithoutMM(Unif.FromSubstitutions(unif.GetSubst()), atomic.GetMetas()),
+	)
 	meta_search := atomic.GetMetas()
 	if !checkMetaAreFromSearch(meta_search, useful_subst) {
 		Glob.PrintError("DMT", fmt.Sprintf("There is at least one meta in final subst which is not from search : %v - %v - %v", useful_subst.ToString(), atomic.ToString(), unif.GetForm().ToString()))
@@ -121,12 +127,19 @@ func getAtomAndPolarity(atom AST.Form) (AST.Form, bool) {
 
 func rewriteFailure(atomic AST.Form) []Core.IntSubstAndForm {
 	return []Core.IntSubstAndForm{
-		Core.MakeIntSubstAndForm(-1, Core.MakeSubstAndForm(Unif.Failure(), Lib.MkListV(atomic))),
+		Core.MakeIntSubstAndForm(
+			-1,
+			Core.MakeSubstAndForm(Lib.MkListV(Unif.MkMixedFromSubst(Unif.Failure()[0])), Lib.MkListV(atomic)),
+		),
 	}
 }
 
 func addUnifToAtomics(atomics []Core.IntSubstAndForm, candidate AST.Form, unif Unif.MatchingSubstitutions) []Core.IntSubstAndForm {
-	substAndForm := Core.MakeSubstAndForm(unif.GetSubst().Copy(), Lib.MkListV(candidate))
+	mixed := Lib.NewList[Unif.MixedSubstitution]()
+	for _, subst := range unif.GetSubst() {
+		mixed.Append(Unif.MkMixedFromSubst(subst))
+	}
+	substAndForm := Core.MakeSubstAndForm(mixed, Lib.MkListV(candidate))
 	if isBotOrTop(candidate) {
 		atomics = Core.InsertFirstIntSubstAndFormList(atomics, Core.MakeIntSubstAndForm(unif.GetForm().GetIndex(), substAndForm))
 	} else {
