@@ -88,7 +88,7 @@ func compareLPO(s, t AST.Term) compareStruct {
 			// function & meta : Occurences inside : f(x) < x, f(y) < x
 			return compareMetaFun(t_type, s_type, -1)
 		default:
-			Glob.PrintError("CPR", "Type of t unknown")
+			Glob.Anomaly("CPR", "Type of t unknown")
 		}
 	case AST.Meta:
 		debug(
@@ -108,10 +108,10 @@ func compareLPO(s, t AST.Term) compareStruct {
 			// Meta and meta
 			return compareMetaMeta(s_type, t_type)
 		default:
-			Glob.PrintError("CPR", "Type of t unknown")
+			Glob.Anomaly("CPR", "Type of t unknown")
 		}
 	default:
-		Glob.PrintError("CPR", "Type of s unknown")
+		Glob.Anomaly("CPR", "Type of s unknown")
 	}
 	return makeCompareStruct(0, false, s, t)
 }
@@ -164,7 +164,7 @@ func compareMetaFunInside(m AST.Meta, f AST.Fun, return_code int) (bool, compare
 			res = cs.order
 			is_comparable = cs.is_comparable
 		default:
-			Glob.PrintError("CMFI", "Unexpected return_code in compare")
+			Glob.Anomaly("CMFI", "Unexpected return_code in compare")
 		}
 
 		if is_comparable {
@@ -240,7 +240,7 @@ func caseFEqualsG(s, t AST.Fun) (bool, compareStruct) {
 		Lib.MkLazy(func() string { return "Case F = G" }),
 	)
 	if s.GetArgs().Len() != t.GetArgs().Len() {
-		Glob.PrintError("F=G", fmt.Sprintf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString()))
+		Glob.Fatal("F=G", fmt.Sprintf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString()))
 		return true, makeCompareStruct(0, false, nil, nil)
 	}
 

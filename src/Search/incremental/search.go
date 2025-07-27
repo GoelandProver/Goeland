@@ -38,11 +38,11 @@ func (is *incrementalSearch) handleSearchResults() bool {
 }
 
 func (is *incrementalSearch) SetApplyRules(func(uint64, Search.State, Search.Communication, Core.FormAndTermsList, int, int, []int)) {
-	Glob.PrintError("NDS", "Incremental search not compatible with the assisted plugin for now.")
+	Glob.Fatal("NDS", "Incremental search not compatible with the assisted plugin for now.")
 }
 
 // ManageClosureRule implements Search.SearchAlgorithm.
 func (is *incrementalSearch) ManageClosureRule(uint64, *Search.State, Search.Communication, []Unif.Substitutions, Core.FormAndTerms, int, int) (bool, []Core.SubstAndForm) {
-	Glob.PrintError("NDS", "Incremental search not compatible with the equality plugin for now.")
+	Glob.Fatal("NDS", "Incremental search not compatible with the equality plugin for now.")
 	return false, []Core.SubstAndForm{}
 }

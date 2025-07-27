@@ -140,11 +140,11 @@ func retrieveEqualities(dt Unif.DataStructure) Equalities {
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaEQ1, MetaEQ2)
 		eq1_term, ok_t1 := ms_ordered.Get(MetaEQ1)
 		if ok_t1 == -1 {
-			Glob.PrintError("RI", "Meta_eq_1 not found in map")
+			Glob.Anomaly("RI", "Meta_eq_1 not found in map")
 		}
 		eq2_term, ok_t2 := ms_ordered.Get(MetaEQ2)
 		if ok_t2 == -1 {
-			Glob.PrintError("RI", "Meta_eq_2 not found in map")
+			Glob.Anomaly("RI", "Meta_eq_2 not found in map")
 		}
 		res = append(res, eqStruct.MakeTermPair(eq1_term, eq2_term))
 	}
@@ -175,11 +175,11 @@ func retrieveInequalities(dt Unif.DataStructure) Inequalities {
 		ms_ordered := orderSubstForRetrieve(ms.GetSubst(), MetaNEQ1, MetaNEQ2)
 		neq1_term, ok_t1 := ms_ordered.Get(MetaNEQ1)
 		if ok_t1 == -1 {
-			Glob.PrintError("RI", "Meta_eq_1 not found in map")
+			Glob.Anomaly("RI", "Meta_eq_1 not found in map")
 		}
 		neq2_term, ok_t2 := ms_ordered.Get(MetaNEQ2)
 		if ok_t2 == -1 {
-			Glob.PrintError("RI", "Meta_eq_1 not found in map")
+			Glob.Anomaly("RI", "Meta_eq_1 not found in map")
 		}
 		res = append(res, eqStruct.MakeTermPair(neq1_term, neq2_term))
 	}
@@ -193,7 +193,7 @@ func orderSubstForRetrieve(s Unif.Substitutions, M1, M2 AST.Meta) Unif.Substitut
 		k, v := subst.Get()
 		if !k.Equals(M1) && !k.Equals(M2) {
 			if !v.IsMeta() {
-				Glob.PrintError("OSFR", "Meta EQ/NEQ not found")
+				Glob.Fatal("OSFR", "Meta EQ/NEQ not found")
 			} else {
 				new_subst.Set(v.ToMeta(), k)
 			}
