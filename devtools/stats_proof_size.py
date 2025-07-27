@@ -5,7 +5,7 @@ if len(sys.argv) != 3:
 
 class Branches:
     def __init__(self):
-        self.coq = -1
+        self.rocq = -1
         self.prf = -1
 
     def __str__(self):
@@ -13,11 +13,11 @@ class Branches:
         if self.prf != -1:
             s += str(self.prf)
         s += ";"
-        if self.coq != -1:
-            s += str(self.coq)
+        if self.rocq != -1:
+            s += str(self.rocq)
         s += ";"
-        if self.prf != -1 and self.coq != -1 :
-            s += str(self.coq/self.prf)
+        if self.prf != -1 and self.rocq != -1 :
+            s += str(self.rocq/self.prf)
         return s + "\n"
 
 folder = sys.argv[1]
@@ -35,17 +35,17 @@ for _, file in enumerate(entries) :
                 if "auto." in line or "congruence." in line or "CLOSURE" in line :
                     count += 1
             if file.endswith(".v") :
-                res[k].coq = count
+                res[k].rocq = count
             else :
                 res[k].prf = count
 
 with open(outfile, "w") as f :
-    f.write(";Proof;Coq;Proof Size Increase\n")
+    f.write(";Proof;Rocq;Proof Size Increase\n")
     totalIncrease = 0
     maxSizeIncrease = 0
     for file, c in res.items() :
         f.write(f"{file};{str(c)}")
-        totalIncrease += c.coq/c.prf
-        maxSizeIncrease = max(maxSizeIncrease, c.coq/c.prf)
+        totalIncrease += c.rocq/c.prf
+        maxSizeIncrease = max(maxSizeIncrease, c.rocq/c.prf)
     f.write(f"\n;Average Size Increase;;{totalIncrease/len(res)}\n")
     f.write(f";Max Size Increase;;{maxSizeIncrease}")

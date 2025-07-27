@@ -68,8 +68,8 @@ var LambdapiOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeLambd
 // Plugin initialisation and main function to call.
 
 // Section: init
-// Functions: MakeCoqOutput
-// Main functions of the coq module.
+// Functions: MakeRocqOutput
+// Main functions of the rocq module.
 // TODO:
 //	* Write the context for TFF problems
 
