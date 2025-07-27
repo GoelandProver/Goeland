@@ -591,10 +591,14 @@ func performCutAxiomStep(axioms Lib.List[AST.Form], conjecture AST.Form) string 
 /*** Utility Functions ***/
 
 func get(f AST.Form, fl Lib.List[AST.Form]) int {
-	for i, h := range fl.GetSlice() {
-		if h.Equals(f) {
-			return i
-		}
+	switch index := Lib.ListIndexOf(f, fl).(type) {
+	case Lib.Some[int]:
+		return index.Val
+	case Lib.None[int]:
+		Glob.Anomaly(
+			"TPTP",
+			fmt.Sprintf("Formula %s not found in context", f.ToString()),
+		)
 	}
 	return -1
 }
