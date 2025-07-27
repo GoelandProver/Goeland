@@ -38,6 +38,12 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
+var debug Glob.Debugger
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("typing")
+}
+
 /**
  * This file implements a second pass on the given formula to:
  *	- Type the variables

@@ -66,7 +66,7 @@ func GetMetaFromSubst(subs Unif.Substitutions) Lib.Set[AST.Meta] {
 
 /* Remove substitution without mm */
 func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.Substitutions {
-	Glob.PrintDebug("REWM", Lib.MkLazy(func() string {
+	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf(
 			"MM : %v",
 			Lib.ListToString(mm.Elements(), ",", "[]"),
@@ -81,7 +81,7 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.
 
 	for hasChanged {
 		hasChanged = false
-		Glob.PrintDebug("REWM", Lib.MkLazy(func() string {
+		debug(Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Relevant meta : %v",
 				Lib.ListToString(relevantMetas.Elements(), ",", "[]"),
@@ -116,12 +116,10 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.
 		}
 	}
 
-	Glob.PrintDebug(
-		"REWM",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Subst intermédiaire res : %v", res.ToString()) }),
 	)
-	Glob.PrintDebug(
-		"REWM",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Subst intermédiaire subst_to_reorganize  : %v",
@@ -134,8 +132,7 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.
 	Unif.Eliminate(&subsToReorganize)
 	ms, _ := Unif.MergeSubstitutions(res, subsToReorganize)
 
-	Glob.PrintDebug(
-		"REWM",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Finale subst : %v", ms.ToString()) }),
 	)
 

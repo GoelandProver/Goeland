@@ -39,6 +39,7 @@ package AST
 import (
 	"sync"
 
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -51,6 +52,12 @@ var idVar map[string]int = make(map[string]int)
 var occurenceMeta map[string]int = make(map[string]int)
 var lock_term sync.Mutex
 var lock_formula sync.Mutex
+
+var debug Glob.Debugger
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("AST")
+}
 
 // Global id
 var Id_eq Id

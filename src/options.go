@@ -105,15 +105,12 @@ func initOpts() {
 *  funcAlways func(T): a function that will always be run. The parameter will be the value of the option.
 **/
 func buildOptions() {
-	(&option[bool]{}).init(
+	(&option[string]{}).init(
 		"debug",
-		false,
-		"Enables printing debug information in the terminal",
-		func(bool) {
-			Glob.SetDebug(true)
-			Glob.EnableDebug()
-		},
-		func(bool) {})
+		"none",
+		"Enables printing debug information in the terminal. Debugging a specific part of the code is possible via -debug a,b,c which will output the debugs of parts a, b and c. If you want all the debugs, use -debug all.",
+		Glob.SetDebug,
+		func(string) {})
 	(&option[bool]{}).init(
 		"silent",
 		false,

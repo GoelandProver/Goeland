@@ -40,7 +40,6 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -89,24 +88,20 @@ func makeEmptyConstaintsList() ConstraintList {
 
 /* Check if a constraint is consistant with LPO and constraint list */
 func (cl ConstraintList) isConsistantWithSubst(s Unif.Substitutions) bool {
-	Glob.PrintDebug(
-		"ICWS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Is consistant with the subst : %v", s.ToString()) }),
 	)
 	for _, c_element := range cl {
 		c := c_element.copy()
-		Glob.PrintDebug(
-			"ICWS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Constraint : %v", c.toString()) }),
 		)
 		c.applySubstitution(s)
-		Glob.PrintDebug(
-			"ICWS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Constraint after apply subst : %v", c.toString()) }),
 		)
 		respect_lpo, is_comparable := c.checkLPO()
-		Glob.PrintDebug(
-			"ICWS",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Is comparable : %v - respect lpo : %v: ",
@@ -130,7 +125,7 @@ func (cl ConstraintList) checkConstraintList() bool {
 	map_constraintes := make(map[string][]Lib.List[AST.Term])
 
 	for _, c := range cl {
-		Glob.PrintDebug("CCL", Lib.MkLazy(func() string { return fmt.Sprintf("Constraint : %v", c.toString()) }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Constraint : %v", c.toString()) }))
 		switch c.getCType() {
 		case PREC:
 			if !appendToMapAndCheck(c.getTP().GetT1().ToString(), c.getTP().GetT2(), &map_constraintes, 1, 2) {

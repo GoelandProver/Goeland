@@ -41,6 +41,8 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
+	"runtime"
 	"time"
 )
 
@@ -48,12 +50,14 @@ var (
 	logDebug   *log.Logger
 	logInfo    *log.Logger
 	logError   *log.Logger
-	logPanic   *log.Logger
-	logFatal   *log.Logger
 	logWarning *log.Logger
 
 	wrt      io.Writer
 	fileName string
+
+	// Registered debuggers: allows to print the debug logs of only a part of the program.
+	// See the [CreateDebugger] function to create a custom debugger.
+	registered_debuggers Lib.Set[Lib.String] = Lib.EmptySet[Lib.String]()
 )
 
 /**
@@ -71,11 +75,12 @@ func InitLogs() {
 	logInfo = log.New(wrt, "[\033[32minfo\033[0m] ", 0)
 	logError = log.New(wrt, "[\033[31merror\033[0m] ", 0)
 	logWarning = log.New(wrt, "[\033[33mwarn\033[0m] ", 0)
+	registered_debuggers = Lib.EmptySet[Lib.String]()
 }
 
-/* Sets the function to be called when PrintDebug is called. This way, we avoid an if test when not in debug mode. */
+/* Sets the function to be called when printDebug is called. This way, we avoid an if test when not in debug mode. */
 func EnableDebug() {
-	PrintDebug = func(function string, message Lib.Lazy[string]) {
+	printDebug = func(function string, message Lib.Lazy[string]) {
 		printToLogger(logDebug, function, message.Run())
 	}
 
@@ -113,11 +118,9 @@ var getId = func() (options []any, str string) {
 }
 
 func EnableShowTrace() {
-	logDebug.SetFlags(log.Lshortfile)
 	logInfo.SetFlags(log.Lshortfile)
 	logError.SetFlags(log.Lshortfile)
-	logPanic.SetFlags(log.Lshortfile)
-	logFatal.SetFlags(log.Lshortfile)
+	logWarning.SetFlags(log.Lshortfile)
 }
 
 func EnableLogFile(file string) {
@@ -144,8 +147,7 @@ func EnableWriteLogs() {
 	logDebug.SetOutput(wrt)
 	logInfo.SetOutput(wrt)
 	logError.SetOutput(wrt)
-	logPanic.SetOutput(wrt)
-	logFatal.SetOutput(wrt)
+	logWarning.SetOutput(wrt)
 }
 
 // Prints the message into the terminal and/or the file as a debug message
@@ -153,7 +155,7 @@ func EnableWriteLogs() {
 // Use when you want to display a message for debugging purposes only.
 // The prefix for debug messages is '[debug]' in blue.
 // Will only print in the terminal and/or the file if the corresponding options -debug and -dif have been set.
-var PrintDebug = func(function string, message Lib.Lazy[string]) {}
+var printDebug = func(function string, message Lib.Lazy[string]) {}
 
 // Prints the message into the terminal and the file as an information message
 //
@@ -173,4 +175,22 @@ func PrintError(function, message string) {
 
 func PrintWarn(function, message string) {
 	printToLogger(logWarning, function, message)
+}
+
+type Debugger func(Lib.Lazy[string])
+
+func CreateDebugger(name string) Debugger {
+	registered_debuggers = registered_debuggers.Add(Lib.MkString(name))
+
+	debug := func(s Lib.Lazy[string]) {
+		if debug.Contains(Lib.MkString(name)) {
+			_, file, no, ok := runtime.Caller(1)
+			displayed_name := name
+			if ok {
+				displayed_name = fmt.Sprintf("%s:%s:%d", name, filepath.Base(file), no)
+			}
+			printDebug(displayed_name, s)
+		}
+	}
+	return debug
 }

@@ -45,6 +45,12 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
+var debug Glob.Debugger
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("unif")
+}
+
 /*** Unify ***/
 
 /* Helper function to avoid using MakeMachine() outside of this file. */
@@ -94,22 +100,15 @@ func (m *Machine) unify(node Node, formula AST.Form) []MatchingSubstitutions {
 func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 	for _, instr := range node.value {
 
-		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return "------------------------" }))
-		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("Instr: %v", instr.ToString()) }))
-		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("Meta : %v", m.meta.ToString()) }))
-		Glob.PrintDebug(
-			"UX",
-			Lib.MkLazy(func() string { return fmt.Sprintf("Subst : %v", SubstPairListToString(m.subst)) }),
-		)
-		Glob.PrintDebug(
-			"UX",
-			Lib.MkLazy(func() string { return fmt.Sprintf("Post : %v", IntPairistToString(m.post)) }),
-		)
-		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("IsLocked : %v", m.isLocked()) }))
-		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("HasPushed : %v", m.hasPushed) }))
-		Glob.PrintDebug("UX", Lib.MkLazy(func() string { return fmt.Sprintf("HasPoped : %v", m.hasPoped) }))
-		Glob.PrintDebug(
-			"UX",
+		debug(Lib.MkLazy(func() string { return "------------------------" }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Instr: %v", instr.ToString()) }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Meta : %v", m.meta.ToString()) }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Subst : %v", SubstPairListToString(m.subst)) }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Post : %v", IntPairistToString(m.post)) }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("IsLocked : %v", m.isLocked()) }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("HasPushed : %v", m.hasPushed) }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("HasPoped : %v", m.hasPoped) }))
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"m.beginCount: %v - m.beginLock : %v",
@@ -117,8 +116,7 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 					m.beginLock)
 			}),
 		)
-		Glob.PrintDebug(
-			"UX",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"m.TopLevelCount: %v - m.TopLevelTot : %v",
@@ -126,16 +124,13 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 					m.topLevelTot)
 			}),
 		)
-		Glob.PrintDebug(
-			"UX",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Cursor: %v/%v", m.q, m.terms.Len()) }),
 		)
-		Glob.PrintDebug(
-			"UX",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("m.terms[cursor] : %v", m.terms.At(m.q).ToString()) }),
 		)
-		Glob.PrintDebug(
-			"UX",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"m.terms : %v",
@@ -195,21 +190,19 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 /* Unify on goroutines - to manage die message */
 /* TODO : remove when debug ok */
 func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []MatchingSubstitutions, father_id uint64) {
-	Glob.PrintDebug(
-		"UA",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Child of %v, Unify Aux", father_id) }),
 	)
 	subs := m.unifyAux(n)
 	ch <- subs
-	Glob.PrintDebug("UA", Lib.MkLazy(func() string { return "Die" }))
+	debug(Lib.MkLazy(func() string { return "Die" }))
 }
 
 /* Launches each child of the current node in a goroutine. */
 func (m *Machine) launchChildrenSearch(node Node) []MatchingSubstitutions {
 	channels := []chan []MatchingSubstitutions{}
 	for _, c := range node.children {
-		Glob.PrintDebug(
-			"LCS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("Next symbol = %v", c.getValue()[0].ToString()) }),
 		)
 		channels = append(channels, make(chan []MatchingSubstitutions))

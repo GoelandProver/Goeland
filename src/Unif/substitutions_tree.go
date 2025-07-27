@@ -40,7 +40,6 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -51,8 +50,7 @@ import (
 * Merge both of them
 **/
 func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.Form) Substitutions {
-	Glob.PrintDebug(
-		"CS",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Compute substitution : %v and %v",
@@ -76,8 +74,7 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 	for _, value := range subs {
 		currentMeta := metasFromTreeForm.At(value.GetIndex())
 		currentValue := value.GetTerm()
-		Glob.PrintDebug(
-			"CS",
+		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Iterate on subst : %v and  %v",
@@ -105,8 +102,7 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 		}
 	}
 
-	Glob.PrintDebug(
-		"CS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("before meta : %v", metasToSubs.ToString()) }),
 	)
 	// Metas_subst eliminate
@@ -115,12 +111,9 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 	if metasToSubs.Equals(Failure()) {
 		return Failure()
 	}
-	Glob.PrintDebug(
-		"CS", Lib.MkLazy(func() string { return fmt.Sprintf("After meta : %v", metasToSubs.ToString()) }),
-	)
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf("After meta : %v", metasToSubs.ToString()) }))
 
-	Glob.PrintDebug(
-		"CS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("before tree_subst : %v", treeSubs.ToString()) }),
 	)
 	// Tree subst elminate
@@ -129,8 +122,7 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 	if treeSubs.Equals(Failure()) {
 		return Failure()
 	}
-	Glob.PrintDebug(
-		"CS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("after tree_subst : %v", treeSubs.ToString()) }),
 	)
 
@@ -139,15 +131,15 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 	if res.Equals(Failure()) {
 		return res
 	}
-	Glob.PrintDebug(
-		"CS",
+
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("after merge : %v", res.ToString()) }),
 	)
 
 	EliminateMeta(&res)
 	Eliminate(&res)
-	Glob.PrintDebug(
-		"CS",
+
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("after eliminate : %v", res.ToString()) }),
 	)
 
@@ -156,8 +148,7 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 
 /* Call addUnification and returns a status - modify m.meta */
 func (m *Machine) trySubstituteMeta(i AST.Term, j AST.Term) Status {
-	Glob.PrintDebug(
-		"TS",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Try substitute : %v and %v", i.ToString(), j.ToString()) }),
 	)
 	new_meta := AddUnification(i, j, m.meta.Copy())
@@ -169,8 +160,7 @@ func (m *Machine) trySubstituteMeta(i AST.Term, j AST.Term) Status {
 }
 
 func AddUnification(term1, term2 AST.Term, subst Substitutions) Substitutions {
-	Glob.PrintDebug(
-		"AU",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Add unification : %v and %v to %v",
@@ -212,8 +202,7 @@ func AddUnification(term1, term2 AST.Term, subst Substitutions) Substitutions {
 
 /* Adds the unifications found to the meta substitutions from running the algorithm on term1 and term2. */
 func (m *Machine) addUnifications(term1, term2 AST.Term) Status {
-	Glob.PrintDebug(
-		"au",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"add unification : %v and %v",
@@ -236,8 +225,7 @@ func (m *Machine) addUnifications(term1, term2 AST.Term) Status {
 
 /* Tries to unify term1 with term2, depending on the substitutions already found by the parent unification process. */
 func tryUnification(term1, term2 AST.Term, meta Substitutions) []MatchingSubstitutions {
-	Glob.PrintDebug(
-		"TU",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Try unification : %v and %v",
@@ -257,8 +245,7 @@ func tryUnification(term1, term2 AST.Term, meta Substitutions) []MatchingSubstit
 
 /* Merge two valid substitutions */
 func MergeSubstitutions(s1, s2 Substitutions) (Substitutions, bool) {
-	Glob.PrintDebug(
-		"MS",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Merge substitution : %v and %v",

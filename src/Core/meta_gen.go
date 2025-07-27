@@ -134,8 +134,7 @@ func getAllLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 	min := -1
 	saved_indexes := []int{}
 	for i, v := range meta_generator {
-		Glob.PrintDebug(
-			"PS",
+		debug(
 			Lib.MkLazy(func() string { return fmt.Sprintf("v.getCounter : %d - Min : %d", v.GetCounter(), min) }),
 		)
 		if (allowed_indexes == nil || Glob.ContainsInt(i, allowed_indexes)) && ((v.GetCounter() <= min) || min == -1) {
@@ -147,7 +146,7 @@ func getAllLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 				saved_indexes = Glob.AppendIfNotContainsInt(saved_indexes, i)
 			}
 		}
-		Glob.PrintDebug("PS", Lib.MkLazy(func() string { return fmt.Sprintf("Min after : %d", min) }))
+		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Min after : %d", min) }))
 	}
 	return saved_indexes
 }
@@ -172,8 +171,7 @@ func ReintroduceMeta(meta_generator *[]MetaGen, index int, limit int) FormAndTer
 /* reintroduce the given meta iff is it part of the less reintroduced ones */
 func ReintroduceMetaIfLessReintroduced(meta_generator *[]MetaGen, index int) FormAndTerms {
 	indexes_less_reintroduced_meta := getAllLessReintroducedMeta(*meta_generator, nil)
-	Glob.PrintDebug(
-		"PS",
+	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Less reintroduced metas : %s",

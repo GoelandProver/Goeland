@@ -45,7 +45,6 @@ import (
 	"strings"
 
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
@@ -235,8 +234,7 @@ func buildEqualityProblemMultiListFromFormList(fl *AST.FormList, tn Unif.DataStr
 	res := makeEmptyEqualityProblemMultiList()
 	for _, p := range fl.Slice() {
 		if pt, ok := p.(AST.Pred); ok {
-			Glob.PrintDebug(
-				"BEPMLFFL",
+			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("Pred found : %v", p.ToString()) }),
 			)
 			if !pt.GetID().Equals(AST.Id_eq) {
@@ -258,13 +256,11 @@ func buildEqualityProblemMultiList(fl *AST.FormList, tp, tn Unif.DataStructure) 
 		return res, false
 	}
 	res = append(res, buildEqualityProblemMultiListFromNEQ(retrieveInequalities(tn.Copy()), eq.copy())...)
-	Glob.PrintDebug(
-		"BEPML",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Res after FromNEQ : %v", res.ToString()) }),
 	)
 	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.copy())...)
-	Glob.PrintDebug(
-		"BEPML",
+	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Res after FromForm : %v", res.ToString()) }),
 	)
 
