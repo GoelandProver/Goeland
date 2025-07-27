@@ -45,11 +45,11 @@ func exitWithError(panicMsg string) {
 
 func Anomaly(label, msg string) {
 	url := "https://github.com/GoelandProver/Goeland/issues"
-	PrintError("Anomaly", fmt.Sprintf("In %s: %s.\nPlease report at %s", label, msg, url))
+	printError("Anomaly", fmt.Sprintf("In %s: %s.\nPlease report at %s", label, msg, url))
 	exitWithError("Anomaly encountered.")
 }
 
 func Fatal(label, msg string) {
-	PrintError(label, msg)
+	printError(label, msg)
 	exitWithError("Fatal error encountered.")
 }

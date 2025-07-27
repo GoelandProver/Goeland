@@ -191,10 +191,10 @@ func manageEqualityReasoningProblem(ep EqualityProblem, sl []Unif.Substitutions)
 				for _, subst_element := range s_subst {
 					merged_subst, same_key := Unif.MergeSubstitutions(s.Copy(), subst_element.Copy())
 					if same_key {
-						Glob.PrintError("ERPWAS", "Error in EqualityReasoningList : same key appears in merge")
+						Glob.Fatal("ERPWAS", "Error in EqualityReasoningList : same key appears in merge")
 					}
 					if merged_subst.Equals(Unif.Failure()) {
-						Glob.PrintError("ERPWAS", "Error in EqualityReasoningList : merge returns failure")
+						Glob.Fatal("ERPWAS", "Error in EqualityReasoningList : merge returns failure")
 					} else {
 						found = true
 						res_substs = append(res_substs, merged_subst)

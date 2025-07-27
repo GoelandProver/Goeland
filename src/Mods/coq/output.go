@@ -61,7 +61,7 @@ var CoqOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeCoqOutput,
 
 func MakeCoqOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
-		Glob.PrintError("Coq", "Nothing to output")
+		Glob.Fatal("Coq", "Nothing to output")
 		return ""
 	}
 

@@ -89,7 +89,7 @@ func addRewrittenFormulas(rewritten []Core.IntSubstAndForm, unif Unif.MatchingSu
 	useful_subst := Core.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas())
 	meta_search := atomic.GetMetas()
 	if !checkMetaAreFromSearch(meta_search, useful_subst) {
-		Glob.PrintError("DMT", fmt.Sprintf("There is at least one meta in final subst which is not from search : %v - %v - %v", useful_subst.ToString(), atomic.ToString(), unif.GetForm().ToString()))
+		Glob.Fatal("DMT", fmt.Sprintf("There is at least one meta in final subst which is not from search : %v - %v - %v", useful_subst.ToString(), atomic.ToString(), unif.GetForm().ToString()))
 	}
 	filteredUnif := Unif.MakeMatchingSubstitutions(
 		unif.GetForm(),

@@ -118,7 +118,7 @@ func TypeAppToTerm(typeApp TypeApp) Term {
 		if nt.IsMeta() {
 			term = typeVarToMeta(nt)
 		} else {
-			Glob.PrintError("TERM", "A TypeVar should be only converted to terms if it has been instantiated.")
+			Glob.Fatal("TERM", "A TypeVar should be only converted to terms if it has been instantiated.")
 			term = nil
 		}
 	case TypeHint:

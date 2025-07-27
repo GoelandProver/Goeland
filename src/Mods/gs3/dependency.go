@@ -177,7 +177,7 @@ func getTermAt(form AST.Form, occsArr occurrences) AST.Term {
 		t := getTermAux(form, occ)
 		if term != nil {
 			if !term.Equals(t) {
-				Glob.PrintError("GTA", "The same variable is instanciated as two different terms.")
+				Glob.Anomaly("GTA", "The same variable is instanciated as two different terms.")
 			}
 		} else {
 			term = t

@@ -137,7 +137,7 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.
 	)
 
 	if ms.Equals(Unif.Failure()) {
-		Glob.PrintError("REWM", "MergeSubstitutions returns failure")
+		Glob.Fatal("REWM", "MergeSubstitutions returns failure")
 	}
 
 	return ms
