@@ -104,6 +104,12 @@ type GS3Proof struct {
 	deltaHisto   []Glob.Pair[AST.Term, Glob.Pair[AST.Form, int]]
 }
 
+var debug func(Lib.Lazy[string])
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("GS3")
+}
+
 var MakeGS3Proof = func(proof []Search.ProofStruct) *GS3Sequent {
 	gs3Proof := GS3Proof{
 		rulesApplied: make([]Glob.Pair[Rule, Search.ProofStruct], 0),

@@ -100,7 +100,10 @@ func MakerAll(vars Lib.List[TypedVar], forms Form) All {
 }
 
 func (a All) Equals(other any) bool {
-	return a.quantifier.Equals(other)
+	if typed, ok := other.(All); ok {
+		return a.quantifier.Equals(typed.quantifier)
+	}
+	return false
 }
 
 func (a All) GetSubFormulasRecur() Lib.List[Form] {
@@ -152,7 +155,10 @@ func MakerEx(vars Lib.List[TypedVar], forms Form) Ex {
 }
 
 func (e Ex) Equals(other any) bool {
-	return e.quantifier.Equals(other)
+	if typed, ok := other.(Ex); ok {
+		return e.quantifier.Equals(typed.quantifier)
+	}
+	return false
 }
 
 func (e Ex) GetSubFormulasRecur() Lib.List[Form] {
