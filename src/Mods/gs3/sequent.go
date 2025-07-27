@@ -34,6 +34,7 @@ package gs3
 import (
 	"strings"
 
+	"fmt"
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -189,20 +190,22 @@ func (seq *GS3Sequent) setAppliedRule(rule Rule) {
 }
 
 func (seq *GS3Sequent) setAppliedOn(hypothesis AST.Form) {
-	index := -1
-	for i, h := range seq.hypotheses.GetSlice() {
-		if hypothesis.Equals(h) {
-			index = i
-			break
-		}
-	}
-
-	if index == -1 {
-		Glob.PrintInfo("APPLIED ON", hypothesis.ToString())
+	index_opt := Lib.ListIndexOf(hypothesis, seq.hypotheses)
+	switch index := index_opt.(type) {
+	case Lib.Some[int]:
+		seq.appliedOn = int(index.Val)
+	case Lib.None[int]:
+		debug(
+			Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"Tried to apply %s in a context composed of the following hypotheses: \n%s",
+					hypothesis.ToString(),
+					Lib.ListToString(seq.hypotheses, "\n", "(empty context)"),
+				)
+			}),
+		)
 		Glob.Anomaly("GS3", "Failure: tried to apply a missing hypothesis")
 	}
-
-	seq.appliedOn = index
 }
 
 func (seq *GS3Sequent) setTermGenerated(t AST.Term) {
