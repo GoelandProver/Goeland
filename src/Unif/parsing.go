@@ -53,7 +53,7 @@ func (t TermForm) ToMappedStringChild(mapping AST.MapString, displayTypes bool) 
 }
 
 func (t TermForm) GetChildrenForMappedString() []AST.MappableString {
-	return t.GetChildFormulas().ToMappableStringSlice()
+	return AST.LsToMappableStringSlice(t.GetChildFormulas())
 }
 
 func (t TermForm) GetTerm() AST.Term                             { return t.t.Copy() }
@@ -68,8 +68,8 @@ func (t TermForm) GetIndex() int                                  { return t.ind
 func (t TermForm) SubstituteVarByMeta(AST.Var, AST.Meta) AST.Form { return t }
 func (t TermForm) GetInternalMetas() Lib.List[AST.Meta]           { return Lib.NewList[AST.Meta]() }
 func (t TermForm) SetInternalMetas(Lib.List[AST.Meta]) AST.Form   { return t }
-func (t TermForm) GetSubFormulasRecur() *AST.FormList             { return AST.NewFormList() }
-func (t TermForm) GetChildFormulas() *AST.FormList                { return AST.NewFormList() }
+func (t TermForm) GetSubFormulasRecur() Lib.List[AST.Form]        { return Lib.NewList[AST.Form]() }
+func (t TermForm) GetChildFormulas() Lib.List[AST.Form]           { return Lib.NewList[AST.Form]() }
 
 func (t TermForm) Equals(t2 any) bool {
 	switch nt := t2.(type) {
