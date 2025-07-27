@@ -200,7 +200,7 @@ func initDebuggers() {
 	equality.InitDebugger()
 	incremental.InitDebugger()
 	Search.InitDebugger()
-	// Typing.InitDebugger()
+	Typing.InitDebugger()
 	Unif.InitDebugger()
 	Engine.InitDebugger()
 	gs3.InitDebugger()
