@@ -47,10 +47,16 @@ import (
 var label = "typing"
 
 func TypeCheck(form AST.Form) bool {
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Launching type checking on %s", form.ToString()) }))
+
 	return typecheckForm(emptyCon(), form)
 }
 
 func typecheckForm(con Con, form AST.Form) bool {
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf("Trying to type-check: %s |- %s : o", con.toString(), form.ToString())
+	}))
+
 	switch f := form.(type) {
 	case AST.Bot, AST.Top:
 		return true
@@ -96,6 +102,10 @@ func typecheckForm(con Con, form AST.Form) bool {
 }
 
 func typecheckTerm(con Con, term AST.Term, ty AST.Ty) bool {
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf("Trying to type-check: %s |- %s : %s", con.toString(), term.ToString(), ty.ToString())
+	}))
+
 	switch t := term.(type) {
 	case AST.Var:
 		if !con.contains(t.GetName(), ty) {
@@ -135,6 +145,11 @@ func typecheckTerm(con Con, term AST.Term, ty AST.Ty) bool {
 }
 
 func typecheckType(con Con, ty AST.Ty) bool {
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf("Trying to type-check: %s |- %s : %s",
+			con.toString(), ty.ToString(), AST.TType().ToString())
+	}))
+
 	switch nty := ty.(type) {
 	case AST.TyBound:
 		if !con.contains(nty.GetName(), AST.TType()) {
@@ -206,7 +221,16 @@ func checkFunctional(
 	oty := QueryEnvInstance(name, tys)
 	switch ty := oty.(type) {
 	case Lib.Some[AST.Ty]:
+		debug_low_level(Lib.MkLazy(func() string {
+			return fmt.Sprintf("%s has a functional scheme instantiated to %s", debug_str.Run(), ty.Val.ToString())
+		}))
+
 		instantiated_ty := AST.GetArgsTy(ty.Val)
+		debug_low_level(Lib.MkLazy(func() string {
+			return fmt.Sprintf("Arguments will be typechecked against: [%s]",
+				Lib.ListToString(instantiated_ty, ", ", ""))
+		}))
+
 		terms_checker := buildTermCheckList(
 			debug_str,
 			ty.Val,
@@ -232,6 +256,12 @@ func typecheckRec(
 	typed_terms Lib.List[Lib.Pair[AST.Term, AST.Ty]],
 	tys Lib.List[AST.Ty],
 ) bool {
+
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf("Next typecheck: forms (%v), terms (%v), types (%v)",
+			!forms.Empty(), !typed_terms.Empty(), !tys.Empty())
+	}))
+
 	calls := []func(chan bool){}
 
 	for _, form := range forms.GetSlice() {
