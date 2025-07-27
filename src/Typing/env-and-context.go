@@ -106,6 +106,16 @@ type Env struct {
 	mut sync.Mutex
 }
 
+func (env *Env) toString() string {
+	env.mut.Lock()
+	result := "Environment:"
+	for k, v := range env.con {
+		result += "\n- " + k + ": " + v.ToString()
+	}
+	env.mut.Unlock()
+	return result + "\n"
+}
+
 func safeGlobalOperation[T any](f func() T) T {
 	global_env.mut.Lock()
 	res := f()

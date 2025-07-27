@@ -200,7 +200,7 @@ func (seq *GS3Sequent) setAppliedOn(hypothesis AST.Form) {
 				return fmt.Sprintf(
 					"Tried to apply %s in a context composed of the following hypotheses: \n%s",
 					hypothesis.ToString(),
-					Lib.ListToString(seq.hypotheses, "\n", "(empty context)"),
+					Lib.ListToString(seq.hypotheses, Lib.WithSep("\n"), Lib.WithEmpty("(empty context)")),
 				)
 			}),
 		)
