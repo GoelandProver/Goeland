@@ -71,12 +71,13 @@ def runWithExpected(f, parser):
             else:
                 return
 
-    if parser.expectedExitCode != '' and int(parser.expectedExitCode) != exit_code:
-        print(f"Error: expected exit code '{parser.expectedExitCode}', got: '{exit_code}'")
-        exit(1)
-    else: return
+    if parser.expectedExitCode != '':
+        if int(parser.expectedExitCode) != exit_code:
+            print(f"Error: expected exit code '{parser.expectedExitCode}', got: '{exit_code}'")
+            exit(1)
+        else: return
 
-    print(f"Unknown error: {output}")
+    print(f"Unknown error: got\n{output}")
     exit(1)
 
 def compareOutputs(f, parser):
