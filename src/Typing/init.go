@@ -37,19 +37,28 @@
 package Typing
 
 import (
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Lib"
 	"sync"
+
+	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 var global_env Env
 var ari_var string
+var debug Glob.Debugger
+var debug_low_level Glob.Debugger
 
 func Init() {
 	global_env = Env{make(map[string]AST.Ty), sync.Mutex{}}
 	ari_var = "number"
 
 	initTPTPNativeTypes()
+}
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("typing")
+	debug_low_level = Glob.CreateDebugger("typing-low")
 }
 
 func initTPTPNativeTypes() {
@@ -106,6 +115,9 @@ func initTPTPNativeTypes() {
 	recordConversion("$to_int", AST.TInt())
 	recordConversion("$to_rat", AST.TRat())
 	recordConversion("$to_real", AST.TReal())
+
+	debug(Lib.MkLazy(func() string { return "TPTP native loaded in global environment" }))
+	debug_low_level(Lib.MkLazy(global_env.toString))
 }
 
 func recordBinaryProp(name string) {
