@@ -99,7 +99,7 @@ func makeProofStep(proof *gs3.GS3Sequent) string {
 
 	// Weakening rule
 	case gs3.W:
-		Glob.PrintError("LP", "Trying to do a weakening rule but it's not implemented yet")
+		Glob.Fatal("LP", "Trying to do a weakening rule but it's not implemented yet")
 	}
 
 	return "//" + toCorrectString(proof.GetTargetForm()) + "\n" + resultingString
