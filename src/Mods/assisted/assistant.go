@@ -99,7 +99,7 @@ func InitAssisted() {
 	if typed, ok := Search.UsedSearch.(Search.BasicSearchAlgorithm); ok {
 		searchAlgo = typed
 	} else {
-		Glob.PrintError("ASS", "Search algorithm not supported by the Assisted plugin")
+		Glob.Fatal("ASS", "Search algorithm not supported by the Assisted plugin")
 	}
 }
 

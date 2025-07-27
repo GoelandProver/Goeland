@@ -169,7 +169,7 @@ func PrintInfo(function, message string) {
 //
 // Use when you want to warn that something is not happening as it should and it is important and must be corrected.
 // The prefix for error messages is '[error]' in red.
-func PrintError(function, message string) {
+func printError(function, message string) {
 	printToLogger(logError, function, message)
 }
 

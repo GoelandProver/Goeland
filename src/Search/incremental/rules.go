@@ -138,11 +138,11 @@ func makeCorrectRule(formula AST.Form, terms Lib.List[AST.Term]) Rule {
 			any.FullString = []string{"GAMMA", "NOT", "EXISTS"}
 			return &GammaNotExists{AnyRule: any}
 		default:
-			Glob.PrintError("RULES", "Could not find the type of the formula")
+			Glob.Anomaly("RULES", "Could not find the type of the formula")
 			return nil
 		}
 	default:
-		Glob.PrintError("RULES", "Could not find the type of the formula")
+		Glob.Anomaly("RULES", "Could not find the type of the formula")
 		return nil
 	}
 }

@@ -50,12 +50,12 @@ type nonDestructiveSearch struct {
 func NewNonDestructiveSearch() BasicSearchAlgorithm {
 	nds := &nonDestructiveSearch{}
 	_ = nds
-	Glob.PrintError("NDS", "Non-destructive search not in working order for now.")
+	Glob.Fatal("NDS", "Non-destructive search not in working order for now.")
 	return nil
 }
 
 func (nds *nonDestructiveSearch) setApplyRules(function func(uint64, State, Communication, Core.FormAndTermsList, int, int, []int)) {
-	Glob.PrintError("NDS", "Non-destructive search not compatible with the assisted plugin for now.")
+	Glob.Fatal("NDS", "Non-destructive search not compatible with the assisted plugin for now.")
 }
 
 func (nds *nonDestructiveSearch) doEndManageBeta(fatherId uint64, state State, c Communication, channels []Communication, currentNodeId int, originalNodeId int, childIds []int, metaToReintroduce []int) {
@@ -63,7 +63,7 @@ func (nds *nonDestructiveSearch) doEndManageBeta(fatherId uint64, state State, c
 }
 
 func (nds *nonDestructiveSearch) manageRewriteRules(fatherId uint64, state State, c Communication, newAtomics Core.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
-	Glob.PrintError("NDS", "Non-destructive search not compatible with the DMT plugin for now.")
+	Glob.Fatal("NDS", "Non-destructive search not compatible with the DMT plugin for now.")
 }
 
 /* Choose substitution - whitout meta in lastAppliedSubst */
@@ -216,14 +216,14 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 		Glob.PrintInfo("PS", "Same key in S2 and S1")
 	}
 	if new_subst.Equals(Unif.Failure()) {
-		Glob.PrintError("PS", "MergeSubstitutions return failure")
+		Glob.Fatal("PS", "MergeSubstitutions return failure")
 	}
 	new_subst, same_key = Unif.MergeSubstitutions(new_subst, s.GetSubst())
 	if same_key {
 		Glob.PrintInfo("PS", "Same key in S2 and S1")
 	}
 	if new_subst.Equals(Unif.Failure()) {
-		Glob.PrintError("PS", "MergeSubstitutions return failure")
+		Glob.Fatal("PS", "MergeSubstitutions return failure")
 	}
 
 	// Then associate with the substitution (if possible)
@@ -260,10 +260,10 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 
 	ms, same_key := Unif.MergeSubstitutions(state.GetAppliedSubst().GetSubst(), new_subst)
 	if same_key {
-		Glob.PrintError("PS", "Same key in S2 and S1")
+		Glob.Fatal("PS", "Same key in S2 and S1")
 	}
 	if ms.Equals(Unif.Failure()) {
-		Glob.PrintError("PS", "MergeSubstitutions return failure")
+		Glob.Fatal("PS", "MergeSubstitutions return failure")
 	}
 	state.SetAppliedSubst(Core.MakeSubstAndForm(ms, s.GetForm()))
 	state.SetLastAppliedSubst(s)
