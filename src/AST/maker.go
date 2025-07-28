@@ -68,7 +68,7 @@ func Init() {
 	Reset()
 	Id_eq = MakerId("=")
 	EmptyPredEq = MakerPred(Id_eq, Lib.NewList[Ty](), Lib.NewList[Term]())
-	initDefaultMap()
+	initPrinters()
 	initTPTPNativeTypes()
 }
 

@@ -51,7 +51,8 @@ type Form interface {
 	GetChildFormulas() Lib.List[Form]
 
 	Lib.Copyable[Form]
-	MappableString
+	Lib.Stringable
+	Lib.Comparable
 
 	ReplaceTermByTerm(old Term, new Term) (Form, bool)
 	SubstTy(old TyGenVar, new Ty) Form

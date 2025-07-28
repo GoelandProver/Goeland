@@ -197,7 +197,7 @@ func getContextFromFormula(root AST.Form) []string {
 		result = append(result, getContextFromFormula(nf.GetForm())...)
 	case AST.Pred:
 		if !nf.GetID().Equals(AST.Id_eq) {
-			result = append(result, mapDefault(fmt.Sprintf("symbol %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false))))
+			result = append(result, mapDefault(fmt.Sprintf("symbol %s;", nf.GetID().ToString())))
 		}
 		for _, term := range nf.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -231,9 +231,9 @@ func getIdsFromFormula(root AST.Form) []Glob.Pair[string, string] {
 	case AST.Not:
 		result = getIdsFromFormula(nf.GetForm())
 	case AST.Pred:
-		result = append(result, Glob.MakePair(nf.GetID().GetName(), nf.GetID().ToMappedString(lambdaPiMapConnectors, false)))
+		result = append(result, Glob.MakePair(nf.GetID().GetName(), nf.GetID().ToString()))
 		for _, f := range nf.GetArgs().GetSlice() {
-			result = append(result, Glob.MakePair(f.GetName(), f.ToMappedString(lambdaPiMapConnectors, false)))
+			result = append(result, Glob.MakePair(f.GetName(), f.ToString()))
 		}
 	}
 	return result
@@ -243,7 +243,7 @@ func getContextFromTerm(trm AST.Term) []string {
 	result := []string{}
 
 	if fun, isFun := trm.(AST.Fun); isFun {
-		result = append(result, mapDefault(fmt.Sprintf("symbol %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false))))
+		result = append(result, mapDefault(fmt.Sprintf("symbol %s;", fun.GetID().ToString())))
 		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
@@ -272,7 +272,7 @@ func clean(set, add []string) []string {
 func contextualizeMetas(metaList Lib.List[AST.Meta]) string {
 	result := []string{}
 	for _, meta := range metaList.GetSlice() {
-		result = append(result, meta.ToMappedString(lambdaPiMapConnectors, false))
+		result = append(result, meta.ToString())
 	}
 	return "symbol " + strings.Join(result, " ") + " : τ (ι);"
 }

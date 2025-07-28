@@ -85,7 +85,7 @@ func (ep EqualityProblem) AxiomsToTPTPString() string {
 }
 
 func (ep EqualityProblem) ToTPTPString() string {
-	return ep.GetS().ToMappedString(AST.DefaultMapString, false) + " = " + ep.GetT().ToMappedString(AST.DefaultMapString, false)
+	return ep.GetS().ToString() + " = " + ep.GetT().ToString()
 }
 
 /* Apply a substitution on an equality problem */

@@ -117,8 +117,7 @@ func getContextFromFormula(root AST.Form) []string {
 		result = clean(result, getContextFromFormula(nf.GetForm()))
 	case AST.Pred:
 		if !nf.GetID().Equals(AST.Id_eq) {
-			result = append(result, mapDefault(
-				fmt.Sprintf("Parameter %s.", nf.GetID().ToMappedString(rocqMapConnectors(), false))))
+			result = append(result, fmt.Sprintf("Parameter %s.", nf.GetID().ToString()))
 		}
 		for _, term := range nf.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -131,8 +130,7 @@ func getContextFromTerm(trm AST.Term) []string {
 	result := []string{}
 	if fun, isFun := trm.(AST.Fun); isFun {
 		result = append(result,
-			mapDefault(fmt.Sprintf(
-				"Parameter %s.", fun.GetID().ToMappedString(rocqMapConnectors(), false))))
+			fmt.Sprintf("Parameter %s.", fun.GetID().ToString()))
 		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
@@ -161,7 +159,7 @@ func clean(set, add []string) []string {
 func contextualizeMetas(metaList Lib.List[AST.Meta]) string {
 	result := []string{}
 	for _, meta := range metaList.GetSlice() {
-		result = append(result, meta.ToMappedString(rocqMapConnectors(), false))
+		result = append(result, meta.ToString())
 	}
 	return "Parameters " + strings.Join(result, " ") + " : goeland_U."
 }

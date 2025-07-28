@@ -39,8 +39,6 @@ package AST
 import (
 	"fmt"
 	"strings"
-	"unicode"
-	"unicode/utf8"
 
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -50,7 +48,6 @@ import (
 // Predicates / functions symbols
 
 type Id struct {
-	*MappedString
 	index int
 	name  string
 }
@@ -63,39 +60,7 @@ func (i Id) Copy() Term                { return MakeId(i.GetIndex(), i.GetName()
 func (Id) ToMeta() Meta                { return MakeEmptyMeta() }
 func (Id) GetMetas() Lib.Set[Meta]     { return Lib.EmptySet[Meta]() }
 func (Id) GetMetaList() Lib.List[Meta] { return Lib.NewList[Meta]() }
-
-var ToStringId = func(i Id) string {
-	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
-}
-
-func (i Id) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", ToStringId(i)
-}
-
-func NoIdToString(i Id) string {
-	return fmt.Sprintf("%s", i.GetName())
-}
-
-func QuotedToString(i Id) string {
-	if i.GetName() == "Goeland_I" || strings.Contains(i.GetName(), "Sko_") {
-		return fmt.Sprintf("%s", i.GetName())
-	} else {
-		r, _ := utf8.DecodeRuneInString(i.GetName())
-		if unicode.IsUpper(r) {
-			return fmt.Sprintf("'%s'", i.GetName())
-		} else {
-			return fmt.Sprintf("%s", i.GetName())
-		}
-	}
-}
-
-func (i Id) GetChildrenForMappedString() []MappableString {
-	return []MappableString{}
-}
+func (i Id) ToString() string          { return printer.StrId(i) }
 
 func (i Id) Equals(t any) bool {
 	if typed, ok := t.(Id); ok {
@@ -147,55 +112,23 @@ func (i Id) Less(u any) bool {
 // n-ary functions
 
 type Fun struct {
-	*MappedString
 	p     Id
 	tys   Lib.List[Ty]
 	args  Lib.List[Term]
 	metas Lib.Cache[Lib.Set[Meta], Fun]
 }
 
-func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return f.ToMappedStringSurroundWithId(f.GetID().ToMappedString(mapping, displayTypes), mapping, displayTypes)
-}
-
-func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return ", ", mapping[PredEmpty]
-}
-
-func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, displayTypes bool) string {
-	if f.tys.Empty() && f.GetArgs().Empty() {
-		return idString + "%s"
-	}
-
-	args := []string{}
-	if !f.tys.Empty() {
-		if tv := Lib.ListToString(f.tys, ", ", mapping[PredEmpty]); tv != "" {
-			args = append(args, tv)
-		}
-	}
-
-	args = append(args, "%s")
-
-	str := idString + "(" + strings.Join(args, mapping[PredTypeVarSep]) + ")"
-
-	return str
-}
-
-func ToFlatternStringSurrountWithId(f Fun, idString string, mapping MapString, displayTypes bool) string {
-	if f.GetArgs().Len() == 0 {
-		return idString + "%s"
-	}
-	args := []string{}
-	args = append(args, "%s")
-
-	str := idString + "_" + strings.Join(args, mapping[PredTypeVarSep])
-
-	return str
-}
-
-func (f Fun) GetChildrenForMappedString() []MappableString {
-	mappableList := Lib.ListMap(f.GetArgs(), Glob.To[MappableString])
-	return mappableList.GetSlice()
+func (f Fun) ToString() string {
+	return fmt.Sprintf("%s%s",
+		f.p.ToString(),
+		printer.SurroundArgs(
+			printer.OnFunctionalArgs(
+				Lib.ListToString(f.tys, printer.StrConn(SepTyArgs), ""),
+				printer.StrConn(SepArgsTyArgs),
+				Lib.ListToString(f.args, printer.StrConn(SepArgs), ""),
+			),
+		),
+	)
 }
 
 func (f Fun) GetID() Id               { return f.p.Copy().(Id) }
@@ -332,11 +265,11 @@ func (f Fun) Less(u any) bool {
 // Bound variables
 
 type Var struct {
-	*MappedString
 	index int
 	name  string
 }
 
+func (v Var) ToString() string          { return printer.StrBound(v.name, v.index) }
 func (v Var) GetIndex() int             { return v.index }
 func (v Var) GetName() string           { return v.name }
 func (v Var) IsMeta() bool              { return false }
@@ -366,26 +299,6 @@ func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
 
 func (v Var) SubstTy(TyGenVar, Ty) Term { return v }
 
-func (v Var) ToMappedString(map_ MapString, type_ bool) string {
-	return v.GetName()
-}
-
-func (v Var) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	if displayTypes {
-		return "", fmt.Sprintf("%s_%d", v.GetName(), v.GetIndex())
-	} else {
-		return "", v.GetName()
-	}
-}
-
-func (v Var) GetChildrenForMappedString() []MappableString {
-	return []MappableString{}
-}
-
 func (v Var) Less(u any) bool {
 	switch t := u.(type) {
 	case Term:
@@ -400,7 +313,6 @@ func (v Var) Less(u any) bool {
 // Meta/Free variables
 
 type Meta struct {
-	*MappedString
 	index     int
 	occurence int
 	name      string
@@ -408,7 +320,8 @@ type Meta struct {
 	ty        Ty
 }
 
-func (m Meta) GetFormula() int { return m.formula }
+func (m Meta) ToString() string { return printer.StrMeta(m.name, m.index) }
+func (m Meta) GetFormula() int  { return m.formula }
 
 func (m Meta) GetName() string             { return m.name }
 func (m Meta) GetIndex() int               { return m.index }
@@ -419,22 +332,6 @@ func (m Meta) ToMeta() Meta                { return m }
 func (m Meta) GetMetas() Lib.Set[Meta]     { return Lib.Singleton(m) }
 func (m Meta) GetMetaList() Lib.List[Meta] { return Lib.MkListV(m) }
 func (m Meta) GetTy() Ty                   { return m.ty }
-
-func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	if displayTypes {
-		return "", fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.ty.ToString())
-	} else {
-		return "", fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
-	}
-}
-
-func (m Meta) GetChildrenForMappedString() []MappableString {
-	return []MappableString{}
-}
 
 func (m Meta) Equals(t any) bool {
 	if typed, ok := t.(Meta); ok {

@@ -37,8 +37,7 @@
 package AST
 
 import (
-	"strings"
-
+	"fmt"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
@@ -88,7 +87,7 @@ type All struct {
 }
 
 func MakeAllSimple(i int, vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) All {
-	return All{makeQuantifier(i, vars, forms, metas, AllQuant)}
+	return All{makeQuantifier(i, vars, forms, metas, ConnAll)}
 }
 
 func MakeAll(i int, vars Lib.List[TypedVar], forms Form) All {
@@ -143,7 +142,7 @@ type Ex struct {
 }
 
 func MakeExSimple(i int, vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) Ex {
-	return Ex{makeQuantifier(i, vars, forms, metas, ExQuant)}
+	return Ex{makeQuantifier(i, vars, forms, metas, ConnEx)}
 }
 
 func MakeEx(i int, vars Lib.List[TypedVar], forms Form) Ex {
@@ -194,7 +193,6 @@ func (e Ex) ReplaceMetaByTerm(meta Meta, term Term) Form {
 // Or
 
 type Or struct {
-	*MappedString
 	index int
 	forms Lib.List[Form]
 	metas Lib.Cache[Lib.Set[Meta], Or]
@@ -203,10 +201,7 @@ type Or struct {
 /** Constructors **/
 
 func MakeOrSimple(i int, forms Lib.List[Form], metas Lib.Set[Meta]) Or {
-	fms := &MappedString{}
-	or := Or{fms, i, forms, Lib.MkCache(metas, Or.forceGetMetas)}
-	fms.MappableString = &or
-	return or
+	return Or{i, forms, Lib.MkCache(metas, Or.forceGetMetas)}
 }
 
 func MakeOr(i int, forms Lib.List[Form]) Or {
@@ -249,31 +244,18 @@ func (o Or) Equals(f any) bool {
 }
 
 func (o Or) Copy() Form {
-	fms := &MappedString{}
-	or := Or{
-		fms,
+	return Or{
 		o.index,
 		Lib.ListCpy(o.forms),
 		o.metas.Copy(Lib.Set[Meta].Copy),
 	}
-	fms.MappableString = &or
-	return or
 }
 
 func (o Or) ToString() string {
-	return o.MappedString.ToString()
-}
-
-func (o Or) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(%s)"
-}
-
-func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return " " + mapping[OrConn] + " ", ""
-}
-
-func (o Or) GetChildrenForMappedString() []MappableString {
-	return LsToMappableStringSlice(o.GetChildFormulas())
+	return o.forms.ToString(
+		func(f Form) string { return printer.Str(printer.SurroundChild(f.ToString())) },
+		printer.StrConn(ConnOr), "",
+	)
 }
 
 func (o Or) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -315,7 +297,6 @@ func (o Or) ReplaceMetaByTerm(meta Meta, term Term) Form {
 // And
 
 type And struct {
-	*MappedString
 	index int
 	forms Lib.List[Form]
 	metas Lib.Cache[Lib.Set[Meta], And]
@@ -324,10 +305,7 @@ type And struct {
 /** Constructors **/
 
 func MakeAndSimple(i int, forms Lib.List[Form], metas Lib.Set[Meta]) And {
-	fms := &MappedString{}
-	and := And{fms, i, forms, Lib.MkCache(metas, And.forceGetMetas)}
-	fms.MappableString = &and
-	return and
+	return And{i, forms, Lib.MkCache(metas, And.forceGetMetas)}
 }
 
 func MakeAndSimpleBinary(i int, forms Lib.List[Form], metas Lib.Set[Meta]) And {
@@ -390,31 +368,18 @@ func (a And) Equals(other any) bool {
 }
 
 func (a And) Copy() Form {
-	fms := &MappedString{}
-	and := And{
-		fms,
+	return And{
 		a.index,
 		Lib.ListCpy(a.forms),
 		a.metas.Copy(Lib.Set[Meta].Copy),
 	}
-	fms.MappableString = &and
-	return and
 }
 
 func (a And) ToString() string {
-	return a.MappedString.ToString()
-}
-
-func (a And) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(%s)"
-}
-
-func (a And) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return " " + mapping[AndConn] + " ", ""
-}
-
-func (a And) GetChildrenForMappedString() []MappableString {
-	return LsToMappableStringSlice(a.GetChildFormulas())
+	return a.forms.ToString(
+		func(f Form) string { return printer.Str(printer.SurroundChild(f.ToString())) },
+		printer.StrConn(ConnAnd), "",
+	)
 }
 
 func (a And) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -456,23 +421,18 @@ func (a And) ReplaceMetaByTerm(meta Meta, term Term) Form {
 // Equivalence
 
 type Equ struct {
-	*MappedString
 	index  int
 	f1, f2 Form
 	metas  Lib.Cache[Lib.Set[Meta], Equ]
 }
 
 func MakeEquSimple(i int, firstForm, secondForm Form, metas Lib.Set[Meta]) Equ {
-	fms := &MappedString{}
-	equ := Equ{
-		fms,
+	return Equ{
 		i,
 		firstForm,
 		secondForm,
 		Lib.MkCache(metas, Equ.forceGetMetas),
 	}
-	fms.MappableString = &equ
-	return equ
 }
 
 func MakeEqu(i int, firstForm, secondForm Form) Equ {
@@ -483,32 +443,16 @@ func MakerEqu(firstForm, secondForm Form) Equ {
 	return MakeEqu(MakerIndexFormula(), firstForm, secondForm)
 }
 
-func (e Equ) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(%s)"
-}
-
-func (e Equ) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return " " + mapping[EquConn] + " ", ""
-}
-
-func (e Equ) GetChildrenForMappedString() []MappableString {
-	return LsToMappableStringSlice(e.GetChildFormulas())
-}
-
 func (e Equ) GetIndex() int { return e.index }
 func (e Equ) GetF1() Form   { return e.f1.Copy() }
 func (e Equ) GetF2() Form   { return e.f2.Copy() }
 func (e Equ) Copy() Form {
-	fms := &MappedString{}
-	equ := Equ{
-		fms,
+	return Equ{
 		e.index,
 		e.GetF1(),
 		e.GetF2(),
 		e.metas.Copy(Lib.Set[Meta].Copy),
 	}
-	fms.MappableString = &equ
-	return equ
 }
 
 func (e Equ) forceGetMetas() Lib.Set[Meta] {
@@ -522,7 +466,13 @@ func (e Equ) GetMetas() Lib.Set[Meta] {
 	return e.metas.Get(e)
 }
 
-func (e Equ) ToString() string { return e.ToMappedString(DefaultMapString, true) }
+func (e Equ) ToString() string {
+	return fmt.Sprintf("%s %s %s",
+		printer.Str(printer.SurroundChild(e.f1.ToString())),
+		printer.StrConn(ConnEqu),
+		printer.Str(printer.SurroundChild(e.f2.ToString())),
+	)
+}
 
 func (e Equ) Equals(f any) bool {
 	oth, isEqu := f.(Equ)
@@ -583,23 +533,18 @@ func (e Equ) ReplaceMetaByTerm(meta Meta, term Term) Form {
 // Implication
 
 type Imp struct {
-	*MappedString
 	index  int
 	f1, f2 Form
 	metas  Lib.Cache[Lib.Set[Meta], Imp]
 }
 
 func MakeImpSimple(i int, firstForm, secondForm Form, metas Lib.Set[Meta]) Imp {
-	fms := &MappedString{}
-	imp := Imp{
-		fms,
+	return Imp{
 		i,
 		firstForm,
 		secondForm,
 		Lib.MkCache(metas, Imp.forceGetMetas),
 	}
-	fms.MappableString = &imp
-	return imp
 }
 
 func MakeImp(i int, firstForm, secondForm Form) Imp {
@@ -610,32 +555,16 @@ func MakerImp(firstForm, secondForm Form) Imp {
 	return MakeImp(MakerIndexFormula(), firstForm, secondForm)
 }
 
-func (i Imp) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(%s)"
-}
-
-func (i Imp) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return " " + mapping[ImpConn] + " ", ""
-}
-
-func (i Imp) GetChildrenForMappedString() []MappableString {
-	return LsToMappableStringSlice(i.GetChildFormulas())
-}
-
 func (i Imp) GetIndex() int { return i.index }
 func (i Imp) GetF1() Form   { return i.f1.Copy() }
 func (i Imp) GetF2() Form   { return i.f2.Copy() }
 func (i Imp) Copy() Form {
-	fms := &MappedString{}
-	imp := Imp{
-		fms,
+	return Imp{
 		i.index,
 		i.GetF1(),
 		i.GetF2(),
 		i.metas.Copy(Lib.Set[Meta].Copy),
 	}
-	fms.MappableString = &imp
-	return imp
 }
 
 func (i Imp) forceGetMetas() Lib.Set[Meta] {
@@ -649,7 +578,13 @@ func (i Imp) GetMetas() Lib.Set[Meta] {
 	return i.metas.Get(i)
 }
 
-func (i Imp) ToString() string { return i.ToMappedString(DefaultMapString, true) }
+func (i Imp) ToString() string {
+	return fmt.Sprintf("%s %s %s",
+		printer.Str(printer.SurroundChild(i.f1.ToString())),
+		printer.StrConn(ConnImp),
+		printer.Str(printer.SurroundChild(i.f2.ToString())),
+	)
+}
 
 func (i Imp) Equals(other any) bool {
 	if typed, ok := other.(Imp); ok {
@@ -713,7 +648,6 @@ func (i Imp) ReplaceMetaByTerm(meta Meta, term Term) Form {
 // Not
 
 type Not struct {
-	*MappedString
 	index int
 	f     Form
 	metas Lib.Cache[Lib.Set[Meta], Not]
@@ -722,10 +656,7 @@ type Not struct {
 /** Constructors **/
 
 func MakeNotSimple(i int, form Form, metas Lib.Set[Meta]) Not {
-	fms := &MappedString{}
-	not := Not{fms, i, form, Lib.MkCache(metas, Not.forceGetMetas)}
-	fms.MappableString = &not
-	return not
+	return Not{i, form, Lib.MkCache(metas, Not.forceGetMetas)}
 }
 
 func MakeNot(i int, form Form) Not {
@@ -773,19 +704,10 @@ func (n Not) Copy() Form {
 }
 
 func (n Not) ToString() string {
-	return n.MappedString.ToString()
-}
-
-func (n Not) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return mapping[NotConn] + "(%s)"
-}
-
-func (n Not) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", ""
-}
-
-func (n Not) GetChildrenForMappedString() []MappableString {
-	return LsToMappableStringSlice(n.GetChildFormulas())
+	return fmt.Sprintf("%s%s",
+		printer.StrConn(ConnNot),
+		printer.Str(printer.SurroundChild(n.f.ToString())),
+	)
 }
 
 func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -865,7 +787,6 @@ func getDeepFormWithoutNot(form Form, isEven bool) (Form, bool) {
 // Predicates
 
 type Pred struct {
-	*MappedString
 	index int
 	id    Id
 	tys   Lib.List[Ty]
@@ -880,17 +801,13 @@ func MakePredSimple(
 	terms Lib.List[Term],
 	metas Lib.Set[Meta],
 ) Pred {
-	fms := &MappedString{}
-	pred := Pred{
-		fms,
+	return Pred{
 		index,
 		id,
 		tys,
 		terms,
 		Lib.MkCache(metas, Pred.forceGetMetas),
 	}
-	fms.MappableString = &pred
-	return pred
 }
 
 func MakePred(
@@ -928,41 +845,16 @@ func (p Pred) GetArgs() Lib.List[Term] { return p.args }
 func (p Pred) RenameVariables() Form { return p }
 
 func (p Pred) ToString() string {
-	return p.MappedString.ToString()
-}
-
-func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	if p.tys.Empty() && p.GetArgs().Empty() {
-		return p.GetID().ToMappedString(mapping, displayTypes) + "%s"
-	}
-	args := []string{}
-
-	if !p.tys.Empty() {
-		if tv := Lib.ListToString(p.tys, ", ", mapping[PredEmpty]); tv != "" {
-			args = append(args, tv)
-		}
-	}
-
-	args = append(args, "%s")
-
-	if p.GetID().GetName() == "=" {
-		return "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
-	}
-
-	return p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
-}
-
-func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	if p.GetID().GetName() == "=" {
-		return " = ", mapping[PredEmpty]
-	}
-
-	return ", ", mapping[PredEmpty]
-}
-
-func (p Pred) GetChildrenForMappedString() []MappableString {
-	mappableStringList := Lib.ListMap(p.GetArgs(), Glob.To[MappableString])
-	return mappableStringList.GetSlice()
+	return fmt.Sprintf("%s%s",
+		p.id.ToString(),
+		printer.SurroundArgs(
+			printer.OnFunctionalArgs(
+				Lib.ListToString(p.tys, printer.StrConn(SepTyArgs), ""),
+				printer.StrConn(SepArgsTyArgs),
+				Lib.ListToString(p.args, printer.StrConn(SepArgs), ""),
+			),
+		),
+	)
 }
 
 func (p Pred) Copy() Form {
@@ -1110,33 +1002,18 @@ func (p Pred) ReplaceMetaByTerm(meta Meta, term Term) Form {
 // True and False
 
 type Top struct {
-	*MappedString
 	index int
 }
 
 func MakeTop(i int) Top {
-	fms := &MappedString{}
-	top := Top{fms, i}
-	fms.MappableString = &top
-	return top
+	return Top{i}
 }
 
 func MakerTop() Top {
 	return MakeTop(MakerIndexFormula())
 }
 
-func (t Top) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (t Top) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", mapping[TopType]
-}
-
-func (t Top) GetChildrenForMappedString() []MappableString {
-	return LsToMappableStringSlice(t.GetChildFormulas())
-}
-
+func (Top) ToString() string                              { return printer.StrConn(ConnTop) }
 func (t Top) Copy() Form                                  { return MakeTop(t.GetIndex()) }
 func (Top) Equals(f any) bool                             { _, isTop := f.(Top); return isTop }
 func (Top) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
@@ -1153,33 +1030,18 @@ func (t Top) ReplaceMetaByTerm(meta Meta, term Term) Form { return t }
 
 /* Bot (always false) definition */
 type Bot struct {
-	*MappedString
 	index int
 }
 
 func MakeBot(i int) Bot {
-	fms := &MappedString{}
-	bot := Bot{fms, i}
-	fms.MappableString = &bot
-	return bot
+	return Bot{i}
 }
 
 func MakerBot() Bot {
 	return MakeBot(MakerIndexFormula())
 }
 
-func (b Bot) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (b Bot) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", mapping[BotType]
-}
-
-func (b Bot) GetChildrenForMappedString() []MappableString {
-	return LsToMappableStringSlice(b.GetChildFormulas())
-}
-
+func (Bot) ToString() string                              { return printer.StrConn(ConnBot) }
 func (b Bot) Copy() Form                                  { return MakeBot(b.GetIndex()) }
 func (Bot) Equals(f any) bool                             { _, isBot := f.(Bot); return isBot }
 func (Bot) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }

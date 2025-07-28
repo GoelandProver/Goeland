@@ -37,7 +37,7 @@
 package AST
 
 import (
-	"fmt"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type TypedVar struct {
@@ -59,7 +59,7 @@ func (v TypedVar) Equals(oth any) bool {
 }
 
 func (v TypedVar) ToString() string {
-	return fmt.Sprintf("%s : %s", v.name, v.ty.ToString())
+	return printer.StrTyVar(Lib.MkPair(v.name, v.ty))
 }
 
 func (v TypedVar) GetName() string {
@@ -104,30 +104,4 @@ func MakerTypedVar(name string, ty Ty) TypedVar {
 		lock_term.Unlock()
 		return vr
 	}
-}
-
-// -----------------------------------------------------------------------------
-// Mappable string interface
-
-func (v TypedVar) GetChildrenForMappedString() []MappableString {
-	return []MappableString{}
-}
-
-func (v TypedVar) ToMappedString(map_ MapString, type_ bool) string {
-	if type_ {
-		return fmt.Sprintf("%s : %s", v.name, v.ty.ToString())
-	}
-	return v.name
-}
-
-func (v TypedVar) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	if displayTypes {
-		return "", fmt.Sprintf("%s : %s", v.name, v.ty.ToString())
-	} else {
-		return "", v.name
-	}
-}
-
-func (TypedVar) ToMappedStringSurround(_ MapString, _ bool) string {
-	return "%s"
 }

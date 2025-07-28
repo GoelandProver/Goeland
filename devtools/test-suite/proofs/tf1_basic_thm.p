@@ -1,4 +1,4 @@
-% args: -proof -no_id
+% args: -proof
 % result: VALID
 
 tff(list_type,type,

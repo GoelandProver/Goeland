@@ -43,24 +43,24 @@ import (
 
 var contextEnabled bool = false
 
-var lambdaPiMapConnectors = map[AST.FormulaType]string{
-	AST.AndConn:        "∧",
-	AST.OrConn:         "∨",
-	AST.ImpConn:        "⇒",
-	AST.EquConn:        "⇔",
-	AST.NotConn:        "¬",
-	AST.TopType:        "⊤",
-	AST.BotType:        "⊥",
-	AST.AllQuant:       "∀α",
-	AST.ExQuant:        "∃α",
-	AST.AllTypeQuant:   "∀",
-	AST.QuantVarOpen:   "(",
-	AST.QuantVarClose:  ")",
-	AST.QuantVarSep:    " ",
-	AST.PredEmpty:      "",
-	AST.PredTypeVarSep: ") (",
-	AST.TypeVarType:    "Type",
-}
+// var lambdaPiMapConnectors = map[AST.FormulaType]string{
+// 	AST.AndConn:        "∧",
+// 	AST.OrConn:         "∨",
+// 	AST.ImpConn:        "⇒",
+// 	AST.EquConn:        "⇔",
+// 	AST.NotConn:        "¬",
+// 	AST.TopType:        "⊤",
+// 	AST.BotType:        "⊥",
+// 	AST.AllQuant:       "∀α",
+// 	AST.ExQuant:        "∃α",
+// 	AST.AllTypeQuant:   "∀",
+// 	AST.QuantVarOpen:   "(",
+// 	AST.QuantVarClose:  ")",
+// 	AST.QuantVarSep:    " ",
+// 	AST.PredEmpty:      "",
+// 	AST.PredTypeVarSep: ") (",
+// 	AST.TypeVarType:    "Type",
+// }
 
 var LambdapiOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeLambdapiOutput, Name: "Lambdapi", Extension: ".lp"}
 
@@ -78,6 +78,8 @@ func MakeLambdapiOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) strin
 		Glob.PrintError("LambdaPi", "Nothing to output")
 		return ""
 	}
+
+	// FIXME: set the AST printer to (to be defined soon) LPPrinter
 
 	// Transform tableaux's proof in GS3 proof
 	return MakeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
