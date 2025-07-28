@@ -252,8 +252,7 @@ func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
 	axiomsWithConj := Lib.ListCpy(axioms)
 	axiomsWithConj.Append(AST.MakerNot(AST.MakerNot(conjecture)))
 	formattedProblem := makeImpChain(axiomsWithConj)
-	return "Theorem goeland_proof_of_" + problemName + " : " +
-		mapDefault(formattedProblem.ToMappedString(rocqMapConnectors(), Glob.GetTypeProof())) + ".\n"
+	return "Theorem goeland_proof_of_" + problemName + " : " + formattedProblem.ToString() + ".\n"
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).
@@ -322,7 +321,7 @@ func getRealConstantName(constantsCreated []AST.Term, term AST.Term) string {
 	if fun, isFun := term.(AST.Fun); isFun {
 		res := ""
 		if isGroundTerm(fun.GetID()) {
-			res = fun.GetID().ToMappedString(rocqMapConnectors(), Glob.GetTypeProof())
+			res = fun.GetID().ToString()
 			subterms := make([]string, 0)
 			for _, t := range fun.GetArgs().GetSlice() {
 				subterms = append(subterms, getRealConstantName(constantsCreated, t))
@@ -346,7 +345,7 @@ func findInConstants(constantsCreated []AST.Term, term AST.Term) string {
 		return getConstantName(term.(AST.Fun).GetID())
 	}
 	if isGroundTerm(term) {
-		return "(" + term.ToMappedString(rocqMapConnectors(), Glob.GetTypeProof()) + ")"
+		return "(" + term.ToString() + ")"
 	}
 	return "goeland_I"
 }

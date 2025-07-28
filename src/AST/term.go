@@ -42,7 +42,8 @@ import (
 
 /* Term */
 type Term interface {
-	MappableString
+	Lib.Comparable
+	Lib.Stringable
 	Lib.Copyable[Term]
 	GetIndex() int
 	GetName() string
@@ -59,38 +60,23 @@ type Term interface {
 
 /*** Makers ***/
 func MakeId(i int, s string) Id {
-	fms := &MappedString{}
-	id := Id{fms, i, s}
-	fms.MappableString = &id
-	return id
+	return Id{i, s}
 }
 
 func MakeQuotedId(i int, s string) Id {
-	fms := &MappedString{}
-	id := Id{fms, i, "" + s + "'"}
-	fms.MappableString = &id
-	return id
+	return Id{i, "" + s + "'"}
 }
 
 func MakeVar(i int, s string) Var {
-	fms := &MappedString{}
-	newVar := Var{fms, i, s}
-	fms.MappableString = &newVar
-	return newVar
+	return Var{i, s}
 }
 
 func MakeMeta(index, occurence int, s string, f int, ty Ty) Meta {
-	fms := &MappedString{}
-	meta := Meta{fms, index, occurence, s, f, ty}
-	fms.MappableString = &meta
-	return meta
+	return Meta{index, occurence, s, f, ty}
 }
 
 func MakeFun(p Id, ty_args Lib.List[Ty], args Lib.List[Term], metas Lib.Set[Meta]) Fun {
-	fms := &MappedString{}
-	fun := Fun{fms, p, ty_args, args, Lib.MkCache(metas, Fun.forceGetMetas)}
-	fms.MappableString = fun
-	return fun
+	return Fun{p, ty_args, args, Lib.MkCache(metas, Fun.forceGetMetas)}
 }
 
 /*** Functions **/

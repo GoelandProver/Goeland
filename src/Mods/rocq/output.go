@@ -37,8 +37,6 @@
 package rocq
 
 import (
-	"strings"
-
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -65,6 +63,8 @@ func MakeRocqOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 		return ""
 	}
 
+	// FIXME: set the AST printer to (to be defined soon) CoqPrinter
+
 	// Transform tableaux's proof in GS3 proof
 	return MakeRocqProof(gs3.MakeGS3Proof(prf), meta)
 }
@@ -73,31 +73,6 @@ var MakeRocqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string 
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeRocqProofFromGS3(proof)
 	return contextString + "\n" + proofString
-}
-
-// Replace defined symbols by Rocq's defined symbols.
-func mapDefault(str string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
-}
-func rocqMapConnectors() map[AST.FormulaType]string {
-	return map[AST.FormulaType]string{
-		AST.AndConn:        "/\\",
-		AST.OrConn:         "\\/",
-		AST.ImpConn:        "->",
-		AST.EquConn:        "<->",
-		AST.NotConn:        "~",
-		AST.TopType:        "True",
-		AST.BotType:        "False",
-		AST.AllQuant:       "forall",
-		AST.ExQuant:        "exists",
-		AST.AllTypeQuant:   "forall",
-		AST.QuantVarOpen:   "(",
-		AST.QuantVarClose:  ")",
-		AST.QuantVarSep:    ",",
-		AST.PredEmpty:      "",
-		AST.PredTypeVarSep: ",",
-		AST.TypeVarType:    "Type",
-	}
 }
 
 // Context flag utility function

@@ -38,23 +38,11 @@ import (
 )
 
 type TermForm struct {
-	*AST.MappedString
 	index int
 	t     AST.Term
 }
 
-func (t TermForm) ToMappedStringSurround(mapping AST.MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (t TermForm) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", t.t.ToMappedString(mapping, displayTypes)
-}
-
-func (t TermForm) GetChildrenForMappedString() []AST.MappableString {
-	return AST.LsToMappableStringSlice(t.GetChildFormulas())
-}
-
+func (t TermForm) ToString() string          { return t.ToString() }
 func (t TermForm) GetTerm() AST.Term         { return t.t.Copy() }
 func (t TermForm) Copy() AST.Form            { return makeTermForm(t.GetIndex(), t.GetTerm()) }
 func (t TermForm) RenameVariables() AST.Form { return t }
@@ -118,10 +106,7 @@ func MakerTermForm(t AST.Term) TermForm {
 }
 
 func makeTermForm(i int, t AST.Term) TermForm {
-	fms := &AST.MappedString{}
-	tf := TermForm{fms, i, t.Copy()}
-	fms.MappableString = &tf
-	return tf
+	return TermForm{i, t.Copy()}
 }
 
 /* Parses a formulae to a sequence of instructions. */
