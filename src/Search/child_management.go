@@ -127,8 +127,10 @@ func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChild
 
 	// Remove all the metavariables that have been introduced in this node: the parent do not know them.
 	substForFather := Core.RemoveElementWithoutMM(args.st.GetAppliedSubst().GetSubst(), args.st.GetMM())
-	if !substForFather.IsEmpty() {
-		args.st.SetSubstsFound([]Core.SubstAndForm{Core.MakeSubstAndForm(substForFather, args.st.GetAppliedSubst().GetForm())})
+	if !substForFather.Empty() {
+		args.st.SetSubstsFound(
+			[]Core.SubstAndForm{Core.MakeSubstAndForm(substForFather, args.st.GetAppliedSubst().GetForm())},
+		)
 	} else {
 		args.st.SetSubstsFound([]Core.SubstAndForm{})
 	}
@@ -159,8 +161,9 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
-				"All children agree on the substitution(s) : %v",
-				Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(substs)))
+				"All children agree on the substitution(s) : %s",
+				Unif.SubstsToString(Core.GetSubstListFromSubstAndFormList(substs)),
+			)
 		}),
 	)
 
@@ -177,14 +180,15 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 
 	// Remove all the metas introduced by the current node to only retrieve relevant ones for the parent.
 	resultingSubstsAndForms := []Core.SubstAndForm{}
-	resultingSubsts := []Unif.Substitutions{}
+	resultingSubsts := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
 
 	for _, subst := range substs {
 		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Check the susbt, remove useless element and merge with applied subst :%v",
-					subst.GetSubst().ToString())
+					Lib.ListToString(subst.GetSubst(), ", ", ""),
+				)
 			}),
 		)
 		err, merged := Core.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
@@ -194,18 +198,18 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 			return err
 		}
 
-		cleaned := Core.RemoveElementWithoutMM(merged.GetSubst().Copy(), args.st.GetMM())
+		cleaned := Core.RemoveElementWithoutMM(merged.GetSubst(), args.st.GetMM())
 		substAndFormCleaned := Core.MakeSubstAndForm(cleaned, subst.GetForm())
 
 		// If the cleaned subst is empty, we don't need to do anything.
 		// Otherwise, we have to check if the cleaned substitution is already in the resulting substs list
 		// and, if applicable, add the formula to the list of substituted formulas.
 		// It is useful for the nondestructive mode, to store with which formula the contradiction has been found.
-		if !cleaned.IsEmpty() {
+		if !cleaned.Empty() {
 			// Check if the new substitution is already in the list, merge formulas
 			added := false
-			for i := 0; !added && i < len(resultingSubsts); i++ {
-				if resultingSubstsAndForms[i].GetSubst().Equals(cleaned) {
+			for i := 0; !added && i < resultingSubsts.Len(); i++ {
+				if Lib.ListEquals(resultingSubstsAndForms[i].GetSubst(), cleaned) {
 					added = true
 					resultingSubstsAndForms[i] = resultingSubstsAndForms[i].AddFormulas(subst.GetForm())
 				}
@@ -213,7 +217,7 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 
 			if !added {
 				resultingSubstsAndForms = append(resultingSubstsAndForms, substAndFormCleaned.Copy())
-				resultingSubsts = append(resultingSubsts, substAndFormCleaned.GetSubst())
+				resultingSubsts.Append(substAndFormCleaned.GetSubst())
 			}
 
 			newMetas = Glob.UnionIntList(newMetas, retrieveMetaFromSubst(cleaned))
@@ -278,7 +282,9 @@ func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
 
 	// If the completeness mode is active, then we need to deal with forbidden substitutions.
 	if Glob.GetCompleteness() {
-		args.st.SetForbiddenSubsts(Unif.AddSubstToSubstitutionsList(args.st.GetForbiddenSubsts(), args.currentSubst.GetSubst()))
+		forbidden := args.st.GetForbiddenSubsts()
+		forbidden.Add(Lib.ListEquals[Unif.MixedSubstitution], args.currentSubst.GetSubst())
+		args.st.SetForbiddenSubsts(forbidden)
 	}
 
 	if args.st.GetBTOnFormulas() && len(args.formsBT) > 0 {

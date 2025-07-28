@@ -34,6 +34,7 @@ package gs3
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 const (
@@ -54,10 +55,10 @@ func manageGammasInstantiations(initialForm, resultForm AST.Form) AST.Term {
 	//PrintInfo("FORMS", fmt.Sprintf("init: %s, result: %s", initialForm.ToString(), resultForm.ToString()))
 	switch initialGamma := initialForm.(type) {
 	case AST.All:
-		term = getResultTerm(initialGamma.GetVarList()[0], normalisedInitialForm, resultForm)
+		term = getResultTerm(initialGamma.GetVarList().At(0), normalisedInitialForm, resultForm)
 	case AST.Not:
 		if ex, ok := initialGamma.GetForm().(AST.Ex); ok {
-			term = getResultTerm(ex.GetVarList()[0], normalisedInitialForm, resultForm)
+			term = getResultTerm(ex.GetVarList().At(0), normalisedInitialForm, resultForm)
 		}
 	}
 	//PrintInfo("TERM", fmt.Sprintf("Term: %s ; Result: %s", term.ToString(), resultForm.ToString()))
@@ -73,10 +74,10 @@ func manageDeltasSkolemisations(initialForm, resultForm AST.Form) AST.Term {
 	normalisedInitialForm := getNextFormula(initialForm.Copy())
 	switch initialDelta := initialForm.(type) {
 	case AST.Ex:
-		term = getResultTerm(initialDelta.GetVarList()[0], normalisedInitialForm, resultForm)
+		term = getResultTerm(initialDelta.GetVarList().At(0), normalisedInitialForm, resultForm)
 	case AST.Not:
 		if all, ok := initialDelta.GetForm().(AST.All); ok {
-			term = getResultTerm(all.GetVarList()[0], normalisedInitialForm, resultForm)
+			term = getResultTerm(all.GetVarList().At(0), normalisedInitialForm, resultForm)
 		}
 	}
 	return term
@@ -90,14 +91,14 @@ func getNextFormula(form AST.Form) AST.Form {
 	switch f := form.(type) {
 	case AST.All:
 		varList := f.GetVarList()
-		if len(varList) > 1 {
-			return AST.MakerAll(varList[1:], f.GetForm())
+		if varList.Len() > 1 {
+			return AST.MakerAll(varList.Slice(1, varList.Len()), f.GetForm())
 		}
 		return f.GetForm()
 	case AST.Ex:
 		varList := f.GetVarList()
-		if len(varList) > 1 {
-			return AST.MakerEx(varList[1:], f.GetForm())
+		if varList.Len() > 1 {
+			return AST.MakerEx(varList.Slice(1, varList.Len()), f.GetForm())
 		}
 		return f.GetForm()
 	case AST.Not:
@@ -106,17 +107,17 @@ func getNextFormula(form AST.Form) AST.Form {
 	return form
 }
 
-func getResultTerm(v AST.Var, bareForm, endForm AST.Form) AST.Term {
+func getResultTerm(v AST.TypedVar, bareForm, endForm AST.Form) AST.Term {
 	variablesOccurrences := getAllVariableOccurrences(v, bareForm)
 	return getTermAt(endForm, variablesOccurrences)
 }
 
 // Explores the form and if a variable in the varlist is found, returns its occurrence.
-func getAllVariableOccurrences(v AST.Var, form AST.Form) occurrences {
+func getAllVariableOccurrences(v AST.TypedVar, form AST.Form) occurrences {
 	return getVariableOccurrencesForm(v, form, occurrences{}, occurrence{})
 }
 
-func getVariableOccurrencesForm(v AST.Var, form AST.Form, currentOcc occurrences, path occurrence) occurrences {
+func getVariableOccurrencesForm(v AST.TypedVar, form AST.Form, currentOcc occurrences, path occurrence) occurrences {
 	workingPath := make(occurrence, len(path))
 	copy(workingPath, path)
 	switch f := form.(type) {
@@ -127,40 +128,38 @@ func getVariableOccurrencesForm(v AST.Var, form AST.Form, currentOcc occurrences
 	case AST.Not:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	case AST.And:
-		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.FormList)
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.GetChildFormulas())
 	case AST.Or:
-		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.FormList)
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.GetChildFormulas())
 	case AST.Imp:
-		currentOcc = getNAryOcc(v, currentOcc, workingPath, AST.NewFormList(f.GetF1(), f.GetF2()))
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, Lib.MkListV(f.GetF1(), f.GetF2()))
 	case AST.Equ:
-		currentOcc = getNAryOcc(v, currentOcc, workingPath, AST.NewFormList(f.GetF1(), f.GetF2()))
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, Lib.MkListV(f.GetF1(), f.GetF2()))
 	case AST.All:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	case AST.Ex:
-		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
-	case AST.AllType:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	}
 	return currentOcc
 }
 
-func getUnaryOcc(v AST.Var, form AST.Form, currentOcc occurrences, path occurrence) occurrences {
+func getUnaryOcc(v AST.TypedVar, form AST.Form, currentOcc occurrences, path occurrence) occurrences {
 	return getVariableOccurrencesForm(v, form, currentOcc, append(path, 0))
 }
 
-func getNAryOcc(v AST.Var, currentOcc occurrences, path occurrence, fl *AST.FormList) occurrences {
-	for i, nf := range fl.Slice() {
+func getNAryOcc(v AST.TypedVar, currentOcc occurrences, path occurrence, fl Lib.List[AST.Form]) occurrences {
+	for i, nf := range fl.GetSlice() {
 		currentOcc = getVariableOccurrencesForm(v, nf, currentOcc, appcp(path, i))
 	}
 	return currentOcc
 }
 
-func getVariableOccurrencesTerm(v AST.Var, term AST.Term, currentOcc occurrences, path occurrence) occurrences {
+func getVariableOccurrencesTerm(v AST.TypedVar, term AST.Term, currentOcc occurrences, path occurrence) occurrences {
 	workingPath := make(occurrence, len(path))
 	copy(workingPath, path)
 	switch t := term.(type) {
 	case AST.Var:
-		if t.Equals(v) {
+		if t.Equals(v.ToBoundVar()) {
 			currentOcc = append(currentOcc, workingPath)
 		}
 	case AST.Fun:
@@ -197,18 +196,16 @@ func getTermAux(form AST.Form, occ occurrence) AST.Term {
 	case AST.Not:
 		term = getUnaryTerm(f.GetForm(), occ)
 	case AST.And:
-		term = getNAryTerm(f.FormList, occ)
+		term = getNAryTerm(f.GetChildFormulas(), occ)
 	case AST.Or:
-		term = getNAryTerm(f.FormList, occ)
+		term = getNAryTerm(f.GetChildFormulas(), occ)
 	case AST.Imp:
-		term = getNAryTerm(AST.NewFormList(f.GetF1(), f.GetF2()), occ)
+		term = getNAryTerm(Lib.MkListV(f.GetF1(), f.GetF2()), occ)
 	case AST.Equ:
-		term = getNAryTerm(AST.NewFormList(f.GetF1(), f.GetF2()), occ)
+		term = getNAryTerm(Lib.MkListV(f.GetF1(), f.GetF2()), occ)
 	case AST.All:
 		term = getUnaryTerm(f.GetForm(), occ)
 	case AST.Ex:
-		term = getUnaryTerm(f.GetForm(), occ)
-	case AST.AllType:
 		term = getUnaryTerm(f.GetForm(), occ)
 	}
 	return term
@@ -222,12 +219,12 @@ func getUnaryTerm(form AST.Form, occ occurrence) AST.Term {
 	return getTermAux(form, occ[1:])
 }
 
-func getNAryTerm(fl *AST.FormList, occ occurrence) AST.Term {
+func getNAryTerm(fl Lib.List[AST.Form], occ occurrence) AST.Term {
 	if occ[0] >= fl.Len() {
 		return nil
 	}
 
-	return getTermAux(fl.Get(occ[0]), occ[1:])
+	return getTermAux(fl.At(occ[0]), occ[1:])
 }
 
 func getTerm(term AST.Term, occ occurrence) AST.Term {

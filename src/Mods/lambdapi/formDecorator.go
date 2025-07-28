@@ -35,6 +35,7 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type DecoratedAll struct {
@@ -54,12 +55,12 @@ func (da DecoratedAll) ToMappedStringSurround(mapping AST.MapString, displayType
 	return QuantifierToMappedString(mapping[AST.AllQuant], da.GetVarList())
 }
 
-func QuantifierToMappedString(quant string, varList []AST.Var) string {
-	if len(varList) == 0 {
+func QuantifierToMappedString(quant string, varList Lib.List[AST.TypedVar]) string {
+	if varList.Len() == 0 {
 		return "%s"
 	} else {
-		result := "(" + quant + " (" + toLambdaIntroString(varList[0], varList[0].GetTypeHint().ToString()) + ", %s))"
-		result = fmt.Sprintf(result, QuantifierToMappedString(quant, varList[1:]))
+		result := "(" + quant + " (" + toLambdaIntroString(varList.At(0), "") + ", %s))"
+		result = fmt.Sprintf(result, QuantifierToMappedString(quant, varList.Slice(1, varList.Len())))
 		return result
 	}
 }

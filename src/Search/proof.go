@@ -111,8 +111,8 @@ func (ifl *IntFormAndTermsList) Copy() IntFormAndTermsList {
 	return MakeIntFormAndTermsList(ifl.i, ifl.fl.Copy())
 }
 
-func (ifl *IntFormAndTermsList) GetForms() *AST.FormList {
-	res := AST.NewFormList()
+func (ifl *IntFormAndTermsList) GetForms() Lib.List[AST.Form] {
+	res := Lib.NewList[AST.Form]()
 	for _, ift := range (*ifl).GetFL() {
 		res.Append(ift.GetForm())
 	}
@@ -126,10 +126,10 @@ func (ifl *IntFormAndTermsList) SubstituteBy(
 	return MakeIntFormAndTermsList(ifl.i, ifl.fl.SubstituteBy(metas, terms))
 }
 
-func GetFormulasFromIntFormAndTermList(iftl []IntFormAndTermsList) *AST.FormList {
-	res := AST.NewFormList()
+func GetFormulasFromIntFormAndTermList(iftl []IntFormAndTermsList) Lib.List[AST.Form] {
+	res := Lib.NewList[AST.Form]()
 	for _, v := range iftl {
-		res.Append(v.GetForms().Slice()...)
+		res.Append(v.GetForms().GetSlice()...)
 	}
 	return res
 }
@@ -390,7 +390,7 @@ func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) Lib.Set[AST.
 		res = res.Union(proofMetas)
 		resResultFormulas := GetFormulasFromIntFormAndTermList(proofElement.GetResultFormulas())
 
-		for _, v := range resResultFormulas.Slice() {
+		for _, v := range resResultFormulas.GetSlice() {
 			res = res.Union(v.GetMetas())
 		}
 
@@ -404,7 +404,7 @@ func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) Lib.Set[AST.
 }
 
 /* Apply subst on a proof tree */
-func ApplySubstitutionOnProofList(s Unif.Substitutions, proof_list []ProofStruct) []ProofStruct {
+func ApplySubstitutionOnProofList(s Lib.List[Unif.MixedSubstitution], proof_list []ProofStruct) []ProofStruct {
 	new_proof_list := []ProofStruct{}
 
 	for _, p := range proof_list {
@@ -412,7 +412,10 @@ func ApplySubstitutionOnProofList(s Unif.Substitutions, proof_list []ProofStruct
 
 		new_result_formulas := []IntFormAndTermsList{}
 		for _, f := range p.GetResultFormulas() {
-			new_result_formulas = append(new_result_formulas, MakeIntFormAndTermsList(f.GetI(), Core.ApplySubstitutionsOnFormAndTermsList(s, f.GetFL())))
+			new_result_formulas = append(
+				new_result_formulas,
+				MakeIntFormAndTermsList(f.GetI(), Core.ApplySubstitutionsOnFormAndTermsList(s, f.GetFL())),
+			)
 		}
 		p.SetResultFormulasProof(new_result_formulas)
 

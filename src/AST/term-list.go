@@ -117,10 +117,6 @@ func EqualsWithoutOrder(tl, other Lib.List[Term]) bool {
 	return Lib.ListEquals(tlSorted.List(), otherSorted.List())
 }
 
-func AreEqualsTypeVarList(tv1, tv2 []TypeVar) bool {
-	return Lib.ComparableList[TypeVar](tv1).Equals(tv2)
-}
-
 /* check if two lists of var are equals */
 func AreEqualsVarList(tl1, tl2 []Var) bool {
 	if len(tl1) != len(tl2) {
@@ -139,14 +135,6 @@ func copyVarList(tl []Var) []Var {
 	res := []Var{}
 	for _, t := range tl {
 		res = append(res, t.Copy().(Var))
-	}
-	return res
-}
-
-func copyTypeVarList(tv []TypeVar) []TypeVar {
-	res := []TypeVar{}
-	for _, t := range tv {
-		res = append(res, t.Copy().(TypeVar))
 	}
 	return res
 }
