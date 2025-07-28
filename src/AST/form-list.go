@@ -48,15 +48,6 @@ func LsSubstByTerm(formulas Lib.List[Form], meta Meta, term Term) Lib.List[Form]
 	return formulas
 }
 
-// ex-name: ToMappableStringSlice
-func LsToMappableStringSlice(formulas Lib.List[Form]) []MappableString {
-	forms := []MappableString{}
-	for _, form := range formulas.GetSlice() {
-		forms = append(forms, form.(MappableString))
-	}
-	return forms
-}
-
 func LsFlatten(formulas Lib.List[Form]) Lib.List[Form] {
 	result := Lib.NewList[Form]()
 

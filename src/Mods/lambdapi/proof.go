@@ -49,7 +49,7 @@ func makeLambdaPiProofFromGS3(proof *gs3.GS3Sequent) string {
 
 	formula := proof.GetTargetForm()
 
-	formulaStr := toCorrectString(formula)
+	formulaStr := formula.ToString()
 	resultingString += fmt.Sprintf("λ (%s : ϵ %s),\n", addToContext(formula), formulaStr)
 	proofStr := makeProofStep(proof)
 	resultingString += proofStr
@@ -103,7 +103,7 @@ func makeProofStep(proof *gs3.GS3Sequent) string {
 		Glob.PrintError("LP", "Trying to do a weakening rule but it's not implemented yet")
 	}
 
-	return "//" + toCorrectString(proof.GetTargetForm()) + "\n" + resultingString
+	return "//" + proof.GetTargetForm().ToString() + "\n" + resultingString
 }
 
 func closureAxiom(proof *gs3.GS3Sequent) string {
@@ -113,7 +113,7 @@ func closureAxiom(proof *gs3.GS3Sequent) string {
 
 	switch target.(type) {
 	case AST.Pred:
-		result = fmt.Sprintf("GS3axiom (%s) (%s) (%s)\n", toCorrectString(target), getFromContext(target), getFromContext(notTarget))
+		result = fmt.Sprintf("GS3axiom (%s) (%s) (%s)\n", target.ToString(), getFromContext(target), getFromContext(notTarget))
 	case AST.Top:
 		result = fmt.Sprintf("GS3ntop (%s)\n", getFromContext(notTarget))
 	case AST.Bot:
@@ -134,7 +134,7 @@ func allRules(rule string, target AST.Form, composingForms Lib.List[AST.Form], n
 	result := rule + "\n"
 
 	for _, composingForm := range composingForms.GetSlice() {
-		result += "(" + toCorrectString(composingForm) + ")\n"
+		result += "(" + composingForm.ToString() + ")\n"
 	}
 
 	result += getRecursionUnivStr(nexts, children)
@@ -156,18 +156,19 @@ func allRulesQuantUniv(
 
 	quant := ""
 	typeStr := ""
-	switch target.(type) {
-	case AST.All:
-		quant = lambdaPiMapConnectors[AST.AllQuant]
-	case AST.Not:
-		quant = lambdaPiMapConnectors[AST.ExQuant]
-	}
+	// FIXME get printer
+	// switch target.(type) {
+	// case AST.Ex:
+	// 	quant = AST.ConnAll
+	// case AST.Not:
+	// 	quant = AST.ConnEx
+	// }
 
 	typeStr = mapDefault(typeStr)
 
 	result := rule + "\n"
 	result += "(" + typeStr + ")\n"
-	result += "(%s, " + toCorrectString(composingForms.At(0)) + ")\n"
+	result += "(%s, " + composingForms.At(0).ToString() + ")\n"
 
 	varStrs := []string{}
 	for _, singleVar := range vars.GetSlice() {
@@ -175,7 +176,7 @@ func allRulesQuantUniv(
 	}
 	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
 
-	result += "(" + toCorrectString(termGen) + ")\n"
+	result += "(" + termGen.ToString() + ")\n"
 
 	result += getRecursionUnivStr(nexts, children)
 
@@ -188,7 +189,7 @@ func getRecursionUnivStr(nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form])
 	for i, next := range nexts {
 		result += "(\n"
 		for _, childForm := range children[i].GetSlice() {
-			result += toLambdaString(childForm, toCorrectString(childForm)) + ",\n"
+			result += toLambdaString(childForm, childForm.ToString()) + ",\n"
 		}
 		proofStr := makeProofStep(next)
 		result += proofStr
@@ -208,18 +209,19 @@ func allRulesQuantExist(
 ) string {
 	quant := ""
 	typeStr := ""
-	switch target.(type) {
-	case AST.Ex:
-		quant = lambdaPiMapConnectors[AST.ExQuant]
-	case AST.Not:
-		quant = lambdaPiMapConnectors[AST.AllQuant]
-	}
+	// FIXME get printer
+	// switch target.(type) {
+	// case AST.Ex:
+	// 	quant = AST.ConnAll
+	// case AST.Not:
+	// 	quant = AST.ConnEx
+	// }
 
 	typeStr = mapDefault(typeStr)
 
 	result := rule + "\n"
 	result += "(" + typeStr + ")\n"
-	result += "(%s, " + toCorrectString(composingForms.At(0)) + ")\n"
+	result += "(%s, " + composingForms.At(0).ToString() + ")\n"
 
 	varStrs := []string{}
 	for _, singleVar := range vars.GetSlice() {
@@ -243,7 +245,7 @@ func getRecursionExistStr(nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form]
 		}
 		result += toLambdaIntroString(termGen, typesStr) + ",\n"
 		for _, childForm := range children[i].GetSlice() {
-			result += toLambdaString(childForm, toCorrectString(childForm)) + ",\n"
+			result += toLambdaString(childForm, childForm.ToString()) + ",\n"
 		}
 		proofStr := makeProofStep(next)
 		result += proofStr
@@ -371,7 +373,7 @@ func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
 	axioms = Lib.ListCpy(axioms)
 	axioms.Append(AST.MakerNot(conjecture))
 	formattedProblem := makeImpChain(axioms)
-	return "symbol goeland_" + problemName + " : \nϵ " + toCorrectString(formattedProblem) + " → ϵ ⊥ ≔ \n"
+	return "symbol goeland_" + problemName + " : \nϵ " + formattedProblem.ToString() + " → ϵ ⊥ ≔ \n"
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).

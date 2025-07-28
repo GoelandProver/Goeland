@@ -53,10 +53,10 @@ type TyGenVar interface {
 }
 
 type Ty interface {
+	Lib.Stringable
+	Lib.Comparable
+	Lib.Copyable[Ty]
 	isTy()
-	ToString() string
-	Equals(any) bool
-	Copy() Ty
 	SubstTy(TyGenVar, Ty) Ty
 }
 
@@ -65,8 +65,10 @@ type tyVar struct {
 	repr string
 }
 
-func (tyVar) isTy()              {}
-func (v tyVar) ToString() string { return v.repr }
+func (tyVar) isTy() {}
+func (v tyVar) ToString() string {
+	return printer.StrBound(v.repr, 0)
+}
 func (v tyVar) Equals(oth any) bool {
 	if ov, ok := oth.(tyVar); ok {
 		return v.repr == ov.repr
@@ -82,9 +84,11 @@ type TyBound struct {
 	index int
 }
 
-func (TyBound) isTy()              {}
-func (TyBound) isGenVar()          {}
-func (b TyBound) ToString() string { return b.name }
+func (TyBound) isTy()     {}
+func (TyBound) isGenVar() {}
+func (b TyBound) ToString() string {
+	return printer.StrBound(b.name, b.index)
+}
 func (b TyBound) Equals(oth any) bool {
 	if bv, ok := oth.(TyBound); ok {
 		return b.name == bv.name
@@ -107,9 +111,11 @@ type TyMeta struct {
 	formula int // for compatibility with term metas
 }
 
-func (TyMeta) isTy()              {}
-func (TyMeta) isGenVar()          {}
-func (m TyMeta) ToString() string { return fmt.Sprintf("%s_%d", m.name, m.index) }
+func (TyMeta) isTy()     {}
+func (TyMeta) isGenVar() {}
+func (m TyMeta) ToString() string {
+	return printer.StrMeta(m.name, m.index)
+}
 func (m TyMeta) Equals(oth any) bool {
 	if om, ok := oth.(TyMeta); ok {
 		return m.name == om.name && m.index == om.index
@@ -145,10 +151,13 @@ type TyConstr struct {
 func (TyConstr) isTy() {}
 
 func (c TyConstr) ToString() string {
-	if c.args.Len() == 0 {
-		return c.symbol
+	if c.args.Empty() {
+		return printer.StrTy(c.symbol)
 	}
-	return c.symbol + "(" + Lib.ListToString(c.args, ", ", "") + ")"
+	return fmt.Sprintf("%s%s",
+		printer.StrTy(c.symbol),
+		printer.SurroundArgs(Lib.ListToString(c.args, printer.StrConn(SepArgs), "")),
+	)
 }
 
 func (c TyConstr) Equals(oth any) bool {
@@ -185,7 +194,10 @@ type TyProd struct {
 func (TyProd) isTy() {}
 
 func (p TyProd) ToString() string {
-	return "(" + Lib.ListToString(p.args, " * ", "") + ")"
+	return p.args.ToString(
+		func(ty Ty) string { return printer.Str(printer.SurroundChild(ty.ToString())) },
+		printer.StrConn(ConnProd), "",
+	)
 }
 
 func (p TyProd) GetTys() Lib.List[Ty] {
@@ -215,7 +227,11 @@ type TyFunc struct {
 
 func (TyFunc) isTy() {}
 func (f TyFunc) ToString() string {
-	return f.in.ToString() + " > " + f.out.ToString()
+	return fmt.Sprintf("%s %s %s",
+		printer.Str(printer.SurroundChild(f.in.ToString())),
+		printer.StrConn(ConnImp),
+		printer.Str(printer.SurroundChild(f.out.ToString())),
+	)
 }
 func (f TyFunc) Equals(oth any) bool {
 	if of, ok := oth.(TyFunc); ok {
@@ -239,7 +255,15 @@ type TyPi struct {
 
 func (TyPi) isTy() {}
 func (p TyPi) ToString() string {
-	return "!> [" + p.vars.ToString(func(s string) string { return s }, ", ", "") + "] : (" + p.ty.ToString() + ")"
+	return fmt.Sprintf(
+		"%s %s%s%s",
+		printer.StrConn(ConnPi),
+		printer.SurroundQuantified(
+			p.vars.ToString(PrinterIdentity, printer.StrConn(SepTyVars), ""),
+		),
+		printer.StrConn(SepVarsForm),
+		printer.Str(p.ty.ToString()),
+	)
 }
 func (p TyPi) Equals(oth any) bool {
 	if op, ok := oth.(TyPi); ok {

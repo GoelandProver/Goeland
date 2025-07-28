@@ -38,33 +38,26 @@ package AST
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type quantifier struct {
-	*MappedString
 	metas   Lib.Cache[Lib.Set[Meta], quantifier]
 	index   int
 	varList Lib.List[TypedVar]
 	subForm Form
-	symbol  FormulaType
+	symbol  Connective
 }
 
-func makeQuantifier(i int, vars Lib.List[TypedVar], subForm Form, metas Lib.Set[Meta], symbol FormulaType) quantifier {
-	fms := &MappedString{}
-	qua := quantifier{
-		fms,
+func makeQuantifier(i int, vars Lib.List[TypedVar], subForm Form, metas Lib.Set[Meta], symbol Connective) quantifier {
+	return quantifier{
 		Lib.MkCache(metas, quantifier.forceGetMetas),
 		i,
 		vars,
 		subForm,
 		symbol,
 	}
-	fms.MappableString = &qua
-
-	return qua
 }
 
 func (q quantifier) GetIndex() int {
@@ -88,33 +81,17 @@ func (q quantifier) GetMetas() Lib.Set[Meta] {
 }
 
 func (q quantifier) ToString() string {
-	return q.MappedString.ToString()
-}
-
-func (q quantifier) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return " ", ""
-}
-
-var varSeparator = " "
-
-func ChangeVarSeparator(sep string) string {
-	old := varSeparator
-	varSeparator = sep
-	return old
-}
-
-func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	varStrings := []string{}
-
-	str := mapping[QuantVarOpen]
-	str += ListToMappedString(q.GetVarList().GetSlice(), varSeparator, "", mapping, false)
-	varStrings = append(varStrings, str+mapping[QuantVarClose])
-
-	return "(" + mapping[q.symbol] + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
-}
-
-func (q quantifier) GetChildrenForMappedString() []MappableString {
-	return LsToMappableStringSlice(q.GetChildFormulas())
+	return fmt.Sprintf(
+		"%s %s%s%s",
+		printer.StrConn(q.symbol),
+		printer.SurroundQuantified(
+			Lib.ListMap(q.varList, func(t TypedVar) Lib.Pair[string, Ty] {
+				return Lib.MkPair(t.name, t.ty)
+			}).ToString(printer.StrTyVar, printer.StrConn(SepTyVars), ""),
+		),
+		printer.StrConn(SepVarsForm),
+		printer.Str(q.subForm.ToString()),
+	)
 }
 
 func (q quantifier) GetChildFormulas() Lib.List[Form] {
