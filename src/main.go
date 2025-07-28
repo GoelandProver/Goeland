@@ -198,9 +198,10 @@ func initEverything() {
 	Glob.InitLogs()
 	// Always init debuggers before options
 	initDebuggers()
+	// Always init AST before options (for printers)
+	AST.Init()
 	initOpts()
 	runtime.GOMAXPROCS(Glob.GetCoreLimit())
-	AST.Init()
 	Typing.Init()
 }
 

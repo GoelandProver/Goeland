@@ -150,7 +150,7 @@ func (epml EqualityProblemMultiList) GetMetasToTPTPString() string {
 	if metas.Cardinal() > 0 {
 		result = "? ["
 		for _, meta := range metas.Elements().GetSlice() {
-			result += meta.ToMappedString(AST.DefaultMapString, false) + ", "
+			result += meta.ToString() + ", "
 		}
 		result = result[:len(result)-2] + "] : "
 	}

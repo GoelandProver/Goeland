@@ -33,9 +33,7 @@ package lambdapi
 
 import (
 	"fmt"
-	"strings"
 
-	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 )
 
@@ -46,9 +44,9 @@ func getIncreasedCounter() int {
 	return varCounter - 1
 }
 
-var context Glob.Map[AST.MappableString, Glob.String] = *Glob.NewMap[AST.MappableString, Glob.String]()
+var context Glob.Map[Glob.Basic, Glob.String] = *Glob.NewMap[Glob.Basic, Glob.String]()
 
-func addToContext(key AST.MappableString) string {
+func addToContext(key Glob.Basic) string {
 	if _, ok := context.GetExists(key); !ok {
 		context.Set(key, Glob.String(fmt.Sprintf("v%v", getIncreasedCounter())))
 	}
@@ -56,40 +54,40 @@ func addToContext(key AST.MappableString) string {
 	return string(context.Get(key))
 }
 
-func getFromContext(key AST.MappableString) string {
+func getFromContext(key Glob.Basic) string {
 	return string(context.Get(key))
 }
 
-func toLambdaString(element AST.MappableString, str string) string {
+func toLambdaString(element Glob.Basic, str string) string {
 	return fmt.Sprintf("λ (%s : ϵ (%s))", addToContext(element), str)
 }
 
-func toLambdaIntroString(element AST.MappableString, typeStr string) string {
+func toLambdaIntroString(element Glob.Basic, typeStr string) string {
 	return fmt.Sprintf("λ (%s : τ (%s))", addToContext(element), mapDefault(typeStr))
 }
 
-func toCorrectString(element AST.MappableString) string {
-	isNotSkolem := len(element.ToString()) <= 5 || element.ToString()[:6] != "skolem"
-	element = decorateForm(element)
-	surround := element.ToMappedStringSurround(lambdaPiMapConnectors, false)
-	separator, emptyValue := element.ToMappedStringChild(lambdaPiMapConnectors, false)
-	children := ""
-	if isNotSkolem {
-		children = ListToMappedString(element.GetChildrenForMappedString(), separator, emptyValue)
-	}
-	return fmt.Sprintf(surround, children)
-}
+// func toCorrectString(element AST.MappableString) string {
+// 	isNotSkolem := len(element.ToString()) <= 5 || element.ToString()[:6] != "skolem"
+// 	element = decorateForm(element)
+// 	surround := element.ToMappedStringSurround(lambdaPiMapConnectors, false)
+// 	separator, emptyValue := element.ToMappedStringChild(lambdaPiMapConnectors, false)
+// 	children := ""
+// 	if isNotSkolem {
+// 		children = ListToMappedString(element.GetChildrenForMappedString(), separator, emptyValue)
+// 	}
+// 	return fmt.Sprintf(surround, children)
+// }
 
-func ListToMappedString[T AST.MappableString](children []T, separator, emptyValue string) string {
-	strArr := []string{}
+// func ListToMappedString[T AST.MappableString](children []T, separator, emptyValue string) string {
+// 	strArr := []string{}
 
-	for _, element := range children {
-		strArr = append(strArr, toCorrectString(element))
-	}
+// 	for _, element := range children {
+// 		strArr = append(strArr, toCorrectString(element))
+// 	}
 
-	if len(strArr) == 0 && emptyValue != "" {
-		strArr = append(strArr, emptyValue)
-	}
+// 	if len(strArr) == 0 && emptyValue != "" {
+// 		strArr = append(strArr, emptyValue)
+// 	}
 
-	return strings.Join(strArr, separator)
-}
+// 	return strings.Join(strArr, separator)
+// }
