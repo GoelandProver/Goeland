@@ -106,7 +106,7 @@ func initialContext() Context {
 	mkDefined("$remainder_e", 2, Lib.MkSome(Lib.MkListV(tInt, tRat, tReal)), binPoly(tNumber))
 	mkDefined("$remainder_t", 2, Lib.MkSome(Lib.MkListV(tInt, tRat, tReal)), binPoly(tNumber))
 	mkDefined("$remainder_f", 2, Lib.MkSome(Lib.MkListV(tInt, tRat, tReal)), binPoly(tNumber))
-	mkDefined("$quotient", 2, Lib.MkSome(Lib.MkListV(tRat, tReal)), Parser.MkTypeAll(
+	mkDefined("$quotient", 2, Lib.MkSome(Lib.MkListV(tInt, tRat, tReal)), Parser.MkTypeAll(
 		[]Lib.Pair[string, Parser.PAtomicType]{
 			Lib.MkPair("number", tType.(Parser.PAtomicType)),
 			Lib.MkPair("rat_or_real", tType.(Parser.PAtomicType)),
