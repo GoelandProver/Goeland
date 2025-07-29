@@ -62,7 +62,7 @@ type Skolemization interface {
  */
 func genFreshSymbol(existingSymbols *Lib.Set[AST.Id], x AST.TypedVar) AST.Id {
 	symbol := AST.MakerNewId(
-		fmt.Sprintf("skolem@%v", x.GetName()),
+		fmt.Sprintf("skolem@%v@%d", x.GetName(), existingSymbols.Cardinal()),
 	)
 	*existingSymbols = existingSymbols.Add(symbol)
 
