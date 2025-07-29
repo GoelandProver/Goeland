@@ -229,7 +229,7 @@ func (TyFunc) isTy() {}
 func (f TyFunc) ToString() string {
 	return fmt.Sprintf("%s %s %s",
 		printer.Str(printer.SurroundChild(f.in.ToString())),
-		printer.StrConn(ConnImp),
+		printer.StrConn(ConnMap),
 		printer.Str(printer.SurroundChild(f.out.ToString())),
 	)
 }
@@ -488,4 +488,23 @@ func TermToTy(trm Term) Ty {
 		fmt.Sprintf("Trying to convert the non-atomic (or bound var) term %s to a type", trm.ToString()),
 	)
 	return nil
+}
+
+func mkDefaultFunctionalType(number_of_arguments int, out_type Ty) Ty {
+	if number_of_arguments == 0 {
+		return out_type
+	}
+	tys := Lib.MkList[Ty](number_of_arguments)
+	for i := 0; i < number_of_arguments; i++ {
+		tys.Upd(i, TIndividual())
+	}
+	return MkTyFunc(MkTyProd(tys), out_type)
+}
+
+func MkDefaultPredType(number_of_arguments int) Ty {
+	return mkDefaultFunctionalType(number_of_arguments, TProp())
+}
+
+func MkDefaultFunctionType(number_of_arguments int) Ty {
+	return mkDefaultFunctionalType(number_of_arguments, TIndividual())
 }
