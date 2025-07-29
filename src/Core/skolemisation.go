@@ -32,6 +32,7 @@
 package Core
 
 import (
+	"fmt"
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core/Sko"
 	"github.com/GoelandProver/Goeland/Glob"
@@ -128,6 +129,7 @@ func realSkolemize(
 
 	if AST.IsTType(x.GetTy()) {
 		id := AST.MakerId("skoTy")
+		id = AST.MakerId(fmt.Sprintf("skoTy@%d", id.GetIndex()))
 		res = deltaForm.SubstTy(x.ToTyBoundVar(), AST.MkTyConst(id.ToString()))
 	} else {
 		selectedSkolemization, res = selectedSkolemization.Skolemize(
