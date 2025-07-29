@@ -37,6 +37,9 @@
 package rocq
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -51,22 +54,76 @@ var RocqOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeRocqOutpu
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
 
-// Section: init
-// Functions: MakeRocqOutput
-// Main functions of the rocq module.
-// TODO:
-//	* Write the context for TFF problems
-
 func MakeRocqOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
 		Glob.PrintError("Rocq", "Nothing to output")
 		return ""
 	}
 
-	// FIXME: set the AST printer to (to be defined soon) CoqPrinter
+	// Setup Rocq printer
+	connectives := RocqPrinterConnectives()
+	printer := AST.Printer{PrinterAction: RocqPrinterAction(), PrinterConnective: &connectives}
+	AST.SetPrinter(printer)
 
 	// Transform tableaux's proof in GS3 proof
 	return MakeRocqProof(gs3.MakeGS3Proof(prf), meta)
+}
+
+func RocqPrinterConnectives() AST.PrinterConnective {
+	return AST.MkPrinterConnective(
+		"RocqPrinterConnective",
+		map[AST.Connective]string{
+			AST.ConnAll: "forall",
+			AST.ConnEx:  "exists",
+			AST.ConnAnd: " /\\ ",
+			AST.ConnOr:  " \\/ ",
+			AST.ConnImp: "->",
+			AST.ConnEqu: "<->",
+			AST.ConnTop: "True",
+			AST.ConnBot: "False",
+
+			AST.ConnPi:  "forall",
+			AST.ConnMap: "->",
+
+			AST.SepVarsForm:   ", ",
+			AST.SepTyArgs:     ", ",
+			AST.SepArgsTyArgs: ", ",
+			AST.SepTyVars:     " ",
+			AST.SepVarTy:      "",
+
+			AST.SurQuantStart: "",
+			AST.SurQuantEnd:   "",
+		},
+	)
+}
+
+func RocqPrinterAction() AST.PrinterAction {
+	connectives := RocqPrinterConnectives()
+
+	sanitize_type := func(ty_str string) string {
+		replace := map[string]string{
+			"$i":     "goeland_U",
+			"$o":     "Prop",
+			"$tType": "Type",
+			// FIXME: define a replacement for every defined stuff
+		}
+		for k, v := range replace {
+			ty_str = strings.ReplaceAll(ty_str, k, v)
+		}
+		return ty_str
+	}
+	rocq_action := AST.MkPrinterAction(
+		AST.PrinterIdentity,
+		func(i AST.Id) string { return i.GetName() },
+		AST.PrinterIdentity2[int],
+		func(metaName string, index int) string { return fmt.Sprintf("%s_%d", metaName, index) },
+		sanitize_type,
+		func(typed_var Lib.Pair[string, AST.Ty]) string {
+			return fmt.Sprintf("(%s : %s)", typed_var.Fst, sanitize_type(typed_var.Snd.ToString()))
+		},
+	)
+	rocq_action = rocq_action.Compose(AST.SanitizerAction(connectives, []string{"@"}))
+	return rocq_action.Compose(AST.RemoveSuperfluousParenthesesAction(connectives))
 }
 
 var MakeRocqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {

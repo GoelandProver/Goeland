@@ -108,11 +108,16 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], constantsCre
 	case Lib.Some[int]:
 		actualTarget = t.Val
 	case Lib.None[int]:
-		Glob.Anomaly("rocq", fmt.Sprintf(
-			"Index of %s not found in %s",
-			proof.GetTargetForm().ToString(),
-			Lib.ListToString(hypotheses, ", ", "[]"),
-		))
+		// If the target formula is an equality, it _does not_ target any formula of the context,
+		// it simply tells us to close by congruence. Hence, we don't raise an anomaly if the
+		// target form is an equality.
+		if !isPredEqual(proof.GetTargetForm()) {
+			Glob.Anomaly("rocq", fmt.Sprintf(
+				"Index of %s not found in { %s }",
+				proof.GetTargetForm().ToString(),
+				Lib.ListToString(hypotheses, " ;; ", ""),
+			))
+		}
 	}
 
 	switch proof.Rule() {
@@ -248,7 +253,10 @@ func processMainFormula(form AST.Form) (Lib.List[AST.Form], AST.Form) {
 
 // Prints the theorem's name & properly formats the first formula.
 func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
-	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(Glob.GetProblemName(), ".", "_"), "=", "_"), "+", "_")
+	problemName := Glob.GetProblemName()
+	for _, s := range []string{".", "=", "+", "-"} {
+		problemName = strings.ReplaceAll(problemName, s, "_")
+	}
 	axiomsWithConj := Lib.ListCpy(axioms)
 	axiomsWithConj.Append(AST.MakerNot(AST.MakerNot(conjecture)))
 	formattedProblem := makeImpChain(axiomsWithConj)
