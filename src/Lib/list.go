@@ -88,18 +88,27 @@ func (l List[T]) At(i int) T {
 	return l.values[i]
 }
 
-func ListEquals[T Comparable](ls0, ls1 List[T]) bool {
+func (l List[T]) Slice(st, ed int) List[T] {
+	return List[T]{values: l.values[st:ed]}
+}
+
+func (l List[T]) Equals(cmp Func2[T, T, bool], ls0, ls1 List[T]) bool {
 	if ls0.Len() != ls1.Len() {
 		return false
 	}
 
 	for i := range ls0.values {
-		if !ls0.At(i).Equals(ls1.At(i)) {
+		if !cmp(ls0.At(i), ls1.At(i)) {
 			return false
 		}
 	}
 
 	return true
+}
+
+func ListEquals[T Comparable](ls0, ls1 List[T]) bool {
+	cmp := func(x, y T) bool { return x.Equals(y) }
+	return ls0.Equals(cmp, ls0, ls1)
 }
 
 func (l List[T]) ToString(
@@ -182,6 +191,49 @@ func (l List[T]) Find(pred Func[T, bool], def T) (T, bool) {
 
 func (l List[T]) Empty() bool {
 	return l.Len() == 0
+}
+
+func (l List[T]) IndexOf(x T, cmp Func2[T, T, bool]) Option[int] {
+	for i, el := range l.values {
+		if cmp(x, el) {
+			return MkSome(i)
+		}
+	}
+	return MkNone[int]()
+}
+
+func ListIndexOf[T Comparable](x T, l List[T]) Option[int] {
+	cmp := func(x, y T) bool { return x.Equals(y) }
+	return l.IndexOf(x, cmp)
+}
+
+func (l List[T]) RemoveAt(index int) List[T] {
+	new_list := NewList[T]()
+	for i, el := range l.values {
+		if i != index {
+			new_list.Append(el)
+		}
+	}
+	return new_list
+}
+
+func (l List[T]) Any(pred Func[T, bool]) bool {
+	for _, el := range l.values {
+		if pred(el) {
+			return true
+		}
+	}
+	return false
+}
+
+func (l List[T]) Filter(pred Func[T, bool]) List[T] {
+	res := NewList[T]()
+	for _, el := range l.values {
+		if pred(el) {
+			res.Append(el)
+		}
+	}
+	return res
 }
 
 func ToStrictlyOrderedList[T StrictlyOrdered](l List[T]) StrictlyOrderedList[T] {

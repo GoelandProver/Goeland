@@ -30,38 +30,78 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-package Typing
-
 /**
- * This file defines the WF rules.
- **/
+* This file implements an interface for bound variables.
+**/
 
-/* WF1 rule first empties the variables, and then the types. */
-func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	root.appliedRule = "WF_2"
+package AST
 
-	// Try to empty vars first
-	if len(state.localContext.vars) > 0 {
-		// Launch child on the type of the first var
-		var_, newLocalContext := state.localContext.popVar()
-		child := []Sequent{
-			{
-				localContext:  newLocalContext,
-				globalContext: state.globalContext,
-				consequence:   Consequence{a: var_.GetTypeApp()},
-			},
-		}
-		return launchChildren(child, root, fatherChan)
+import (
+	"github.com/GoelandProver/Goeland/Lib"
+)
+
+type TypedVar struct {
+	name  string
+	index int
+	ty    Ty
+}
+
+func (v TypedVar) Copy() TypedVar {
+	return TypedVar{v.name, v.index, v.ty.Copy()}
+}
+
+func (v TypedVar) Equals(oth any) bool {
+	if ov, ok := oth.(TypedVar); ok {
+		return v.name == ov.name && v.index == ov.index &&
+			v.ty.Equals(ov.ty)
 	}
+	return false
+}
 
-	// Then, if vars is not empty, empty the types
-	_, newLocalContext := state.localContext.popTypeVar()
-	child := []Sequent{
-		{
-			localContext:  newLocalContext,
-			globalContext: state.globalContext,
-			consequence:   Consequence{a: metaType},
-		},
+func (v TypedVar) ToString() string {
+	return printer.StrTyVar(Lib.MkPair(v.name, v.ty))
+}
+
+func (v TypedVar) GetName() string {
+	return v.name
+}
+
+func (v TypedVar) GetIndex() int {
+	return v.index
+}
+
+func (v TypedVar) GetTy() Ty {
+	return v.ty
+}
+
+func (v TypedVar) ToBoundVar() Var {
+	return MakeVar(v.index, v.name)
+}
+
+func (v TypedVar) ToTyBoundVar() TyBound {
+	return MkTyBV(v.name, v.index).(TyBound)
+}
+
+func (v TypedVar) SubstTy(old TyGenVar, new Ty) TypedVar {
+	return TypedVar{v.name, v.index, v.ty.SubstTy(old, new)}
+}
+
+func MkTypedVar(name string, index int, ty Ty) TypedVar {
+	return TypedVar{name, index, ty}
+}
+
+func MakerTypedVar(name string, ty Ty) TypedVar {
+	lock_term.Lock()
+	i, ok := idVar[name]
+	lock_term.Unlock()
+	if ok {
+		return MkTypedVar(name, i, ty)
+	} else {
+		lock_term.Lock()
+		idVar[name] = cpt_term
+		vr := MkTypedVar(name, cpt_term, ty)
+		cpt_term += 1
+		lock_term.Unlock()
+		return vr
 	}
-	return launchChildren(child, root, fatherChan)
 }

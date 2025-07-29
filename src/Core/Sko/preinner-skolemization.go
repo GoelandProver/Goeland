@@ -49,20 +49,20 @@ import (
 type PreInnerSkolemization struct {
 	existingSymbols Lib.Set[AST.Id]
 	linkedSymbols   Lib.List[Glob.Pair[AST.Form, AST.Id]]
-	mu              sync.Mutex
+	mu              *sync.Mutex
 }
 
 func MkPreInnerSkolemization() PreInnerSkolemization {
 	return PreInnerSkolemization{
 		existingSymbols: Lib.EmptySet[AST.Id](),
 		linkedSymbols:   Lib.NewList[Glob.Pair[AST.Form, AST.Id]](),
-		mu:              sync.Mutex{},
+		mu:              &sync.Mutex{},
 	}
 }
 
 func (sko PreInnerSkolemization) Skolemize(
 	delta, form AST.Form,
-	x AST.Var,
+	x AST.TypedVar,
 	_ Lib.Set[AST.Meta],
 ) (Skolemization, AST.Form) {
 	realDelta := alphaConvert(delta, 0, make(map[int]AST.Var))
@@ -75,7 +75,7 @@ func (sko PreInnerSkolemization) Skolemize(
 	); ok {
 		symbol = val.Snd
 	} else {
-		symbol = genFreshSymbol(&sko.existingSymbols, sko.mu, x)
+		symbol = genFreshSymbol(&sko.existingSymbols, x)
 		sko.linkedSymbols.Append(Glob.MakePair(realDelta, symbol))
 	}
 	sko.mu.Unlock()
@@ -84,13 +84,12 @@ func (sko PreInnerSkolemization) Skolemize(
 
 	skolemFunc := AST.MakerFun(
 		symbol,
+		Lib.NewList[AST.Ty](),
 		Lib.ListMap(internalMetas, Glob.To[AST.Term]),
-		[]AST.TypeApp{},
-		mkSkoFuncType(internalMetas, x.GetTypeApp()),
 	)
 
 	skolemizedForm, _ := form.ReplaceTermByTerm(
-		Glob.To[AST.Term](x),
+		x.ToBoundVar(),
 		Glob.To[AST.Term](skolemFunc),
 	)
 
@@ -117,9 +116,8 @@ func alphaConvert(
 		return AST.MakePred(
 			f.GetIndex(),
 			f.GetID(),
+			f.GetTyArgs(),
 			mappedTerms,
-			f.GetTypeVars(),
-			f.GetType(),
 		)
 	case AST.Not:
 		return AST.MakeNot(
@@ -141,9 +139,9 @@ func alphaConvert(
 	case AST.And:
 		return AST.MakeAnd(
 			f.GetIndex(),
-			AST.NewFormList(
+			Lib.MkListV(
 				Glob.MapTo(
-					f.FormList.Slice(),
+					f.GetChildFormulas().GetSlice(),
 					func(_ int, f AST.Form) AST.Form {
 						return alphaConvert(f, k, substitution)
 					})...),
@@ -151,8 +149,8 @@ func alphaConvert(
 	case AST.Or:
 		return AST.MakeOr(
 			f.GetIndex(),
-			AST.NewFormList(Glob.MapTo(
-				f.FormList.Slice(),
+			Lib.MkListV(Glob.MapTo(
+				f.GetChildFormulas().GetSlice(),
 				func(_ int, f AST.Form) AST.Form {
 					return alphaConvert(f, k, substitution)
 				})...),
@@ -164,21 +162,25 @@ func alphaConvert(
 		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
 		return AST.MakeEx(f.GetIndex(), vl, alphaConvert(f.GetForm(), k, substitution))
 	}
+	Glob.Anomaly(
+		"preinner",
+		fmt.Sprintf("On alpha-conversion of %s: form does not correspond to any known ones", form.ToString()),
+	)
 	return form
 }
 
 func makeConvertedVarList(
 	k int,
 	substitution map[int]AST.Var,
-	vl []AST.Var,
-) (int, map[int]AST.Var, []AST.Var) {
-	newVarList := []AST.Var{}
-	for i, v := range vl {
-		nv := AST.MakeVar(k+i, fresh(k+i), v.GetTypeApp())
-		newVarList = append(newVarList, nv)
-		substitution[v.GetIndex()] = nv
+	vl Lib.List[AST.TypedVar],
+) (int, map[int]AST.Var, Lib.List[AST.TypedVar]) {
+	newVarList := Lib.MkList[AST.TypedVar](vl.Len())
+	for i, v := range vl.GetSlice() {
+		nv := AST.MkTypedVar(fresh(k+i), k+i, v.GetTy())
+		newVarList.Upd(i, nv)
+		substitution[v.GetIndex()] = nv.ToBoundVar()
 	}
-	return k + len(vl), substitution, newVarList
+	return k + vl.Len(), substitution, newVarList
 }
 
 func alphaConvertTerm(t AST.Term, substitution map[int]AST.Var) AST.Term {
@@ -196,9 +198,8 @@ func alphaConvertTerm(t AST.Term, substitution map[int]AST.Var) AST.Term {
 			})
 		return AST.MakerFun(
 			nt.GetID(),
+			nt.GetTyArgs(),
 			mappedTerms,
-			nt.GetTypeVars(),
-			nt.GetTypeHint(),
 		)
 	}
 	return t

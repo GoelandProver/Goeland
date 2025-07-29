@@ -50,19 +50,19 @@ func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 		root = AST.MakerAnd(registeredAxioms)
 	}
 
-	if AST.EmptyGlobalContext() {
-		resultString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+	// if AST.EmptyGlobalContext() {
+	resultString += strings.Join(getContextFromFormula(root), "\n") + "\n"
 
-		if metaList.Len() > 0 {
-			resultString += contextualizeMetas(metaList)
-		}
-	} else {
-		resultString += getContextAsString(root)
-
-		if metaList.Len() > 0 {
-			resultString += contextualizeMetas(metaList)
-		}
+	if metaList.Len() > 0 {
+		resultString += contextualizeMetas(metaList)
 	}
+	// } else {
+	// 	resultString += getContextAsString(root)
+
+	// 	if metaList.Len() > 0 {
+	// 		resultString += contextualizeMetas(metaList)
+	// 	}
+	// }
 	return resultString
 }
 
@@ -116,54 +116,55 @@ func getContextAsString(root AST.Form) string {
 }
 
 func GlobContextPairs() (types, arrows, others []Glob.Pair[string, string]) {
-	context := AST.GetGlobalContext()
-	for k, v := range context {
-		if k != "=" && k[0] != '$' {
-			switch typed := v[0].App.(type) {
-			case AST.TypeArrow:
-				primitives := typed.GetPrimitives()
-				typesStr := ""
+	return []Glob.Pair[string, string]{}, []Glob.Pair[string, string]{}, []Glob.Pair[string, string]{}
+	// context := AST.GetGlobalContext()
+	// for k, v := range context {
+	// 	if k != "=" && k[0] != '$' {
+	// 		switch typed := v[0].App.(type) {
+	// 		case AST.TypeArrow:
+	// 			primitives := typed.GetPrimitives()
+	// 			typesStr := ""
 
-				for i, prim := range primitives {
-					if i != len(primitives)-1 {
-						typesStr += "τ (" + prim.ToString() + ") → "
-					} else {
-						typesStr += prim.ToString()
-					}
-				}
-				arrows = append(arrows, Glob.MakePair(k, typesStr))
-			case AST.QuantifiedType:
-				primitives := typed.GetPrimitives()
-				typesStr := ""
-				contextualized := []string{}
+	// 			for i, prim := range primitives {
+	// 				if i != len(primitives)-1 {
+	// 					typesStr += "τ (" + prim.ToString() + ") → "
+	// 				} else {
+	// 					typesStr += prim.ToString()
+	// 				}
+	// 			}
+	// 			arrows = append(arrows, Glob.MakePair(k, typesStr))
+	// 		case AST.QuantifiedType:
+	// 			primitives := typed.GetPrimitives()
+	// 			typesStr := ""
+	// 			contextualized := []string{}
 
-				for i, prim := range primitives {
-					if i != len(primitives)-1 {
-						switch typedPrim := prim.(type) {
-						case AST.TypeVar:
-							str := AST.SimpleStringMappable(typedPrim.ToString())
-							symbol := addToContext(&str)
-							typesStr += "τ (" + symbol + ") → "
-							contextualized = append(contextualized, symbol)
-						case AST.TypeHint:
-							typesStr += "τ (" + prim.ToString() + ") → "
-						}
-					} else {
-						typesStr += prim.ToString()
-					}
-				}
-				arrows = append(arrows, Glob.MakePair(k, fmt.Sprintf("Π (%s : Type), %s", strings.Join(contextualized, " : Type), ("), typesStr)))
-			case AST.TypeHint:
-				if k == typed.ToString() {
-					types = append(types, Glob.MakePair(k, "Type"))
-				} else {
-					others = append(others, Glob.MakePair(k, fmt.Sprintf("τ (%s)", typed.ToString())))
-				}
-			}
-		}
-	}
+	// 			for i, prim := range primitives {
+	// 				if i != len(primitives)-1 {
+	// 					switch typedPrim := prim.(type) {
+	// 					case AST.TypeVar:
+	// 						str := AST.SimpleStringMappable(typedPrim.ToString())
+	// 						symbol := addToContext(&str)
+	// 						typesStr += "τ (" + symbol + ") → "
+	// 						contextualized = append(contextualized, symbol)
+	// 					case AST.TypeHint:
+	// 						typesStr += "τ (" + prim.ToString() + ") → "
+	// 					}
+	// 				} else {
+	// 					typesStr += prim.ToString()
+	// 				}
+	// 			}
+	// 			arrows = append(arrows, Glob.MakePair(k, fmt.Sprintf("Π (%s : Type), %s", strings.Join(contextualized, " : Type), ("), typesStr)))
+	// 		case AST.TypeHint:
+	// 			if k == typed.ToString() {
+	// 				types = append(types, Glob.MakePair(k, "Type"))
+	// 			} else {
+	// 				others = append(others, Glob.MakePair(k, fmt.Sprintf("τ (%s)", typed.ToString())))
+	// 			}
+	// 		}
+	// 	}
+	// }
 
-	return types, arrows, others
+	// return types, arrows, others
 }
 
 func contextPreamble() string {
@@ -178,14 +179,12 @@ func getContextFromFormula(root AST.Form) []string {
 		result = getContextFromFormula(nf.GetForm())
 	case AST.Ex:
 		result = getContextFromFormula(nf.GetForm())
-	case AST.AllType:
-		result = getContextFromFormula(nf.GetForm())
 	case AST.And:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
 	case AST.Or:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
 	case AST.Imp:
@@ -198,18 +197,7 @@ func getContextFromFormula(root AST.Form) []string {
 		result = append(result, getContextFromFormula(nf.GetForm())...)
 	case AST.Pred:
 		if !nf.GetID().Equals(AST.Id_eq) {
-			primitives := nf.GetType().GetPrimitives()
-			typesStr := ""
-
-			for i, prim := range primitives {
-				if i != len(primitives)-1 {
-					typesStr += "τ (" + prim.ToString() + ") → "
-				} else {
-					typesStr += prim.ToString()
-				}
-			}
-
-			result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", nf.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
+			result = append(result, mapDefault(fmt.Sprintf("symbol %s;", nf.GetID().ToString())))
 		}
 		for _, term := range nf.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -226,14 +214,12 @@ func getIdsFromFormula(root AST.Form) []Glob.Pair[string, string] {
 		result = getIdsFromFormula(nf.GetForm())
 	case AST.Ex:
 		result = getIdsFromFormula(nf.GetForm())
-	case AST.AllType:
-		result = getIdsFromFormula(nf.GetForm())
 	case AST.And:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, getIdsFromFormula(f)...)
 		}
 	case AST.Or:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, getIdsFromFormula(f)...)
 		}
 	case AST.Imp:
@@ -245,9 +231,9 @@ func getIdsFromFormula(root AST.Form) []Glob.Pair[string, string] {
 	case AST.Not:
 		result = getIdsFromFormula(nf.GetForm())
 	case AST.Pred:
-		result = append(result, Glob.MakePair(nf.GetID().GetName(), nf.GetID().ToMappedString(lambdaPiMapConnectors, false)))
+		result = append(result, Glob.MakePair(nf.GetID().GetName(), nf.GetID().ToString()))
 		for _, f := range nf.GetArgs().GetSlice() {
-			result = append(result, Glob.MakePair(f.GetName(), f.ToMappedString(lambdaPiMapConnectors, false)))
+			result = append(result, Glob.MakePair(f.GetName(), f.ToString()))
 		}
 	}
 	return result
@@ -257,18 +243,7 @@ func getContextFromTerm(trm AST.Term) []string {
 	result := []string{}
 
 	if fun, isFun := trm.(AST.Fun); isFun {
-
-		primitives := fun.GetTypeHint().GetPrimitives()
-		typesStr := ""
-		for i, prim := range primitives {
-			if i != len(primitives)-1 {
-				typesStr += "τ (" + prim.ToString() + ") → "
-			} else {
-				typesStr += "τ (" + prim.ToString() + ")"
-			}
-		}
-
-		result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
+		result = append(result, mapDefault(fmt.Sprintf("symbol %s;", fun.GetID().ToString())))
 		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
@@ -297,7 +272,7 @@ func clean(set, add []string) []string {
 func contextualizeMetas(metaList Lib.List[AST.Meta]) string {
 	result := []string{}
 	for _, meta := range metaList.GetSlice() {
-		result = append(result, meta.ToMappedString(lambdaPiMapConnectors, false))
+		result = append(result, meta.ToString())
 	}
 	return "symbol " + strings.Join(result, " ") + " : τ (ι);"
 }

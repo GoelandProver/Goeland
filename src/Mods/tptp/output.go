@@ -37,8 +37,6 @@
 package tptp
 
 import (
-	"strings"
-
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -61,7 +59,10 @@ func MakeTptpOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 		return ""
 	}
 
+	// FIXME: set AST's printer to be the one of TPTP
+
 	if Glob.IsSCTPTPOutput() {
+		// FIXME: the one of TSTP here
 		prefix_const = "Sko_"
 	}
 
@@ -70,33 +71,6 @@ func MakeTptpOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 }
 
 var MakeTptpProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
-	old := AST.ChangeVarSeparator(", ")
 	proofString := makeTptpProofFromGS3(proof)
-	AST.ChangeVarSeparator(old)
 	return proofString
-}
-
-// Replace defined symbols by TSTP's defined symbols.
-func mapDefault(str string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, " : $i", ""), " : $o", ""), " : , ", " : ")
-}
-func tptpMapConnectors() map[AST.FormulaType]string {
-	return map[AST.FormulaType]string{
-		AST.AndConn:        "&",
-		AST.OrConn:         "|",
-		AST.ImpConn:        "=>",
-		AST.EquConn:        "<=>",
-		AST.NotConn:        "~",
-		AST.TopType:        "$true",
-		AST.BotType:        "$false",
-		AST.AllQuant:       "!",
-		AST.ExQuant:        "?",
-		AST.AllTypeQuant:   "!",
-		AST.QuantVarOpen:   "[",
-		AST.QuantVarClose:  "] : ",
-		AST.QuantVarSep:    ",",
-		AST.PredEmpty:      "",
-		AST.PredTypeVarSep: ",",
-		AST.TypeVarType:    "Type",
-	}
 }
