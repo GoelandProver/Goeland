@@ -19,6 +19,15 @@ It supports [TPTP](http://tptp.org/) FOF and TFF files.
 
 ## Installation
 
+### Nix
+
+If you are a nix user, we provide a nix shell file that has all the necessary packages for
+compilation and development. In this case, simply run:
+```console
+$ nix-shell
+```
+and skip to the [Compilation](#compilation) header.
+
 ### Dependencies
 
 In order to compile, Goéland needs:
