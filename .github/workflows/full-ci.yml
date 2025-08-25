@@ -1,12 +1,7 @@
 name: Full CI
 
-permissions:
-  contents: write
-  issues: write
-  pull-requests: write
-
 on:
-  pull_request_target:
+  pull_request:
     types: [labeled]
 
 env:
@@ -15,16 +10,6 @@ env:
   GOMAXPROCS: '3'
 
 jobs:
-  RemoveLabel:
-    if: github.event.label.name == 'request:ci'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: mondeja/remove-labels-gh-action@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            request:ci
-
   UnitTests:
     if: github.event.label.name == 'request:ci'
     runs-on: ubuntu-latest
@@ -95,20 +80,3 @@ jobs:
       - run: go install golang.org/x/tools/cmd/goyacc@latest
       - run: cd src && make
       - run: cd devtools && make test-suite
-
-  RemoveNeedsCIIfSucceed:
-    needs:
-      - TestSuite
-      - UnitTests
-      - VanillaSoundness
-      - InnerSoundness
-      - PreInnerSoundness
-      - DMTSoundness
-    runs-on: ubuntu-latest
-    steps:
-      - uses: mondeja/remove-labels-gh-action@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          labels: |
-            needs:ci
-
