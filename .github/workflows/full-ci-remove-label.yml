@@ -1,0 +1,22 @@
+name: Full CI Remove Labels
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+on:
+  pull_request_target:
+    types: [labeled]
+
+jobs:
+  RemoveLabel:
+    if: github.event.label.name == 'request:ci'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mondeja/remove-labels-gh-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            request:ci
+			needs:ci
