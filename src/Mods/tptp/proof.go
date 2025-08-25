@@ -497,7 +497,12 @@ func processMainFormula(form AST.Form) (Lib.List[AST.Form], AST.Form) {
 	case AST.And:
 		last := nf.GetChildFormulas().Len() - 1
 		formList = Lib.MkListV(nf.GetChildFormulas().Get(0, last)...)
-		form = nf.GetChildFormulas().At(last).(AST.Not).GetForm()
+		switch f := nf.GetChildFormulas().At(last).(type) {
+			case AST.Not:
+				form = f.GetForm()
+			default: 
+				form = f
+		}
 	}
 	return formList, form
 }
