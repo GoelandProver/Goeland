@@ -498,7 +498,12 @@ func processMainFormula(form AST.Form) (*AST.FormList, AST.Form) {
 	case AST.And:
 		last := nf.FormList.Len() - 1
 		formList = AST.NewFormList(nf.FormList.GetElements(0, last)...)
-		form = nf.FormList.Get(last).(AST.Not).GetForm()
+		switch f := nf.FormList.Get(last).(type) {
+			case AST.Not:
+				form = f.GetForm()
+			default: 
+				form = f
+		}
 	}
 	return formList, form
 }
