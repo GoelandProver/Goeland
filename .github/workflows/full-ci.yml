@@ -14,7 +14,9 @@ jobs:
     if: github.event.label.name == 'request:ci'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-go@v3
         with:
           go-version: '>=1.22.0'
@@ -25,7 +27,9 @@ jobs:
     if: github.event.label.name == 'request:ci'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.goVersion }}
@@ -37,7 +41,9 @@ jobs:
     if: github.event.label.name == 'request:ci'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.goVersion }}
@@ -49,7 +55,9 @@ jobs:
     if: github.event.label.name == 'request:ci'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.goVersion }}
@@ -61,7 +69,9 @@ jobs:
     if: github.event.label.name == 'request:ci'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.goVersion }}
@@ -73,7 +83,9 @@ jobs:
     if: github.event.label.name == 'request:ci'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.goVersion }}
