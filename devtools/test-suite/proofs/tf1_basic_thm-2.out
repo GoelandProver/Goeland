@@ -1,0 +1,28 @@
+[0] ALPHA_AND : (! [A13]: =(maybe(A13) ; head(A13 ; nil(A13 ; )), none(A13 ; ))) & (! [A15, X17, XS19]: =(maybe(A15) ; head(A15 ; cons(A15 ; X17, XS19)), some(A15 ; X17))) & ~(! [A21, X23, Y25, Z27]: =(maybe(A21) ; head(A21 ; cons(A21 ; X23, cons(A21 ; Y25, cons(A21 ; Z27, nil(A21 ; ))))), some(A21 ; X23)))
+	-> [1] ! [A13]: =(maybe(A13) ; head(A13 ; nil(A13 ; )), none(A13 ; )), ! [A15, X17, XS19]: =(maybe(A15) ; head(A15 ; cons(A15 ; X17, XS19)), some(A15 ; X17)), ~(! [A21, X23, Y25, Z27]: =(maybe(A21) ; head(A21 ; cons(A21 ; X23, cons(A21 ; Y25, cons(A21 ; Z27, nil(A21 ; ))))), some(A21 ; X23)))
+
+[1] DELTA_NOT_FORALL : ~(! [A21, X23, Y25, Z27]: =(maybe(A21) ; head(A21 ; cons(A21 ; X23, cons(A21 ; Y25, cons(A21 ; Z27, nil(A21 ; ))))), some(A21 ; X23)))
+	-> [2] ~(! [X23, Y25, Z27]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; X23, cons(skoTy@29 ; Y25, cons(skoTy@29 ; Z27, nil(skoTy@29 ; ))))), some(skoTy@29 ; X23)))
+
+[2] DELTA_NOT_FORALL : ~(! [X23, Y25, Z27]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; X23, cons(skoTy@29 ; Y25, cons(skoTy@29 ; Z27, nil(skoTy@29 ; ))))), some(skoTy@29 ; X23)))
+	-> [3] ~(! [Y25, Z27]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; skolem@X23@0, cons(skoTy@29 ; Y25, cons(skoTy@29 ; Z27, nil(skoTy@29 ; ))))), some(skoTy@29 ; skolem@X23@0)))
+
+[3] DELTA_NOT_FORALL : ~(! [Y25, Z27]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; skolem@X23@0, cons(skoTy@29 ; Y25, cons(skoTy@29 ; Z27, nil(skoTy@29 ; ))))), some(skoTy@29 ; skolem@X23@0)))
+	-> [4] ~(! [Z27]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; skolem@X23@0, cons(skoTy@29 ; skolem@Y25@1, cons(skoTy@29 ; Z27, nil(skoTy@29 ; ))))), some(skoTy@29 ; skolem@X23@0)))
+
+[4] DELTA_NOT_FORALL : ~(! [Z27]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; skolem@X23@0, cons(skoTy@29 ; skolem@Y25@1, cons(skoTy@29 ; Z27, nil(skoTy@29 ; ))))), some(skoTy@29 ; skolem@X23@0)))
+	-> [5] ~=(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; skolem@X23@0, cons(skoTy@29 ; skolem@Y25@1, cons(skoTy@29 ; skolem@Z27@2, nil(skoTy@29 ; ))))), some(skoTy@29 ; skolem@X23@0))
+
+[5] GAMMA_FORALL : ! [A13]: =(maybe(A13) ; head(A13 ; nil(A13 ; )), none(A13 ; ))
+	-> [6] =(maybe(A13) ; head(A13 ; nil(A13 ; )), none(A13 ; ))
+
+[6] GAMMA_FORALL : ! [A15, X17, XS19]: =(maybe(A15) ; head(A15 ; cons(A15 ; X17, XS19)), some(A15 ; X17))
+	-> [7] ! [X17, XS19]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; X17, XS19)), some(skoTy@29 ; X17))
+
+[7] GAMMA_FORALL : ! [X17, XS19]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; X17, XS19)), some(skoTy@29 ; X17))
+	-> [8] ! [XS19]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; skolem@X23@0, XS19)), some(skoTy@29 ; skolem@X23@0))
+
+[8] GAMMA_FORALL : ! [XS19]: =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; skolem@X23@0, XS19)), some(skoTy@29 ; skolem@X23@0))
+	-> [9] =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; skolem@X23@0, cons(skoTy@29 ; skolem@Y25@1, cons(skoTy@29 ; skolem@Z27@2, nil(skoTy@29 ; ))))), some(skoTy@29 ; skolem@X23@0))
+
+[9] CLOSURE : =(maybe(skoTy@29) ; head(skoTy@29 ; cons(skoTy@29 ; skolem@X23@0, cons(skoTy@29 ; skolem@Y25@1, cons(skoTy@29 ; skolem@Z27@2, nil(skoTy@29 ; ))))), some(skoTy@29 ; skolem@X23@0))

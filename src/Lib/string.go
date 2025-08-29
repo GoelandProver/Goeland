@@ -37,24 +37,22 @@
 
 package Lib
 
-type String struct {
-	value string
-}
+type String string
 
 func (s String) Equals(oth any) bool {
 	if str, ok := oth.(String); ok {
-		return s.value == str.value
+		return s == str
 	}
 	return false
 }
 
 func (s String) Less(oth any) bool {
 	if str, ok := oth.(String); ok {
-		return s.value < str.value
+		return s < str
 	}
 	return false
 }
 
 func MkString(s string) String {
-	return String{s}
+	return String(s)
 }

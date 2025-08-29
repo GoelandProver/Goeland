@@ -49,7 +49,7 @@ const (
  * Instantiates once the formula fnt.
  */
 func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.Set[AST.Meta]) {
-	var meta AST.Meta
+	var meta Lib.Option[AST.Meta]
 	terms := fnt.GetTerms()
 
 	switch f := fnt.GetForm().(type) {
@@ -61,31 +61,47 @@ func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.Set[AST.Meta]) 
 		fnt, meta = RealInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
 	}
 
-	return fnt, Lib.Singleton(meta)
+	switch m := meta.(type) {
+	case Lib.Some[AST.Meta]:
+		return fnt, Lib.Singleton(m.Val)
+	case Lib.None[AST.Meta]:
+		return fnt, Lib.EmptySet[AST.Meta]()
+	}
+
+	Glob.Anomaly("instantiation", "returned bad option type")
+	return fnt, Lib.EmptySet[AST.Meta]()
 }
 
 func RealInstantiate(
-	varList []AST.Var,
+	varList Lib.List[AST.TypedVar],
 	index, status int,
 	subForm AST.Form,
 	terms Lib.List[AST.Term],
-) (FormAndTerms, AST.Meta) {
-	v := varList[0]
-	meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTypeHint().(AST.TypeApp))
-	subForm = subForm.SubstituteVarByMeta(v, meta)
+) (FormAndTerms, Lib.Option[AST.Meta]) {
+	v := varList.At(0)
+	var m Lib.Option[AST.Meta]
 
-	terms = terms.Copy(AST.Term.Copy)
-	terms.Add(
-		AST.TermEquals,
-		Glob.To[AST.Term](meta),
-	)
+	if AST.IsTType(v.GetTy()) {
+		meta := AST.MkTyMeta(strings.ToUpper(v.GetName()), index)
+		subForm = subForm.SubstTy(v.ToTyBoundVar(), meta)
+		m = Lib.MkNone[AST.Meta]()
+	} else {
+		meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTy())
+		subForm = subForm.SubstituteVarByMeta(v.ToBoundVar(), meta)
+		terms = terms.Copy(AST.Term.Copy)
+		terms.Add(
+			AST.TermEquals,
+			Glob.To[AST.Term](meta),
+		)
+		m = Lib.MkSome(meta)
+	}
 
-	if len(varList) > 1 {
+	if varList.Len() > 1 {
 		if status == is_exists {
-			ex := AST.MakerEx(varList[1:], subForm)
+			ex := AST.MakerEx(varList.Slice(1, varList.Len()), subForm)
 			subForm = AST.MakerNot(ex)
 		} else {
-			subForm = AST.MakerAll(varList[1:], subForm)
+			subForm = AST.MakerAll(varList.Slice(1, varList.Len()), subForm)
 		}
 	} else {
 		if status == is_exists {
@@ -93,5 +109,5 @@ func RealInstantiate(
 		}
 	}
 
-	return MakeFormAndTerm(subForm, terms), meta
+	return MakeFormAndTerm(subForm, terms), m
 }

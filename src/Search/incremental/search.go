@@ -42,7 +42,7 @@ func (is *incrementalSearch) SetApplyRules(func(uint64, Search.State, Search.Com
 }
 
 // ManageClosureRule implements Search.SearchAlgorithm.
-func (is *incrementalSearch) ManageClosureRule(uint64, *Search.State, Search.Communication, []Unif.Substitutions, Core.FormAndTerms, int, int) (bool, []Core.SubstAndForm) {
+func (is *incrementalSearch) ManageClosureRule(uint64, *Search.State, Search.Communication, Lib.List[Lib.List[Unif.MixedSubstitution]], Core.FormAndTerms, int, int) (bool, []Core.SubstAndForm) {
 	Glob.PrintError("NDS", "Incremental search not compatible with the equality plugin for now.")
 	return false, []Core.SubstAndForm{}
 }

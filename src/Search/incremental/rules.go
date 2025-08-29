@@ -203,7 +203,7 @@ func (aa *AlphaAnd) apply() []RuleList {
 
 	switch form := aa.GetForm().(type) {
 	case AST.And:
-		for _, subForm := range form.FormList.Slice() {
+		for _, subForm := range form.GetChildFormulas().GetSlice() {
 			resultRules = append(resultRules, makeCorrectRule(subForm, aa.GetTerms()))
 		}
 	}
@@ -242,7 +242,7 @@ func (ano *AlphaNotOr) apply() []RuleList {
 	case AST.Not:
 		switch subForm := form.GetForm().(type) {
 		case AST.Or:
-			for _, subForm := range subForm.FormList.Slice() {
+			for _, subForm := range subForm.GetChildFormulas().GetSlice() {
 				resultRules = append(resultRules, makeCorrectRule(AST.MakerNot(subForm), ano.GetTerms()))
 			}
 		}
@@ -283,7 +283,7 @@ func (bna *BetaNotAnd) apply() []RuleList {
 	case AST.Not:
 		switch subForm := form.GetForm().(type) {
 		case AST.And:
-			for _, andForm := range subForm.FormList.Slice() {
+			for _, andForm := range subForm.GetChildFormulas().GetSlice() {
 				resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(AST.MakerNot(andForm), bna.GetTerms())})
 			}
 		}
@@ -326,7 +326,7 @@ func (bo *BetaOr) apply() []RuleList {
 
 	switch form := bo.GetForm().(type) {
 	case AST.Or:
-		for _, subForm := range form.FormList.Slice() {
+		for _, subForm := range form.GetChildFormulas().GetSlice() {
 			resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(subForm, bo.GetTerms())})
 		}
 	}
@@ -412,13 +412,13 @@ func (gne *GammaNotExists) getGeneratedMetas() Lib.List[AST.Meta] {
 	return gne.generatedMetas
 }
 
-func (gne *GammaNotExists) getVarList() []AST.Var {
+func (gne *GammaNotExists) getVarList() Lib.List[AST.TypedVar] {
 	if not, isNot := gne.formula.(AST.Not); isNot {
 		if exists, isExists := not.GetForm().(AST.Ex); isExists {
 			return exists.GetVarList()
 		}
 	}
-	return []AST.Var{}
+	return Lib.NewList[AST.TypedVar]()
 }
 
 type GammaForall struct {
@@ -453,11 +453,11 @@ func (gf *GammaForall) getGeneratedMetas() Lib.List[AST.Meta] {
 	return gf.generatedMetas
 }
 
-func (gf *GammaForall) getVarList() []AST.Var {
+func (gf *GammaForall) getVarList() Lib.List[AST.TypedVar] {
 	if forall, isForall := gf.formula.(AST.All); isForall {
 		return forall.GetVarList()
 	}
-	return []AST.Var{}
+	return Lib.NewList[AST.TypedVar]()
 }
 
 type DeltaNotForall struct {
@@ -500,8 +500,8 @@ func (de *DeltaExists) apply() []RuleList {
 
 type RuleList []Rule
 
-func (rl *RuleList) GetFormList() *AST.FormList {
-	result := AST.NewFormList()
+func (rl *RuleList) GetFormList() Lib.List[AST.Form] {
+	result := Lib.NewList[AST.Form]()
 
 	for _, rule := range *rl {
 		result.Append(rule.GetForm())

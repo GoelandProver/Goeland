@@ -1,5 +1,5 @@
-% TODO: args -one_step and result NOT_VALID once typing is working again (this is satisfiable)
-% exit: 3
+% args: -one_step
+% result: NOT VALID
 
 tff(beverage_type,type,
     beverage: $tType ).

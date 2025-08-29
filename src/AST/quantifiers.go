@@ -38,50 +38,38 @@ package AST
 
 import (
 	"fmt"
-	"strings"
 
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type quantifier struct {
-	*MappedString
 	metas   Lib.Cache[Lib.Set[Meta], quantifier]
 	index   int
-	varList []Var
+	varList Lib.List[TypedVar]
 	subForm Form
-	symbol  FormulaType
+	symbol  Connective
 }
 
-func makeQuantifier(i int, vars []Var, subForm Form, metas Lib.Set[Meta], symbol FormulaType) quantifier {
-	fms := &MappedString{}
-	qua := quantifier{
-		fms,
+func makeQuantifier(i int, vars Lib.List[TypedVar], subForm Form, metas Lib.Set[Meta], symbol Connective) quantifier {
+	return quantifier{
 		Lib.MkCache(metas, quantifier.forceGetMetas),
 		i,
 		vars,
 		subForm,
 		symbol,
 	}
-	fms.MappableString = &qua
-
-	return qua
 }
 
 func (q quantifier) GetIndex() int {
 	return q.index
 }
 
-func (q quantifier) GetVarList() []Var {
-	return copyVarList(q.varList)
+func (q quantifier) GetVarList() Lib.List[TypedVar] {
+	return Lib.ListCpy(q.varList)
 }
 
 func (q quantifier) GetForm() Form {
 	return q.subForm.Copy()
-}
-
-func (q quantifier) GetType() TypeScheme {
-	return DefaultPropType(0)
 }
 
 func (q quantifier) forceGetMetas() Lib.Set[Meta] {
@@ -93,66 +81,26 @@ func (q quantifier) GetMetas() Lib.Set[Meta] {
 }
 
 func (q quantifier) ToString() string {
-	return q.MappedString.ToString()
+	return fmt.Sprintf(
+		"%s %s%s%s",
+		printer.StrConn(q.symbol),
+		printer.SurroundQuantified(
+			Lib.ListMap(q.varList, func(t TypedVar) Lib.Pair[string, Ty] {
+				return Lib.MkPair(t.name, t.ty)
+			}).ToString(printer.StrTyVar, printer.StrConn(SepTyVars), ""),
+		),
+		printer.StrConn(SepVarsForm),
+		printer.Str(q.subForm.ToString()),
+	)
 }
 
-func (q quantifier) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return " ", ""
-}
-
-var varSeparator = " "
-
-func ChangeVarSeparator(sep string) string {
-	old := varSeparator
-	varSeparator = sep
-	return old
-}
-
-func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	type VarType struct {
-		vars  []Var
-		type_ TypeApp
-	}
-
-	varsType := []VarType{}
-	for _, v := range q.GetVarList() {
-		found := false
-		for _, vt := range varsType {
-			if vt.type_.Equals(v.GetTypeApp()) {
-				vt.vars = append(vt.vars, v)
-				found = true
-			}
-		}
-		if !found {
-			varsType = append(varsType, VarType{[]Var{v}, v.GetTypeApp()})
-		}
-	}
-
-	varStrings := []string{}
-
-	for _, vt := range varsType {
-		str := mapping[QuantVarOpen]
-		str += ListToMappedString(q.GetVarList(), varSeparator, "", mapping, false)
-		if displayTypes || Glob.IsRocqOutput() {
-			str += " : " + vt.type_.ToString()
-		}
-		varStrings = append(varStrings, str+mapping[QuantVarClose])
-	}
-
-	return "(" + mapping[q.symbol] + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
-}
-
-func (q quantifier) GetChildrenForMappedString() []MappableString {
-	return q.GetChildFormulas().ToMappableStringSlice()
-}
-
-func (q quantifier) GetChildFormulas() *FormList {
-	return NewFormList(q.GetForm())
+func (q quantifier) GetChildFormulas() Lib.List[Form] {
+	return Lib.MkListV(q.GetForm())
 }
 
 func (q quantifier) Equals(other any) bool {
 	if typed, ok := other.(quantifier); ok {
-		return AreEqualsVarList(q.varList, typed.varList) && q.subForm.Equals(typed.subForm)
+		return Lib.ListEquals(q.varList, typed.varList) && q.subForm.Equals(typed.subForm)
 	}
 
 	return false
@@ -165,7 +113,7 @@ func (q quantifier) GetSubTerms() Lib.List[Term] {
 func (q quantifier) copy() quantifier {
 	nq := makeQuantifier(
 		q.GetIndex(),
-		copyVarList(q.GetVarList()),
+		Lib.ListCpy(q.varList),
 		q.GetForm(),
 		q.metas.Raw().Copy(),
 		q.symbol,
@@ -176,16 +124,6 @@ func (q quantifier) copy() quantifier {
 	}
 
 	return nq
-}
-
-func (q quantifier) replaceTypeByMeta(varList []TypeVar, index int) quantifier {
-	return makeQuantifier(
-		q.GetIndex(),
-		q.GetVarList(),
-		q.GetForm().ReplaceTypeByMeta(varList, index),
-		q.metas.Raw().Copy(),
-		q.symbol,
-	)
 }
 
 func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
@@ -199,20 +137,49 @@ func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 	), res
 }
 
-func (q quantifier) renameVariables() quantifier {
-	newVarList := []Var{}
-	newForm := q.GetForm()
+func (q quantifier) replaceTyVar(old TyGenVar, new Ty) quantifier {
+	f := q.GetForm().SubstTy(old, new)
+	return makeQuantifier(
+		q.GetIndex(),
+		Lib.ListMap(
+			q.GetVarList(),
+			func(p TypedVar) TypedVar { return p.SubstTy(old, new) },
+		),
+		f,
+		q.metas.Raw().Copy(),
+		q.symbol,
+	)
+}
 
-	for _, v := range q.GetVarList() {
+func (q quantifier) renameVariables() quantifier {
+	newVarList := Lib.NewList[TypedVar]()
+	newForm := q.GetForm().RenameVariables()
+
+	newTyBv := Lib.NewList[Lib.Pair[TyBound, Ty]]()
+	for _, v := range q.GetVarList().GetSlice() {
 		newVar := MakerNewVar(v.GetName())
-		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()), v.typeHint)
-		newVarList = append(newVarList, newVar)
-		newForm, _ = newForm.RenameVariables().ReplaceTermByTerm(v, newVar)
+		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()))
+		newVarList.Append(MkTypedVar(newVar.name, newVar.index, v.ty))
+		f, replaced := newForm.ReplaceTermByTerm(v.ToBoundVar(), newVar)
+		if !replaced {
+			newBv := MkTyBV(newVar.name, newVar.index)
+			f = f.SubstTy(v.ToTyBoundVar(), newBv)
+			newTyBv.Append(Lib.MkPair(v.ToTyBoundVar(), newBv))
+		}
+		newForm = f
 	}
 
 	return makeQuantifier(
 		q.GetIndex(),
-		newVarList,
+		Lib.ListMap(
+			newVarList,
+			func(p TypedVar) TypedVar {
+				for _, pair := range newTyBv.GetSlice() {
+					p = p.SubstTy(pair.Fst, pair.Snd)
+				}
+				return p
+			},
+		),
 		newForm,
 		q.metas.Raw().Copy(),
 		q.symbol,

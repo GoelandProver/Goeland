@@ -31,83 +31,56 @@
 **/
 
 /**
-* This file contains functions and types which describe the fomula_list's data
-* structure
-**/
+ * This file provides a generic interface to launch goroutines on functions,
+ * collect their result and compute a final value.
+ * The computation of the final value is done incrementally at the answer of each child,
+ * consequently, the function taking care of reconciliating the output of two children
+ * should be associative, commutative, and have a neutral.
+ **/
 
-package AST
+package Lib
 
 import (
-	"sort"
-
-	"github.com/GoelandProver/Goeland/Glob"
+	"fmt"
+	"reflect"
 )
 
-type FormList struct {
-	*Glob.List[Form]
+func GenericParallel[T any](
+	calls []func(chan T),
+	reconciliation func(T, T) T,
+	neutral T,
+) (T, error) {
+	channels := make([](chan T), len(calls))
+	for i, call := range calls {
+		call_chan := make(chan T)
+		channels[i] = call_chan
+		go call(call_chan)
+	}
+	return genericSelect(channels, reconciliation, neutral)
 }
 
-func NewFormList(slice ...Form) *FormList {
-	return &FormList{Glob.NewList(slice...)}
-}
-
-func (fl *FormList) Less(i, j int) bool {
-	return (fl.Get(i).ToString() < fl.Get(j).ToString())
-}
-
-func (fl *FormList) Copy() *FormList {
-	return &FormList{fl.List.Copy()}
-}
-
-func (lf *FormList) ToMappableStringSlice() []MappableString {
-	forms := []MappableString{}
-
-	for _, form := range lf.Slice() {
-		forms = append(forms, form.(MappableString))
+func genericSelect[T any](
+	channels [](chan T),
+	reconciliation func(T, T) T,
+	neutral T,
+) (T, error) {
+	remaining := len(channels)
+	res := neutral
+	cases := make([]reflect.SelectCase, len(channels))
+	for i, channel := range channels {
+		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(channel)}
 	}
 
-	return forms
-}
+	for remaining > 0 {
+		_, value, _ := reflect.Select(cases)
+		remaining--
 
-func (fl *FormList) Equals(other *FormList) bool {
-	if fl.Len() != other.Len() {
-		return false
-	}
-
-	flSorted := fl.Copy()
-	sort.Sort(flSorted)
-
-	otherSorted := other.Copy()
-	sort.Sort(otherSorted)
-
-	for i := range flSorted.Slice() {
-		if !flSorted.Get(i).Equals(otherSorted.Get(i)) {
-			return false
-		}
-	}
-
-	return true
-}
-
-// Removes all AND formulas: {(a & b), (b => c), (d & (e & f))} -> {(a), (b), (b => c), (d), (e), (f)}
-func (fl *FormList) Flatten() *FormList {
-	result := NewFormList()
-
-	for _, form := range fl.Slice() {
-		if typed, ok := form.(And); ok {
-			result.Append(typed.FormList.Flatten().Slice()...)
+		if v, ok := value.Interface().(T); ok {
+			res = reconciliation(res, v)
 		} else {
-			result.Append(form)
+			return neutral, fmt.Errorf("Error in Lib.Par: channel has not answered a value of the right type.")
 		}
 	}
 
-	return result
-}
-
-func (fl *FormList) ReplaceMetaByTerm(meta Meta, term Term) *FormList {
-	for i, f := range fl.Slice() {
-		fl.Set(i, f.ReplaceMetaByTerm(meta, term))
-	}
-
-	return fl
+	return res, nil
 }

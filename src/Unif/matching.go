@@ -54,10 +54,17 @@ func InitDebugger() {
 /*** Unify ***/
 
 /* Helper function to avoid using MakeMachine() outside of this file. */
-func (n Node) Unify(formula AST.Form) (bool, []MatchingSubstitutions) {
+func (n Node) Unify(formula AST.Form) (bool, []MixedSubstitutions) {
 	machine := makeMachine()
 	res := machine.unify(n, formula)
-	return !reflect.DeepEqual(machine.failure, res), res // return found, res
+	// As we have transformed type metas to terms, we get everything in a term substitution.
+	// But externally, we want to have a substitution of both (term) metas to terms and (type) metas to types.
+	// We use MixedSubstitution to properly manage things internally.
+	mixed_substs := []MixedSubstitutions{}
+	for _, subst := range res {
+		mixed_substs = append(mixed_substs, subst.toMixed())
+	}
+	return !reflect.DeepEqual(machine.failure, res), mixed_substs
 }
 
 /* Tries to find the substitutions needed to unify the formulae with the one described by the sequence of instructions. */
@@ -66,23 +73,19 @@ func (m *Machine) unify(node Node, formula AST.Form) []MatchingSubstitutions {
 	// The formula has to be a predicate.
 	switch formula_type := formula.(type) {
 	case AST.Pred:
-		terms := TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs())
-
 		// Transform the predicate to a function to make the tool work properly
 		m.terms = Lib.MkListV[AST.Term](AST.MakerFun(
 			formula_type.GetID(),
-			terms,
-			[]AST.TypeApp{},
-			formula_type.GetType(),
+			Lib.NewList[AST.Ty](),
+			getFunctionalArguments(formula_type.GetTyArgs(), formula_type.GetArgs()),
 		))
 		result = m.unifyAux(node)
 
 		if !reflect.DeepEqual(m.failure, result) {
 			filteredResult := []MatchingSubstitutions{}
-			// For each substitutions, remove the [0...MetaCount(formula_type.GetTypeVars())] ones to put it in another slice (the type slice)
 			for _, matchingSubst := range result {
-				actualSubsts := matchingSubst.GetSubst()[AST.CountMeta(formula_type.GetTypeVars()):]
-				filteredResult = append(filteredResult, MakeMatchingSubstitutions(matchingSubst.GetForm(), actualSubsts))
+				filteredResult = append(filteredResult,
+					MakeMatchingSubstitutions(matchingSubst.GetForm(), matchingSubst.GetSubst()))
 			}
 			result = filteredResult
 		}
@@ -173,7 +176,7 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 	matching := []MatchingSubstitutions{}
 
 	if node.isLeaf() {
-		for _, f := range node.formulae.Slice() {
+		for _, f := range node.formulas.GetSlice() {
 			if reflect.TypeOf(f) == reflect.TypeOf(AST.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(TermForm{}) {
 				// Rebuild final substitution between meta and subst
 				final_subst := computeSubstitutions(CopySubstPairList(m.subst), m.meta.Copy(), f.Copy())
@@ -257,7 +260,7 @@ func (m *Machine) end(instrTerm AST.Term) Status {
 func (m *Machine) right() Status {
 	if m.isUnlocked() {
 		m.q += 1
-		if m.q > m.terms.Len() {
+		if m.q >= m.terms.Len() {
 			return Status(ERROR)
 		}
 		m.topLevelCount += 1

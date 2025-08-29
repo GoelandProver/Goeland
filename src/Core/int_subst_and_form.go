@@ -39,6 +39,7 @@ package Core
 import (
 	"strconv"
 
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -80,12 +81,12 @@ func (s IntSubstAndForm) Copy() IntSubstAndForm {
 
 func (s IntSubstAndForm) ToString() string {
 	res := "{ " + strconv.Itoa(s.GetId_rewrite()) + " - "
-	if !s.GetSaf().GetSubst().IsEmpty() {
-		res += s.GetSaf().GetSubst().ToString()
+	if !s.GetSaf().GetSubst().Empty() {
+		res += Lib.ListToString(s.GetSaf().GetSubst(), ", ", "[]")
 	}
 	res += " - "
-	if !s.GetSaf().GetForm().IsEmpty() {
-		res += s.GetSaf().GetForm().ToString()
+	if !s.GetSaf().GetForm().Empty() {
+		res += Lib.ListToString(s.GetSaf().GetForm(), ", ", "[]")
 	}
 	res += " }"
 
@@ -127,8 +128,8 @@ func CopyIntSubstAndFormList(sl []IntSubstAndForm) []IntSubstAndForm {
 }
 
 /* Get a subst list from SubstAndForm lsit */
-func GetSubstListFromIntSubstAndFormList(l []IntSubstAndForm) []Unif.Substitutions {
-	res := []Unif.Substitutions{}
+func GetSubstListFromIntSubstAndFormList(l []IntSubstAndForm) []Lib.List[Unif.MixedSubstitution] {
+	res := []Lib.List[Unif.MixedSubstitution]{}
 	for _, saf := range l {
 		res = append(res, saf.GetSaf().GetSubst())
 	}

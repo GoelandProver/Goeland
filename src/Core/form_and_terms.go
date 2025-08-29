@@ -38,7 +38,6 @@ package Core
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -81,7 +80,7 @@ func (fat FormAndTerms) Equals(fat2 FormAndTerms) bool {
 }
 
 func (fat FormAndTerms) ToString() string {
-	return fat.GetForm().ToMappedString(AST.DefaultMapString, Glob.GetTypeProof())
+	return fat.GetForm().ToString()
 }
 
 func (fat FormAndTerms) SubstituteBy(

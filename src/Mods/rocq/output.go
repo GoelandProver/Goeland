@@ -53,51 +53,85 @@ var RocqOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeRocqOutpu
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
 
-// Section: init
-// Functions: MakeRocqOutput
-// Main functions of the rocq module.
-// TODO:
-//	* Write the context for TFF problems
-
 func MakeRocqOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
 		Glob.PrintError("Rocq", "Nothing to output")
 		return ""
 	}
 
+	// Setup Rocq printer
+	connectives := RocqPrinterConnectives()
+	printer := AST.Printer{PrinterAction: RocqPrinterAction(), PrinterConnective: &connectives}
+	AST.SetPrinter(printer)
+
 	// Transform tableaux's proof in GS3 proof
 	return MakeRocqProof(gs3.MakeGS3Proof(prf), meta)
+}
+
+func RocqPrinterConnectives() AST.PrinterConnective {
+	return AST.MkPrinterConnective(
+		"RocqPrinterConnective",
+		map[AST.Connective]string{
+			AST.ConnAll: "forall",
+			AST.ConnEx:  "exists",
+			AST.ConnAnd: " /\\ ",
+			AST.ConnOr:  " \\/ ",
+			AST.ConnImp: "->",
+			AST.ConnEqu: "<->",
+			AST.ConnTop: "True",
+			AST.ConnBot: "False",
+
+			AST.ConnPi:  "forall",
+			AST.ConnMap: "->",
+
+			AST.SepVarsForm:   ", ",
+			AST.SepTyArgs:     ", ",
+			AST.SepArgsTyArgs: ", ",
+			AST.SepTyVars:     ", ",
+			AST.SepVarTy:      "",
+
+			AST.SurQuantStart: "",
+			AST.SurQuantEnd:   "",
+		},
+	)
+}
+
+func RocqPrinterAction() AST.PrinterAction {
+	connectives := RocqPrinterConnectives()
+	coq_action := AST.MkPrinterAction(
+		AST.PrinterIdentity,
+		func(i AST.Id) string {
+			// FIXME: if we introduce any other forbidden char, add it in this list
+			forbidden_chars := []string{"@"}
+			name := i.GetName()
+			for _, char := range forbidden_chars {
+				name = strings.ReplaceAll(name, char, "_")
+			}
+			return name
+		},
+		AST.PrinterIdentity2[int],
+		AST.PrinterIdentity2[int],
+		func(ty_str string) string {
+			replace := map[string]string{
+				"$i":     "goeland_U",
+				"$o":     "Prop",
+				"$tType": "Type",
+				// FIXME: define a replacement for every defined stuff
+			}
+			for k, v := range replace {
+				ty_str = strings.ReplaceAll(ty_str, k, v)
+			}
+			return ty_str
+		},
+		func(p Lib.Pair[string, AST.Ty]) string { return p.Fst },
+	)
+	return AST.RemoveSuperfluousParenthesesAction(connectives).Compose(coq_action)
 }
 
 var MakeRocqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
 	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
 	proofString := makeRocqProofFromGS3(proof)
 	return contextString + "\n" + proofString
-}
-
-// Replace defined symbols by Rocq's defined symbols.
-func mapDefault(str string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(str, "$i", "goeland_U"), "$o", "Prop")
-}
-func rocqMapConnectors() map[AST.FormulaType]string {
-	return map[AST.FormulaType]string{
-		AST.AndConn:        "/\\",
-		AST.OrConn:         "\\/",
-		AST.ImpConn:        "->",
-		AST.EquConn:        "<->",
-		AST.NotConn:        "~",
-		AST.TopType:        "True",
-		AST.BotType:        "False",
-		AST.AllQuant:       "forall",
-		AST.ExQuant:        "exists",
-		AST.AllTypeQuant:   "forall",
-		AST.QuantVarOpen:   "(",
-		AST.QuantVarClose:  ")",
-		AST.QuantVarSep:    ",",
-		AST.PredEmpty:      "",
-		AST.PredTypeVarSep: ",",
-		AST.TypeVarType:    "Type",
-	}
 }
 
 // Context flag utility function

@@ -39,6 +39,7 @@ package gs3
 import (
 	"strings"
 
+	"fmt"
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
@@ -47,34 +48,34 @@ import (
 	"github.com/GoelandProver/Goeland/Search"
 )
 
-type dependencyMap []Glob.Pair[AST.Term, *AST.FormList]
+type dependencyMap []Glob.Pair[AST.Term, Lib.List[AST.Form]]
 
 func (d dependencyMap) Copy() dependencyMap {
-	oth := make([]Glob.Pair[AST.Term, *AST.FormList], 0)
+	oth := make([]Glob.Pair[AST.Term, Lib.List[AST.Form]], 0)
 	for _, v := range d {
 		if v.Fst != nil {
-			p := Glob.MakePair(v.Fst.Copy(), AST.NewFormList(v.Snd.Slice()...))
+			p := Glob.MakePair(v.Fst.Copy(), Lib.MkListV(v.Snd.GetSlice()...))
 			oth = append(oth, p)
 		}
 	}
 	return oth
 }
 
-func (d dependencyMap) Get(t AST.Term) (*AST.FormList, bool) {
+func (d dependencyMap) Get(t AST.Term) (Lib.List[AST.Form], bool) {
 	for _, v := range d {
 		if v.Fst != nil && v.Fst.Equals(t) {
 			return v.Snd, true
 		}
 	}
-	return AST.NewFormList(), false
+	return Lib.NewList[AST.Form](), false
 }
 
 func (d *dependencyMap) Add(t AST.Term, f ...AST.Form) {
 	found := false
-	formList := AST.NewFormList(f...)
+	formList := Lib.MkListV(f...)
 	for i, v := range *d {
 		if v.Fst != nil && t != nil && v.Fst.Equals(t) {
-			formList.Append(v.Snd.Slice()...)
+			formList.Append(v.Snd.GetSlice()...)
 			(*d)[i] = Glob.MakePair(t, formList)
 			found = true
 		}
@@ -85,7 +86,7 @@ func (d *dependencyMap) Add(t AST.Term, f ...AST.Form) {
 	}
 }
 
-func (d *dependencyMap) Set(t AST.Term, fl *AST.FormList) {
+func (d *dependencyMap) Set(t AST.Term, fl Lib.List[AST.Form]) {
 	for i, v := range *d {
 		if v.Fst != nil && v.Fst.Equals(t) {
 			(*d)[i] = Glob.MakePair(t, fl)
@@ -95,12 +96,18 @@ func (d *dependencyMap) Set(t AST.Term, fl *AST.FormList) {
 
 // Utilitary struct to build the proof. Keeps everything that's needed on a proofstep.
 type GS3Proof struct {
-	dependency   dependencyMap // Dependency graph for formulas
-	branchForms  *AST.FormList // The formulas generated at the current point in the proof.
+	dependency   dependencyMap      // Dependency graph for formulas
+	branchForms  Lib.List[AST.Form] // The formulas generated at the current point in the proof.
 	rulesApplied []Glob.Pair[Rule, Search.ProofStruct]
 	lastNode     *GS3Sequent
 	betaHisto    []Glob.Pair[int, int]
 	deltaHisto   []Glob.Pair[AST.Term, Glob.Pair[AST.Form, int]]
+}
+
+var debug func(Lib.Lazy[string])
+
+func InitDebugger() {
+	debug = Glob.CreateDebugger("GS3")
 }
 
 var MakeGS3Proof = func(proof []Search.ProofStruct) *GS3Sequent {
@@ -108,11 +115,11 @@ var MakeGS3Proof = func(proof []Search.ProofStruct) *GS3Sequent {
 		rulesApplied: make([]Glob.Pair[Rule, Search.ProofStruct], 0),
 		betaHisto:    make([]Glob.Pair[int, int], 0),
 		deltaHisto:   make([]Glob.Pair[AST.Term, Glob.Pair[AST.Form, int]], 0),
-		branchForms:  AST.NewFormList(),
-		dependency:   make([]Glob.Pair[AST.Term, *AST.FormList], 0),
+		branchForms:  Lib.NewList[AST.Form](),
+		dependency:   make([]Glob.Pair[AST.Term, Lib.List[AST.Form]], 0),
 	}
 	if Glob.IsLoaded("dmt") {
-		gs3Proof.branchForms.Append(dmt.GetRegisteredAxioms().Slice()...)
+		gs3Proof.branchForms.Append(dmt.GetRegisteredAxioms().GetSlice()...)
 		gs3Proof.branchForms.Append(proof[0].Formula.GetForm())
 	}
 	sequent := gs3Proof.makeProof(proof)
@@ -122,7 +129,7 @@ var MakeGS3Proof = func(proof []Search.ProofStruct) *GS3Sequent {
 func (gs GS3Proof) Copy() GS3Proof {
 	return GS3Proof{
 		dependency:   gs.dependency.Copy(),
-		branchForms:  AST.NewFormList(appcp(gs.branchForms.Slice())...),
+		branchForms:  Lib.MkListV(appcp(gs.branchForms.GetSlice())...),
 		lastNode:     nil,
 		rulesApplied: appcp(gs.rulesApplied),
 		betaHisto:    appcp(gs.betaHisto),
@@ -142,7 +149,7 @@ func (gs GS3Proof) makeProof(proof []Search.ProofStruct) *GS3Sequent {
 		return seq
 	}
 	subRoot := MakeNewSequent()
-	var resultFormulas []*AST.FormList
+	var resultFormulas []Lib.List[AST.Form]
 	if gs.branchForms.Len() == 0 {
 		gs.branchForms.Append(proof[0].Formula.GetForm())
 	}
@@ -156,7 +163,7 @@ func (gs GS3Proof) makeProof(proof []Search.ProofStruct) *GS3Sequent {
 	for i, child := range proof[len(proof)-1].GetChildren() {
 		childProof := GS3Proof{
 			dependency:   gs.dependency.Copy(),
-			branchForms:  AST.NewFormList(appcp(gs.branchForms.Slice(), resultFormulas[i].Slice()...)...),
+			branchForms:  Lib.MkListV(appcp(gs.branchForms.GetSlice(), resultFormulas[i].GetSlice()...)...),
 			lastNode:     nil,
 			rulesApplied: appcp(gs.rulesApplied),
 			betaHisto:    appcp(gs.betaHisto, Glob.MakePair(i, proof[len(proof)-1].GetNodeId())),
@@ -172,7 +179,7 @@ func (gs GS3Proof) makeProof(proof []Search.ProofStruct) *GS3Sequent {
 }
 
 // Returns a sequent and the result formulas.
-func (gs *GS3Proof) makeProofOneStep(proofStep Search.ProofStruct, parent *GS3Sequent) []*AST.FormList {
+func (gs *GS3Proof) makeProofOneStep(proofStep Search.ProofStruct, parent *GS3Sequent) []Lib.List[AST.Form] {
 	seq := MakeNewSequent()
 	seq.setHypotheses(gs.branchForms)
 	seq.nodeId = proofStep.Node_id
@@ -222,7 +229,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep Search.ProofStruct, parent *GS3Se
 
 	// If the length is superior, then it's a branching rule and it needs to be taken care of in makeProof.
 	if IsAlphaRule(rule) || IsGammaRule(rule) || IsDeltaRule(rule) || rule == REWRITE {
-		gs.branchForms.Append(forms[0].Slice()...)
+		gs.branchForms.Append(forms[0].GetSlice()...)
 		// If rule is rewrite: do not weaken the base form, as it is important to get when applying rules back.
 		// It may however induce bad weakenings.
 		// TODO: fix the bad weakenings in the sequent.
@@ -235,7 +242,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep Search.ProofStruct, parent *GS3Se
 
 func (gs *GS3Proof) manageGammaStep(proofStep Search.ProofStruct, rule Rule, seq *GS3Sequent) *GS3Sequent {
 	// Manage gamma: add all the gammas except the result formula to the thing
-	resultForm := proofStep.GetResultFormulas()[0].GetForms().Get(0)
+	resultForm := proofStep.GetResultFormulas()[0].GetForms().At(0)
 	originForm := proofStep.GetFormula().GetForm()
 	// TODO: what happens if the result form doesn't care of what it's instantiated with?
 	// JRO: Should be OKAY as "nil" is returned if I understand everything properly.
@@ -282,7 +289,7 @@ func getDepFromTerm(term AST.Term) Lib.List[AST.Term] {
 // TODO: factorise this function to merge some steps that are similar between the two cases.
 func (gs *GS3Proof) manageDeltaStep(proofStep Search.ProofStruct, rule Rule, parent *GS3Sequent) AST.Form {
 	originForm := proofStep.GetFormula().GetForm()
-	resultForm := proofStep.GetResultFormulas()[0].GetForms().Get(0)
+	resultForm := proofStep.GetResultFormulas()[0].GetForms().At(0)
 	termGenerated := manageDeltasSkolemisations(proofStep.GetFormula().GetForm(), resultForm)
 
 	if Glob.IsPreInnerSko() && !gs.termHasBeenIntroducedByBranch(termGenerated, proofStep.Node_id) {
@@ -351,15 +358,15 @@ func (gs *GS3Proof) manageDeltaStep(proofStep Search.ProofStruct, rule Rule, par
 	return resultForm
 }
 
-func (gs *GS3Proof) postTreatment(proofStep Search.ProofStruct, rule Rule) []*AST.FormList {
+func (gs *GS3Proof) postTreatment(proofStep Search.ProofStruct, rule Rule) []Lib.List[AST.Form] {
 	// Add the rule applied & the formula it has been applied on.
 	gs.rulesApplied = append(gs.rulesApplied, Glob.MakePair(rule, proofStep))
 
-	var forms []*AST.FormList
+	var forms []Lib.List[AST.Form]
 	for i, fs := range proofStep.GetResultFormulas() {
 		forms = append(forms, fs.GetForms())
 		if (rule == NOR || rule == NIMP || rule == AND || rule == EQU) && forms[i].Len() == 1 {
-			forms[i].Append(forms[i].Get(0).Copy())
+			forms[i].Append(forms[i].At(0).Copy())
 		}
 	}
 
@@ -380,17 +387,17 @@ func makeProofStructFrom(f, nf AST.Form, rule Rule) Search.ProofStruct {
 	return proofStruct
 }
 
-func (gs GS3Proof) getFormulasDependantFromTerm(term AST.Term) (*AST.FormList, bool) {
+func (gs GS3Proof) getFormulasDependantFromTerm(term AST.Term) (Lib.List[AST.Form], bool) {
 	fs, ok := gs.dependency.Get(term)
 	return fs, ok
 }
 
-func (gs GS3Proof) getRulesAppliedInOrder(term AST.Term, dependantForms *AST.FormList, deltaForm AST.Form) ([]Glob.Pair[Rule, Search.ProofStruct], *AST.FormList) {
+func (gs GS3Proof) getRulesAppliedInOrder(term AST.Term, dependantForms Lib.List[AST.Form], deltaForm AST.Form) ([]Glob.Pair[Rule, Search.ProofStruct], Lib.List[AST.Form]) {
 	offsprings := gs.getOffspringsOf(term)
 	rules := []Glob.Pair[Rule, Search.ProofStruct]{}
 	for _, rule := range gs.rulesApplied {
 		f := rule.Snd.GetFormula().GetForm()
-		if !f.Equals(deltaForm) && (offsprings.Contains(f) || dependantForms.Contains(f)) {
+		if !f.Equals(deltaForm) && (Lib.ListMem(f, offsprings) || Lib.ListMem(f, dependantForms)) {
 			rules = append(rules, rule)
 		}
 	}
@@ -398,9 +405,9 @@ func (gs GS3Proof) getRulesAppliedInOrder(term AST.Term, dependantForms *AST.For
 	return rules, offsprings
 }
 
-func (gs GS3Proof) getOffspringsOf(term AST.Term) *AST.FormList {
-	offsprings := AST.NewFormList()
-	for _, form := range gs.branchForms.Slice() {
+func (gs GS3Proof) getOffspringsOf(term AST.Term) Lib.List[AST.Form] {
+	offsprings := Lib.NewList[AST.Form]()
+	for _, form := range gs.branchForms.GetSlice() {
 		if form.GetSubTerms().Contains(term, AST.TermEquals) {
 			offsprings.Append(form)
 		}
@@ -408,8 +415,8 @@ func (gs GS3Proof) getOffspringsOf(term AST.Term) *AST.FormList {
 	return offsprings
 }
 
-func (gs *GS3Proof) weakenForms(forms *AST.FormList, parent *GS3Sequent) *GS3Sequent {
-	for i, form := range forms.Slice() {
+func (gs *GS3Proof) weakenForms(forms Lib.List[AST.Form], parent *GS3Sequent) *GS3Sequent {
+	for i, form := range forms.GetSlice() {
 		newSeq := gs.weakenForm(form)
 		if newSeq != nil {
 			if i == 0 && parent.IsEmpty() {
@@ -456,19 +463,24 @@ func (gs *GS3Proof) weakenTerm(term AST.Term) *GS3Sequent {
 }
 
 func (gs *GS3Proof) removeHypothesis(form AST.Form) {
-	index, _ := gs.branchForms.GetIndexOf(form)
-	gs.branchForms.Remove(index)
+	index := Lib.ListIndexOf(form, gs.branchForms)
+	switch i := index.(type) {
+	case Lib.Some[int]:
+		gs.branchForms = gs.branchForms.RemoveAt(i.Val)
+	case Lib.None[int]:
+		Glob.PrintWarn("gs3", fmt.Sprintf("Hypothesis %s not found", form.ToString()))
+	}
 }
 
 func (gs *GS3Proof) removeDependency(form AST.Form) {
 	for _, v := range gs.dependency {
 		if v.Fst != nil {
 			ls, _ := gs.dependency.Get(v.Fst)
-			removed := ls.Copy()
+			removed := Lib.ListCpy(ls)
 			nb_rm := 0
-			for i, f := range v.Snd.Slice() {
+			for i, f := range v.Snd.GetSlice() {
 				if f.Equals(form) {
-					removed.Remove(i - nb_rm)
+					removed.RemoveAt(i - nb_rm)
 					nb_rm++
 				}
 			}
@@ -492,7 +504,7 @@ func (gs *GS3Proof) applyDeltaRule(form, result AST.Form, rule Rule, term AST.Te
 	seq.setAppliedRule(rule)
 	seq.setAppliedOn(form)
 	seq.setTermGenerated(term)
-	seq.setFormsGenerated([]*AST.FormList{AST.NewFormList(result)})
+	seq.setFormsGenerated([]Lib.List[AST.Form]{Lib.MkListV(result)})
 
 	gs.branchForms.Append(result)
 	gs.deltaHisto = append(gs.deltaHisto, Glob.MakePair(term, Glob.MakePair(result, nodeId)))
@@ -503,7 +515,7 @@ func (gs *GS3Proof) applyDeltaRule(form, result AST.Form, rule Rule, term AST.Te
 	return seq
 }
 
-func (gs GS3Proof) applyRulesBack(rulesApplied, rulesToApply []Glob.Pair[Rule, Search.ProofStruct], weakenedForms *AST.FormList) (*GS3Sequent, []int) {
+func (gs GS3Proof) applyRulesBack(rulesApplied, rulesToApply []Glob.Pair[Rule, Search.ProofStruct], weakenedForms Lib.List[AST.Form]) (*GS3Sequent, []int) {
 	// Transform everything back to a proof struct & call makeProof on it.
 	// We need to have the right proofstructs here: the proofstructs of the branches that is not this one
 	// on the beta formulas.
@@ -514,7 +526,7 @@ func (gs GS3Proof) applyRulesBack(rulesApplied, rulesToApply []Glob.Pair[Rule, S
 	return gs.makeProof(proof), childrenIndex
 }
 
-func (gs *GS3Proof) rebuildProof(rulesApplied, rules []Glob.Pair[Rule, Search.ProofStruct], weakenedForms *AST.FormList) ([]Search.ProofStruct, []int) {
+func (gs *GS3Proof) rebuildProof(rulesApplied, rules []Glob.Pair[Rule, Search.ProofStruct], weakenedForms Lib.List[AST.Form]) ([]Search.ProofStruct, []int) {
 	rebuiltProof := make([]Search.ProofStruct, 0)
 	childrenIndex := make([]int, 0)
 	for i, rule := range rules {
@@ -557,8 +569,8 @@ func (gs GS3Proof) getCurrentBranchChildId(id int) int {
 	return -1
 }
 
-func (gs GS3Proof) getFormsToWeaken(rulesApplied, rulesAlreadyWeakened []Glob.Pair[Rule, Search.ProofStruct]) *AST.FormList {
-	formsToWeaken := AST.NewFormList()
+func (gs GS3Proof) getFormsToWeaken(rulesApplied, rulesAlreadyWeakened []Glob.Pair[Rule, Search.ProofStruct]) Lib.List[AST.Form] {
+	formsToWeaken := Lib.NewList[AST.Form]()
 	rule := getFirstRuleAppliedAfter(gs.rulesApplied, rulesAlreadyWeakened[0])
 	canBeAppending := false
 	for _, r := range gs.rulesApplied {
@@ -567,7 +579,8 @@ func (gs GS3Proof) getFormsToWeaken(rulesApplied, rulesAlreadyWeakened []Glob.Pa
 		}
 		if canBeAppending {
 			if !Glob.IsPreInnerSko() || !(rule.Fst == EX || rule.Fst == NALL) {
-				formsToWeaken.Append(gs.getIntersectionBetweenResultAndBranchForms(rule.Snd.GetResultFormulas()).Slice()...)
+				formsToWeaken.Append(
+					gs.getIntersectionBetweenResultAndBranchForms(rule.Snd.GetResultFormulas()).GetSlice()...)
 			}
 		}
 	}
@@ -583,11 +596,11 @@ func getFirstRuleAppliedAfter(rulesApplied []Glob.Pair[Rule, Search.ProofStruct]
 	return Glob.Pair[Rule, Search.ProofStruct]{}
 }
 
-func (gs GS3Proof) getIntersectionBetweenResultAndBranchForms(forms []Search.IntFormAndTermsList) *AST.FormList {
-	fs := AST.NewFormList()
+func (gs GS3Proof) getIntersectionBetweenResultAndBranchForms(forms []Search.IntFormAndTermsList) Lib.List[AST.Form] {
+	fs := Lib.NewList[AST.Form]()
 	for _, fl := range forms {
-		for _, f := range fl.GetForms().Slice() {
-			if gs.branchForms.Contains(f) {
+		for _, f := range fl.GetForms().GetSlice() {
+			if Lib.ListMem(f, gs.branchForms) {
 				fs.Append(f)
 			}
 		}
@@ -599,9 +612,9 @@ func equalRulePair(a, b Glob.Pair[Rule, Search.ProofStruct]) bool {
 	return a.Fst == b.Fst && a.Snd.Formula.GetForm().Equals(b.Snd.Formula.GetForm())
 }
 
-func makeWeakeningProofStructs(forms *AST.FormList) []Search.ProofStruct {
+func makeWeakeningProofStructs(forms Lib.List[AST.Form]) []Search.ProofStruct {
 	resultingProof := make([]Search.ProofStruct, 0)
-	for _, f := range forms.Slice() {
+	for _, f := range forms.GetSlice() {
 		proofStruct := Search.MakeEmptyProofStruct()
 		proofStruct.SetFormulaProof(Core.MakeFormAndTerm(
 			f,
@@ -642,23 +655,23 @@ func (gs GS3Proof) findInBetaHist(id int) int {
 	return -1
 }
 
-func getAllFormulasDependantOn(term AST.Term, form AST.Form) *AST.FormList {
+func getAllFormulasDependantOn(term AST.Term, form AST.Form) Lib.List[AST.Form] {
 	switch f := form.(type) {
 	case AST.All:
-		return getSubformulas(term, f.GetVarList()[0], f.GetForm())
+		return getSubformulas(term, f.GetVarList().At(0), f.GetForm())
 	case AST.Not:
 		if ex, isEx := f.GetForm().(AST.Ex); isEx {
-			return getSubformulas(term, ex.GetVarList()[0], AST.MakerNot(f.GetForm()))
+			return getSubformulas(term, ex.GetVarList().At(0), AST.MakerNot(f.GetForm()))
 		}
 	}
-	return AST.NewFormList()
+	return Lib.NewList[AST.Form]()
 }
 
-func getSubformulas(term AST.Term, v AST.Var, form AST.Form) *AST.FormList {
+func getSubformulas(term AST.Term, v AST.TypedVar, form AST.Form) Lib.List[AST.Form] {
 	subforms := form.GetSubFormulasRecur()
-	dependantSubforms := AST.NewFormList()
-	for _, f := range subforms.Slice() {
-		f, res := f.ReplaceTermByTerm(v, term)
+	dependantSubforms := Lib.NewList[AST.Form]()
+	for _, f := range subforms.GetSlice() {
+		f, res := f.ReplaceTermByTerm(v.ToBoundVar(), term)
 		if res {
 			dependantSubforms.Append(f)
 		}
@@ -666,10 +679,10 @@ func getSubformulas(term AST.Term, v AST.Var, form AST.Form) *AST.FormList {
 	return dependantSubforms
 }
 
-func (gs GS3Proof) findInDeltaHisto(term AST.Term, forms *AST.FormList) (*AST.FormList, bool) {
+func (gs GS3Proof) findInDeltaHisto(term AST.Term, forms Lib.List[AST.Form]) (Lib.List[AST.Form], bool) {
 	for _, p := range gs.deltaHisto {
 		if p.Fst != nil && p.Fst.Equals(term) {
-			result := forms.Copy()
+			result := Lib.ListCpy(forms)
 			result.Append(p.Snd.Fst)
 			return result, true
 		}
@@ -685,10 +698,10 @@ func (gs *GS3Proof) removeFromDeltaHisto(term AST.Term) {
 	}
 }
 
-func (gs *GS3Proof) weakenAllFormsRelatedToTheTerm(term AST.Term) (*AST.FormList, []Glob.Pair[Rule, Search.ProofStruct]) {
+func (gs *GS3Proof) weakenAllFormsRelatedToTheTerm(term AST.Term) (Lib.List[AST.Form], []Glob.Pair[Rule, Search.ProofStruct]) {
 	rules := []Glob.Pair[Rule, Search.ProofStruct]{}
-	forms := AST.NewFormList()
-	for _, form := range gs.branchForms.Slice() {
+	forms := Lib.NewList[AST.Form]()
+	for _, form := range gs.branchForms.GetSlice() {
 		if form.GetSubTerms().Contains(term, AST.TermEquals) {
 			// Get the rule to apply it back
 			for _, rule := range gs.rulesApplied {
