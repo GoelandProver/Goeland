@@ -122,7 +122,7 @@ if __name__ == "__main__":
     for f in glob.glob("test-suite/**/*.p"):
         parser = Parser(f)
 
-        if any(out in parser.arguments for out in outputTest) :
+        if any(out in parser.arguments for out in outputTest) and (os.path.exists(os.path.splitext(f)[0] + ".out")) :
             compareOutputs(f, parser)
         else :
             runWithExpected(f, parser)
