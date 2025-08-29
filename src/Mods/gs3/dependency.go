@@ -34,6 +34,7 @@ package gs3
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 const (
@@ -127,13 +128,13 @@ func getVariableOccurrencesForm(v AST.Var, form AST.Form, currentOcc occurrences
 	case AST.Not:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	case AST.And:
-		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.FormList)
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.GetChildFormulas())
 	case AST.Or:
-		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.FormList)
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, f.GetChildFormulas())
 	case AST.Imp:
-		currentOcc = getNAryOcc(v, currentOcc, workingPath, AST.NewFormList(f.GetF1(), f.GetF2()))
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, Lib.MkListV(f.GetF1(), f.GetF2()))
 	case AST.Equ:
-		currentOcc = getNAryOcc(v, currentOcc, workingPath, AST.NewFormList(f.GetF1(), f.GetF2()))
+		currentOcc = getNAryOcc(v, currentOcc, workingPath, Lib.MkListV(f.GetF1(), f.GetF2()))
 	case AST.All:
 		currentOcc = getUnaryOcc(v, f.GetForm(), currentOcc, workingPath)
 	case AST.Ex:
@@ -148,8 +149,8 @@ func getUnaryOcc(v AST.Var, form AST.Form, currentOcc occurrences, path occurren
 	return getVariableOccurrencesForm(v, form, currentOcc, append(path, 0))
 }
 
-func getNAryOcc(v AST.Var, currentOcc occurrences, path occurrence, fl *AST.FormList) occurrences {
-	for i, nf := range fl.Slice() {
+func getNAryOcc(v AST.Var, currentOcc occurrences, path occurrence, fl Lib.List[AST.Form]) occurrences {
+	for i, nf := range fl.GetSlice() {
 		currentOcc = getVariableOccurrencesForm(v, nf, currentOcc, appcp(path, i))
 	}
 	return currentOcc
@@ -197,13 +198,13 @@ func getTermAux(form AST.Form, occ occurrence) AST.Term {
 	case AST.Not:
 		term = getUnaryTerm(f.GetForm(), occ)
 	case AST.And:
-		term = getNAryTerm(f.FormList, occ)
+		term = getNAryTerm(f.GetChildFormulas(), occ)
 	case AST.Or:
-		term = getNAryTerm(f.FormList, occ)
+		term = getNAryTerm(f.GetChildFormulas(), occ)
 	case AST.Imp:
-		term = getNAryTerm(AST.NewFormList(f.GetF1(), f.GetF2()), occ)
+		term = getNAryTerm(Lib.MkListV(f.GetF1(), f.GetF2()), occ)
 	case AST.Equ:
-		term = getNAryTerm(AST.NewFormList(f.GetF1(), f.GetF2()), occ)
+		term = getNAryTerm(Lib.MkListV(f.GetF1(), f.GetF2()), occ)
 	case AST.All:
 		term = getUnaryTerm(f.GetForm(), occ)
 	case AST.Ex:
@@ -222,12 +223,12 @@ func getUnaryTerm(form AST.Form, occ occurrence) AST.Term {
 	return getTermAux(form, occ[1:])
 }
 
-func getNAryTerm(fl *AST.FormList, occ occurrence) AST.Term {
+func getNAryTerm(fl Lib.List[AST.Form], occ occurrence) AST.Term {
 	if occ[0] >= fl.Len() {
 		return nil
 	}
 
-	return getTermAux(fl.Get(occ[0]), occ[1:])
+	return getTermAux(fl.At(occ[0]), occ[1:])
 }
 
 func getTerm(term AST.Term, occ occurrence) AST.Term {

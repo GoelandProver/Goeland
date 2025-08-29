@@ -293,14 +293,14 @@ func ApplySubstitutionOnFormula(old_symbol AST.Meta, new_symbol AST.Term, f AST.
 	case AST.Not:
 		res = AST.MakeNot(f.GetIndex(), ApplySubstitutionOnFormula(old_symbol, new_symbol, nf.GetForm()))
 	case AST.And:
-		res_tmp := AST.NewFormList()
-		for _, val := range nf.FormList.Slice() {
+		res_tmp := Lib.NewList[AST.Form]()
+		for _, val := range nf.GetChildFormulas().GetSlice() {
 			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = AST.MakeAnd(f.GetIndex(), res_tmp)
 	case AST.Or:
-		res_tmp := AST.NewFormList()
-		for _, val := range nf.FormList.Slice() {
+		res_tmp := Lib.NewList[AST.Form]()
+		for _, val := range nf.GetChildFormulas().GetSlice() {
 			res_tmp.Append(ApplySubstitutionOnFormula(old_symbol, new_symbol, val))
 		}
 		res = AST.MakeOr(f.GetIndex(), res_tmp)
@@ -334,11 +334,11 @@ func ApplySubstitutionsOnFormula(s Unif.Substitutions, f AST.Form) AST.Form {
 }
 
 /* For each element of the substitution, apply it on the entire formula list */
-func ApplySubstitutionsOnFormulaList(s Unif.Substitutions, lf *AST.FormList) *AST.FormList {
-	lf_res := AST.NewFormList()
-	for _, f := range lf.Slice() {
+func ApplySubstitutionsOnFormulaList(s Unif.Substitutions, lf Lib.List[AST.Form]) Lib.List[AST.Form] {
+	lf_res := Lib.NewList[AST.Form]()
+	for _, f := range lf.GetSlice() {
 		new_form := ApplySubstitutionsOnFormula(s, f)
-		lf_res.AppendIfNotContains(new_form)
+		lf_res = Lib.ListAdd(lf_res, new_form)
 
 	}
 	return lf_res

@@ -230,9 +230,9 @@ func buildEqualityProblemMultiListFromPredList(pred AST.Pred, tn Unif.DataStruct
 }
 
 /* Take a list of form and build an equality problem list, corresponding to thoses related to a predicate and its negation */
-func buildEqualityProblemMultiListFromFormList(fl *AST.FormList, tn Unif.DataStructure, eq Equalities) EqualityProblemMultiList {
+func buildEqualityProblemMultiListFromFormList(fl Lib.List[AST.Form], tn Unif.DataStructure, eq Equalities) EqualityProblemMultiList {
 	res := makeEmptyEqualityProblemMultiList()
-	for _, p := range fl.Slice() {
+	for _, p := range fl.GetSlice() {
 		if pt, ok := p.(AST.Pred); ok {
 			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("Pred found : %v", p.ToString()) }),
@@ -249,7 +249,7 @@ func buildEqualityProblemMultiListFromFormList(fl *AST.FormList, tn Unif.DataStr
 * Take a form list
 * Retun a lis of independent problem list (from predicate and negation) + a boolean, true if there is equality in the formula list, false otherwise
 **/
-func buildEqualityProblemMultiList(fl *AST.FormList, tp, tn Unif.DataStructure) (EqualityProblemMultiList, bool) {
+func buildEqualityProblemMultiList(fl Lib.List[AST.Form], tp, tn Unif.DataStructure) (EqualityProblemMultiList, bool) {
 	res := makeEmptyEqualityProblemMultiList()
 	eq := retrieveEqualities(tp.Copy())
 	if len(eq) == 0 {
@@ -259,7 +259,7 @@ func buildEqualityProblemMultiList(fl *AST.FormList, tp, tn Unif.DataStructure) 
 	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Res after FromNEQ : %v", res.ToString()) }),
 	)
-	res = append(res, buildEqualityProblemMultiListFromFormList(fl.Copy(), tn.Copy(), eq.copy())...)
+	res = append(res, buildEqualityProblemMultiListFromFormList(Lib.ListCpy(fl), tn.Copy(), eq.copy())...)
 	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Res after FromForm : %v", res.ToString()) }),
 	)

@@ -255,22 +255,22 @@ func (rm *RulesManager) ToString() string {
 	str := "~~~~Rule Manager~~~~\n"
 
 	if len(rm.atomicRules) > 0 {
-		str += "| Atomic Rules: " + rm.atomicRules.GetFormList().ToString() + "\n"
+		str += "| Atomic Rules: " + Lib.ListToString(rm.atomicRules.GetFormList(), ", ", "[]") + "\n"
 	}
 	if len(rm.atomicNotRules) > 0 {
-		str += "| Negative Atomic Rules: " + rm.atomicNotRules.GetFormList().ToString() + "\n"
+		str += "| Negative Atomic Rules: " + Lib.ListToString(rm.atomicNotRules.GetFormList(), ", ", "[]") + "\n"
 	}
 	if len(rm.alphaRules) > 0 {
-		str += "| Alpha Rules: " + rm.alphaRules.GetFormList().ToString() + "\n"
+		str += "| Alpha Rules: " + Lib.ListToString(rm.alphaRules.GetFormList(), ", ", "[]") + "\n"
 	}
 	if len(rm.deltaRules) > 0 {
-		str += "| Delta Rules: " + rm.deltaRules.GetFormList().ToString() + "\n"
+		str += "| Delta Rules: " + Lib.ListToString(rm.deltaRules.GetFormList(), ", ", "[]") + "\n"
 	}
 	if len(rm.betaRules) > 0 {
-		str += "| Beta Rules: " + rm.betaRules.GetFormList().ToString() + "\n"
+		str += "| Beta Rules: " + Lib.ListToString(rm.betaRules.GetFormList(), ", ", "[]") + "\n"
 	}
 	if len(rm.gammaRules) > 0 {
-		str += "| Gamma Rules: " + rm.gammaRules.GetFormList().ToString() + "\n"
+		str += "| Gamma Rules: " + Lib.ListToString(rm.gammaRules.GetFormList(), ", ", "[]") + "\n"
 	}
 	if len(rm.reintroRules.reintroRules) > 0 {
 		str += "| Reintro Rules: " + rm.reintroRules.ToString() + "\n"

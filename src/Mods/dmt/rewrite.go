@@ -84,7 +84,7 @@ func getRewrittenFormulas(rewritten []Core.IntSubstAndForm, unif []Unif.Matching
 	return rewritten, nil
 }
 
-func addRewrittenFormulas(rewritten []Core.IntSubstAndForm, unif Unif.MatchingSubstitutions, atomic AST.Form, equivalence *AST.FormList) []Core.IntSubstAndForm {
+func addRewrittenFormulas(rewritten []Core.IntSubstAndForm, unif Unif.MatchingSubstitutions, atomic AST.Form, equivalence Lib.List[AST.Form]) []Core.IntSubstAndForm {
 	// Keep only useful substitutions
 	useful_subst := Core.RemoveElementWithoutMM(unif.GetSubst(), atomic.GetMetas())
 	meta_search := atomic.GetMetas()
@@ -97,7 +97,7 @@ func addRewrittenFormulas(rewritten []Core.IntSubstAndForm, unif Unif.MatchingSu
 	)
 
 	// Add each candidate to the rewrite slice with precedence order (Top/Bot are prioritized).
-	for _, rewrittenCandidate := range equivalence.Slice() {
+	for _, rewrittenCandidate := range equivalence.GetSlice() {
 		rewritten = addUnifToAtomics(rewritten, rewrittenCandidate, filteredUnif)
 	}
 
@@ -121,12 +121,12 @@ func getAtomAndPolarity(atom AST.Form) (AST.Form, bool) {
 
 func rewriteFailure(atomic AST.Form) []Core.IntSubstAndForm {
 	return []Core.IntSubstAndForm{
-		Core.MakeIntSubstAndForm(-1, Core.MakeSubstAndForm(Unif.Failure(), AST.NewFormList(atomic))),
+		Core.MakeIntSubstAndForm(-1, Core.MakeSubstAndForm(Unif.Failure(), Lib.MkListV(atomic))),
 	}
 }
 
 func addUnifToAtomics(atomics []Core.IntSubstAndForm, candidate AST.Form, unif Unif.MatchingSubstitutions) []Core.IntSubstAndForm {
-	substAndForm := Core.MakeSubstAndForm(unif.GetSubst().Copy(), AST.NewFormList(candidate))
+	substAndForm := Core.MakeSubstAndForm(unif.GetSubst().Copy(), Lib.MkListV(candidate))
 	if isBotOrTop(candidate) {
 		atomics = Core.InsertFirstIntSubstAndFormList(atomics, Core.MakeIntSubstAndForm(unif.GetForm().GetIndex(), substAndForm))
 	} else {
@@ -155,8 +155,8 @@ func sortUnifications(unifs []Unif.MatchingSubstitutions, polarity bool, atomic 
 }
 
 // Priority of substitutions: Top/Bottom > others
-func insert(sortedUnifs []Unif.MatchingSubstitutions, list *AST.FormList, unif Unif.MatchingSubstitutions) []Unif.MatchingSubstitutions {
-	if list.Contains(AST.MakerTop()) || list.Contains(AST.MakerBot()) {
+func insert(sortedUnifs []Unif.MatchingSubstitutions, list Lib.List[AST.Form], unif Unif.MatchingSubstitutions) []Unif.MatchingSubstitutions {
+	if Lib.ListMem(AST.MakerTop().Copy(), list) || Lib.ListMem(AST.MakerBot().Copy(), list) {
 		sortedUnifs = insertFirst(sortedUnifs, unif)
 	} else {
 		sortedUnifs = append(sortedUnifs, unif)
@@ -213,21 +213,25 @@ func checkMetaAreFromSearch(metas Lib.Set[AST.Meta], subst Unif.Substitutions) b
 	return true
 }
 
-func getUnifiedEquivalence(atom AST.Form, subst Unif.Substitutions, polarity bool) (*AST.FormList, error) {
+func getUnifiedEquivalence(atom AST.Form, subst Unif.Substitutions, polarity bool) (Lib.List[AST.Form], error) {
 	equivalence := findEquivalence(atom, polarity)
-	if equivalence == nil {
-		return nil, fmt.Errorf("[DMT] Fatal error : no rewrite rule found when an unification has been found : %v", atom.ToString())
+	if equivalence.Empty() {
+		return Lib.NewList[AST.Form](),
+			fmt.Errorf(
+				"[DMT] Fatal error : no rewrite rule found when an unification has been found : %v",
+				atom.ToString(),
+			)
 	}
 
-	res := AST.NewFormList()
-	for _, f := range equivalence.Slice() {
-		res.AppendIfNotContains(substitute(f, subst))
+	res := Lib.NewList[AST.Form]()
+	for _, f := range equivalence.GetSlice() {
+		res = Lib.ListAdd(res, substitute(f, subst))
 	}
 
 	return res, nil
 }
 
-func findEquivalence(atom AST.Form, polarity bool) *AST.FormList {
+func findEquivalence(atom AST.Form, polarity bool) Lib.List[AST.Form] {
 	return selectFromPolarity(polarity, positiveRewrite, negativeRewrite)[atom.ToString()]
 }
 

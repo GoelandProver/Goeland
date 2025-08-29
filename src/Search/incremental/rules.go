@@ -203,7 +203,7 @@ func (aa *AlphaAnd) apply() []RuleList {
 
 	switch form := aa.GetForm().(type) {
 	case AST.And:
-		for _, subForm := range form.FormList.Slice() {
+		for _, subForm := range form.GetChildFormulas().GetSlice() {
 			resultRules = append(resultRules, makeCorrectRule(subForm, aa.GetTerms()))
 		}
 	}
@@ -242,7 +242,7 @@ func (ano *AlphaNotOr) apply() []RuleList {
 	case AST.Not:
 		switch subForm := form.GetForm().(type) {
 		case AST.Or:
-			for _, subForm := range subForm.FormList.Slice() {
+			for _, subForm := range subForm.GetChildFormulas().GetSlice() {
 				resultRules = append(resultRules, makeCorrectRule(AST.MakerNot(subForm), ano.GetTerms()))
 			}
 		}
@@ -283,7 +283,7 @@ func (bna *BetaNotAnd) apply() []RuleList {
 	case AST.Not:
 		switch subForm := form.GetForm().(type) {
 		case AST.And:
-			for _, andForm := range subForm.FormList.Slice() {
+			for _, andForm := range subForm.GetChildFormulas().GetSlice() {
 				resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(AST.MakerNot(andForm), bna.GetTerms())})
 			}
 		}
@@ -326,7 +326,7 @@ func (bo *BetaOr) apply() []RuleList {
 
 	switch form := bo.GetForm().(type) {
 	case AST.Or:
-		for _, subForm := range form.FormList.Slice() {
+		for _, subForm := range form.GetChildFormulas().GetSlice() {
 			resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(subForm, bo.GetTerms())})
 		}
 	}
@@ -500,8 +500,8 @@ func (de *DeltaExists) apply() []RuleList {
 
 type RuleList []Rule
 
-func (rl *RuleList) GetFormList() *AST.FormList {
-	result := AST.NewFormList()
+func (rl *RuleList) GetFormList() Lib.List[AST.Form] {
+	result := Lib.NewList[AST.Form]()
 
 	for _, rule := range *rl {
 		result.Append(rule.GetForm())

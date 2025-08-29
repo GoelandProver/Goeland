@@ -39,6 +39,7 @@ package Core
 import (
 	"strconv"
 
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -84,8 +85,8 @@ func (s IntSubstAndForm) ToString() string {
 		res += s.GetSaf().GetSubst().ToString()
 	}
 	res += " - "
-	if !s.GetSaf().GetForm().IsEmpty() {
-		res += s.GetSaf().GetForm().ToString()
+	if !s.GetSaf().GetForm().Empty() {
+		res += Lib.ListToString(s.GetSaf().GetForm(), ", ", "[]")
 	}
 	res += " }"
 

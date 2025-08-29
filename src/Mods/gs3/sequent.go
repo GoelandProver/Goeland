@@ -36,15 +36,16 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type GS3Sequent struct {
-	hypotheses     *AST.FormList
+	hypotheses     Lib.List[AST.Form]
 	rule           Rule
 	appliedOn      int
 	rewriteWith    int
 	termGenerated  AST.Term
-	formsGenerated []*AST.FormList
+	formsGenerated []Lib.List[AST.Form]
 	children       []*GS3Sequent
 	proof          GS3Proof
 	nodeId         int
@@ -76,7 +77,7 @@ const (
 
 func MakeNewSequent() *GS3Sequent {
 	seq := new(GS3Sequent)
-	seq.hypotheses = AST.NewFormList()
+	seq.hypotheses = Lib.NewList[AST.Form]()
 	seq.children = make([]*GS3Sequent, 0)
 	return seq
 }
@@ -102,7 +103,7 @@ func IsAlphaRule(rule Rule) bool {
 // ----------------------------------------------------------------------------
 
 func (seq *GS3Sequent) GetTargetForm() AST.Form {
-	return seq.hypotheses.Get(seq.appliedOn)
+	return seq.hypotheses.At(seq.appliedOn)
 }
 
 func (seq *GS3Sequent) Child(i int) *GS3Sequent {
@@ -117,12 +118,12 @@ func (seq *GS3Sequent) Rule() Rule {
 	return seq.rule
 }
 
-func (seq *GS3Sequent) GetResultFormulasOfChild(i int) *AST.FormList {
+func (seq *GS3Sequent) GetResultFormulasOfChild(i int) Lib.List[AST.Form] {
 	return seq.formsGenerated[i]
 }
 
-func (seq *GS3Sequent) GetResultFormulasOfChildren() []*AST.FormList {
-	result := []*AST.FormList{}
+func (seq *GS3Sequent) GetResultFormulasOfChildren() []Lib.List[AST.Form] {
+	result := []Lib.List[AST.Form]{}
 
 	for i := range seq.children {
 		result = append(result, seq.formsGenerated[i])
@@ -136,7 +137,7 @@ func (seq *GS3Sequent) TermGenerated() AST.Term {
 }
 
 func (seq *GS3Sequent) IsEmpty() bool {
-	return seq.hypotheses.IsEmpty()
+	return seq.hypotheses.Empty()
 }
 
 func (seq *GS3Sequent) ToString() string {
@@ -144,7 +145,7 @@ func (seq *GS3Sequent) ToString() string {
 }
 
 func (seq *GS3Sequent) GetRewriteWith() AST.Form {
-	return seq.hypotheses.Get(seq.rewriteWith)
+	return seq.hypotheses.At(seq.rewriteWith)
 }
 
 func (seq *GS3Sequent) GetId() int {
@@ -155,7 +156,7 @@ func (seq *GS3Sequent) SetId(i int) {
 	seq.nodeId = i
 }
 
-func (seq *GS3Sequent) SetFormGenerated(fg []*AST.FormList) {
+func (seq *GS3Sequent) SetFormGenerated(fg []Lib.List[AST.Form]) {
 	seq.formsGenerated = fg
 }
 
@@ -164,7 +165,7 @@ func (seq *GS3Sequent) SetChildren(c []*GS3Sequent) {
 }
 
 func (seq *GS3Sequent) SetTargetForm(f AST.Form) {
-	seq.hypotheses.Set(seq.appliedOn, f)
+	seq.hypotheses.Upd(seq.appliedOn, f)
 }
 
 func (seq *GS3Sequent) SetTermGenerated(t AST.Term) {
@@ -175,8 +176,8 @@ func (seq *GS3Sequent) SetTermGenerated(t AST.Term) {
 // Private methods & functions
 // ----------------------------------------------------------------------------
 
-func (seq *GS3Sequent) setHypotheses(forms *AST.FormList) {
-	seq.hypotheses = forms.Copy()
+func (seq *GS3Sequent) setHypotheses(forms Lib.List[AST.Form]) {
+	seq.hypotheses = Lib.ListCpy(forms)
 	// If equality reasoning has been used to terminate the proof, then an empty predicate is expected
 	// (see search_destructive, manageClosureRule on eq reasoning).
 	// As such, add an hypothesis with the empty =
@@ -189,7 +190,7 @@ func (seq *GS3Sequent) setAppliedRule(rule Rule) {
 
 func (seq *GS3Sequent) setAppliedOn(hypothesis AST.Form) {
 	index := -1
-	for i, h := range seq.hypotheses.Slice() {
+	for i, h := range seq.hypotheses.GetSlice() {
 		if hypothesis.Equals(h) {
 			index = i
 			break
@@ -214,7 +215,7 @@ func (seq *GS3Sequent) addChild(oth ...*GS3Sequent) {
 
 func (seq *GS3Sequent) toStringAux(i int) string {
 	identation := strings.Repeat("  ", i)
-	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses.Get(seq.appliedOn).ToString()
+	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses.At(seq.appliedOn).ToString()
 	if seq.IsEmpty() {
 		status = "EMPTY"
 	}
@@ -248,7 +249,7 @@ func (seq *GS3Sequent) ruleToString(rule Rule) string {
 	return mapping[rule]
 }
 
-func (seq *GS3Sequent) setFormsGenerated(forms []*AST.FormList) {
+func (seq *GS3Sequent) setFormsGenerated(forms []Lib.List[AST.Form]) {
 	seq.formsGenerated = forms
 }
 
@@ -297,7 +298,7 @@ func ruleToTableauxString(rule Rule) string {
 }
 
 func (seq *GS3Sequent) setRewrittenWith(rewriteId int) {
-	for i, h := range seq.hypotheses.Slice() {
+	for i, h := range seq.hypotheses.GetSlice() {
 		endForm := h
 		for Glob.Is[AST.All](endForm) {
 			endForm = endForm.(AST.All).GetForm()
