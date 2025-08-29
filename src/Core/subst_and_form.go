@@ -198,7 +198,7 @@ func MergeSubstAndForm(s1, s2 SubstAndForm) (error, SubstAndForm) {
 	new_subst, _ := Unif.MergeSubstitutions(s1.GetSubst().Copy(), s2.GetSubst().Copy())
 
 	if new_subst.Equals(Unif.Failure()) {
-		Glob.PrintError("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
+		Glob.Fatal("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
 		return errors.New("Couldn't merge two substitutions"), MakeEmptySubstAndForm()
 	}
 

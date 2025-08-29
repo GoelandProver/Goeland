@@ -465,7 +465,7 @@ func (ds *destructiveSearch) waitChildren(args wcdArgs) {
 		}
 
 		if err != nil {
-			Glob.PrintError("WC", "Error when waiting for children. It should be an error when merging substitutions. What to do?")
+			Glob.Fatal("WC", "Error when waiting for children: "+err.Error())
 		}
 	}
 }
@@ -873,7 +873,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 						err, new_subst := Core.MergeSubstAndForm(s.Copy(), new_current_subst.Copy())
 
 						if err != nil {
-							Glob.PrintError("SLC", "Error when merging substitutions. What to do?")
+							Glob.Fatal("SLC", "Error when merging substitutions.")
 						}
 
 						new_result_subst = append(new_result_subst, new_subst)
@@ -943,7 +943,7 @@ func (ds *destructiveSearch) manageRewriteRules(fatherId uint64, state State, c 
 					return
 				}
 			} else {
-				Glob.PrintError("DMT", err.Error())
+				Glob.Fatal("DMT", err.Error())
 			}
 		}
 	}
@@ -1112,7 +1112,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 		for _, subst_for_father := range substs_with_mm {
 			// Check if subst_for_father is failure
 			if subst_for_father.Equals(Unif.Failure()) {
-				Glob.PrintError("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
+				Glob.Fatal("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
 			}
 			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("Formula = : %v", f.ToString()) }),
@@ -1133,7 +1133,7 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 			err, subst_and_form_for_father := Core.MergeSubstAndForm(subst_and_form_for_father.Copy(), st.GetAppliedSubst())
 
 			if err != nil {
-				Glob.PrintError("MCR", "Contradiction found between applied subst and child subst. What to do?")
+				Glob.Fatal("MCR", "Contradiction found between applied subst and child subst.")
 			} else {
 
 				st.SetSubstsFound(Core.AppendIfNotContainsSubstAndForm(st.GetSubstsFound(), subst_and_form_for_father))

@@ -497,7 +497,7 @@ func ApplyGammaRules(fnt Core.FormAndTerms, index int, state *State) (Core.FormA
 		setStateRules(state, "GAMMA", "FORALL")
 
 	case AST.AllType:
-		Glob.PrintError("search", "Typed search not handled yet")
+		Glob.PrintInfo("search", "Typed search not handled yet")
 		os.Exit(3)
 	}
 

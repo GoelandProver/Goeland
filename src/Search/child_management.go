@@ -190,7 +190,7 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 		err, merged := Core.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
 
 		if err != nil {
-			Glob.PrintError("WC", "Error when merging the children substitution's with the applied one.")
+			Glob.Fatal("WC", "Error when merging the children substitution's with the applied one.")
 			return err
 		}
 

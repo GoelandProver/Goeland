@@ -131,14 +131,17 @@ func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
 		}
 		if k != len(types) {
 			pMap.lock.Unlock()
-			Glob.PrintInfo("PRMTR_TYPE", fmt.Sprintf("Name of the type: %s, length of the args: %d", name, len(types)))
-			Glob.PrintError("PRMTR_TYPE", "Parameterized type can not be instanciated with this number of arguments.")
+			debug(
+				Lib.MkLazy(func() string {
+					return fmt.Sprintf("Name of the type: %s, length of the args: %d", name, len(types))
+				}))
+			Glob.Fatal("PRMTR_TYPE", "Parameterized type can not be instanciated with this number of arguments.")
 			return ParameterizedType{}
 		}
 		types = nextTypes
 	} else {
 		pMap.lock.Unlock()
-		Glob.PrintError("PRMTR_TYPE", "Parameterized type not found.")
+		Glob.Fatal("PRMTR_TYPE", "Parameterized type not found.")
 		return ParameterizedType{}
 	}
 	pMap.lock.Unlock()

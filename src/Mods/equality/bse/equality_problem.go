@@ -95,7 +95,7 @@ func (ep EqualityProblem) applySubstitution(s Unif.Substitutions) EqualityProble
 	new_equalities := ep.GetE()
 
 	if !ep.getC().isEmpty() {
-		Glob.PrintError("EQ-AS", fmt.Sprintf("Constraint not null in applySubstitution : %v", ep.getC().toString()))
+		Glob.Fatal("EQ-AS", fmt.Sprintf("Constraint not null in applySubstitution : %v", ep.getC().toString()))
 	}
 
 	for _, subst := range s {
