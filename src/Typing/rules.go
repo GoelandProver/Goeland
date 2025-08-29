@@ -30,207 +30,295 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
+/**
+ * This file is the entry point to perform typing of a formula.
+ * It implements all the rules.
+**/
+
 package Typing
 
 import (
-	"reflect"
-
+	"fmt"
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-/**
- * This file contains the functions to create a typing proof tree.
- * It defines the TypingProofTree structure and all the rules to check if a
- * system is well-typed.
- **/
+var label = "typing"
 
-/* Stores the consequence of the sequent */
-type Consequence struct {
-	f AST.Form
-	t AST.Term
-	a AST.TypeApp
-	s AST.TypeScheme
+func TypeCheck(form AST.Form) bool {
+	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Launching type checking on %s", form.ToString()) }))
+
+	return typecheckForm(emptyCon(), form)
 }
 
-/* A Sequent is formed of a global context, local context, and a formula or a term to type */
-type Sequent struct {
-	globalContext GlobalContext
-	localContext  LocalContext
-	consequence   Consequence
-}
+func typecheckForm(con Con, form AST.Form) bool {
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf("Trying to type-check: %s |- %s : o", con.toString(), form.ToString())
+	}))
 
-/* Makes a typing prooftree to output. */
-type ProofTree struct {
-	sequent     Sequent
-	appliedRule string
-	typeScheme  AST.TypeScheme
-	children    []*ProofTree
-}
-
-/* ProofTree meta-type */
-var metaType AST.TypeHint
-
-/* ProofTree methods */
-
-/* Creates and adds a child to the prooftree and returns it. */
-func (pt *ProofTree) addChildWith(sequent Sequent) *ProofTree {
-	child := ProofTree{
-		sequent:  sequent,
-		children: []*ProofTree{},
-	}
-	pt.children = append(pt.children, &child)
-	return &child
-}
-
-var globalContextIsWellTyped bool = false
-
-/**
- * Tries to type form.
- * If not well-typed, will return an error.
- **/
-func WellFormedVerification(form AST.Form, dump bool) error {
-	// Instanciate meta type
-	metaType = AST.MkTypeHint("$tType")
-
-	// Second pass to type variables & to give the typevars to functions and predicates
-	form = SecondPass(form)
-
-	globalContext, err := createGlobalContext(AST.GetGlobalContext())
-	if err != nil {
-		return err
-	}
-
-	// Sequent creation
-	state := Sequent{
-		globalContext: globalContext,
-		localContext:  LocalContext{vars: []AST.Var{}, typeVars: []AST.TypeVar{}},
-		consequence:   Consequence{f: form},
-	}
-
-	// Prooftree creation
-	root := ProofTree{
-		sequent:  state,
-		children: []*ProofTree{},
-	}
-
-	// Launch the typing system
-	_, err = launchRuleApplication(state, &root)
-
-	// Dump prooftree in json if it's asked & there is no error
-	if dump && err == nil {
-		err = root.DumpJson()
-	}
-
-	return err
-}
-
-/* Reconstructs a Form depending on what the children has returned */
-func reconstructForm(reconstruction Reconstruct, baseForm AST.Form) Reconstruct {
-	if !reconstruction.result {
-		return reconstruction
-	}
-
-	var f AST.Form
-	switch form := baseForm.(type) {
-	case AST.All:
-		f = AST.MakeAll(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
-	case AST.AllType:
-		f = AST.MakeAllType(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
-	case AST.Ex:
-		f = AST.MakeEx(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
-	case AST.And:
-		f = AST.MakeAnd(form.GetIndex(), reconstruction.forms)
-	case AST.Or:
-		f = AST.MakeOr(form.GetIndex(), reconstruction.forms)
-	case AST.Imp:
-		f = AST.MakeImp(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
-	case AST.Equ:
-		f = AST.MakeEqu(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
-	case AST.Not:
-		f = AST.MakeNot(form.GetIndex(), reconstruction.forms.Get(0))
+	switch f := form.(type) {
+	case AST.Bot, AST.Top:
+		return true
 	case AST.Pred:
-		// The len(form.GetTypeVars()) first children launched are children for typevars.
-		// So the len(form.GetTypeVars()) first children will return <nil>
-		if reconstruction.terms.Len() > len(form.GetTypeVars()) {
-			terms := Lib.MkListV(reconstruction.terms.Get(
-				len(form.GetTypeVars()),
-				reconstruction.terms.Len(),
-			)...)
-			f = AST.MakePred(
-				form.GetIndex(),
-				form.GetID(),
-				terms,
-				form.GetTypeVars(),
-				form.GetType(),
-			)
-		} else {
-			f = AST.MakePred(
-				form.GetIndex(),
-				form.GetID(),
-				Lib.NewList[AST.Term](),
-				form.GetTypeVars(),
-				form.GetType(),
-			)
-		}
-	case AST.Top, AST.Bot:
-		f = baseForm
+		return checkFunctional(
+			con,
+			f.GetID().GetName(),
+			f.GetTyArgs(),
+			f.GetArgs(),
+			Lib.MkLazy(func() string { return form.ToString() }),
+		)
+
+	case AST.Not, AST.And, AST.Or, AST.Imp, AST.Equ:
+		return typecheckRec(
+			con,
+			f.GetChildFormulas(),
+			Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
+			Lib.NewList[AST.Ty](),
+		)
+
+	case AST.All:
+		return typecheckRec(
+			con.addTypedVars(f.GetVarList()),
+			Lib.MkListV(f.GetForm()),
+			Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
+			Lib.NewList[AST.Ty](),
+		)
+
+	case AST.Ex:
+		return typecheckRec(
+			con.addTypedVars(f.GetVarList()),
+			Lib.MkListV(f.GetForm()),
+			Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
+			Lib.NewList[AST.Ty](),
+		)
 	}
 
-	return Reconstruct{result: true, forms: AST.NewFormList(f), err: nil}
+	Glob.Anomaly(
+		label,
+		fmt.Sprintf("%s is not a known internal formula", form.ToString()),
+	)
+	return false
 }
 
-/* Reconstructs a Term depending on what the children has returned */
-func reconstructTerm(reconstruction Reconstruct, baseTerm AST.Term) Reconstruct {
-	if !reconstruction.result {
-		return reconstruction
-	}
+func typecheckTerm(con Con, term AST.Term, ty AST.Ty) bool {
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf("Trying to type-check: %s |- %s : %s", con.toString(), term.ToString(), ty.ToString())
+	}))
 
-	// fun: reconstruct with children terms
-	if Glob.Is[AST.Fun](baseTerm) {
-		termFun := Glob.To[AST.Fun](baseTerm)
-		var fun AST.Fun
-		// The len(form.GetTypeVars()) first children launched are children for typevars.
-		// So the len(form.GetTypeVars()) first children will return <nil>
-		if reconstruction.terms.Len() > len(termFun.GetTypeVars()) {
-			terms := Lib.MkListV(reconstruction.terms.Get(
-				len(termFun.GetTypeVars()),
-				reconstruction.terms.Len(),
-			)...)
-			fun = AST.MakerFun(
-				termFun.GetID(),
-				terms,
-				termFun.GetTypeVars(),
-				termFun.GetTypeHint(),
-			)
-		} else {
-			fun = AST.MakerFun(
-				termFun.GetID(),
-				Lib.NewList[AST.Term](),
-				termFun.GetTypeVars(),
-				termFun.GetTypeHint(),
-			)
+	switch t := term.(type) {
+	case AST.Var:
+		if !con.contains(t.GetName(), ty) {
+			Glob.Fatal(
+				label,
+				fmt.Sprintf(
+					"Variable %s is either not in the context or should not have type %s\nContext: %s",
+					t.GetName(),
+					ty.ToString(),
+					con.toString(),
+				))
+			return false
 		}
-		return Reconstruct{result: true, terms: Lib.MkListV[AST.Term](fun), err: nil}
+
+		return typecheckRec(
+			con,
+			Lib.NewList[AST.Form](),
+			Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
+			Lib.MkListV(ty),
+		)
+
+	case AST.Fun:
+		return checkFunctional(
+			con,
+			t.GetID().GetName(),
+			t.GetTyArgs(),
+			t.GetArgs(),
+			Lib.MkLazy(func() string { return t.ToString() }),
+		)
 	}
 
-	return Reconstruct{result: true, terms: Lib.MkListV(baseTerm), err: nil}
+	Glob.Anomaly(
+		label,
+		fmt.Sprintf("Only bound variables and functions should be typechecked, but found %s", term.ToString()),
+	)
+	return false
 }
 
-/* Utils for reconstructions function */
+func typecheckType(con Con, ty AST.Ty) bool {
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf("Trying to type-check: %s |- %s : %s",
+			con.toString(), ty.ToString(), AST.TType().ToString())
+	}))
 
-/* Removes all the quantifiers of form of the same type of quant. */
-func unquantify(form AST.Form, quant AST.Form) AST.Form {
-	for reflect.TypeOf(form) == reflect.TypeOf(quant) {
-		switch quant.(type) {
-		case AST.All:
-			form = Glob.To[AST.All](form).GetForm()
-		case AST.AllType:
-			form = Glob.To[AST.AllType](form).GetForm()
-		case AST.Ex:
-			form = Glob.To[AST.Ex](form).GetForm()
+	switch nty := ty.(type) {
+	case AST.TyBound:
+		if !con.contains(nty.GetName(), AST.TType()) {
+			Glob.PrintInfo("Context", con.toString())
+			Glob.Fatal(
+				label,
+				fmt.Sprintf(
+					"Variable %s is either not in the context or is not a type variable\nContext: %s",
+					nty.ToString(),
+					con.toString(),
+				))
+			return false
+		}
+
+		return true
+
+	case AST.TyConstr:
+		oty := QueryGlobalEnv(nty.Symbol())
+
+		switch rty := oty.(type) {
+		case Lib.Some[AST.Ty]:
+			args := AST.GetArgsTy(rty.Val)
+			if args.Len() != nty.Args().Len() {
+				Glob.Fatal(
+					label,
+					fmt.Sprintf(
+						"Type constructor %s expects %d arguments, got %d",
+						nty.Symbol(),
+						args.Len(),
+						nty.Args().Len(),
+					),
+				)
+				return false
+			}
+
+			if nty.Args().Empty() {
+				return true
+			}
+
+			return typecheckRec(
+				con,
+				Lib.NewList[AST.Form](),
+				Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
+				nty.Args(),
+			)
+
+		case Lib.None[AST.Ty]:
+			Glob.Anomaly(
+				label,
+				fmt.Sprintf("Unknown type %s", nty.ToString()),
+			)
 		}
 	}
-	return form
+
+	Glob.Anomaly(
+		label,
+		fmt.Sprintf("On typechecking of types: expected atomic type, got %s", ty.ToString()),
+	)
+	return false
+}
+
+func checkFunctional(
+	con Con,
+	name string,
+	tys Lib.List[AST.Ty],
+	args Lib.List[AST.Term],
+	debug_str Lib.Lazy[string],
+) bool {
+	oty := QueryEnvInstance(name, tys)
+	switch ty := oty.(type) {
+	case Lib.Some[AST.Ty]:
+		debug_low_level(Lib.MkLazy(func() string {
+			return fmt.Sprintf("%s has a functional scheme instantiated to %s", debug_str.Run(), ty.Val.ToString())
+		}))
+
+		instantiated_ty := AST.GetArgsTy(ty.Val)
+		debug_low_level(Lib.MkLazy(func() string {
+			return fmt.Sprintf("Arguments will be typechecked against: [%s]",
+				Lib.ListToString(instantiated_ty, ", ", ""))
+		}))
+
+		terms_checker := buildTermCheckList(
+			debug_str,
+			ty.Val,
+			args,
+			instantiated_ty,
+		)
+		tys.Append(AST.GetOutTy(ty.Val))
+
+		return typecheckRec(con, Lib.NewList[AST.Form](), terms_checker, tys)
+
+	case Lib.None[AST.Ty]:
+		Glob.Fatal(
+			label,
+			fmt.Sprintf("Type of %s not found in the global environment", debug_str.Run()),
+		)
+	}
+	return false
+}
+
+func typecheckRec(
+	con Con,
+	forms Lib.List[AST.Form],
+	typed_terms Lib.List[Lib.Pair[AST.Term, AST.Ty]],
+	tys Lib.List[AST.Ty],
+) bool {
+
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf("Next typecheck: forms (%v), terms (%v), types (%v)",
+			!forms.Empty(), !typed_terms.Empty(), !tys.Empty())
+	}))
+
+	calls := []func(chan bool){}
+
+	for _, form := range forms.GetSlice() {
+		loop_form := form
+		calls = append(calls, func(outchan chan bool) {
+			outchan <- typecheckForm(con, loop_form)
+		})
+	}
+
+	for _, typed_term := range typed_terms.GetSlice() {
+		loop_term := typed_term
+		calls = append(calls, func(outchan chan bool) {
+			outchan <- typecheckTerm(con, loop_term.Fst, loop_term.Snd)
+		})
+	}
+
+	for _, ty := range tys.GetSlice() {
+		loop_ty := ty
+		calls = append(calls, func(outchan chan bool) {
+			outchan <- typecheckType(con, loop_ty)
+		})
+	}
+
+	res, err := Lib.GenericParallel(
+		calls,
+		func(x, y bool) bool { return x && y },
+		true, // Neutral of the operation
+	)
+
+	if err != nil {
+		Glob.Anomaly(
+			label,
+			fmt.Sprintf("Encountered a Lib error: %s", err.Error()),
+		)
+	}
+
+	return res
+}
+
+func buildTermCheckList(
+	debug_str Lib.Lazy[string],
+	ty AST.Ty,
+	terms Lib.List[AST.Term],
+	tys Lib.List[AST.Ty],
+) Lib.List[Lib.Pair[AST.Term, AST.Ty]] {
+	if terms.Len() != tys.Len() {
+		Glob.Fatal(
+			label,
+			fmt.Sprintf("Expected %d arguments in %s (which has type %s), but got %d",
+				tys.Len(), debug_str.Run(), ty.ToString(), terms.Len()),
+		)
+		return Lib.NewList[Lib.Pair[AST.Term, AST.Ty]]()
+	}
+
+	ls := Lib.MkList[Lib.Pair[AST.Term, AST.Ty]](terms.Len())
+	for i := range terms.GetSlice() {
+		ls.Upd(i, Lib.MkPair(terms.At(i), tys.At(i)))
+	}
+	return ls
 }

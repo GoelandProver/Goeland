@@ -31,83 +31,70 @@
 **/
 
 /**
-* This file contains functions and types which describe the fomula_list's data
-* structure
-**/
+ * This file declares TPTP native types and types scheme :
+ *	- int, rat, real for primitives
+ *	- a bunch of type schemes
+ **/
 
 package AST
 
 import (
-	"sort"
-
-	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
-type FormList struct {
-	*Glob.List[Form]
+var tType Ty
+
+var tInt Ty
+var tRat Ty
+var tReal Ty
+
+var tIndividual Ty
+var tProp Ty
+
+func initTPTPNativeTypes() {
+	tType = MkTyConst("$tType")
+
+	tInt = MkTyConst("$int")
+	tRat = MkTyConst("$rat")
+	tReal = MkTyConst("$real")
+
+	tIndividual = MkTyConst("$i")
+	tProp = MkTyConst("$o")
+
+	count_meta = 0
 }
 
-func NewFormList(slice ...Form) *FormList {
-	return &FormList{Glob.NewList(slice...)}
+func TType() Ty {
+	return tType
 }
 
-func (fl *FormList) Less(i, j int) bool {
-	return (fl.Get(i).ToString() < fl.Get(j).ToString())
+func TInt() Ty {
+	return tInt
 }
 
-func (fl *FormList) Copy() *FormList {
-	return &FormList{fl.List.Copy()}
+func TRat() Ty {
+	return tRat
 }
 
-func (lf *FormList) ToMappableStringSlice() []MappableString {
-	forms := []MappableString{}
-
-	for _, form := range lf.Slice() {
-		forms = append(forms, form.(MappableString))
-	}
-
-	return forms
+func TReal() Ty {
+	return tReal
 }
 
-func (fl *FormList) Equals(other *FormList) bool {
-	if fl.Len() != other.Len() {
-		return false
-	}
-
-	flSorted := fl.Copy()
-	sort.Sort(flSorted)
-
-	otherSorted := other.Copy()
-	sort.Sort(otherSorted)
-
-	for i := range flSorted.Slice() {
-		if !flSorted.Get(i).Equals(otherSorted.Get(i)) {
-			return false
-		}
-	}
-
-	return true
+func TIndividual() Ty {
+	return tIndividual
 }
 
-// Removes all AND formulas: {(a & b), (b => c), (d & (e & f))} -> {(a), (b), (b => c), (d), (e), (f)}
-func (fl *FormList) Flatten() *FormList {
-	result := NewFormList()
-
-	for _, form := range fl.Slice() {
-		if typed, ok := form.(And); ok {
-			result.Append(typed.FormList.Flatten().Slice()...)
-		} else {
-			result.Append(form)
-		}
-	}
-
-	return result
+func TProp() Ty {
+	return tProp
 }
 
-func (fl *FormList) ReplaceMetaByTerm(meta Meta, term Term) *FormList {
-	for i, f := range fl.Slice() {
-		fl.Set(i, f.ReplaceMetaByTerm(meta, term))
-	}
+func IsTType(ty Ty) bool {
+	return ty.Equals(tType)
+}
 
-	return fl
+func DefinedTPTPTypes() Lib.List[TyConstr] {
+	return Lib.ListMap(
+		Lib.MkListV(tType, tInt, tRat, tReal, tIndividual, tProp),
+		func(ty Ty) TyConstr { return ty.(TyConstr) },
+	)
 }

@@ -36,6 +36,7 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type Ordered[T any] interface {
@@ -130,8 +131,6 @@ func funTermRecord(t AST.Fun, args []*eqClass) *termRecord {
 		meta:     nil,
 		symbolId: t.GetID(),
 		args:     args,
-		typeHint: t.GetTypeHint(),
-		typeVars: t.GetTypeVars(),
 	}
 }
 
@@ -140,9 +139,8 @@ type termRecord struct {
 	eqClass  *eqClass
 	meta     *AST.Meta
 	symbolId AST.Id
+	tyArgs   Lib.List[AST.Ty]
 	args     []*eqClass
-	typeHint AST.TypeScheme
-	typeVars []AST.TypeApp
 }
 
 func (t *termRecord) isMeta() bool {

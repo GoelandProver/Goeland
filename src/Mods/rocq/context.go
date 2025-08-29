@@ -59,29 +59,29 @@ func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 		root = AST.MakerAnd(registeredAxioms)
 	}
 
-	if AST.EmptyGlobalContext() {
-		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+	// if AST.EmptyGlobalContext() {
+	resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
 
-		if metaList.Len() > 0 {
-			resultingString += contextualizeMetas(metaList)
-		}
-	} else {
-		context := AST.GetGlobalContext()
-		for k, v := range context {
-			if typed, ok := v[0].App.(AST.TypeHint); ok {
-				if k[0] != '$' && k == typed.ToString() {
-					resultingString += "Parameter " + k + ": Type.\n"
-
-				}
-			}
-		}
-
-		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
-
-		if metaList.Len() > 0 {
-			resultingString += contextualizeMetas(metaList)
-		}
+	if metaList.Len() > 0 {
+		resultingString += contextualizeMetas(metaList)
 	}
+	// } else {
+	// 	context := AST.GetGlobalContext()
+	// 	for k, v := range context {
+	// 		if typed, ok := v[0].App.(AST.TypeHint); ok {
+	// 			if k[0] != '$' && k == typed.ToString() {
+	// 				resultingString += "Parameter " + k + ": Type.\n"
+
+	// 			}
+	// 		}
+	// 	}
+
+	// 	resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+
+	// 	if metaList.Len() > 0 {
+	// 		resultingString += contextualizeMetas(metaList)
+	// 	}
+	// }
 	return resultingString
 }
 
@@ -99,14 +99,12 @@ func getContextFromFormula(root AST.Form) []string {
 		result = getContextFromFormula(nf.GetForm())
 	case AST.Ex:
 		result = getContextFromFormula(nf.GetForm())
-	case AST.AllType:
-		result = getContextFromFormula(nf.GetForm())
 	case AST.And:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
 	case AST.Or:
-		for _, f := range nf.FormList.Slice() {
+		for _, f := range nf.GetChildFormulas().GetSlice() {
 			result = append(result, clean(result, getContextFromFormula(f))...)
 		}
 	case AST.Imp:
@@ -119,8 +117,8 @@ func getContextFromFormula(root AST.Form) []string {
 		result = clean(result, getContextFromFormula(nf.GetForm()))
 	case AST.Pred:
 		if !nf.GetID().Equals(AST.Id_eq) {
-			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.",
-				nf.GetID().ToMappedString(rocqMapConnectors(), false), nf.GetType().ToString())))
+			result = append(result, mapDefault(
+				fmt.Sprintf("Parameter %s.", nf.GetID().ToMappedString(rocqMapConnectors(), false))))
 		}
 		for _, term := range nf.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -132,8 +130,9 @@ func getContextFromFormula(root AST.Form) []string {
 func getContextFromTerm(trm AST.Term) []string {
 	result := []string{}
 	if fun, isFun := trm.(AST.Fun); isFun {
-		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.",
-			fun.GetID().ToMappedString(rocqMapConnectors(), false), fun.GetTypeHint().ToString())))
+		result = append(result,
+			mapDefault(fmt.Sprintf(
+				"Parameter %s.", fun.GetID().ToMappedString(rocqMapConnectors(), false))))
 		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}

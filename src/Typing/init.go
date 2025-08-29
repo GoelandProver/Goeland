@@ -31,38 +31,49 @@
 **/
 
 /**
- * This file declares TPTP native types and types scheme :
- *	- int, rat, real for primitives
- *	- a bunch of type schemes
- **/
+ * This file initializes the global environment (e.g., with TPTP primitives)
+**/
 
-package AST
+package Typing
 
 import (
+	"sync"
+
+	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
-var tInt TypeHint
-var tRat TypeHint
-var tReal TypeHint
-var defaultType TypeHint
-var defaultProp TypeHint
+var global_env Env
+var ari_var string
+var debug Glob.Debugger
+var debug_low_level Glob.Debugger
 
-var intCrossInt TypeApp
-var ratCrossRat TypeApp
-var realCrossReal TypeApp
+func Init() {
+	global_env = Env{make(map[string]AST.Ty), sync.Mutex{}}
+	ari_var = "number"
 
-func InitTPTPArithmetic() {
-	// Types
-	tInt = MkTypeHint("$int")
-	tRat = MkTypeHint("$rat")
-	tReal = MkTypeHint("$real")
+	initTPTPNativeTypes()
+}
 
-	intCrossInt = MkTypeCross(tInt, tInt)
-	ratCrossRat = MkTypeCross(tRat, tRat)
-	realCrossReal = MkTypeCross(tReal, tReal)
+func InitDebugger() {
+	debug = Glob.CreateDebugger("typing")
+	debug_low_level = Glob.CreateDebugger("typing-low")
+}
 
-	// Schemes
+func initTPTPNativeTypes() {
+	for _, ty := range AST.DefinedTPTPTypes().GetSlice() {
+		AddToGlobalEnv(ty.Symbol(), AST.TType())
+	}
+
+	AddToGlobalEnv(
+		AST.Id_eq.GetName(),
+		AST.MkTyPi(
+			Lib.MkListV("α"),
+			AST.MkTyFunc(AST.MkTyProd(Lib.MkListV(AST.MkTyVar("α"), AST.MkTyVar("α"))), AST.TProp()),
+		),
+	)
+
 	// 1 - Binary predicates
 	recordBinaryProp("$less")
 	recordBinaryProp("$lesseq")
@@ -81,8 +92,13 @@ func InitTPTPArithmetic() {
 	recordBinaryInArgs("$remainder_f")
 
 	// 3 - $quotient
-	SaveTypeScheme("$quotient", ratCrossRat, tRat)
-	SaveTypeScheme("$quotient", realCrossReal, tReal)
+	AddToGlobalEnv("$quotient",
+		AST.MkTyPi(
+			Lib.MkListV(ari_var, "rat_or_real"),
+			AST.MkTyFunc(
+				AST.MkTyProd(Lib.MkListV(AST.MkTyVar(ari_var), AST.MkTyVar(ari_var))),
+				AST.MkTyVar("rat_or_real")),
+		))
 
 	// 4 - Unary input arguments
 	recordUnaryInArgs("$uminus")
@@ -96,59 +112,60 @@ func InitTPTPArithmetic() {
 	recordUnaryProp("$is_rat")
 
 	// 6 - Conversion
-	recordConversion("$to_int", tInt)
-	recordConversion("$to_rat", tRat)
-	recordConversion("$to_real", tReal)
+	recordConversion("$to_int", AST.TInt())
+	recordConversion("$to_rat", AST.TRat())
+	recordConversion("$to_real", AST.TReal())
+
+	debug(Lib.MkLazy(func() string { return "TPTP native loaded in global environment" }))
+	debug_low_level(Lib.MkLazy(global_env.toString))
 }
 
 func recordBinaryProp(name string) {
-	SaveTypeScheme(name, intCrossInt, defaultProp)
-	SaveTypeScheme(name, ratCrossRat, defaultProp)
-	SaveTypeScheme(name, realCrossReal, defaultProp)
+	AddToGlobalEnv(
+		name,
+		AST.MkTyPi(
+			Lib.MkListV(ari_var),
+			AST.MkTyFunc(AST.MkTyProd(Lib.MkListV(AST.MkTyVar(ari_var), AST.MkTyVar(ari_var))), AST.TProp()),
+		),
+	)
 }
 
 func recordBinaryInArgs(name string) {
-	SaveTypeScheme(name, intCrossInt, tInt)
-	SaveTypeScheme(name, ratCrossRat, tRat)
-	SaveTypeScheme(name, realCrossReal, tReal)
+	AddToGlobalEnv(
+		name,
+		AST.MkTyPi(
+			Lib.MkListV(ari_var),
+			AST.MkTyFunc(AST.MkTyProd(Lib.MkListV(AST.MkTyVar(ari_var), AST.MkTyVar(ari_var))), AST.MkTyVar(ari_var)),
+		),
+	)
 }
 
 func recordUnaryInArgs(name string) {
-	SaveTypeScheme(name, tInt, tInt)
-	SaveTypeScheme(name, tRat, tRat)
-	SaveTypeScheme(name, tReal, tReal)
+	AddToGlobalEnv(
+		name,
+		AST.MkTyPi(
+			Lib.MkListV(ari_var),
+			AST.MkTyFunc(AST.MkTyVar(ari_var), AST.MkTyVar(ari_var)),
+		),
+	)
 }
 
 func recordUnaryProp(name string) {
-	SaveTypeScheme(name, tInt, defaultProp)
-	SaveTypeScheme(name, tRat, defaultProp)
-	SaveTypeScheme(name, tReal, defaultProp)
+	AddToGlobalEnv(
+		name,
+		AST.MkTyPi(
+			Lib.MkListV(ari_var),
+			AST.MkTyFunc(AST.MkTyVar(ari_var), AST.TProp()),
+		),
+	)
 }
 
-func recordConversion(name string, out TypeApp) {
-	SaveTypeScheme(name, tInt, out)
-	SaveTypeScheme(name, tRat, out)
-	SaveTypeScheme(name, tReal, out)
-}
-
-func IsInt(tType TypeScheme) bool        { return tType.Equals(tInt) }
-func IsRat(tType TypeScheme) bool        { return tType.Equals(tRat) }
-func IsReal(tType TypeScheme) bool       { return tType.Equals(tReal) }
-func DefaultType() TypeApp               { return defaultType }
-func DefaultProp() TypeApp               { return defaultProp }
-func DefaultFunType(len int) TypeScheme  { return defaultAppType(len, defaultType) }
-func DefaultPropType(len int) TypeScheme { return defaultAppType(len, defaultProp) }
-
-func defaultAppType(len int, out TypeApp) TypeScheme {
-	if len == 0 {
-		return Glob.To[TypeScheme](out)
-	} else if len == 1 {
-		return MkTypeArrow(defaultType, out)
-	} else {
-		ts := []TypeApp{}
-		for i := 0; i < len; i++ {
-			ts = append(ts, defaultType)
-		}
-		return MkTypeArrow(MkTypeCross(ts...), out)
-	}
+func recordConversion(name string, out AST.Ty) {
+	AddToGlobalEnv(
+		name,
+		AST.MkTyPi(
+			Lib.MkListV(ari_var),
+			AST.MkTyFunc(AST.MkTyVar(ari_var), out),
+		),
+	)
 }

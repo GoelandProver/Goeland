@@ -34,7 +34,6 @@ package Unif
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -53,23 +52,24 @@ func (t TermForm) ToMappedStringChild(mapping AST.MapString, displayTypes bool) 
 }
 
 func (t TermForm) GetChildrenForMappedString() []AST.MappableString {
-	return t.GetChildFormulas().ToMappableStringSlice()
+	return AST.LsToMappableStringSlice(t.GetChildFormulas())
 }
 
-func (t TermForm) GetTerm() AST.Term                             { return t.t.Copy() }
-func (t TermForm) Copy() AST.Form                                { return makeTermForm(t.GetIndex(), t.GetTerm()) }
-func (t TermForm) GetType() AST.TypeScheme                       { return AST.DefaultFunType(0) }
-func (t TermForm) RenameVariables() AST.Form                     { return t }
-func (t TermForm) ReplaceTypeByMeta([]AST.TypeVar, int) AST.Form { return t }
+func (t TermForm) GetTerm() AST.Term         { return t.t.Copy() }
+func (t TermForm) Copy() AST.Form            { return makeTermForm(t.GetIndex(), t.GetTerm()) }
+func (t TermForm) RenameVariables() AST.Form { return t }
 func (t TermForm) ReplaceTermByTerm(AST.Term, AST.Term) (AST.Form, bool) {
 	return t, false
+}
+func (t TermForm) SubstTy(AST.TyGenVar, AST.Ty) AST.Form {
+	return t
 }
 func (t TermForm) GetIndex() int                                  { return t.index }
 func (t TermForm) SubstituteVarByMeta(AST.Var, AST.Meta) AST.Form { return t }
 func (t TermForm) GetInternalMetas() Lib.List[AST.Meta]           { return Lib.NewList[AST.Meta]() }
 func (t TermForm) SetInternalMetas(Lib.List[AST.Meta]) AST.Form   { return t }
-func (t TermForm) GetSubFormulasRecur() *AST.FormList             { return AST.NewFormList() }
-func (t TermForm) GetChildFormulas() *AST.FormList                { return AST.NewFormList() }
+func (t TermForm) GetSubFormulasRecur() Lib.List[AST.Form]        { return Lib.NewList[AST.Form]() }
+func (t TermForm) GetChildFormulas() Lib.List[AST.Form]           { return Lib.NewList[AST.Form]() }
 
 func (t TermForm) Equals(t2 any) bool {
 	switch nt := t2.(type) {
@@ -109,6 +109,11 @@ func (t TermForm) ReplaceMetaByTerm(meta AST.Meta, term AST.Term) AST.Form {
 }
 
 func MakerTermForm(t AST.Term) TermForm {
+	switch trm := t.(type) {
+	case AST.Fun:
+		args := getFunctionalArguments(trm.GetTyArgs(), trm.GetArgs())
+		t = AST.MakerFun(trm.GetID(), Lib.NewList[AST.Ty](), args)
+	}
 	return makeTermForm(AST.MakerIndexFormula(), t.Copy())
 }
 
@@ -125,20 +130,14 @@ func ParseFormula(formula AST.Form) Sequence {
 	// The formula has to be a predicate
 	switch formula_type := formula.(type) {
 	case AST.Pred:
-		pred := AST.MakePred(formula_type.GetIndex(), formula_type.GetID(), TypeAndTermsToTerms(formula_type.GetTypeVars(), formula_type.GetArgs()), []AST.TypeApp{}, formula_type.GetType())
-		instructions := Sequence{formula: pred}
+		instructions := Sequence{formula: formula_type}
 
 		instructions.add(Begin{})
-		parsePred(pred, &instructions)
+		parsePred(formula_type, &instructions)
 		instructions.add(End{})
 
 		return instructions
 	case TermForm:
-		if Glob.Is[AST.Fun](formula_type.GetTerm()) {
-			fun := Glob.To[AST.Fun](formula_type.GetTerm())
-			formula = makeTermForm(formula.GetIndex(), AST.MakerFun(fun.GetID(), TypeAndTermsToTerms(fun.GetTypeVars(), fun.GetArgs()), []AST.TypeApp{}, fun.GetTypeHint()))
-		}
-
 		instructions := Sequence{formula: formula}
 		varCount := 0
 		postCount := 0
@@ -159,26 +158,40 @@ func ParseFormula(formula AST.Form) Sequence {
 	}
 }
 
-func TypeAndTermsToTerms(
-	types []AST.TypeApp,
-	terms Lib.List[AST.Term],
-) Lib.List[AST.Term] {
-	tms := Lib.NewList[AST.Term]()
-	tms.Append(AST.TypeAppArrToTerm(types).GetSlice()...)
-	tms.Append(terms.GetSlice()...)
+/* Parses a predicate to machine instructions */
+func getFunctionalArguments(ty_args Lib.List[AST.Ty], trm_args Lib.List[AST.Term]) Lib.List[AST.Term] {
+	args := Lib.ListMap(ty_args, AST.TyToTerm)
 
-	return tms
+	for _, arg := range trm_args.GetSlice() {
+		switch term := arg.(type) {
+		case AST.Meta:
+			args.Append(arg)
+		case AST.Fun:
+			args.Append(AST.MakerFun(
+				term.GetID(),
+				Lib.NewList[AST.Ty](),
+				getFunctionalArguments(term.GetTyArgs(), term.GetArgs()),
+			))
+		}
+	}
+
+	return args
 }
 
-/* Parses a predicate to machine instructions */
 func parsePred(p AST.Pred, instructions *Sequence) {
 	instructions.add(makeCheck(p.GetID()))
-	if p.GetArgs().Len() > 0 {
+	if !p.GetTyArgs().Empty() || !p.GetArgs().Empty() {
 		instructions.add(Begin{})
 		instructions.add(Down{})
 		varCount := 0
 		postCount := 0
-		parseTerms(p.GetArgs(), instructions, Lib.NewList[AST.Meta](), &varCount, &postCount)
+		parseTerms(
+			getFunctionalArguments(p.GetTyArgs(), p.GetArgs()),
+			instructions,
+			Lib.NewList[AST.Meta](),
+			&varCount,
+			&postCount,
+		)
 		instructions.add(End{})
 	}
 }
@@ -227,7 +240,8 @@ func parseTerms(
 					*postCount++
 				}
 				instructions.add(Down{})
-				subst = parseTerms(t.GetArgs(), instructions, subst, varCount, postCount)
+				subTerms := getFunctionalArguments(t.GetTyArgs(), t.GetArgs())
+				subst = parseTerms(subTerms, instructions, subst, varCount, postCount)
 				if rightDefined(terms, i) {
 					*postCount--
 					instructions.add(Pop{*postCount})

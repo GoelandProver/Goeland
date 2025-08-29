@@ -37,7 +37,6 @@ package Core
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
 )
 
 /******************/
@@ -86,8 +85,6 @@ func ShowKindOfRule(f AST.Form) KindOfRule {
 			res = Gamma
 		case AST.All:
 			res = Delta
-		case AST.AllType:
-			Glob.Anomaly("Kind of rule", "not forall(type) found when it shouldn't happen.")
 		}
 	case AST.And:
 		res = Alpha
@@ -95,7 +92,7 @@ func ShowKindOfRule(f AST.Form) KindOfRule {
 		res = Beta
 	case AST.Ex:
 		res = Delta
-	case AST.All, AST.AllType:
+	case AST.All:
 		res = Gamma
 	}
 	return res
