@@ -7,7 +7,7 @@ def Out(command):
     result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8')
     return result.stdout
 
-def LaunchTest(prover_name, command_line, iscoq, success, file, outdir, memory_limit=None, failure=None):
+def LaunchTest(prover_name, command_line, isrocq, success, file, outdir, memory_limit=None, failure=None):
     output = Out(command_line).encode('utf-8', errors='ignore').decode(errors='ignore')
     res = 0
 
@@ -20,7 +20,7 @@ def LaunchTest(prover_name, command_line, iscoq, success, file, outdir, memory_l
         with open(outdir + "/" + file + ".proof", "w") as f:
             write = False
             for i, line in enumerate(output.split("\n")) :
-                if "% Start Coq proof." in line :
+                if "% Start Rocq proof." in line :
                     write = False
                     lines = output.split("\n")[i+1:]
                 if write :
@@ -34,10 +34,10 @@ def LaunchTest(prover_name, command_line, iscoq, success, file, outdir, memory_l
                     write = False
                 if write :
                     f.write(line + "\n")
-        if iscoq:
-            coq_output = run(f"coqc -vok {outdir}/{file}.v", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8').stderr
-            if "Error" in coq_output:
-                print("A proof has been output but it's not a valid coq proof.")
+        if isrocq:
+            rocq_output = run(f"rocq compile -vok {outdir}/{file}.v", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8').stderr
+            if "Error" in rocq_output:
+                print("A proof has been output but it's not a valid rocq proof.")
                 res = 2
     else:
         if re.search("panic", output) :
@@ -49,7 +49,7 @@ def LaunchTest(prover_name, command_line, iscoq, success, file, outdir, memory_l
     return res
 
 if len(sys.argv) < 6: 
-    print(f"python3 {sys.argv[0]} exec problem_folder timeout outdir coq goeland_options")
+    print(f"python3 {sys.argv[0]} exec problem_folder timeout outdir rocq goeland_options")
 
 else:
     exe = sys.argv[1]
@@ -62,12 +62,12 @@ else:
     outdir  = sys.argv[4]
 
     opt = int(sys.argv[5])
-    iscoq = False
+    isrocq = False
     compare = False
     proofOptions = ""
     if opt > 0 :
-        iscoq = True
-        proofOptions = "-ocoq -context"
+        isrocq = True
+        proofOptions = "-orocq -context"
         if opt == 2:
             proofOptions += " -compare"
     else :
@@ -89,7 +89,7 @@ else:
         res = LaunchTest(
             "Goéland", 
             f"timeout {timeout} {exe} {proofOptions} {args} {folder+file}", 
-            iscoq, 
+            isrocq,
             "% RES : VALID", 
             file, 
             outdir, 

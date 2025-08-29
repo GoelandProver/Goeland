@@ -31,7 +31,7 @@ The most commonly used options of Goéland are the following ones.
 | -dmt | Enables deduction modulo theory. |
 | -dmt_before_eq | Enables dmt rewriting-steps before equality. |
 | -eagereq | Run equality reasoning every time a new (in)equality is added to the branch. |
-| -flatten | Flattens AND and OR formulas. Incompatible with `-ocoq`, `-osctptp`, `-olp`. |
+| -flatten | Flattens AND and OR formulas. Incompatible with `-orocq`, `-osctptp`, `-olp`. |
 | -h | Displays the help text with all the options. |
 | -incr | Enables the incremental search algorithm. |
 | -increq | Run equality reasoning incrementally. |
@@ -50,9 +50,9 @@ Goéland has multiple proof outputs:
 
 | Parameter flag | Effect |
 |--------------------------|-----------|
-| -chrono | Should only be used with the `-ocoq` or the `-olp` parameters. Enables the chronometer for deskolemization and proof translation. |
-| -context | Get the current proof system prelude. Only outputs something if paired with the `-ocoq` or the `-olp` parameters. |
-| -ocoq | Enables the Coq format for proofs instead of text. |
+| -chrono | Should only be used with the `-orocq` or the `-olp` parameters. Enables the chronometer for deskolemization and proof translation. |
+| -context | Get the current proof system prelude. Only outputs something if paired with the `-orocq` or the `-olp` parameters. |
+| -orocq | Enables the Rocq format for proofs instead of text. |
 | -olp | Enables the Lambdapi format for proofs instead of text. |
 | -otptp | Enables the TPTP format for proofs instead of text. |
 | -osctptp | Enables the SC-TPTP format for proofs instead of text. |
