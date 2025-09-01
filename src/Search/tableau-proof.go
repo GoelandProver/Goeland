@@ -31,40 +31,52 @@
 **/
 
 /**
- * This file offers [Int], a wrapper around [int] that allows for writing
- * methods over integers.
+ * This file provides an interface to ease communication between proof structures.
  **/
 
-package Lib
+package Search
 
 import (
-	"fmt"
+	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
-type Int int
+type TableauxRule int
+type TableauxRuleKind int
 
-func (s Int) Equals(oth any) bool {
-	if str, ok := oth.(Int); ok {
-		return s == str
-	}
-	return false
-}
+const (
+	RuleClosure TableauxRule = iota
+	RuleImp
+	RuleAnd
+	RuleOr
+	RuleEqu
+	RuleEx
+	RuleAll
+	RuleNotNot
+	RuleNotImp
+	RuleNotAnd
+	RuleNotOr
+	RuleNotEqu
+	RuleNotEx
+	RuleNotAll
+	RuleReintro
+	RuleRew
+)
 
-func (s Int) Less(oth any) bool {
-	if str, ok := oth.(Int); ok {
-		return s < str
-	}
-	return false
-}
+const (
+	KindAlpha TableauxRuleKind = iota
+	KindBeta
+	KindDelta
+	KindGamma
+	KindRew
+)
 
-func (s Int) Copy() Int {
-	return Int(s)
-}
-
-func (s Int) ToString() string {
-	return fmt.Sprintf("%d", s)
-}
-
-func MkInt(s int) Int {
-	return Int(s)
+type IProof interface {
+	AppliedOn() AST.Form
+	RuleApplied() TableauxRule
+	KindOfRule() TableauxRuleKind
+	ResultFormulas() Lib.List[Lib.List[AST.Form]]
+	Children() Lib.List[IProof]
+	RewrittenWith() Lib.Option[AST.Form]
+	TermGenerated() Lib.Option[Lib.Either[AST.Ty, AST.Term]]
 }
