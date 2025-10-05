@@ -383,7 +383,7 @@ func makeProofStructFrom(f, nf AST.Form, rule Rule) Search.ProofStruct {
 				nf,
 				Lib.NewList[AST.Term]()),
 			))}
-	proofStruct.Rule_name = ruleToTableauxString(rule)
+	proofStruct.Rule_name = rule.ToString()
 	return proofStruct
 }
 

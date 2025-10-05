@@ -75,6 +75,9 @@ func RemoveSuperfluousParenthesesAction(connectives PrinterConnective) PrinterAc
 		actionOnMeta:     func(s string, index int) string { return s },
 		actionOnType:     func(s string) string { return s },
 		actionOnTypedVar: func(p Lib.Pair[string, Ty]) string { return p.Fst },
+		actionOnFunctional: func(id Id, tys Lib.List[string], args Lib.List[string]) string {
+			return connectives.DefaultOnFunctionalArgs(id, tys, args)
+		},
 	}
 }
 
@@ -91,5 +94,8 @@ func SanitizerAction(connectives PrinterConnective, forbidden_chars []string) Pr
 		actionOnMeta:     func(s string, index int) string { return s },
 		actionOnType:     func(s string) string { return s },
 		actionOnTypedVar: func(p Lib.Pair[string, Ty]) string { return p.Fst },
+		actionOnFunctional: func(id Id, tys Lib.List[string], args Lib.List[string]) string {
+			return connectives.DefaultOnFunctionalArgs(id, tys, args)
+		},
 	}
 }

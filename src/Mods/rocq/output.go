@@ -121,6 +121,7 @@ func RocqPrinterAction() AST.PrinterAction {
 		func(typed_var Lib.Pair[string, AST.Ty]) string {
 			return fmt.Sprintf("(%s : %s)", typed_var.Fst, sanitize_type(typed_var.Snd.ToString()))
 		},
+		connectives.DefaultOnFunctionalArgs,
 	)
 	rocq_action = rocq_action.Compose(AST.SanitizerAction(connectives, []string{"@"}))
 	return rocq_action.Compose(AST.RemoveSuperfluousParenthesesAction(connectives))

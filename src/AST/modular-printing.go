@@ -63,12 +63,13 @@ import (
 var printer_debug Glob.Debugger
 
 type PrinterAction struct {
-	genericAction    func(string) string // Always executed
-	actionOnId       func(Id) string
-	actionOnBoundVar func(string, int) string
-	actionOnMeta     func(string, int) string
-	actionOnType     func(string) string
-	actionOnTypedVar func(Lib.Pair[string, Ty]) string
+	genericAction      func(string) string // Always executed
+	actionOnId         func(Id) string
+	actionOnBoundVar   func(string, int) string
+	actionOnMeta       func(string, int) string
+	actionOnType       func(string) string
+	actionOnTypedVar   func(Lib.Pair[string, Ty]) string
+	actionOnFunctional func(id Id, tys Lib.List[string], args Lib.List[string]) string
 }
 
 func (p PrinterAction) Compose(oth PrinterAction) PrinterAction {
@@ -86,6 +87,9 @@ func (p PrinterAction) Compose(oth PrinterAction) PrinterAction {
 		},
 		actionOnTypedVar: func(pair Lib.Pair[string, Ty]) string {
 			return oth.actionOnTypedVar(Lib.MkPair(p.actionOnTypedVar(pair), pair.Snd))
+		},
+		actionOnFunctional: func(id Id, tys Lib.List[string], args Lib.List[string]) string {
+			return p.actionOnFunctional(id, tys, args) // we can't compose that
 		},
 	}
 }
@@ -114,6 +118,10 @@ func (p PrinterAction) StrTyVar(pair Lib.Pair[string, Ty]) string {
 	return p.Str(p.actionOnTypedVar(pair))
 }
 
+func (p PrinterAction) StrFunctional(i Id, tys, args Lib.List[string]) string {
+	return p.Str(p.actionOnFunctional(i, tys, args))
+}
+
 func PrinterIdentity(x string) string                         { return x }
 func PrinterIdentityPair[T any](p Lib.Pair[string, T]) string { return p.Fst }
 func PrinterIdentity2[T any](s string, _ T) string            { return s }
@@ -125,8 +133,17 @@ func MkPrinterAction(
 	actionOnMeta func(string, int) string,
 	actionOnType func(string) string,
 	actionOnTypedVar func(Lib.Pair[string, Ty]) string,
+	actionOnFunctional func(id Id, tys Lib.List[string], args Lib.List[string]) string,
 ) PrinterAction {
-	return PrinterAction{genericAction, actionOnId, actionOnBoundVar, actionOnMeta, actionOnType, actionOnTypedVar}
+	return PrinterAction{
+		genericAction,
+		actionOnId,
+		actionOnBoundVar,
+		actionOnMeta,
+		actionOnType,
+		actionOnTypedVar,
+		actionOnFunctional,
+	}
 }
 
 type Connective int
@@ -149,7 +166,10 @@ func (p *PrinterConnective) StrConn(conn Connective) string {
 
 	if val, ok := p.connectives[conn]; ok {
 		printer_debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("Found connective %d in %s as %s", conn, p.name, val) }))
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Found connective %d in %s as %s", conn, p.name, val) },
+			),
+		)
 		return val
 	} else {
 		if p.name == DefaultPrinterConnectives().name {
@@ -161,7 +181,12 @@ func (p *PrinterConnective) StrConn(conn Connective) string {
 	}
 
 	printer_debug(Lib.MkLazy(func() string {
-		return fmt.Sprintf("Connective %d not found in %s, trying in %s", conn, p.name, default_connective.name)
+		return fmt.Sprintf(
+			"Connective %d not found in %s, trying in %s",
+			conn,
+			p.name,
+			default_connective.name,
+		)
 	}))
 	return default_connective.StrConn(conn)
 }
@@ -186,13 +211,23 @@ type Printer struct {
 	*PrinterConnective
 }
 
-func (p Printer) OnFunctionalArgs(i Id, tys, con string, args Lib.List[Term]) string {
-	// Hard-coding of the infix functionals.
-	// It'd maybe be useful to have an [Infix] generic action but I don't see how to do
-	// that for now.
+func (c PrinterConnective) DefaultOnFunctionalArgs(
+	id Id,
+	tys Lib.List[string],
+	args Lib.List[string],
+) string {
 	infix := Lib.MkListV(Id_eq)
-	is_infix := Lib.ListMem(i, infix)
-	arguments := Lib.ListToString(args, Lib.WithSep(p.StrConn(SepArgs)), Lib.WithEmpty(""))
+	is_infix := Lib.ListMem(id, infix)
+	types := Lib.ListToString(
+		Lib.ListMap(tys, Lib.MkString),
+		Lib.WithSep(c.StrConn(SepTyArgs)),
+		Lib.WithEmpty(""),
+	)
+	arguments := Lib.ListToString(
+		Lib.ListMap(args, Lib.MkString),
+		Lib.WithSep(c.StrConn(SepArgs)),
+		Lib.WithEmpty(""),
+	)
 
 	if is_infix {
 		// We expect to have between two and three arguments in an infix function
@@ -205,12 +240,17 @@ func (p Printer) OnFunctionalArgs(i Id, tys, con string, args Lib.List[Term]) st
 			))
 		}
 		st := args.Len() - 2
-		return fmt.Sprintf("%s %s %s", args.At(st).ToString(), i.ToString(), args.At(st+1).ToString())
+		return fmt.Sprintf(
+			"%s %s %s",
+			args.At(st),
+			id.ToString(),
+			args.At(st+1),
+		)
 	} else {
-		if len(tys) > 0 {
-			arguments = tys + con + arguments
+		if tys.Len() > 0 {
+			arguments = types + c.StrConn(SepArgsTyArgs) + arguments
 		}
-		return fmt.Sprintf("%s%s", i.ToString(), p.SurroundArgs(arguments))
+		return fmt.Sprintf("%s%s", id.ToString(), c.SurroundArgs(arguments))
 	}
 }
 

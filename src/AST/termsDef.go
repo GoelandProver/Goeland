@@ -118,11 +118,10 @@ type Fun struct {
 }
 
 func (f Fun) ToString() string {
-	return printer.OnFunctionalArgs(
+	return printer.StrFunctional(
 		f.p,
-		Lib.ListToString(f.tys, Lib.WithSep(printer.StrConn(SepTyArgs)), Lib.WithEmpty("")),
-		printer.StrConn(SepArgsTyArgs),
-		f.args,
+		Lib.ListMap(f.tys, Ty.ToString),
+		Lib.ListMap(f.args, Term.ToString),
 	)
 }
 

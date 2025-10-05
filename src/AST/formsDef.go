@@ -38,6 +38,7 @@ package AST
 
 import (
 	"fmt"
+
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
@@ -467,11 +468,11 @@ func (e Equ) GetMetas() Lib.Set[Meta] {
 }
 
 func (e Equ) ToString() string {
-	return fmt.Sprintf("%s %s %s",
+	return printer.Str(fmt.Sprintf("%s %s %s",
 		printer.Str(printer.SurroundChild(e.f1.ToString())),
 		printer.StrConn(ConnEqu),
 		printer.Str(printer.SurroundChild(e.f2.ToString())),
-	)
+	))
 }
 
 func (e Equ) Equals(f any) bool {
@@ -526,7 +527,11 @@ func (e Equ) GetChildFormulas() Lib.List[Form] {
 }
 
 func (e Equ) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeEqu(e.GetIndex(), e.f1.ReplaceMetaByTerm(meta, term), e.f2.ReplaceMetaByTerm(meta, term))
+	return MakeEqu(
+		e.GetIndex(),
+		e.f1.ReplaceMetaByTerm(meta, term),
+		e.f2.ReplaceMetaByTerm(meta, term),
+	)
 }
 
 // -----------------------------------------------------------------------------
@@ -579,11 +584,11 @@ func (i Imp) GetMetas() Lib.Set[Meta] {
 }
 
 func (i Imp) ToString() string {
-	return fmt.Sprintf("%s %s %s",
+	return printer.Str(fmt.Sprintf("%s %s %s",
 		printer.Str(printer.SurroundChild(i.f1.ToString())),
 		printer.StrConn(ConnImp),
 		printer.Str(printer.SurroundChild(i.f2.ToString())),
-	)
+	))
 }
 
 func (i Imp) Equals(other any) bool {
@@ -641,7 +646,11 @@ func (i Imp) GetChildFormulas() Lib.List[Form] {
 }
 
 func (i Imp) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeImp(i.GetIndex(), i.f1.ReplaceMetaByTerm(meta, term), i.f2.ReplaceMetaByTerm(meta, term))
+	return MakeImp(
+		i.GetIndex(),
+		i.f1.ReplaceMetaByTerm(meta, term),
+		i.f2.ReplaceMetaByTerm(meta, term),
+	)
 }
 
 // -----------------------------------------------------------------------------
@@ -704,10 +713,10 @@ func (n Not) Copy() Form {
 }
 
 func (n Not) ToString() string {
-	return fmt.Sprintf("%s%s",
+	return printer.Str(fmt.Sprintf("%s%s",
 		printer.StrConn(ConnNot),
 		printer.Str(printer.SurroundChild(n.f.ToString())),
-	)
+	))
 }
 
 func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -845,11 +854,10 @@ func (p Pred) GetArgs() Lib.List[Term] { return p.args }
 func (p Pred) RenameVariables() Form { return p }
 
 func (p Pred) ToString() string {
-	return printer.OnFunctionalArgs(
+	return printer.StrFunctional(
 		p.id,
-		Lib.ListToString(p.tys, Lib.WithSep(printer.StrConn(SepTyArgs)), Lib.WithEmpty("")),
-		printer.StrConn(SepArgsTyArgs),
-		p.args,
+		Lib.ListMap(p.tys, Ty.ToString),
+		Lib.ListMap(p.args, Term.ToString),
 	)
 }
 
