@@ -467,11 +467,11 @@ func (e Equ) GetMetas() Lib.Set[Meta] {
 }
 
 func (e Equ) ToString() string {
-	return fmt.Sprintf("%s %s %s",
+	return printer.Str(fmt.Sprintf("%s %s %s",
 		printer.Str(printer.SurroundChild(e.f1.ToString())),
 		printer.StrConn(ConnEqu),
 		printer.Str(printer.SurroundChild(e.f2.ToString())),
-	)
+	))
 }
 
 func (e Equ) Equals(f any) bool {
@@ -579,11 +579,11 @@ func (i Imp) GetMetas() Lib.Set[Meta] {
 }
 
 func (i Imp) ToString() string {
-	return fmt.Sprintf("%s %s %s",
+	return printer.Str(fmt.Sprintf("%s %s %s",
 		printer.Str(printer.SurroundChild(i.f1.ToString())),
 		printer.StrConn(ConnImp),
 		printer.Str(printer.SurroundChild(i.f2.ToString())),
-	)
+	))
 }
 
 func (i Imp) Equals(other any) bool {
@@ -704,10 +704,10 @@ func (n Not) Copy() Form {
 }
 
 func (n Not) ToString() string {
-	return fmt.Sprintf("%s%s",
+	return printer.Str(fmt.Sprintf("%s%s",
 		printer.StrConn(ConnNot),
 		printer.Str(printer.SurroundChild(n.f.ToString())),
-	)
+	))
 }
 
 func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -845,11 +845,10 @@ func (p Pred) GetArgs() Lib.List[Term] { return p.args }
 func (p Pred) RenameVariables() Form { return p }
 
 func (p Pred) ToString() string {
-	return printer.OnFunctionalArgs(
+	return printer.StrFunctional(
 		p.id,
-		Lib.ListToString(p.tys, printer.StrConn(SepTyArgs), ""),
-		printer.StrConn(SepArgsTyArgs),
-		p.args,
+		Lib.ListMap(p.tys, Ty.ToString),
+		Lib.ListMap(p.args, Term.ToString),
 	)
 }
 

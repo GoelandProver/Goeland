@@ -34,60 +34,51 @@ package lambdapi
 import (
 	"fmt"
 
+	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
-var varCounter int
+var global_env Lib.List[Lib.Pair[string, AST.Ty]] = Lib.NewList[Lib.Pair[string, AST.Ty]]()
 
-func getIncreasedCounter() int {
-	varCounter++
-	return varCounter - 1
+func toLocalVar(i int) string {
+	return fmt.Sprintf("v%d", i)
 }
 
-var context Glob.Map[Glob.Basic, Glob.String] = *Glob.NewMap[Glob.Basic, Glob.String]()
+func addToLocalContext(form AST.Form, local_con Lib.List[AST.Form]) (string, Lib.List[AST.Form]) {
+	index := local_con.Len()
+	local_con.Append(form)
+	return toLocalVar(index), local_con
+}
 
-func addToContext(key Glob.Basic) string {
-	if _, ok := context.GetExists(key); !ok {
-		context.Set(key, Glob.String(fmt.Sprintf("v%v", getIncreasedCounter())))
+func getFromLocalContext(form AST.Form, local_con Lib.List[AST.Form]) string {
+	opt_int := Lib.ListIndexOf(form, local_con)
+
+	switch index := opt_int.(type) {
+	case Lib.Some[int]:
+		return toLocalVar(index.Val)
+	case Lib.None[int]:
+		debug(Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Trying to find %s in local context %s",
+				form.ToString(),
+				Lib.ListToString(local_con, ", ", "{}"),
+			)
+		}))
+		Glob.Anomaly("LambdaPi", "a formula was not found in the local context while translating")
 	}
-
-	return string(context.Get(key))
+	return ""
 }
 
-func getFromContext(key Glob.Basic) string {
-	return string(context.Get(key))
+func addToGlobalEnv(p Lib.Pair[string, AST.Ty]) {
+	global_env.Append(p)
 }
 
-func toLambdaString(element Glob.Basic, str string) string {
-	return fmt.Sprintf("λ (%s : ϵ (%s))", addToContext(element), str)
+func searchGlobalEnv(ty AST.Ty) Lib.Option[string] {
+	for _, p := range global_env.GetSlice() {
+		if p.Snd.Equals(ty) {
+			return Lib.MkSome(p.Fst)
+		}
+	}
+	return Lib.MkNone[string]()
 }
-
-func toLambdaIntroString(element Glob.Basic, typeStr string) string {
-	return fmt.Sprintf("λ (%s : τ (%s))", addToContext(element), mapDefault(typeStr))
-}
-
-// func toCorrectString(element AST.MappableString) string {
-// 	isNotSkolem := len(element.ToString()) <= 5 || element.ToString()[:6] != "skolem"
-// 	element = decorateForm(element)
-// 	surround := element.ToMappedStringSurround(lambdaPiMapConnectors, false)
-// 	separator, emptyValue := element.ToMappedStringChild(lambdaPiMapConnectors, false)
-// 	children := ""
-// 	if isNotSkolem {
-// 		children = ListToMappedString(element.GetChildrenForMappedString(), separator, emptyValue)
-// 	}
-// 	return fmt.Sprintf(surround, children)
-// }
-
-// func ListToMappedString[T AST.MappableString](children []T, separator, emptyValue string) string {
-// 	strArr := []string{}
-
-// 	for _, element := range children {
-// 		strArr = append(strArr, toCorrectString(element))
-// 	}
-
-// 	if len(strArr) == 0 && emptyValue != "" {
-// 		strArr = append(strArr, emptyValue)
-// 	}
-
-// 	return strings.Join(strArr, separator)
-// }

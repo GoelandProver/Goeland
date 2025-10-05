@@ -1,5 +1,5 @@
 .POSIX:
-SRC =
+SRC = CCC.lp FOL.lp GS3.lp ICC.lp LL.lp LL_ND.lp ND_eps_aux.lp ND_eps_full.lp ND_eps.lp ND.lp
 OBJ = $(SRC:.lp=.lpo)
 .SUFFIXES:
 

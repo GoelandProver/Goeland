@@ -38,89 +38,99 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Mods/CertifUtils"
 	"github.com/GoelandProver/Goeland/Mods/gs3"
 )
 
 func makeLambdaPiProofFromGS3(proof *gs3.GS3Sequent) string {
-	axioms, conjecture := processMainFormula(proof.GetTargetForm())
-	var resultingString string
-
-	resultingString = makeTheorem(axioms, conjecture)
-
 	formula := proof.GetTargetForm()
+	axioms, conjecture := processMainFormula(formula)
 
-	formulaStr := formula.ToString()
-	resultingString += fmt.Sprintf("λ (%s : ϵ %s),\n", addToContext(formula), formulaStr)
-	proofStr := makeProofStep(proof)
-	resultingString += proofStr
-
-	return resultingString + ";\n"
+	resulting_string, to_introduce := makeTheorem(axioms, conjecture)
+	context := Lib.NewList[AST.Form]()
+	resulting_string += "begin\n  "
+	str, local_context := assume(to_introduce, context)
+	if to_introduce.Len() != 1 {
+		proof = proof.Child(0)
+	}
+	return resulting_string + str + makeProofStep(proof, local_context) + "end;\n"
 }
 
-func makeProofStep(proof *gs3.GS3Sequent) string {
+func makeProofStep(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
 	var resultingString string
 	switch proof.Rule() {
-	// Closure.
 	case gs3.AX:
-		resultingString = closureAxiom(proof)
-
-	// Alpha rules
+		resultingString = closureAxiom(proof, context)
 	case gs3.NNOT:
-		resultingString = alphaNotNot(proof)
+		resultingString = alphaNotNot(proof, context)
 	case gs3.AND:
-		resultingString = alphaAnd(proof)
+		resultingString = alphaAnd(proof, context)
 	case gs3.NOR:
-		resultingString = alphaNotOr(proof)
+		resultingString = alphaNotOr(proof, context)
 	case gs3.NIMP:
-		resultingString = alphaNotImp(proof)
-
-	// Beta rules
+		resultingString = alphaNotImp(proof, context)
 	case gs3.OR:
-		resultingString = betaOr(proof)
+		resultingString = betaOr(proof, context)
 	case gs3.NAND:
-		resultingString = betaNotAnd(proof)
+		resultingString = betaNotAnd(proof, context)
 	case gs3.IMP:
-		resultingString = betaImp(proof)
+		resultingString = betaImp(proof, context)
 	case gs3.EQU:
-		resultingString = betaEqu(proof)
+		resultingString = betaEqu(proof, context)
 	case gs3.NEQU:
-		resultingString = betaNotEqu(proof)
-
-		// Delta rules
+		resultingString = betaNotEqu(proof, context)
 	case gs3.EX:
-		resultingString = deltaEx(proof)
+		resultingString = deltaEx(proof, context)
 	case gs3.NALL:
-		resultingString = deltaNotAll(proof)
-
-	// Gamma rules
+		resultingString = deltaNotAll(proof, context)
 	case gs3.ALL:
-		resultingString = gammaAll(proof)
+		resultingString = gammaAll(proof, context)
 	case gs3.NEX:
-		resultingString = gammaNotEx(proof)
-
-	// Weakening rule
-	case gs3.W:
-		Glob.PrintError("LP", "Trying to do a weakening rule but it's not implemented yet")
+		resultingString = gammaNotEx(proof, context)
+	default:
+		Glob.Fatal("LambdaPi", fmt.Sprintf("Translation of rule %s not implemented yet", proof.Rule().ToString()))
 	}
 
-	return "//" + proof.GetTargetForm().ToString() + "\n" + resultingString
+	return resultingString
 }
 
-func closureAxiom(proof *gs3.GS3Sequent) string {
-	target, notTarget := getPosAndNeg(proof.GetTargetForm())
+func assume(formulas Lib.List[AST.Form], context Lib.List[AST.Form]) (string, Lib.List[AST.Form]) {
+	resulting_string := "  assume"
+	for _, form := range formulas.GetSlice() {
+		val, con := addToLocalContext(form, context)
+		resulting_string += fmt.Sprintf(" %s", val)
+		context = con
+	}
+	return resulting_string + ";\n", context
+}
 
-	result := ""
+func refine(lemma string, arguments Lib.List[string], in_con string, goals int) string {
+	arguments_string := strings.Join(arguments.GetSlice(), " ")
+	goals_string := strings.Repeat("_ ", goals)
+	return fmt.Sprintf("  refine %s %s %s %s\n", lemma, arguments_string, goals_string, in_con)
+}
 
-	switch target.(type) {
-	case AST.Pred:
-		result = fmt.Sprintf("GS3axiom (%s) (%s) (%s)\n", target.ToString(), getFromContext(target), getFromContext(notTarget))
-	case AST.Top:
-		result = fmt.Sprintf("GS3ntop (%s)\n", getFromContext(notTarget))
-	case AST.Bot:
-		result = fmt.Sprintf("GS3bot (%s)\n", getFromContext(target))
+func closureAxiom(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	if CertifUtils.IsPredEqual(proof.GetTargetForm()) {
+		Glob.Fatal("LambdaPi", "congruence closure is not implemented yet")
 	}
 
-	return result
+	target, notTarget := getPosAndNeg(proof.GetTargetForm())
+	result := ""
+	switch target.(type) {
+	case AST.Pred:
+		result = refine("GS3axiom", Lib.MkListV(
+			"("+target.ToString()+")",
+			getFromLocalContext(target, context),
+			getFromLocalContext(notTarget, context),
+		), "", 0)
+	case AST.Top:
+		result = refine("GS3ntop", Lib.MkListV(getFromLocalContext(notTarget, context)), "", 0)
+	case AST.Bot:
+		result = refine("GS3bot", Lib.MkListV(getFromLocalContext(target, context)), "", 0)
+	}
+
+	return result + ";"
 }
 
 func getPosAndNeg(target AST.Form) (pos, neg AST.Form) {
@@ -130,230 +140,228 @@ func getPosAndNeg(target AST.Form) (pos, neg AST.Form) {
 	return target, AST.MakerNot(target)
 }
 
-func allRules(rule string, target AST.Form, composingForms Lib.List[AST.Form], nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form]) string {
-	result := rule + "\n"
+func refineGenericRule(lemma string, proof *gs3.GS3Sequent, remaining_goals int, context Lib.List[AST.Form]) string {
+	formulas_list := Lib.NewList[string]()
 
-	for _, composingForm := range composingForms.GetSlice() {
-		result += "(" + composingForm.ToString() + ")\n"
-	}
-
-	result += getRecursionUnivStr(nexts, children)
-
-	result += fmt.Sprintf("(%s)\n", getFromContext(target))
-
-	return result
-}
-
-func allRulesQuantUniv(
-	rule string,
-	target AST.Form,
-	composingForms Lib.List[AST.Form],
-	nexts []*gs3.GS3Sequent,
-	children []Lib.List[AST.Form],
-	vars Lib.List[AST.TypedVar],
-	termGen AST.Term,
-) string {
-
-	quant := ""
-	typeStr := ""
-	// FIXME get printer
-	// switch target.(type) {
-	// case AST.Ex:
-	// 	quant = AST.ConnAll
-	// case AST.Not:
-	// 	quant = AST.ConnEx
-	// }
-
-	typeStr = mapDefault(typeStr)
-
-	result := rule + "\n"
-	result += "(" + typeStr + ")\n"
-	result += "(%s, " + composingForms.At(0).ToString() + ")\n"
-
-	varStrs := []string{}
-	for _, singleVar := range vars.GetSlice() {
-		varStrs = append(varStrs, toLambdaIntroString(singleVar, ""))
-	}
-	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
-
-	result += "(" + termGen.ToString() + ")\n"
-
-	result += getRecursionUnivStr(nexts, children)
-
-	result += fmt.Sprintf("(%s)\n", getFromContext(target))
-
-	return result
-}
-
-func getRecursionUnivStr(nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form]) (result string) {
-	for i, next := range nexts {
-		result += "(\n"
-		for _, childForm := range children[i].GetSlice() {
-			result += toLambdaString(childForm, childForm.ToString()) + ",\n"
+	// If a term was generated, get its type and place the stuff in the right order: the type of
+	// the generated term, the formula and then the term.
+	if gs3.IsGammaRule(proof.Rule()) || gs3.IsDeltaRule(proof.Rule()) {
+		ty := getTypeOfFirstBoundVar(proof.GetTargetForm())
+		formated_child := getFormattedChild(proof.GetTargetForm())
+		formulas_list = Lib.MkListV("("+strings.ReplaceAll(ty.ToString(), "τ", "")+")", "("+formated_child+")")
+		if gs3.IsGammaRule(proof.Rule()) {
+			// FIXME: use an option type instead of nil
+			if proof.TermGenerated() != nil {
+				formulas_list.Append(getFormattedTerm(proof.TermGenerated()))
+			} else {
+				// Try to find something in the global env, otherwise: fail
+				// FIXME: we should also try to find something in the local (term) environment
+				//       (this does not exist yet)
+				switch term := searchGlobalEnv(ty).(type) {
+				case Lib.Some[string]:
+					formulas_list.Append(term.Val)
+				default:
+					Glob.Fatal("LambdaPi", fmt.Sprintf(
+						"no term of type %s available to instantiate the universal formula %s.",
+						ty.ToString(),
+						proof.GetTargetForm().ToString(),
+					))
+				}
+			}
 		}
-		proofStr := makeProofStep(next)
-		result += proofStr
-		result += ")\n"
-	}
-	return result
-}
-
-func allRulesQuantExist(
-	rule string,
-	target AST.Form,
-	composingForms Lib.List[AST.Form],
-	nexts []*gs3.GS3Sequent,
-	children []Lib.List[AST.Form],
-	vars Lib.List[AST.TypedVar],
-	termGen AST.Term,
-) string {
-	quant := ""
-	typeStr := ""
-	// FIXME get printer
-	// switch target.(type) {
-	// case AST.Ex:
-	// 	quant = AST.ConnAll
-	// case AST.Not:
-	// 	quant = AST.ConnEx
-	// }
-
-	typeStr = mapDefault(typeStr)
-
-	result := rule + "\n"
-	result += "(" + typeStr + ")\n"
-	result += "(%s, " + composingForms.At(0).ToString() + ")\n"
-
-	varStrs := []string{}
-	for _, singleVar := range vars.GetSlice() {
-		varStrs = append(varStrs, toLambdaIntroString(singleVar, ""))
-	}
-	result = fmt.Sprintf(result, strings.Join(varStrs, ", "+quant+" "))
-
-	result += getRecursionExistStr(nexts, children, termGen)
-
-	result += fmt.Sprintf("(%s)\n", getFromContext(target))
-
-	return result
-}
-
-func getRecursionExistStr(nexts []*gs3.GS3Sequent, children []Lib.List[AST.Form], termGen AST.Term) (result string) {
-	for i, next := range nexts {
-		result += "(\n"
-		typesStr := ""
-		if _, ok := termGen.(AST.Fun); ok {
-			typesStr = mapDefault("")
+	} else {
+		child_formulas := proof.GetTargetForm().GetChildFormulas()
+		switch f := proof.GetTargetForm().(type) {
+		case AST.Not:
+			child_formulas = f.GetForm().GetChildFormulas()
 		}
-		result += toLambdaIntroString(termGen, typesStr) + ",\n"
-		for _, childForm := range children[i].GetSlice() {
-			result += toLambdaString(childForm, childForm.ToString()) + ",\n"
-		}
-		proofStr := makeProofStep(next)
-		result += proofStr
-		result += ")\n"
-	}
-	return result
-}
-
-func alphaNotNot(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
-	return allRules("GS3nnot", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
-}
-
-func alphaAnd(proof *gs3.GS3Sequent) string {
-	return allRules("GS3and", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren())
-}
-
-func alphaNotOr(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
-	return allRules("GS3nor", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
-}
-
-func alphaNotImp(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
-	return allRules("GS3nimp", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
-}
-
-func betaOr(proof *gs3.GS3Sequent) string {
-	return allRules("GS3or", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren())
-}
-
-func betaNotAnd(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
-	return allRules("GS3nand", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
-}
-
-func betaImp(proof *gs3.GS3Sequent) string {
-	return allRules("GS3imp", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren())
-}
-
-func betaEqu(proof *gs3.GS3Sequent) string {
-	return allRules("GS3equ", proof.GetTargetForm(), proof.GetTargetForm().GetChildFormulas(), proof.Children(), proof.GetResultFormulasOfChildren())
-}
-
-func betaNotEqu(proof *gs3.GS3Sequent) string {
-	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
-	return allRules("GS3nequ", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren())
-}
-
-func deltaEx(proof *gs3.GS3Sequent) string {
-	var formulaEx AST.Ex
-	if form, ok := proof.GetTargetForm().(AST.Ex); ok {
-		formulaEx = form
-	}
-
-	return allRulesQuantExist(
-		"GS3ex",
-		proof.GetTargetForm(),
-		proof.GetTargetForm().GetChildFormulas(),
-		proof.Children(),
-		proof.GetResultFormulasOfChildren(),
-		formulaEx.GetVarList(),
-		proof.TermGenerated(),
-	)
-}
-
-func deltaNotAll(proof *gs3.GS3Sequent) string {
-	var formulaAll AST.All
-	if notForm, ok := proof.GetTargetForm().(AST.Not); ok {
-		if form, ok := notForm.GetForm().(AST.All); ok {
-			formulaAll = form
+		for _, form := range child_formulas.GetSlice() {
+			formulas_list.Append("(" + form.ToString() + ")")
 		}
 	}
-	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
 
-	return allRulesQuantExist("GS3nall", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaAll.GetVarList(), proof.TermGenerated())
-}
+	result_string := refine(lemma, formulas_list, getFromLocalContext(proof.GetTargetForm(), context), remaining_goals)
 
-func gammaAll(proof *gs3.GS3Sequent) string {
-	var formulaAll AST.All
-	if form, ok := proof.GetTargetForm().(AST.All); ok {
-		formulaAll = form
+	if remaining_goals <= 1 {
+		result_string = result_string[:len(result_string)-1] + ";\n"
+		assumptions, con := assume(proof.GetResultFormulasOfChild(0), Lib.ListCpy(context))
+		if gs3.IsDeltaRule(proof.Rule()) {
+			assumptions = fmt.Sprintf("assume %s;", getFormattedTerm(proof.TermGenerated())) + assumptions
+		}
+		result_string += assumptions
+		result_string += makeProofStep(proof.Child(0), con)
+	} else {
+		for i := 0; i < remaining_goals; i++ {
+			result_string += "{\n"
+			assumptions, con := assume(proof.GetResultFormulasOfChild(i), Lib.ListCpy(context))
+			result_string += assumptions
+			result_string += makeProofStep(proof.Child(i), con)
+			result_string += "}\n"
+		}
+		result_string = result_string[:len(result_string)-1] + ";\n"
 	}
-
-	return allRulesQuantUniv(
-		"GS3all",
-		proof.GetTargetForm(),
-		proof.GetTargetForm().GetChildFormulas(),
-		proof.Children(),
-		proof.GetResultFormulasOfChildren(),
-		formulaAll.GetVarList(),
-		proof.TermGenerated(),
-	)
+	return result_string
 }
 
-func gammaNotEx(proof *gs3.GS3Sequent) string {
-	var formulaEx AST.Ex
-	if notForm, ok := proof.GetTargetForm().(AST.Not); ok {
-		if form, ok := notForm.GetForm().(AST.Ex); ok {
-			formulaEx = form
+func getFormattedTerm(term AST.Term) string {
+	switch t := term.(type) {
+	case AST.Fun:
+		if strings.Contains(t.GetName(), "sko") {
+			return t.GetID().ToString()
 		}
 	}
-	composingForms := proof.GetTargetForm().GetChildFormulas().At(0).GetChildFormulas()
-
-	return allRulesQuantUniv("GS3nex", proof.GetTargetForm(), composingForms, proof.Children(), proof.GetResultFormulasOfChildren(), formulaEx.GetVarList(), proof.TermGenerated())
+	return term.ToString()
 }
 
-// Processes the formula that was proven by Goéland.
+func getTypeOfFirstBoundVar(form AST.Form) AST.Ty {
+	getTySafe := func(var_list Lib.List[AST.TypedVar]) AST.Ty {
+		if var_list.Empty() {
+			debug(Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"Formula %s has no bound variable, cannot get its type",
+					form.ToString(),
+				)
+			}))
+			Glob.Anomaly("LambdaPi", "No bound variable.")
+		}
+		return var_list.At(0).GetTy()
+	}
+
+	switch f := form.(type) {
+	case AST.Not:
+		switch nf := f.GetForm().(type) {
+		case AST.All:
+			return getTySafe(nf.GetVarList())
+		case AST.Ex:
+			return getTySafe(nf.GetVarList())
+		}
+	case AST.All:
+		return getTySafe(f.GetVarList())
+	case AST.Ex:
+		return getTySafe(f.GetVarList())
+	}
+
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf(
+			"Called getTypeOfFirstBoundVar of %s which should have been a quantified formula (or a negation of such a formula)",
+			form.ToString(),
+		)
+	}))
+	Glob.Anomaly("LambdaPi", "Not a quantifier formula")
+	return nil
+}
+
+// Gets the child formula as a λ (bound_var : ty), P
+func getFormattedChild(form AST.Form) string {
+	format := func(var_list Lib.List[AST.TypedVar], f AST.Form, maker func(Lib.List[AST.TypedVar], AST.Form) AST.Form) string {
+		f = maker(var_list.Slice(1, var_list.Len()), f)
+		return fmt.Sprintf(
+			"λ (%s : %s), %s",
+			var_list.At(0).GetName(),
+			var_list.At(0).GetTy().ToString(),
+			f.ToString(),
+		)
+	}
+
+	switch f := form.(type) {
+	case AST.Not:
+		switch nf := f.GetForm().(type) {
+		case AST.All:
+			return format(nf.GetVarList(), nf.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
+				if !vl.Empty() {
+					f = AST.MakerAll(vl, f)
+				}
+				return f
+			})
+		case AST.Ex:
+			return format(nf.GetVarList(), nf.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
+				if !vl.Empty() {
+					f = AST.MakerEx(vl, f)
+				}
+				return f
+			})
+		}
+	case AST.All:
+		return format(f.GetVarList(), f.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
+			if !vl.Empty() {
+				f = AST.MakerAll(vl, f)
+			}
+			return f
+		})
+	case AST.Ex:
+		return format(f.GetVarList(), f.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
+			if !vl.Empty() {
+				f = AST.MakerEx(vl, f)
+			}
+			return f
+		})
+	}
+
+	Glob.Anomaly("LambdaPi", "Not a quantifier formula")
+	return ""
+}
+
+func refineUnaryRule(lemma string, proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineGenericRule(lemma, proof, 1, context)
+}
+
+func refineBinaryRule(lemma string, proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineGenericRule(lemma, proof, 2, context)
+}
+
+func alphaNotNot(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineUnaryRule("GS3nnot", proof, context)
+}
+
+func alphaAnd(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineUnaryRule("GS3and", proof, context)
+}
+
+func alphaNotOr(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineUnaryRule("GS3nor", proof, context)
+}
+
+func alphaNotImp(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineUnaryRule("GS3nimp", proof, context)
+}
+
+func betaOr(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineBinaryRule("GS3or", proof, context)
+}
+
+func betaNotAnd(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineBinaryRule("GS3nand", proof, context)
+}
+
+func betaImp(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineBinaryRule("GS3imp", proof, context)
+}
+
+func betaEqu(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineBinaryRule("GS3equ", proof, context)
+}
+
+func betaNotEqu(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineBinaryRule("GS3nequ", proof, context)
+}
+
+func deltaEx(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineUnaryRule("GS3ex", proof, context)
+}
+
+func deltaNotAll(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineUnaryRule("GS3nall", proof, context)
+}
+
+func gammaAll(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineUnaryRule("GS3all", proof, context)
+}
+
+func gammaNotEx(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+	return refineUnaryRule("GS3nex", proof, context)
+}
+
+// Split the axiom & conjecture formula from the root formula.
 func processMainFormula(form AST.Form) (Lib.List[AST.Form], AST.Form) {
 	formList := Lib.NewList[AST.Form]()
 	switch nf := form.(type) {
@@ -368,20 +376,19 @@ func processMainFormula(form AST.Form) (Lib.List[AST.Form], AST.Form) {
 }
 
 // Prints the theorem's name & properly formats the first formula.
-func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
-	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(Glob.GetProblemName(), ".", "_"), "=", "_"), "+", "_")
+func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) (string, Lib.List[AST.Form]) {
+	problemName := CertifUtils.SanitizedTheoremName()
 	axioms = Lib.ListCpy(axioms)
 	axioms.Append(AST.MakerNot(conjecture))
 	formattedProblem := makeImpChain(axioms)
-	return "symbol goeland_" + problemName + " : \nϵ " + formattedProblem.ToString() + " → ϵ ⊥ ≔ \n"
+	return "symbol goeland_" + problemName + " : \n" + formattedProblem + " → ϵ ⊥ ≔ \n", axioms
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).
-func makeImpChain(forms Lib.List[AST.Form]) AST.Form {
-	last := forms.Len() - 1
-	form := forms.At(last)
-	for i := last - 1; i >= 0; i-- {
-		form = AST.MakerImp(forms.At(i), form)
+func makeImpChain(forms Lib.List[AST.Form]) string {
+	imp_chain := []string{}
+	for _, form := range forms.GetSlice() {
+		imp_chain = append(imp_chain, fmt.Sprintf("ϵ (%s)", form.ToString()))
 	}
-	return form
+	return strings.Join(imp_chain, " → ")
 }

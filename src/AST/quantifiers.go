@@ -81,7 +81,7 @@ func (q quantifier) GetMetas() Lib.Set[Meta] {
 }
 
 func (q quantifier) ToString() string {
-	return fmt.Sprintf(
+	return printer.Str(fmt.Sprintf(
 		"%s %s%s%s",
 		printer.StrConn(q.symbol),
 		printer.SurroundQuantified(
@@ -91,7 +91,7 @@ func (q quantifier) ToString() string {
 		),
 		printer.StrConn(SepVarsForm),
 		printer.Str(q.subForm.ToString()),
-	)
+	))
 }
 
 func (q quantifier) GetChildFormulas() Lib.List[Form] {

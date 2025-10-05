@@ -56,6 +56,7 @@ import (
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 	equality "github.com/GoelandProver/Goeland/Mods/equality/bse"
 	"github.com/GoelandProver/Goeland/Mods/gs3"
+	"github.com/GoelandProver/Goeland/Mods/lambdapi"
 	"github.com/GoelandProver/Goeland/Parser"
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Search/incremental"
@@ -210,6 +211,7 @@ func initDebuggers() {
 	Unif.InitDebugger()
 	Engine.InitDebugger()
 	gs3.InitDebugger()
+	lambdapi.InitDebugger()
 }
 
 // FIXME: eventually, we would want to add an "interpretation" layer between elab and internal representation that does this
