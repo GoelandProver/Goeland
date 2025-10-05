@@ -13,7 +13,7 @@ class Parser:
     RES = "% result: "
     ENV = "% env: "
     EXIT_CODE = "% exit: "
-    no_rocq_check = False
+    no_check = False
 
     def __init__(self, filename):
         self.filename = filename
@@ -24,7 +24,7 @@ class Parser:
 
         args_avoid_chk = ["-proof", "-otptp", "-osctptp"]
         if "no_chk" in filename or self.expectedExitCode != "" or any(arg in self.arguments for arg in args_avoid_chk) or self.expectedResult == "NOT VALID":
-            self.no_rocq_check = True
+            self.no_check = True
 
     def parseGen(self, pat):
         with open(self.filename) as f:
@@ -48,23 +48,20 @@ class Parser:
     def parseExitCode(self):
         self.expectedExitCode = self.parseGen(self.EXIT_CODE).strip()
 
-    def getCommandLine(self):
-        arguments = self.arguments
-        if not self.no_rocq_check:
-            arguments += " -context -orocq"
+    def getCommandLine(self, checker_args):
+        arguments = self.arguments + checker_args
         return self.env + " ../src/_build/goeland " + arguments + " " + self.filename
 
     def getArgsForPrinting(self):
-        rocq_chk_str = ""
-        if self.no_rocq_check:
-            rocq_chk_str = " (no Rocq check)"
-        return self.arguments + rocq_chk_str
+        chk_str = ""
+        if self.no_check:
+            chk_str = " (no check)"
+        return self.arguments + chk_str
 
 def sanitize(s):
     return s.encode('utf-8', errors='ignore').decode(errors='ignore')
 
 def runProver(f, command):
-    print(f"{f}\t{parser.getArgsForPrinting()}")
     result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8')
     return (sanitize(result.stdout), sanitize(result.stderr), result.returncode)
 
@@ -87,6 +84,28 @@ def getRelevantOutput(output):
 def isExecutable(prog) :
     return shutil.which(prog) is not None
 
+def makeGenericCheck(command, extension, cleanup_always, cleanup_compile_success, f, output):
+    check_lines = getRelevantOutput(output)
+    check_success = False
+    filename = os.getcwd() + "/" + os.path.basename(f)[:-2].replace("-", "_")
+
+    with open(f"{filename}.{extension}", "w") as chk_file:
+        chk_file.write("\n".join(check_lines))
+
+    result = run(f"{command} {filename}.{extension}", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8')
+    check_success = result.returncode == 0
+
+    for ext in cleanup_always:
+        os.remove(f"{filename}.{ext}")
+
+    if not check_success:
+        return False, result.stderr
+    else:
+        for ext in cleanup_compile_success:
+            os.remove(f"{filename}.{ext}")
+
+    return True, None
+
 def getRocqCompiler() :
     if isExecutable("rocq"):
         return "rocq compile"
@@ -96,35 +115,29 @@ def getRocqCompiler() :
         raise Exception("No Rocq executable found on the system")
 
 def makeRocqCheck(f, output):
-    rocq = getRocqCompiler()
-    rocq_lines = getRelevantOutput(output)
-    compile_success = False
-    filename = os.getcwd() + "/" + os.path.basename(f)[:-2].replace("-", "_")
-    with open(f"{filename}.v", "w") as tmp:
-        tmp.write("\n".join(rocq_lines))
+    check_status, err = makeGenericCheck(getRocqCompiler(), "v", ["glob"], ["v", "vo", "vok", "vos"], f, output)
 
-    result = run(f"{rocq} {filename}.v", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8')
-    compile_success = result.returncode == 0
-
-    try:
-        os.remove(f"{filename}.glob")
-    except FileNotFoundError:
-        pass
-
-    if not compile_success:
-        print(f"ROCQ compile has failed.")
-        print(f"Reason: {result.stderr}")
+    if not check_status:
+        print(f"ROCQ check has failed.")
+        print(f"Reason: {err}")
         exit(1)
-    else:
-        try:
-            os.remove(f"{filename}.v")
-            os.remove(f"{filename}.vo")
-            os.remove(f"{filename}.vok")
-            os.remove(f"{filename}.vos")
-        except FileNotFoundError:
-            pass
 
-def runWithExpected(f, parser):
+def makeLambdapiCheck(f, output):
+    lp_command = "lambdapi check --lib-root .. --map-dir Logic.Goeland:../proof-certification/LambdaPi"
+    check_status, err = makeGenericCheck(lp_command, "lp", [], ["lp"], f, output)
+
+    # As the lambdapi output does not manage equality, we tolerate fails for the problems
+    # of the test suite that have equality.
+    lp_tolerated_fails = ["TEST_EQ.p", "TEST_EQ2.p", "sankalp.p"]
+
+    if not check_status:
+        if os.path.basename(f) in lp_tolerated_fails:
+            print(f"LAMBDAPI check has failed, but it was expected.")
+        else:
+            print(f"LAMBDAPI check has failed")
+            exit(1)
+
+def runWithExpected(f, parser, checker_args, check_fun):
     """
     Runs Goéland on [f] using the parsed command line, then checks if the output corresponds to the expected one.
     This function manages:
@@ -132,9 +145,10 @@ def runWithExpected(f, parser):
     - results (e.g., VALID, NOT VALID).
 
     If Goéland runs into an unexpected error, we report it. Moreover, if the kind of expected return is a VALID
-    result, we run Rocq to check that the proof is indeed valid (except for files in the no-chk folder).
+    result, we run a checker (specified by checker_args and check_fun) to check that the proof is indeed valid
+    (except for files in the no-chk folder).
     """
-    output, err, exit_code = runProver(f, parser.getCommandLine())
+    output, err, exit_code = runProver(f, parser.getCommandLine(""))
 
     if err != "":
         print(f"Runtime error: {err}")
@@ -155,15 +169,22 @@ def runWithExpected(f, parser):
                 print(f"Error: expected '{parser.expectedResult}', got: '{actual}'")
                 exit(1)
             else:
-                if parser.no_rocq_check: return
-                makeRocqCheck(f, output)
+                if parser.no_check: return
+                output, _, _ = runProver(f, parser.getCommandLine(checker_args))
+                check_fun(f, output)
                 return
 
     print(f"Unknown error: got\n{output}")
     exit(1)
 
+def runWithRocqChk(f, parser):
+    runWithExpected(f, parser, " -context -orocq", makeRocqCheck)
+
+def runWithLpChk(f, parser):
+    runWithExpected(f, parser, " -olp", makeLambdapiCheck)
+
 def compareOutputs(f, parser):
-    output, err, exit_code = runProver(f, parser.getCommandLine())
+    output, err, exit_code = runProver(f, parser.getCommandLine(""))
 
     if err != "" or exit_code != 0:
         print(f"Runtime error: {err}")
@@ -195,4 +216,6 @@ if __name__ == "__main__":
         if any(out in parser.arguments for out in outputTest) :
             compareOutputs(f, parser)
         else :
-            runWithExpected(f, parser)
+            print(f"{f}\t{parser.getArgsForPrinting()}")
+            runWithRocqChk(f, parser)
+            runWithLpChk(f, parser)
