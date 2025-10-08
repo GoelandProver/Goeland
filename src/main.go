@@ -207,8 +207,14 @@ func initDebuggers() {
 
 func StatementListToFormula(statements []Core.Statement, old_bound int, problemDir string) (form AST.Form, bound int, containsEquality bool) {
 	and_list := Lib.NewList[AST.Form]()
-	var not_form AST.Form
+	negated_conjecture := Lib.MkNone[AST.Form]()
 	bound = old_bound
+
+	raise_on_multiple_conjectures := func() {
+		if _, is_some := negated_conjecture.(Lib.Some[AST.Form]); is_some {
+			Glob.Fatal(main_label, "multiple conjectures found in the problem file")
+		}
+	}
 
 	for _, statement := range statements {
 		switch statement.GetRole() {
@@ -247,11 +253,21 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			}
 
 		case Core.Conjecture:
+			raise_on_multiple_conjectures()
 			switch f := statement.GetForm().(type) {
 			case Lib.Some[AST.Form]:
-				not_form = doConjectureStatement(f.Val)
+				negated_conjecture = Lib.MkSome[AST.Form](AST.MakerNot(doConjectureStatement(f.Val)))
 			case Lib.None[AST.Form]:
 				Glob.Anomaly("main", "Conjecture statement "+statement.ToString()+" has no formula")
+			}
+
+		case Core.NegatedConjecture:
+			raise_on_multiple_conjectures()
+			switch f := statement.GetForm().(type) {
+			case Lib.Some[AST.Form]:
+				negated_conjecture = Lib.MkSome(doConjectureStatement(f.Val))
+			case Lib.None[AST.Form]:
+				Glob.Anomaly("main", "Negated conjecture statement "+statement.ToString()+" has no formula")
 			}
 
 		case Core.Type:
@@ -261,21 +277,31 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			case Lib.None[Core.TFFAtomTyping]:
 				Glob.Anomaly("main", "Type statement "+statement.ToString()+" has no formula")
 			}
+
+		default:
+			Glob.Fatal("main", fmt.Sprintf("Unmanaged statement role: %s", statement.GetRole().ToString()))
 		}
 	}
 
-	switch {
-	case and_list.Empty() && not_form == nil:
-		return nil, bound, containsEquality
-	case and_list.Empty():
-		return AST.MakerNot(not_form), bound, containsEquality
-	case not_form == nil:
-		return AST.MakerAnd(and_list), bound, containsEquality
-	default:
-		flattened := AST.FlattenAnd(and_list)
-		flattened.Append(AST.MakerNot(not_form))
-		return AST.MakerAnd(flattened), bound, containsEquality
+	switch conj := negated_conjecture.(type) {
+	case Lib.None[AST.Form]:
+		if and_list.Empty() {
+			return nil, bound, containsEquality
+		} else {
+			return AST.MakerAnd(and_list), bound, containsEquality
+		}
+	case Lib.Some[AST.Form]:
+		if and_list.Empty() {
+			return conj.Val, bound, containsEquality
+		} else {
+			flattened := AST.FlattenAnd(and_list)
+			flattened.Append(conj.Val)
+			return AST.MakerAnd(flattened), bound, containsEquality
+		}
 	}
+
+	Glob.Anomaly(main_label, "reached an unreachable state")
+	return nil, -1, false
 }
 
 func doAxiomStatement(andList Lib.List[AST.Form], f AST.Form) Lib.List[AST.Form] {
