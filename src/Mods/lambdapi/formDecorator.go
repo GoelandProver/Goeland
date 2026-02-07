@@ -32,136 +32,137 @@
 package lambdapi
 
 import (
-	"fmt"
+	_ "fmt"
 
-	"github.com/GoelandProver/Goeland/AST"
+	_ "github.com/GoelandProver/Goeland/AST"
+	_ "github.com/GoelandProver/Goeland/Lib"
 )
 
-type DecoratedAll struct {
-	AST.All
-}
+// type DecoratedAll struct {
+// 	AST.All
+// }
 
-func MakeDecoratedAll(all AST.All) DecoratedAll {
-	if typed, ok := all.Copy().(AST.All); ok {
-		all = typed
-	}
-	decorated := DecoratedAll{all}
-	decorated.MappedString.MappableString = decorated
-	return decorated
-}
+// func MakeDecoratedAll(all AST.All) DecoratedAll {
+// 	if typed, ok := all.Copy().(AST.All); ok {
+// 		all = typed
+// 	}
+// 	decorated := DecoratedAll{all}
+// 	decorated.MappedString.MappableString = decorated
+// 	return decorated
+// }
 
-func (da DecoratedAll) ToMappedStringSurround(mapping AST.MapString, displayTypes bool) string {
-	return QuantifierToMappedString(mapping[AST.AllQuant], da.GetVarList())
-}
+// func (da DecoratedAll) ToMappedStringSurround(mapping AST.MapString, displayTypes bool) string {
+// 	return QuantifierToMappedString(mapping[AST.AllQuant], da.GetVarList())
+// }
 
-func QuantifierToMappedString(quant string, varList []AST.Var) string {
-	if len(varList) == 0 {
-		return "%s"
-	} else {
-		result := "(" + quant + " (" + toLambdaIntroString(varList[0], varList[0].GetTypeHint().ToString()) + ", %s))"
-		result = fmt.Sprintf(result, QuantifierToMappedString(quant, varList[1:]))
-		return result
-	}
-}
+// func QuantifierToMappedString(quant string, varList Lib.List[AST.TypedVar]) string {
+// 	if varList.Len() == 0 {
+// 		return "%s"
+// 	} else {
+// 		result := "(" + quant + " (" + toLambdaIntroString(varList.At(0), "") + ", %s))"
+// 		result = fmt.Sprintf(result, QuantifierToMappedString(quant, varList.Slice(1, varList.Len())))
+// 		return result
+// 	}
+// }
 
-type DecoratedEx struct {
-	AST.Ex
-}
+// type DecoratedEx struct {
+// 	AST.Ex
+// }
 
-func MakeDecoratedEx(ex AST.Ex) DecoratedEx {
-	if typed, ok := ex.Copy().(AST.Ex); ok {
-		ex = typed
-	}
-	decorated := DecoratedEx{ex}
-	decorated.MappedString.MappableString = decorated
-	return decorated
-}
+// func MakeDecoratedEx(ex AST.Ex) DecoratedEx {
+// 	if typed, ok := ex.Copy().(AST.Ex); ok {
+// 		ex = typed
+// 	}
+// 	decorated := DecoratedEx{ex}
+// 	decorated.MappedString.MappableString = decorated
+// 	return decorated
+// }
 
-func (de DecoratedEx) ToMappedStringSurround(mapping AST.MapString, displayTypes bool) string {
-	return QuantifierToMappedString(mapping[AST.ExQuant], de.GetVarList())
-}
+// func (de DecoratedEx) ToMappedStringSurround(mapping AST.MapString, displayTypes bool) string {
+// 	return QuantifierToMappedString(mapping[AST.ExQuant], de.GetVarList())
+// }
 
-type DecoratedVar struct {
-	AST.Var
-}
+// type DecoratedVar struct {
+// 	AST.Var
+// }
 
-func MakeDecoratedVar(newVar AST.Var) DecoratedVar {
-	if typed, ok := newVar.Copy().(AST.Var); ok {
-		newVar = typed
-	}
-	decorated := DecoratedVar{newVar}
-	decorated.MappedString.MappableString = decorated
-	return decorated
-}
+// func MakeDecoratedVar(newVar AST.Var) DecoratedVar {
+// 	if typed, ok := newVar.Copy().(AST.Var); ok {
+// 		newVar = typed
+// 	}
+// 	decorated := DecoratedVar{newVar}
+// 	decorated.MappedString.MappableString = decorated
+// 	return decorated
+// }
 
-func (da DecoratedVar) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
-	emptyValue = getFromContext(da.Var)
-	return "", emptyValue
-}
+// func (da DecoratedVar) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
+// 	emptyValue = getFromContext(da.Var)
+// 	return "", emptyValue
+// }
 
-type DecoratedPred struct {
-	AST.Pred
-}
+// type DecoratedPred struct {
+// 	AST.Pred
+// }
 
-func MakeDecoratedPred(newPred AST.Pred) DecoratedPred {
-	if typed, ok := newPred.Copy().(AST.Pred); ok {
-		newPred = typed
-	}
-	decorated := DecoratedPred{newPred}
-	decorated.MappedString.MappableString = decorated
-	return decorated
-}
+// func MakeDecoratedPred(newPred AST.Pred) DecoratedPred {
+// 	if typed, ok := newPred.Copy().(AST.Pred); ok {
+// 		newPred = typed
+// 	}
+// 	decorated := DecoratedPred{newPred}
+// 	decorated.MappedString.MappableString = decorated
+// 	return decorated
+// }
 
-func (dp DecoratedPred) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
-	_, emptyValue = dp.Pred.ToMappedStringChild(mapping, displayTypes)
-	return " ", emptyValue
-}
+// func (dp DecoratedPred) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
+// 	_, emptyValue = dp.Pred.ToMappedStringChild(mapping, displayTypes)
+// 	return " ", emptyValue
+// }
 
-type DecoratedFun struct {
-	AST.Fun
-}
+// type DecoratedFun struct {
+// 	AST.Fun
+// }
 
-func MakeDecoratedFun(newFun AST.Fun) DecoratedFun {
-	if typed, ok := newFun.Copy().(AST.Fun); ok {
-		newFun = typed
-	}
-	decorated := DecoratedFun{newFun}
-	decorated.MappedString.MappableString = decorated
-	return decorated
-}
+// func MakeDecoratedFun(newFun AST.Fun) DecoratedFun {
+// 	if typed, ok := newFun.Copy().(AST.Fun); ok {
+// 		newFun = typed
+// 	}
+// 	decorated := DecoratedFun{newFun}
+// 	decorated.MappedString.MappableString = decorated
+// 	return decorated
+// }
 
-func (df DecoratedFun) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
-	return " ", mapping[AST.PredEmpty]
-}
+// func (df DecoratedFun) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
+// 	return " ", mapping[AST.PredEmpty]
+// }
 
-func (df DecoratedFun) ToMappedStringSurround(mapping AST.MapString, displayTypes bool) string {
-	result := df.Fun.ToMappedStringSurround(mapping, displayTypes)
+// func (df DecoratedFun) ToMappedStringSurround(mapping AST.MapString, displayTypes bool) string {
+// 	result := df.Fun.ToMappedStringSurround(mapping, displayTypes)
 
-	possible, exists := context.GetExists(df.Fun)
-	if exists {
-		if result[:6] == "skolem" {
-			result = string(possible) + "%s"
-		} else {
-			result = df.Fun.ToMappedStringSurroundWithId(string(possible), mapping, displayTypes)
-		}
-	}
+// 	possible, exists := context.GetExists(df.Fun)
+// 	if exists {
+// 		if result[:6] == "skolem" {
+// 			result = string(possible) + "%s"
+// 		} else {
+// 			result = df.Fun.ToMappedStringSurroundWithId(string(possible), mapping, displayTypes)
+// 		}
+// 	}
 
-	return result
-}
+// 	return result
+// }
 
-func decorateForm(form AST.MappableString) AST.MappableString {
-	switch typed := form.(type) {
-	case AST.All:
-		return MakeDecoratedAll(typed)
-	case AST.Ex:
-		return MakeDecoratedEx(typed)
-	case AST.Var:
-		return MakeDecoratedVar(typed)
-	case AST.Pred:
-		return MakeDecoratedPred(typed)
-	case AST.Fun:
-		return MakeDecoratedFun(typed)
-	default:
-		return typed
-	}
-}
+// func decorateForm(form AST.MappableString) AST.MappableString {
+// 	switch typed := form.(type) {
+// 	case AST.All:
+// 		return MakeDecoratedAll(typed)
+// 	case AST.Ex:
+// 		return MakeDecoratedEx(typed)
+// 	case AST.Var:
+// 		return MakeDecoratedVar(typed)
+// 	case AST.Pred:
+// 		return MakeDecoratedPred(typed)
+// 	case AST.Fun:
+// 		return MakeDecoratedFun(typed)
+// 	default:
+// 		return typed
+// 	}
+// }

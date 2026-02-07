@@ -8,11 +8,12 @@ wish to contribute to Goéland, you should start by
 [forking](https://github.com/GoelandProver/Goeland/fork) the repository. Then,
 you can work on on your feature/bug fix/enhancement in your local repository.
 
-Once you deem your work satisfactory, you should [open a pull
-request](https://github.com/GoelandProver/Goeland/compare) **targeting
-master**. Then, one of the maintainer will review your code as soon as
-possible. If you have no feedback for a few days, do not hesitate to ping one of
-them. The current maintainers are: @jcailler, @jrosain.
+Once you deem your work satisfactory and have properly updated the test suite
+(c.f. [Managing the test suite](#managing-the-test-suite)), you should [open a pull
+request](https://github.com/GoelandProver/Goeland/compare) **targeting master**. Then, one
+of the maintainer will review your code as soon as possible. If you have no feedback for a
+few days, do not hesitate to ping one of them. The current maintainers are: @jcailler,
+@jrosain.
 
 Your code is expected to (i) build, (ii) satisfy the unit tests and (iii) not
 prove countertheorems. This check *does not* run automatically. One of the
@@ -38,6 +39,25 @@ have a very descriptive error as it will make things easier to debug.
 
 Note that, by default, neither of these options `panic`. You have to activate the `-debug`
 flag in order for them to panic and you to have a backtrace.
+
+### Managing the test suite
+
+In order to have a systematic testing of Goéland, we have a [test
+suite](devtools/test-suite) that contains:
+- basic test files to check functionalities,
+- bug files that correspond to a reported bug that has been resolved, and
+- output files that test the output of Goéland.
+
+When you add a new functionality to Goéland, you must add some files to the
+[basic](devtools/test-suite/basic) folder that tests your newly implemented
+functionalities. If your pull request fixes a bug, you must add the bug file to the
+[bugs](devtools/test-suite/bugs) folder. Beware that we run the Rocq and Lambdapi output
+on the test suite, so you should think about whether a problem is checkable or not. If
+it's not, add them in the corresponding `no_chk` instead. The current not-checkable
+problems are problems involving a typed context. Moreover, if your problem includes
+equalities, the Lambdapi check may fail. If so, add your problem to the
+`lp_tolerate_fails` variable in the `run-test-suite` file.
+
 
 ## For Maintainers
 

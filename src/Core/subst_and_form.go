@@ -42,32 +42,34 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
 /* Stock the substitution and the corresponding list of formulas */
 type SubstAndForm struct {
-	s Unif.Substitutions
-	f *AST.FormList
+	s Lib.List[Unif.MixedSubstitution]
+	f Lib.List[AST.Form]
 }
 
-func (s SubstAndForm) GetSubst() Unif.Substitutions {
-	return s.s.Copy()
+func (s SubstAndForm) GetSubst() Lib.List[Unif.MixedSubstitution] {
+	return Lib.ListCpy(s.s)
 }
-func (s SubstAndForm) GetForm() *AST.FormList {
-	return s.f.Copy()
+func (s SubstAndForm) GetForm() Lib.List[AST.Form] {
+	return Lib.ListCpy(s.f)
 }
-func (s *SubstAndForm) SetSubst(subst Unif.Substitutions) {
-	s.s = subst.Copy()
+func (s *SubstAndForm) SetSubst(subst Lib.List[Unif.MixedSubstitution]) {
+	s.s = Lib.ListCpy(subst)
 }
-func (s *SubstAndForm) SetForm(form *AST.FormList) {
-	s.f = form.Copy()
+func (s *SubstAndForm) SetForm(form Lib.List[AST.Form]) {
+	s.f = Lib.ListCpy(form)
 }
 func (saf SubstAndForm) IsEmpty() bool {
-	return saf.s.IsEmpty() && saf.f.IsEmpty()
+	return saf.s.Empty() && saf.f.Empty()
 }
 func (s1 SubstAndForm) Equals(s2 SubstAndForm) bool {
-	return s1.GetSubst().Equals(s2.GetSubst()) && s1.GetForm().Equals(s2.GetForm())
+	return Lib.ListEquals(s1.GetSubst(), s2.GetSubst()) &&
+		Lib.ListEquals(s1.GetForm(), s2.GetForm())
 }
 func (s SubstAndForm) Copy() SubstAndForm {
 	if s.IsEmpty() {
@@ -78,46 +80,40 @@ func (s SubstAndForm) Copy() SubstAndForm {
 }
 func (s SubstAndForm) ToString() string {
 	res := "{ "
-	if !s.GetSubst().IsEmpty() {
-		res += s.GetSubst().ToString()
+	if !s.GetSubst().Empty() {
+		res += Lib.ListToString(s.GetSubst(), ", ", "[]")
 	}
 	res += " - "
-	if !s.GetForm().IsEmpty() {
-		res += s.GetForm().ToString()
+	if !s.GetForm().Empty() {
+		res += Lib.ListToString(s.GetForm(), ", ", "[]")
 	}
 	res += " }"
 
 	return res
 }
 
-func MakeSubstAndForm(subst Unif.Substitutions, form *AST.FormList) SubstAndForm {
-	return SubstAndForm{subst.Copy(), form.Copy()}
+func MakeSubstAndForm(subst Lib.List[Unif.MixedSubstitution], form Lib.List[AST.Form]) SubstAndForm {
+	return SubstAndForm{Lib.ListCpy(subst), Lib.ListCpy(form)}
 }
 func MakeEmptySubstAndForm() SubstAndForm {
-	return SubstAndForm{Unif.MakeEmptySubstitution(), AST.NewFormList()}
+	return SubstAndForm{Lib.NewList[Unif.MixedSubstitution](), Lib.NewList[AST.Form]()}
 }
-func (s SubstAndForm) AddFormulas(fl *AST.FormList) SubstAndForm {
-	formList := s.GetForm().Copy()
-	formList.AppendIfNotContains(fl.Copy().Slice()...)
+func (s SubstAndForm) AddFormulas(fl Lib.List[AST.Form]) SubstAndForm {
+	formList := s.GetForm()
+	formList = Lib.ListAdd(formList, Lib.ListCpy(fl).GetSlice()...)
 	return MakeSubstAndForm(s.GetSubst(), formList)
 }
 
 /* Remove empty substitution from a substitution list */
-func RemoveEmptySubstFromSubstList(sl []Unif.Substitutions) []Unif.Substitutions {
-	res := []Unif.Substitutions{}
-	for _, s := range sl {
-		if !(s.IsEmpty()) {
-			res = append(res, s)
-		}
-	}
-	return res
+func RemoveEmptySubstFromSubstList(sl Lib.List[Lib.List[Unif.MixedSubstitution]]) Lib.List[Lib.List[Unif.MixedSubstitution]] {
+	return sl.Filter(func(l Lib.List[Unif.MixedSubstitution]) bool { return !l.Empty() })
 }
 
 /* Remove empty substitution from a substitution list */
 func RemoveEmptySubstFromSubstAndFormList(sl []SubstAndForm) []SubstAndForm {
 	res := []SubstAndForm{}
 	for _, s := range sl {
-		if !(s.GetSubst().IsEmpty()) {
+		if !(s.GetSubst().Empty()) {
 			res = append(res, s)
 		}
 	}
@@ -125,10 +121,10 @@ func RemoveEmptySubstFromSubstAndFormList(sl []SubstAndForm) []SubstAndForm {
 }
 
 /* Get a subst list from SubstAndForm lsit */
-func GetSubstListFromSubstAndFormList(l []SubstAndForm) []Unif.Substitutions {
-	res := []Unif.Substitutions{}
+func GetSubstListFromSubstAndFormList(l []SubstAndForm) Lib.List[Lib.List[Unif.MixedSubstitution]] {
+	res := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
 	for _, saf := range l {
-		res = append(res, saf.GetSubst())
+		res.Append(saf.GetSubst())
 	}
 	return res
 }
@@ -195,15 +191,15 @@ func MergeSubstAndForm(s1, s2 SubstAndForm) (error, SubstAndForm) {
 		return nil, s1
 	}
 
-	new_subst, _ := Unif.MergeSubstitutions(s1.GetSubst().Copy(), s2.GetSubst().Copy())
+	new_subst, succeeded := Unif.MergeMixedSubstitutions(s1.GetSubst(), s2.GetSubst())
 
-	if new_subst.Equals(Unif.Failure()) {
+	if !succeeded {
 		Glob.PrintError("MSAF", fmt.Sprintf("Error : MergeSubstitutions returns failure between : %v and %v \n", s1.ToString(), s2.ToString()))
 		return errors.New("Couldn't merge two substitutions"), MakeEmptySubstAndForm()
 	}
 
-	newFormList := s1.GetForm().Copy()
-	newFormList.AppendIfNotContains(s2.GetForm().Slice()...)
+	newFormList := s1.GetForm()
+	newFormList = Lib.ListAdd(newFormList, s2.GetForm().GetSlice()...)
 
 	return nil, MakeSubstAndForm(new_subst, newFormList)
 }

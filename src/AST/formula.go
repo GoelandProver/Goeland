@@ -46,16 +46,16 @@ import (
 type Form interface {
 	GetIndex() int
 	GetMetas() Lib.Set[Meta]
-	GetType() TypeScheme
 	GetSubTerms() Lib.List[Term]
-	GetSubFormulasRecur() *FormList
-	GetChildFormulas() *FormList
+	GetSubFormulasRecur() Lib.List[Form]
+	GetChildFormulas() Lib.List[Form]
 
 	Lib.Copyable[Form]
-	MappableString
+	Lib.Stringable
+	Lib.Comparable
 
-	ReplaceTypeByMeta([]TypeVar, int) Form
 	ReplaceTermByTerm(old Term, new Term) (Form, bool)
+	SubstTy(old TyGenVar, new Ty) Form
 	RenameVariables() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
 	ReplaceMetaByTerm(meta Meta, term Term) Form
@@ -91,9 +91,8 @@ func replaceTermInTermList(
 				)
 				newTermList.Upd(i, MakerFun(
 					nf.GetP(),
+					nf.GetTyArgs(),
 					termList,
-					nf.GetTypeVars(),
-					nf.GetTypeHint(),
 				))
 				res = res || r
 			}
@@ -114,65 +113,42 @@ func replaceTermInTermList(
 
 /* Utils */
 
-func instanciateTypeAppList(typeApps []TypeApp, vars []TypeVar, index int) []TypeApp {
-	// For each typeVar € nf.GetTypeVars(), if typeVar € varList, instanciate typeVar
-	typeVars := []TypeApp{}
-	for _, typeVar := range typeApps {
-		if Glob.Is[TypeVar](typeVar) {
-			tv := Glob.To[TypeVar](typeVar)
-			if Lib.ComparableList[TypeVar](vars).Contains(tv) {
-				tv.ShouldBeMeta(index)
-			}
-			typeVars = append(typeVars, tv)
-		} else {
-			typeVars = append(typeVars, typeVar)
-		}
-	}
-
-	return typeVars
-}
-
-// Creates and returns a MetaList from a FormList, making sure there are no duplicates
-func metasUnion(forms *FormList) Lib.Set[Meta] {
+func metasUnion(forms Lib.List[Form]) Lib.Set[Meta] {
 	res := Lib.EmptySet[Meta]()
 
-	for _, form := range forms.Slice() {
+	for _, form := range forms.GetSlice() {
 		res = res.Union(form.GetMetas())
 	}
 
 	return res
 }
 
-// Creates and returns a FormList
-func replaceList(oldForms *FormList, vars []TypeVar, index int) *FormList {
-	newForms := NewFormList()
-
-	for _, form := range oldForms.Slice() {
-		newForms.Append(form.ReplaceTypeByMeta(vars, index))
-	}
-
-	return newForms
-}
-
-func replaceTermInFormList(oldForms *FormList, oldTerm Term, newTerm Term) (*FormList, bool) {
-	newForms := NewFormList()
+// Returns whether the term has been replaced in a subformula or not
+func replaceTermInFormList(oldForms Lib.List[Form], oldTerm Term, newTerm Term) (Lib.List[Form], bool) {
+	newForms := Lib.MkList[Form](oldForms.Len())
 	res := false
 
-	for _, form := range oldForms.Slice() {
+	for i, form := range oldForms.GetSlice() {
 		newForm, r := form.ReplaceTermByTerm(oldTerm, newTerm)
 		res = res || r
-		newForms.Append(newForm)
+		newForms.Upd(i, newForm)
 	}
 
 	return newForms, res
 }
 
-// Creates and returns a FormList with its Forms renamed
-func renameFormList(forms *FormList) *FormList {
-	newForms := NewFormList()
+func replaceTyVarInFormList(oldForms Lib.List[Form], old TyGenVar, new Ty) Lib.List[Form] {
+	return Lib.ListMap(
+		oldForms,
+		func(f Form) Form { return f.SubstTy(old, new) },
+	)
+}
 
-	for _, form := range forms.Slice() {
-		newForms.Append(form.RenameVariables())
+func renameFormList(forms Lib.List[Form]) Lib.List[Form] {
+	newForms := Lib.MkList[Form](forms.Len())
+
+	for i, form := range forms.GetSlice() {
+		newForms.Upd(i, form.RenameVariables())
 	}
 
 	return newForms

@@ -229,8 +229,7 @@ func checkUnifInTree(t AST.Term, tree Unif.DataStructure) (bool, Lib.List[AST.Te
 	for _, subst := range ms {
 		debug(
 			Lib.MkLazy(func() string {
-				return fmt.Sprintf("Unif found with %v :%v",
-					subst.GetForm().ToString(), subst.GetSubst().ToString())
+				return fmt.Sprintf("Unif found with: %s", subst.ToString())
 			}),
 		)
 		result_list.Append(subst.GetForm().(Unif.TermForm).GetTerm())

@@ -7,6 +7,7 @@ pkgs.mkShell {
     gotools
     python314
     rocq-core
+    rocqPackages.stdlib
     ocamlPackages.lambdapi
   ];
 }
