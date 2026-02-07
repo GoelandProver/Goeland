@@ -37,13 +37,13 @@
 package AST
 
 import (
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /* Term */
 type Term interface {
-	MappableString
+	Lib.Comparable
+	Lib.Stringable
 	Lib.Copyable[Term]
 	GetIndex() int
 	GetName() string
@@ -54,146 +54,32 @@ type Term interface {
 	GetMetaList() Lib.List[Meta] // Metas appearing in the term ORDERED
 	GetSubTerms() Lib.List[Term]
 	ReplaceSubTermBy(original_term, new_term Term) Term
+	SubstTy(old TyGenVar, new Ty) Term
 	Less(any) bool
-}
-
-type TypedTerm interface {
-	GetTypeHint() TypeScheme
-	GetTypeApp() TypeApp
 }
 
 /*** Makers ***/
 func MakeId(i int, s string) Id {
-	fms := &MappedString{}
-	id := Id{fms, i, s}
-	fms.MappableString = &id
-	return id
+	return Id{i, s}
 }
 
 func MakeQuotedId(i int, s string) Id {
-	fms := &MappedString{}
-	id := Id{fms, i, "" + s + "'"}
-	fms.MappableString = &id
-	return id
+	return Id{i, "" + s + "'"}
 }
 
-func MakeVar(i int, s string, t ...TypeApp) Var {
-	fms := &MappedString{}
-	newVar := Var{fms, i, s, getType(t)}
-	fms.MappableString = &newVar
-	return newVar
+func MakeVar(i int, s string) Var {
+	return Var{i, s}
 }
 
-func MakeMeta(index, occurence int, s string, f int, t ...TypeApp) Meta {
-	fms := &MappedString{}
-	meta := Meta{fms, index, occurence, s, f, getType(t)}
-	fms.MappableString = &meta
-	return meta
+func MakeMeta(index, occurence int, s string, f int, ty Ty) Meta {
+	return Meta{index, occurence, s, f, ty}
 }
 
-func MakeFun(p Id, args Lib.List[Term], typeVars []TypeApp, t TypeScheme, metas Lib.Set[Meta]) Fun {
-	fms := &MappedString{}
-	fun := Fun{fms, p, args, typeVars, t, Lib.MkCache(metas, Fun.forceGetMetas)}
-	fms.MappableString = fun
-	return fun
+func MakeFun(p Id, ty_args Lib.List[Ty], args Lib.List[Term], metas Lib.Set[Meta]) Fun {
+	return Fun{p, ty_args, args, Lib.MkCache(metas, Fun.forceGetMetas)}
 }
 
-/*** Functions ***/
-
-func TypeAppArrToTerm(typeApps []TypeApp) Lib.List[Term] {
-	terms := Lib.MkList[Term](len(typeApps))
-
-	for i, typeApp := range typeApps {
-		terms.Upd(i, TypeAppToTerm(typeApp))
-	}
-
-	return terms
-}
-
-/* Creates a Term from a TypeApp to unify it properly */
-func TypeAppToTerm(typeApp TypeApp) Term {
-	var term Term
-	switch nt := typeApp.(type) {
-	case TypeVar:
-		if nt.IsMeta() {
-			term = typeVarToMeta(nt)
-		} else {
-			Glob.PrintError("TERM", "A TypeVar should be only converted to terms if it has been instantiated.")
-			term = nil
-		}
-	case TypeHint:
-		term = MakerFun(
-			MakerId(nt.ToString()),
-			Lib.NewList[Term](),
-			[]TypeApp{},
-			MkTypeHint("$tType"),
-		)
-	case TypeCross:
-		underlyingTypes := nt.GetAllUnderlyingTypes()
-		args := Lib.MkList[Term](len(underlyingTypes))
-
-		for i, type_ := range nt.GetAllUnderlyingTypes() {
-			args.Upd(i, TypeAppToTerm(type_))
-		}
-
-		term = MakeFun(
-			MakerId("$$tCross"),
-			args,
-			[]TypeApp{},
-			MkTypeHint("$tType"),
-			Lib.EmptySet[Meta](),
-		)
-	case ParameterizedType:
-		parameters := nt.GetParameters()
-		args := Lib.MkList[Term](len(parameters))
-
-		for i, type_ := range nt.GetParameters() {
-			args.Upd(i, TypeAppToTerm(type_))
-		}
-
-		term = MakeFun(
-			MakerId(nt.ToString()),
-			args,
-			[]TypeApp{},
-			MkTypeHint("$tType"),
-			Lib.EmptySet[Meta](),
-		)
-	}
-	return term
-}
-
-func typeVarToMeta(typeVar TypeVar) Meta {
-	var meta Meta
-	index, formula, occurence := typeVar.MetaInfos()
-	if !typeVar.Instantiated() {
-		meta = MakerMeta(typeVar.ToString(), formula, MkTypeHint("$tType"))
-		typeVar.Instantiate(meta.index)
-	} else {
-		meta = MakeMeta(index, occurence, typeVar.ToString(), formula, MkTypeHint("$tType"))
-	}
-	return meta
-}
-
-func replaceTermListTypesByMeta(tl Lib.List[Term], varList []TypeVar, index int) Lib.List[Term] {
-	res := Lib.MkList[Term](tl.Len())
-
-	for i, term := range tl.GetSlice() {
-		if Glob.Is[Fun](term) {
-			t := Glob.To[Fun](term)
-			res.Upd(i, MakeFun(
-				t.GetID(),
-				replaceTermListTypesByMeta(t.GetArgs(), varList, index),
-				instanciateTypeAppList(t.GetTypeVars(), varList, index),
-				t.GetTypeHint(),
-				t.metas.Raw(),
-			))
-		} else {
-			res.Upd(i, term)
-		}
-	}
-
-	return res
-}
+/*** Functions **/
 
 func TermEquals(x, y Term) bool {
 	return x.Equals(y)

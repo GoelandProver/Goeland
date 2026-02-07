@@ -85,7 +85,7 @@ func (ep EqualityProblem) AxiomsToTPTPString() string {
 }
 
 func (ep EqualityProblem) ToTPTPString() string {
-	return ep.GetS().ToMappedString(AST.DefaultMapString, false) + " = " + ep.GetT().ToMappedString(AST.DefaultMapString, false)
+	return ep.GetS().ToString() + " = " + ep.GetT().ToString()
 }
 
 /* Apply a substitution on an equality problem */
@@ -136,11 +136,11 @@ func makeEqualityProblem(E Equalities, s AST.Term, t AST.Term, c ConstraintStruc
 
 /* Take a list of equalities and build the corresponding code tree */
 func makeDataStructFromEqualities(eq Equalities) Unif.DataStructure {
-	formList := AST.NewFormList()
+	formList := Lib.NewList[AST.Form]()
 	for _, e := range eq {
 		formList.Append(Unif.MakerTermForm(e.GetT1()), Unif.MakerTermForm(e.GetT2()))
 	}
-	return Unif.NewNode().MakeDataStruct(formList.Copy(), true)
+	return Unif.NewNode().MakeDataStruct(Lib.ListCpy(formList), true)
 }
 
 /* Take a list of equalities and build the corresponding assocative map */

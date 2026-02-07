@@ -37,32 +37,33 @@
 package Core
 
 import (
+	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
 /* Stock the substitution and the corresponding list of formulas */
 type SubstAndFormAndTerms struct {
-	s Unif.Substitutions
+	s Lib.List[Unif.MixedSubstitution]
 	f FormAndTermsList
 }
 
-func (s SubstAndFormAndTerms) GetSubst() Unif.Substitutions {
-	return s.s.Copy()
+func (s SubstAndFormAndTerms) GetSubst() Lib.List[Unif.MixedSubstitution] {
+	return Lib.ListCpy(s.s)
 }
 func (s SubstAndFormAndTerms) GetForm() FormAndTermsList {
 	return s.f.Copy()
 }
-func (s *SubstAndFormAndTerms) SetSubst(subst Unif.Substitutions) {
-	s.s = subst.Copy()
+func (s *SubstAndFormAndTerms) SetSubst(subst Lib.List[Unif.MixedSubstitution]) {
+	s.s = Lib.ListCpy(subst)
 }
 func (s *SubstAndFormAndTerms) SetForm(form FormAndTermsList) {
 	s.f = form.Copy()
 }
 func (saf SubstAndFormAndTerms) IsEmpty() bool {
-	return saf.s.IsEmpty() && saf.f.IsEmpty()
+	return saf.s.Empty() && saf.f.IsEmpty()
 }
 func (s1 SubstAndFormAndTerms) Equals(s2 SubstAndFormAndTerms) bool {
-	return s1.GetSubst().Equals(s2.GetSubst()) && s1.GetForm().Equals(s2.GetForm())
+	return Lib.ListEquals(s1.GetSubst(), s2.GetSubst()) && s1.GetForm().Equals(s2.GetForm())
 }
 func (s SubstAndFormAndTerms) Copy() SubstAndFormAndTerms {
 	if s.IsEmpty() {
@@ -80,8 +81,8 @@ func (s SubstAndFormAndTerms) ToSubstAndForm() SubstAndForm {
 }
 func (s SubstAndFormAndTerms) ToString() string {
 	res := "{ "
-	if !s.GetSubst().IsEmpty() {
-		res += s.GetSubst().ToString()
+	if !s.GetSubst().Empty() {
+		res += Lib.ListToString(s.GetSubst(), ", ", "[]")
 	}
 	res += " - "
 	if !s.GetForm().IsEmpty() {
@@ -92,11 +93,11 @@ func (s SubstAndFormAndTerms) ToString() string {
 	return res
 }
 
-func MakeSubstAndFormAndTerms(subst Unif.Substitutions, form FormAndTermsList) SubstAndFormAndTerms {
-	return SubstAndFormAndTerms{subst.Copy(), form.Copy()}
+func MakeSubstAndFormAndTerms(subst Lib.List[Unif.MixedSubstitution], form FormAndTermsList) SubstAndFormAndTerms {
+	return SubstAndFormAndTerms{Lib.ListCpy(subst), form.Copy()}
 }
 func MakeEmptySubstAndFormAndTerms() SubstAndFormAndTerms {
-	return SubstAndFormAndTerms{Unif.MakeEmptySubstitution(), FormAndTermsList{}}
+	return SubstAndFormAndTerms{Lib.NewList[Unif.MixedSubstitution](), FormAndTermsList{}}
 }
 
 /* Check if a substitution is inside a list of SubstAndForm */
