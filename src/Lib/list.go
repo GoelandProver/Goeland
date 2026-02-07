@@ -212,6 +212,10 @@ func (l List[T]) RemoveAt(index int) List[T] {
 	return new_list
 }
 
+func (l List[T]) Clear() {
+	l.values = nil
+}
+
 func ToStrictlyOrderedList[T StrictlyOrdered](l List[T]) StrictlyOrderedList[T] {
 	return StrictlyOrderedList[T]{values: l}
 }

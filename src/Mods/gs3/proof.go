@@ -175,7 +175,6 @@ func (gs GS3Proof) makeProof(proof []Search.ProofStruct) *GS3Sequent {
 // Returns a sequent and the result formulas.
 func (gs *GS3Proof) makeProofOneStep(proofStep Search.ProofStruct, parent *GS3Sequent) []Lib.List[AST.Form] {
 	seq := MakeNewSequent()
-	seq.setHypotheses(gs.branchForms)
 	seq.nodeId = proofStep.Node_id
 
 	rule := proofStructRuleToGS3Rule(proofStep.GetRuleName())
@@ -186,7 +185,7 @@ func (gs *GS3Proof) makeProofOneStep(proofStep Search.ProofStruct, parent *GS3Se
 	// Immediate, just apply the rule.
 	case NNOT, NOR, NIMP, AND, NAND, NEQU, OR, IMP, EQU, AX, REWRITE:
 		seq.setAppliedRule(rule)
-		seq.setAppliedOn(form)
+		seq.SetTargetForm(form)
 		if rule == REWRITE {
 			seq.setRewrittenWith(proofStep.Id_dmt)
 		}
@@ -248,9 +247,8 @@ func (gs *GS3Proof) manageGammaStep(proofStep Search.ProofStruct, rule Rule, seq
 
 	// Create all the next sequents needed.
 	s := MakeNewSequent()
-	s.setHypotheses(gs.branchForms)
 	s.setAppliedRule(rule)
-	s.setAppliedOn(originForm)
+	s.SetTargetForm(originForm)
 	s.setTermGenerated(term)
 
 	if seq.IsEmpty() {
@@ -427,9 +425,8 @@ func (gs *GS3Proof) weakenForms(forms Lib.List[AST.Form], parent *GS3Sequent) *G
 
 func (gs *GS3Proof) weakenForm(form AST.Form) *GS3Sequent {
 	seq := MakeNewSequent()
-	seq.setHypotheses(gs.branchForms)
 	seq.setAppliedRule(W)
-	seq.setAppliedOn(form)
+	seq.SetTargetForm(form)
 
 	gs.removeHypothesis(form)
 	gs.removeDependency(form)
@@ -442,7 +439,6 @@ func (gs *GS3Proof) weakenForm(form AST.Form) *GS3Sequent {
 
 func (gs *GS3Proof) weakenTerm(term AST.Term) *GS3Sequent {
 	seq := MakeNewSequent()
-	seq.setHypotheses(gs.branchForms)
 	seq.setAppliedRule(W)
 	seq.setTermGenerated(term)
 
@@ -494,9 +490,8 @@ func (gs *GS3Proof) removeRuleAppliedOn(form AST.Form) {
 
 func (gs *GS3Proof) applyDeltaRule(form, result AST.Form, rule Rule, term AST.Term, nodeId int) *GS3Sequent {
 	seq := MakeNewSequent()
-	seq.setHypotheses(gs.branchForms)
 	seq.setAppliedRule(rule)
-	seq.setAppliedOn(form)
+	seq.SetTargetForm(form)
 	seq.setTermGenerated(term)
 	seq.setFormsGenerated([]Lib.List[AST.Form]{Lib.MkListV(result)})
 

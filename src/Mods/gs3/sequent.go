@@ -37,13 +37,13 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Mods/dmt"
 )
 
 type GS3Sequent struct {
-	hypotheses     Lib.List[AST.Form]
 	rule           Rule
-	appliedOn      int
-	rewriteWith    int
+	appliedOn      AST.Form
+	rewriteWith    AST.Form
 	termGenerated  AST.Term
 	formsGenerated []Lib.List[AST.Form]
 	children       []*GS3Sequent
@@ -77,7 +77,6 @@ const (
 
 func MakeNewSequent() *GS3Sequent {
 	seq := new(GS3Sequent)
-	seq.hypotheses = Lib.NewList[AST.Form]()
 	seq.children = make([]*GS3Sequent, 0)
 	return seq
 }
@@ -103,7 +102,7 @@ func IsAlphaRule(rule Rule) bool {
 // ----------------------------------------------------------------------------
 
 func (seq *GS3Sequent) GetTargetForm() AST.Form {
-	return seq.hypotheses.At(seq.appliedOn)
+	return seq.appliedOn
 }
 
 func (seq *GS3Sequent) Child(i int) *GS3Sequent {
@@ -137,7 +136,7 @@ func (seq *GS3Sequent) TermGenerated() AST.Term {
 }
 
 func (seq *GS3Sequent) IsEmpty() bool {
-	return seq.hypotheses.Empty()
+	return seq.appliedOn == nil
 }
 
 func (seq *GS3Sequent) ToString() string {
@@ -145,7 +144,7 @@ func (seq *GS3Sequent) ToString() string {
 }
 
 func (seq *GS3Sequent) GetRewriteWith() AST.Form {
-	return seq.hypotheses.At(seq.rewriteWith)
+	return seq.rewriteWith
 }
 
 func (seq *GS3Sequent) GetId() int {
@@ -165,7 +164,7 @@ func (seq *GS3Sequent) SetChildren(c []*GS3Sequent) {
 }
 
 func (seq *GS3Sequent) SetTargetForm(f AST.Form) {
-	seq.hypotheses.Upd(seq.appliedOn, f)
+	seq.appliedOn = f
 }
 
 func (seq *GS3Sequent) SetTermGenerated(t AST.Term) {
@@ -176,33 +175,8 @@ func (seq *GS3Sequent) SetTermGenerated(t AST.Term) {
 // Private methods & functions
 // ----------------------------------------------------------------------------
 
-func (seq *GS3Sequent) setHypotheses(forms Lib.List[AST.Form]) {
-	seq.hypotheses = Lib.ListCpy(forms)
-	// If equality reasoning has been used to terminate the proof, then an empty predicate is expected
-	// (see search_destructive, manageClosureRule on eq reasoning).
-	// As such, add an hypothesis with the empty =
-	seq.hypotheses.Append(AST.EmptyPredEq)
-}
-
 func (seq *GS3Sequent) setAppliedRule(rule Rule) {
 	seq.rule = rule
-}
-
-func (seq *GS3Sequent) setAppliedOn(hypothesis AST.Form) {
-	index := -1
-	for i, h := range seq.hypotheses.GetSlice() {
-		if hypothesis.Equals(h) {
-			index = i
-			break
-		}
-	}
-
-	if index == -1 {
-		Glob.PrintInfo("APPLIED ON", hypothesis.ToString())
-		Glob.Anomaly("GS3", "Failure: tried to apply a missing hypothesis")
-	}
-
-	seq.appliedOn = index
 }
 
 func (seq *GS3Sequent) setTermGenerated(t AST.Term) {
@@ -215,7 +189,7 @@ func (seq *GS3Sequent) addChild(oth ...*GS3Sequent) {
 
 func (seq *GS3Sequent) toStringAux(i int) string {
 	identation := strings.Repeat("  ", i)
-	status := seq.ruleToString(seq.rule) + " on " + seq.hypotheses.At(seq.appliedOn).ToString()
+	status := seq.ruleToString(seq.rule) + " on " + seq.appliedOn.ToString()
 	if seq.IsEmpty() {
 		status = "EMPTY"
 	}
@@ -298,19 +272,20 @@ func ruleToTableauxString(rule Rule) string {
 }
 
 func (seq *GS3Sequent) setRewrittenWith(rewriteId int) {
-	for i, h := range seq.hypotheses.GetSlice() {
+	axioms := dmt.GetRegisteredAxioms()
+	for _, h := range axioms.GetSlice() {
 		endForm := h
 		for Glob.Is[AST.All](endForm) {
 			endForm = endForm.(AST.All).GetForm()
 		}
 		endForm = getAtomic(endForm)
 		if endForm.GetIndex() == rewriteId {
-			seq.rewriteWith = i
+			seq.rewriteWith = h
 			return
 		}
 	}
 
-	panic("Failure: tried to rewrite using a missing hypothesis")
+	panic("Failure: tried to rewrite using a missing axiom")
 }
 
 func getAtomic(f AST.Form) AST.Form {
