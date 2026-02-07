@@ -108,7 +108,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], constantsCre
 	case Lib.Some[int]:
 		actualTarget = t.Val
 	case Lib.None[int]:
-		Glob.Anomaly("coq", fmt.Sprintf(
+		Glob.Anomaly("rocq", fmt.Sprintf(
 			"Index of %s not found in %s",
 			proof.GetTargetForm().ToString(),
 			Lib.ListToString(hypotheses, ", ", "[]"),
@@ -220,7 +220,7 @@ func rewriteStep(rewriteRule AST.Form, hypotheses Lib.List[AST.Form], target int
 	case Lib.Some[int]:
 		actualIndex = i.Val
 	case Lib.None[int]:
-		Glob.Anomaly("coq", fmt.Sprintf(
+		Glob.Anomaly("rocq", fmt.Sprintf(
 			"Index of %s not found in %s",
 			rewriteRule.ToString(),
 			Lib.ListToString(hypotheses, ", ", "[]"),
@@ -266,7 +266,7 @@ func makeImpChain(forms Lib.List[AST.Form]) AST.Form {
 	return form
 }
 
-// Introduces a new formula in coq's hypotheses.
+// Introduces a new formula in rocq's hypotheses.
 func introduce(f AST.Form, hypotheses Lib.List[AST.Form]) (int, Lib.List[AST.Form]) {
 	index := hypotheses.Len()
 	hypotheses.Append(f)
@@ -365,7 +365,7 @@ func cleanHypotheses(hypotheses Lib.List[AST.Form], form AST.Form) (string, []Li
 	case Lib.Some[int]:
 		actualIndex = i.Val
 	case Lib.None[int]:
-		Glob.Anomaly("coq", fmt.Sprintf(
+		Glob.Anomaly("rocq", fmt.Sprintf(
 			"Index of %s not found in %s",
 			form.ToString(),
 			Lib.ListToString(hypotheses, ", ", "[]"),
