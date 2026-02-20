@@ -43,30 +43,36 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Mods/gs3"
+	"github.com/GoelandProver/Goeland/Mods/desko"
 	"github.com/GoelandProver/Goeland/Search"
 )
 
 var contextEnabled bool = false
+var label string = "rocq"
+var raise_anomaly = func(msg string) { Glob.Anomaly(label, msg) }
+var debug Glob.Debugger
 
-var RocqOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeRocqOutput, Name: "Rocq", Extension: ".v"}
+var RocqOutputProofStruct = &Search.OutputProofStruct{
+	ProofOutput: MakeRocqOutput,
+	Name:        "Rocq",
+	Extension:   ".v",
+}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
 
-func MakeRocqOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
-	if len(prf) == 0 {
-		Glob.PrintError("Rocq", "Nothing to output")
-		return ""
-	}
+func Init() {
+	debug = Glob.CreateDebugger("rocq")
+}
 
+func MakeRocqOutput(prf Search.IProof, meta Lib.List[AST.Meta]) string {
 	// Setup Rocq printer
 	connectives := RocqPrinterConnectives()
 	printer := AST.Printer{PrinterAction: RocqPrinterAction(), PrinterConnective: &connectives}
 	AST.SetPrinter(printer)
 
 	// Transform tableaux's proof in GS3 proof
-	return MakeRocqProof(gs3.MakeGS3Proof(prf), meta)
+	return MakeRocqProof(desko.MakeDeskolemizedProof(prf), meta)
 }
 
 func RocqPrinterConnectives() AST.PrinterConnective {
@@ -127,9 +133,9 @@ func RocqPrinterAction() AST.PrinterAction {
 	return rocq_action.Compose(AST.RemoveSuperfluousParenthesesAction(connectives))
 }
 
-var MakeRocqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
-	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
-	proofString := makeRocqProofFromGS3(proof)
+var MakeRocqProof = func(proof Search.IProof, meta Lib.List[AST.Meta]) string {
+	contextString := makeContextIfNeeded(proof.AppliedOn(), meta)
+	proofString := makeRocqProofFromIProof(proof)
 	return contextString + "\n" + proofString
 }
 

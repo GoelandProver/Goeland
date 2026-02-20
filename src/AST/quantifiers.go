@@ -50,7 +50,13 @@ type quantifier struct {
 	symbol  Connective
 }
 
-func makeQuantifier(i int, vars Lib.List[TypedVar], subForm Form, metas Lib.Set[Meta], symbol Connective) quantifier {
+func makeQuantifier(
+	i int,
+	vars Lib.List[TypedVar],
+	subForm Form,
+	metas Lib.Set[Meta],
+	symbol Connective,
+) quantifier {
 	return quantifier{
 		Lib.MkCache(metas, quantifier.forceGetMetas),
 		i,
@@ -106,8 +112,12 @@ func (q quantifier) Equals(other any) bool {
 	return false
 }
 
-func (q quantifier) GetSubTerms() Lib.List[Term] {
+func (q quantifier) GetSubTerms() Lib.Set[Term] {
 	return q.GetForm().GetSubTerms()
+}
+
+func (q quantifier) GetSymbols() Lib.Set[Id] {
+	return q.GetForm().GetSymbols()
 }
 
 func (q quantifier) copy() quantifier {

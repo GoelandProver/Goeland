@@ -91,8 +91,9 @@ func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 
 func contextPreamble() string {
 	str := lemmas
-	str += "Parameter goeland_U : Set. (* goeland's universe *)\n"
+	str += "Parameter goeland_U : Type. (* goeland's universe *)\n"
 	str += "Parameter goeland_I : goeland_U. (* an individual in the universe. *)\n\n"
+	str += "Parameter goeland_T : Type. (* a witness type. *)\n\n"
 	return str
 }
 

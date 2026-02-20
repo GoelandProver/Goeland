@@ -53,10 +53,11 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/assisted"
+	"github.com/GoelandProver/Goeland/Mods/desko"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 	equality "github.com/GoelandProver/Goeland/Mods/equality/bse"
-	"github.com/GoelandProver/Goeland/Mods/gs3"
 	"github.com/GoelandProver/Goeland/Mods/lambdapi"
+	"github.com/GoelandProver/Goeland/Mods/rocq"
 	"github.com/GoelandProver/Goeland/Parser"
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Search/incremental"
@@ -128,7 +129,11 @@ func presearchLoader() (AST.Form, int) {
 
 	Glob.PrintInfo(
 		"preloader",
-		fmt.Sprintf("You are running problem %s on Goeland v.%s", path.Base(problem), Glob.GetVersion()),
+		fmt.Sprintf(
+			"You are running problem %s on Goeland v.%s",
+			path.Base(problem),
+			Glob.GetVersion(),
+		),
 	)
 	debug(
 		Lib.MkLazy(func() string {
@@ -150,7 +155,11 @@ func presearchLoader() (AST.Form, int) {
 		bound = Glob.GetLimit()
 	}
 
-	form, bound, contEq, is_typed_include := StatementListToFormula(actual_statements, bound, path.Dir(problem))
+	form, bound, contEq, is_typed_include := StatementListToFormula(
+		actual_statements,
+		bound,
+		path.Dir(problem),
+	)
 	containsEquality = containsEquality || contEq
 
 	if !containsEquality {
@@ -210,8 +219,9 @@ func initDebuggers() {
 	Typing.InitDebugger()
 	Unif.InitDebugger()
 	Engine.InitDebugger()
-	gs3.InitDebugger()
+	desko.InitDebugger()
 	lambdapi.InitDebugger()
+	rocq.Init()
 }
 
 // FIXME: eventually, we would want to add an "interpretation" layer between elab and internal representation that does this
@@ -231,7 +241,9 @@ func StatementListToFormula(
 			file_name := statement.GetName()
 
 			realname, err := getFile(file_name, problemDir)
-			debug(Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }))
+			debug(
+				Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }),
+			)
 
 			if err != nil {
 				Glob.PrintError(main_label, err.Error())
@@ -324,7 +336,10 @@ func doTypeStatement(atomTyping Core.TFFAtomTyping) {
 	typeScheme := atomTyping.Ty
 
 	if typeScheme == nil {
-		Glob.PrintWarn("main", fmt.Sprintf("The constant %s has no type!", atomTyping.Literal.ToString()))
+		Glob.PrintWarn(
+			"main",
+			fmt.Sprintf("The constant %s has no type!", atomTyping.Literal.ToString()),
+		)
 	}
 
 	Typing.AddToGlobalEnv(atomTyping.Literal.GetName(), atomTyping.Ty)

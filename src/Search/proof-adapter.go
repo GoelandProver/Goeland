@@ -87,32 +87,12 @@ func (proof TableauxProof) RuleApplied() TableauxRule {
 		"Rewrite":          RuleRew,
 	}
 
-	r, ok := rule_map[proof[0].Rule]
+	r, ok := rule_map[proof[0].Rule_name]
 	if !ok {
 		Glob.Anomaly(label, fmt.Sprintf("Unknown tableau rule %s", proof[0].Rule))
 	}
 
 	return r
-}
-
-func (proof TableauxProof) KindOfRule() TableauxRuleKind {
-	rule := proof.RuleApplied()
-
-	switch rule {
-	case RuleNotNot, RuleNotOr, RuleNotImp, RuleAnd:
-		return KindAlpha
-	case RuleNotAnd, RuleNotEqu, RuleOr, RuleImp, RuleEqu:
-		return KindBeta
-	case RuleNotAll, RuleEx:
-		return KindDelta
-	case RuleNotEx, RuleAll, RuleReintro:
-		return KindGamma
-	case RuleRew:
-		return KindRew
-	}
-
-	Glob.Anomaly(label, "Unknown kind of rule")
-	return 0
 }
 
 func (proof TableauxProof) ResultFormulas() Lib.List[Lib.List[AST.Form]] {
@@ -172,21 +152,45 @@ func (proof TableauxProof) TermGenerated() Lib.Option[Lib.Either[AST.Ty, AST.Ter
 
 	if !(len(proof[0].Result_formulas) == 1 &&
 		proof[0].Result_formulas[0].GetForms().Len() == 1) {
-		return Lib.MkNone[AST.Term]()
+		return Lib.MkNone[Lib.Either[AST.Ty, AST.Term]]()
 	}
 
 	source_form := proof[0].Formula.GetForm()
 	target_form := proof[0].Result_formulas[0].GetForms().At(0)
 
-	replaced_variable := getReplacedVariable(source_form)
+	replaced_variable, is_quantified := getReplacedVariable(source_form)
+
+	if !is_quantified {
+		return Lib.MkNone[Lib.Either[AST.Ty, AST.Term]]()
+	}
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf(
+			"Trying to get occurrence of %s in %s",
+			replaced_variable.ToString(),
+			source_form.ToString(),
+		)
+	}))
+
 	occurrence_opt := getOneOccurrence(source_form, replaced_variable)
 
 	return Lib.OptBind(
 		occurrence_opt,
-		func(occurrence Lib.List[Lib.Int]) Lib.Option[AST.Term] {
+		func(occurrence Lib.List[Lib.Int]) Lib.Option[Lib.Either[AST.Ty, AST.Term]] {
+			debug(Lib.MkLazy(func() string {
+				return fmt.Sprintf(
+					"Target: %s, occurrence: [%s]",
+					getCleanForm(target_form).ToString(),
+					Lib.ListToString(occurrence, ", ", ""),
+				)
+			}))
 			return Lib.MkSome(getTermAtOcc(target_form, occurrence))
 		},
 	)
+}
+
+func (proof TableauxProof) ToString() string {
+	json_content := ProofStructListToJsonProofStructList(proof)
+	return JsonProofStructListToText(json_content)
 }
 
 // ----------------------------------------------------------------------------
@@ -220,12 +224,12 @@ func getAtomic(f AST.Form) AST.Form {
 	return nil
 }
 
-func getReplacedVariable(form AST.Form) AST.TypedVar {
-	get_first := func(vars Lib.List[AST.TypedVar]) AST.TypedVar {
+func getReplacedVariable(form AST.Form) (AST.TypedVar, bool) {
+	get_first := func(vars Lib.List[AST.TypedVar]) (AST.TypedVar, bool) {
 		if vars.Empty() {
-			Glob.Anomaly(label, "Found a quantified formula with an empty list of vars")
+			return AST.TypedVar{}, false
 		}
-		return vars.At(0)
+		return vars.At(0), true
 	}
 
 	switch f := form.(type) {
@@ -242,39 +246,41 @@ func getReplacedVariable(form AST.Form) AST.TypedVar {
 		}
 	}
 
-	Glob.Anomaly(label, "Found quantifier rule on non-quantified formula")
-	return AST.TypedVar{}
+	return AST.TypedVar{}, false
 }
 
 // A variable might be quantified but never appear in a formula
 func getOneOccurrence(form AST.Form, v AST.TypedVar) Lib.Option[Lib.List[Lib.Int]] {
-	clean_form := getCleanForm(form)
-	return getOneOccInCleanForm(clean_form, v, Lib.NewList[Lib.Int]())
+	return getOneOccInCleanForm(getCleanForm(form), v, Lib.NewList[Lib.Int]())
 }
 
 func getTermAtOcc(form AST.Form, occurrence Lib.List[Lib.Int]) Lib.Either[AST.Ty, AST.Term] {
-	clean_form := getCleanForm(form)
-	return getTermAtOccInCleanForm(clean_form, occurrence)
+	return getTermAtOccInCleanForm(getCleanForm(form), occurrence)
 }
 
 func getCleanForm(form AST.Form) AST.Form {
 	switch f := form.(type) {
-	case AST.All:
-		return f.GetForm()
-	case AST.Ex:
-		return f.GetForm()
 	case AST.Not:
-		switch nf := f.GetForm().(type) {
-		case AST.All:
-			return AST.MakerNot(nf.GetForm())
-		case AST.Ex:
-			return AST.MakerNot(nf.GetForm())
-		}
+		return AST.MakerNot(getCleanForm_rec(f.GetForm()))
+	}
+	return getCleanForm_rec(form)
+}
+
+func getCleanForm_rec(form AST.Form) AST.Form {
+	switch f := form.(type) {
+	case AST.All:
+		return getCleanForm(f.GetForm())
+	case AST.Ex:
+		return getCleanForm(f.GetForm())
 	}
 	return form
 }
 
-func getOneOccInCleanForm(form AST.Form, v AST.TypedVar, occurrence Lib.List[Lib.Int]) Lib.Option[Lib.List[Lib.Int]] {
+func getOneOccInCleanForm(
+	form AST.Form,
+	v AST.TypedVar,
+	occurrence Lib.List[Lib.Int],
+) Lib.Option[Lib.List[Lib.Int]] {
 	switch f := form.(type) {
 	case AST.Pred:
 		return getFunctionalOcc(f.GetTyArgs(), f.GetArgs(), v, occurrence)
@@ -293,7 +299,10 @@ func getOneOccInCleanForm(form AST.Form, v AST.TypedVar, occurrence Lib.List[Lib
 	return Lib.MkNone[Lib.List[Lib.Int]]()
 }
 
-func getTermAtOccInCleanForm(form AST.Form, occurrence Lib.List[Lib.Int]) Lib.Either[AST.Ty, AST.Term] {
+func getTermAtOccInCleanForm(
+	form AST.Form,
+	occurrence Lib.List[Lib.Int],
+) Lib.Either[AST.Ty, AST.Term] {
 	switch f := form.(type) {
 	case AST.Pred:
 		return getFunctionalTermAtOcc(f.GetTyArgs(), f.GetArgs(), occurrence)
@@ -339,13 +348,21 @@ func getFunctionalTermAtOcc(
 	terms Lib.List[AST.Term],
 	occurrence Lib.List[Lib.Int],
 ) Lib.Either[AST.Ty, AST.Term] {
+	if occurrence.Empty() {
+		Glob.Anomaly(label, "An occurrence stops at the formula-level")
+	}
+
 	index := int(occurrence.At(0))
 	next_occ := occurrence.Slice(1, occurrence.Len())
 
 	if index < tys.Len() {
 		return Lib.MkLeft[AST.Ty, AST.Term](getTermInTy(tys.At(index), next_occ))
 	} else {
-		return getTermInTerm(terms.At(index), next_occ)
+		if index-tys.Len() >= terms.Len() {
+			Glob.Anomaly(label, "Searching for an occurrence of an unknown term")
+		}
+
+		return getTermInTerm(terms.At(index-tys.Len()), next_occ)
 	}
 }
 
@@ -355,7 +372,11 @@ func appCopy[A Lib.Copyable[A]](x A, ls Lib.List[A]) Lib.List[A] {
 	return result_list
 }
 
-func getOneOccInTy(ty AST.Ty, v AST.TyBound, occurrence Lib.List[Lib.Int]) Lib.Option[Lib.List[Lib.Int]] {
+func getOneOccInTy(
+	ty AST.Ty,
+	v AST.TyBound,
+	occurrence Lib.List[Lib.Int],
+) Lib.Option[Lib.List[Lib.Int]] {
 	switch t := ty.(type) {
 	case AST.TyBound:
 		if t.Equals(v) {
@@ -400,7 +421,11 @@ func getTermInTy(ty AST.Ty, occurrence Lib.List[Lib.Int]) AST.Ty {
 	}
 }
 
-func getOneOccInTrm(trm AST.Term, v AST.TypedVar, occurrence Lib.List[Lib.Int]) Lib.Option[Lib.List[Lib.Int]] {
+func getOneOccInTrm(
+	trm AST.Term,
+	v AST.TypedVar,
+	occurrence Lib.List[Lib.Int],
+) Lib.Option[Lib.List[Lib.Int]] {
 	switch t := trm.(type) {
 	case AST.Var:
 		if t.Equals(v.ToBoundVar()) {
@@ -419,19 +444,20 @@ func getTermInTerm(trm AST.Term, occurrence Lib.List[Lib.Int]) Lib.Either[AST.Ty
 	if occurrence.Empty() {
 		return Lib.MkRight[AST.Ty, AST.Term](trm)
 	} else {
+		debug(Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Trying to get occurrence [%s] in %s",
+				Lib.ListToString(occurrence, ", ", ""),
+				trm.ToString(),
+			)
+		}))
+
 		switch t := trm.(type) {
 		case AST.Fun:
 			return getFunctionalTermAtOcc(t.GetTyArgs(), t.GetArgs(), occurrence)
 		}
 
-		debug(Lib.MkLazy(func() string {
-			return fmt.Sprintf(
-				"Tried to get occurrence [%s] in %s",
-				Lib.ListToString(occurrence, ", ", ""),
-				trm.ToString(),
-			)
-		}))
-		Glob.Anomaly(label, "Occurrence not found in type")
+		Glob.Anomaly(label, "Occurrence not found in term")
 		return nil
 	}
 }

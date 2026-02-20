@@ -46,19 +46,28 @@ import (
 type Form interface {
 	GetIndex() int
 	GetMetas() Lib.Set[Meta]
-	GetSubTerms() Lib.List[Term]
+	GetSubTerms() Lib.Set[Term]
+	GetSymbols() Lib.Set[Id]
 	GetSubFormulasRecur() Lib.List[Form]
 	GetChildFormulas() Lib.List[Form]
 
 	Lib.Copyable[Form]
 	Lib.Stringable
 	Lib.Comparable
+	Lib.Ordered
 
 	ReplaceTermByTerm(old Term, new Term) (Form, bool)
 	SubstTy(old TyGenVar, new Ty) Form
 	RenameVariables() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
 	ReplaceMetaByTerm(meta Meta, term Term) Form
+}
+
+func less(form Form, oth any) bool {
+	if f, is_form := oth.(Form); is_form {
+		return form.GetIndex() < f.GetIndex()
+	}
+	return false
 }
 
 /* Replace a term by a term inside a function. */
@@ -124,7 +133,11 @@ func metasUnion(forms Lib.List[Form]) Lib.Set[Meta] {
 }
 
 // Returns whether the term has been replaced in a subformula or not
-func replaceTermInFormList(oldForms Lib.List[Form], oldTerm Term, newTerm Term) (Lib.List[Form], bool) {
+func replaceTermInFormList(
+	oldForms Lib.List[Form],
+	oldTerm Term,
+	newTerm Term,
+) (Lib.List[Form], bool) {
 	newForms := Lib.MkList[Form](oldForms.Len())
 	res := false
 

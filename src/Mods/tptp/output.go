@@ -40,11 +40,17 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Mods/gs3"
+	"github.com/GoelandProver/Goeland/Mods/desko"
 	"github.com/GoelandProver/Goeland/Search"
 )
 
-var TptpOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeTptpOutput, Name: "TPTP", Extension: ".p"}
+var raise_anomaly = func(msg string) { Glob.Anomaly("TPTP", msg) }
+
+var TptpOutputProofStruct = &Search.OutputProofStruct{
+	ProofOutput: MakeTptpOutput,
+	Name:        "TPTP",
+	Extension:   ".p",
+}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
@@ -53,12 +59,7 @@ var TptpOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeTptpOutpu
 // Functions: MakeTptpOutput
 // Main functions of the TPTP module.
 
-func MakeTptpOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
-	if len(prf) == 0 {
-		Glob.PrintError("TPTP", "Nothing to output")
-		return ""
-	}
-
+func MakeTptpOutput(prf Search.IProof, meta Lib.List[AST.Meta]) string {
 	// FIXME: set AST's printer to be the one of TPTP
 
 	if Glob.IsSCTPTPOutput() {
@@ -67,10 +68,10 @@ func MakeTptpOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	}
 
 	// Transform tableaux's proof in GS3 proof
-	return MakeTptpProof(gs3.MakeGS3Proof(prf), meta)
+	return MakeTptpProof(desko.MakeDeskolemizedProof(prf), meta)
 }
 
-var MakeTptpProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
-	proofString := makeTptpProofFromGS3(proof)
+var MakeTptpProof = func(proof Search.IProof, meta Lib.List[AST.Meta]) string {
+	proofString := makeTPTPProofFromIProof(proof)
 	return proofString
 }

@@ -38,6 +38,7 @@ package Search
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -61,22 +62,74 @@ const (
 	RuleNotAll
 	RuleReintro
 	RuleRew
+	RuleWeaken
 )
 
 const (
-	KindAlpha TableauxRuleKind = iota
+	KindClosure TableauxRuleKind = iota
+	KindAlpha
 	KindBeta
 	KindDelta
 	KindGamma
 	KindRew
+	KindStructural
 )
+
+func (r TableauxRule) ToString() string {
+	smap := map[TableauxRule]string{
+		RuleClosure: "Closure",
+		RuleImp:     "BetaImp",
+		RuleAnd:     "AlphaAnd",
+		RuleOr:      "BetaOr",
+		RuleEqu:     "BetaEqu",
+		RuleEx:      "DeltaEx",
+		RuleAll:     "GammaAll",
+		RuleNotNot:  "AlphaNotNot",
+		RuleNotImp:  "AlphaNotImp",
+		RuleNotAnd:  "BetaNotAnd",
+		RuleNotOr:   "AlphaNotOr",
+		RuleNotEqu:  "BetaNotEqu",
+		RuleNotEx:   "GammaNotEx",
+		RuleNotAll:  "DeltaNotAll",
+		RuleReintro: "Gamma",
+		RuleRew:     "Rew",
+		RuleWeaken:  "Weakening",
+	}
+	res, found := smap[r]
+	if !found {
+		Glob.Anomaly(label, "Unknown rule")
+	}
+	return res
+}
+
+func KindOfRule(r TableauxRule) TableauxRuleKind {
+	switch r {
+	case RuleClosure:
+		return KindClosure
+	case RuleNotNot, RuleNotOr, RuleNotImp, RuleAnd:
+		return KindAlpha
+	case RuleNotAnd, RuleNotEqu, RuleOr, RuleImp, RuleEqu:
+		return KindBeta
+	case RuleNotAll, RuleEx:
+		return KindDelta
+	case RuleNotEx, RuleAll:
+		return KindGamma
+	case RuleRew:
+		return KindRew
+	case RuleWeaken, RuleReintro:
+		return KindStructural
+	}
+
+	Glob.Anomaly(label, "Unknown kind of rule")
+	return 0
+}
 
 type IProof interface {
 	AppliedOn() AST.Form
 	RuleApplied() TableauxRule
-	KindOfRule() TableauxRuleKind
 	ResultFormulas() Lib.List[Lib.List[AST.Form]]
 	Children() Lib.List[IProof]
 	RewrittenWith() Lib.Option[AST.Form]
 	TermGenerated() Lib.Option[Lib.Either[AST.Ty, AST.Term]]
+	ToString() string
 }

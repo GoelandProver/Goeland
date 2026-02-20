@@ -136,7 +136,15 @@ func MkPrinterAction(
 	actionOnTypedVar func(Lib.Pair[string, Ty]) string,
 	actionOnFunctional func(id Id, tys Lib.List[string], args Lib.List[string]) string,
 ) PrinterAction {
-	return PrinterAction{genericAction, actionOnId, actionOnBoundVar, actionOnMeta, actionOnType, actionOnTypedVar, actionOnFunctional}
+	return PrinterAction{
+		genericAction,
+		actionOnId,
+		actionOnBoundVar,
+		actionOnMeta,
+		actionOnType,
+		actionOnTypedVar,
+		actionOnFunctional,
+	}
 }
 
 type Connective int
@@ -159,7 +167,10 @@ func (p *PrinterConnective) StrConn(conn Connective) string {
 
 	if val, ok := p.connectives[conn]; ok {
 		printer_debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("Found connective %d in %s as %s", conn, p.name, val) }))
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Found connective %d in %s as %s", conn, p.name, val) },
+			),
+		)
 		return val
 	} else {
 		if p.name == DefaultPrinterConnectives().name {
@@ -171,7 +182,12 @@ func (p *PrinterConnective) StrConn(conn Connective) string {
 	}
 
 	printer_debug(Lib.MkLazy(func() string {
-		return fmt.Sprintf("Connective %d not found in %s, trying in %s", conn, p.name, default_connective.name)
+		return fmt.Sprintf(
+			"Connective %d not found in %s, trying in %s",
+			conn,
+			p.name,
+			default_connective.name,
+		)
 	}))
 	return default_connective.StrConn(conn)
 }
@@ -196,7 +212,11 @@ type Printer struct {
 	*PrinterConnective
 }
 
-func (c PrinterConnective) DefaultOnFunctionalArgs(id Id, tys Lib.List[string], args Lib.List[string]) string {
+func (c PrinterConnective) DefaultOnFunctionalArgs(
+	id Id,
+	tys Lib.List[string],
+	args Lib.List[string],
+) string {
 	infix := Lib.MkListV(Id_eq)
 	is_infix := Lib.ListMem(id, infix)
 	types := strings.Join(tys.GetSlice(), c.StrConn(SepTyArgs))
@@ -205,9 +225,10 @@ func (c PrinterConnective) DefaultOnFunctionalArgs(id Id, tys Lib.List[string], 
 	if is_infix {
 		if args.Len() != 2 {
 			Glob.Anomaly("Printer", fmt.Sprintf(
-				"invalid number of infix arguments: expected 2, got %d (in %s)",
+				"invalid number of infix arguments: expected 2, got %d (in <<%s>> for %s)",
 				args.Len(),
 				arguments,
+				id.ToString(),
 			))
 		}
 		return fmt.Sprintf("%s %s %s", args.At(0), id.ToString(), args.At(1))

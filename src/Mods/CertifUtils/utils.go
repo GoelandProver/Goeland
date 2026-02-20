@@ -36,7 +36,15 @@ package CertifUtils
  **/
 
 import (
+	"fmt"
+
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
+)
+
+const (
+	INVALID_INDEX = -1
 )
 
 func IsPredEqual(f AST.Form) bool {
@@ -47,4 +55,44 @@ func IsPredEqual(f AST.Form) bool {
 		return p.GetID().Equals(AST.Id_eq)
 	}
 	return false
+}
+
+// Returns the index of the given formula [applied_on] in the list of formulas [hypotheses].
+// As this is an inferrence step, returns [INVALID_INDEX] _only if_ the target formula is an empty
+// equality predicate OR [True], which means either that the proof should be concluded by [congruence]
+// or that there is a weakening happening on a term and a dummy formula has been used.
+// Otherwise, if the formula is not found in the list of hypotheses, raises an [Anomaly]: this
+// is certainly something that should never happen.
+func GetTargetFormIndex(applied_on AST.Form, hypotheses Lib.List[AST.Form]) int {
+	switch t := Lib.ListIndexOf(applied_on, hypotheses).(type) {
+	case Lib.Some[int]:
+		return t.Val
+	case Lib.None[int]:
+		if !IsPredEqual(applied_on) && !applied_on.Equals(AST.MakerTop()) {
+			Glob.Anomaly(
+				"certif-utils",
+				fmt.Sprintf("index of %s not found in { %s }", applied_on.ToString(), Lib.ListToString(hypotheses, " ;; ", "")),
+			)
+		}
+	}
+	return INVALID_INDEX
+}
+
+// The first step is always of the form:
+//
+//	H1 & H2 & H3 & H4 & ... & ~C --> H1, H2, H3, H4, ..., ~C
+//
+// Hence, we return the list of hypothesis [Hi] and the _base_ conjecture, i.e., the
+// non-negated version.
+func ProcessMainFormula(form AST.Form) (Lib.List[AST.Form], AST.Form) {
+	formList := Lib.NewList[AST.Form]()
+	switch nf := form.(type) {
+	case AST.Not:
+		form = nf.GetForm()
+	case AST.And:
+		last := nf.GetChildFormulas().Len() - 1
+		formList = Lib.MkListV(nf.GetChildFormulas().Get(0, last)...)
+		form = nf.GetChildFormulas().At(last).(AST.Not).GetForm()
+	}
+	return formList, form
 }

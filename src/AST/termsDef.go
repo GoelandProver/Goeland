@@ -63,7 +63,7 @@ func (i Id) ToString() string          { return printer.StrId(i) }
 
 func (i Id) Equals(t any) bool {
 	if typed, ok := t.(Id); ok {
-		return typed.GetIndex() == i.GetIndex()
+		return typed.name == i.name
 	}
 	return false
 }
@@ -77,8 +77,12 @@ func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
 
 func (i Id) SubstTy(TyGenVar, Ty) Term { return i }
 
-func (i Id) GetSubTerms() Lib.List[Term] {
-	return Lib.MkListV[Term](i)
+func (i Id) GetSubTerms() Lib.Set[Term] {
+	return Lib.Singleton[Term](i)
+}
+
+func (i Id) GetSymbols() Lib.Set[Id] {
+	return Lib.Singleton(i)
 }
 
 // id < other : -1; id = other : 0; id > other : 1
@@ -234,12 +238,21 @@ func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 	}
 }
 
-func (f Fun) GetSubTerms() Lib.List[Term] {
-	res := Lib.NewList[Term]()
+func (f Fun) GetSubTerms() Lib.Set[Term] {
+	res := Lib.Singleton(Term(f))
 
-	res.Add(TermEquals, f)
 	for _, arg := range f.GetArgs().GetSlice() {
-		res.Add(TermEquals, arg.GetSubTerms().GetSlice()...)
+		res = res.Union(arg.GetSubTerms())
+	}
+
+	return res
+}
+
+func (f Fun) GetSymbols() Lib.Set[Id] {
+	res := Lib.Singleton(f.GetID())
+
+	for _, arg := range f.GetArgs().GetSlice() {
+		res = res.Union(arg.GetSymbols())
 	}
 
 	return res
@@ -280,8 +293,12 @@ func (v Var) Equals(t any) bool {
 	return false
 }
 
-func (v Var) GetSubTerms() Lib.List[Term] {
-	return Lib.MkListV[Term](v)
+func (v Var) GetSubTerms() Lib.Set[Term] {
+	return Lib.Singleton[Term](v)
+}
+
+func (v Var) GetSymbols() Lib.Set[Id] {
+	return Lib.EmptySet[Id]()
 }
 
 func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
@@ -347,8 +364,12 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 
 func (m Meta) SubstTy(TyGenVar, Ty) Term { return m }
 
-func (m Meta) GetSubTerms() Lib.List[Term] {
-	return Lib.MkListV[Term](m)
+func (m Meta) GetSubTerms() Lib.Set[Term] {
+	return Lib.Singleton[Term](m)
+}
+
+func (m Meta) GetSymbols() Lib.Set[Id] {
+	return Lib.EmptySet[Id]()
 }
 
 func (m Meta) Less(u any) bool {

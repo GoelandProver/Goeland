@@ -149,14 +149,28 @@ func IntFormAndTermsListListToString(fll []IntFormAndTermsList) string {
 }
 
 func (p ProofStruct) ToString() string {
-	res := "(" + strconv.Itoa(p.GetNodeId()) + ")" + p.GetFormula().ToString() + " - " + p.GetRule() + " - " + IntFormAndTermsListListToString(p.GetResultFormulas())
+	res := "(" + strconv.Itoa(
+		p.GetNodeId(),
+	) + ")" + p.GetFormula().
+		ToString() +
+		" - " + p.GetRule() + " - " + IntFormAndTermsListListToString(
+		p.GetResultFormulas(),
+	)
 	if len(p.GetChildren()) > 0 {
 		res += " - " + ProofChildrenToString(p.GetChildren())
 	}
 	return res
 }
 func (p ProofStruct) Copy() ProofStruct {
-	return ProofStruct{p.GetFormula(), p.GetIdDMT(), p.GetNodeId(), p.GetRule(), p.GetRuleName(), p.GetResultFormulas(), copyProofStructChildren(p.Children)}
+	return ProofStruct{
+		p.GetFormula(),
+		p.GetIdDMT(),
+		p.GetNodeId(),
+		p.GetRule(),
+		p.GetRuleName(),
+		p.GetResultFormulas(),
+		copyProofStructChildren(p.Children),
+	}
 }
 
 func ProofStructListToString(l []ProofStruct) string {
@@ -249,7 +263,13 @@ func MakeEmptyProofStruct() ProofStruct {
 	}
 }
 
-func MakeProofStruct(formula Core.FormAndTerms, formula_use, id int, rule, rule_name string, Result_formulas []IntFormAndTermsList, children [][]ProofStruct) ProofStruct {
+func MakeProofStruct(
+	formula Core.FormAndTerms,
+	formula_use, id int,
+	rule, rule_name string,
+	Result_formulas []IntFormAndTermsList,
+	children [][]ProofStruct,
+) ProofStruct {
 	return ProofStruct{formula, formula_use, id, rule, rule_name, Result_formulas, children}
 }
 
@@ -286,7 +306,15 @@ func IntFormAndTermsListToIntIntStringPairList(fl []IntFormAndTermsList) []IntIn
 func ProofStructListToJsonProofStructList(ps []ProofStruct) []JsonProofStruct {
 	res := []JsonProofStruct{}
 	for _, p := range ps {
-		new_json_element := JsonProofStruct{p.GetFormula().GetForm().ToString(), p.GetIdDMT(), p.Node_id, p.Rule, p.Rule_name, IntFormAndTermsListToIntIntStringPairList(p.Result_formulas), proofStructChildrenToJsonProofStructChildren(p.Children)}
+		new_json_element := JsonProofStruct{
+			p.GetFormula().GetForm().ToString(),
+			p.GetIdDMT(),
+			p.Node_id,
+			p.Rule,
+			p.Rule_name,
+			IntFormAndTermsListToIntIntStringPairList(p.Result_formulas),
+			proofStructChildrenToJsonProofStructChildren(p.Children),
+		}
 		res = append(res, new_json_element)
 	}
 	return res
@@ -377,11 +405,6 @@ func JsonProofStructListToText(jps []JsonProofStruct) string {
 	return res
 }
 
-func ProofStructListToText(ps []ProofStruct, metaList Lib.List[AST.Meta]) string {
-	json_content := ProofStructListToJsonProofStructList(ps)
-	return JsonProofStructListToText(json_content)
-}
-
 func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) Lib.Set[AST.Meta] {
 	res := Lib.EmptySet[AST.Meta]()
 
@@ -404,7 +427,10 @@ func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) Lib.Set[AST.
 }
 
 /* Apply subst on a proof tree */
-func ApplySubstitutionOnProofList(s Lib.List[Unif.MixedSubstitution], proof_list []ProofStruct) []ProofStruct {
+func ApplySubstitutionOnProofList(
+	s Lib.List[Unif.MixedSubstitution],
+	proof_list []ProofStruct,
+) []ProofStruct {
 	new_proof_list := []ProofStruct{}
 
 	for _, p := range proof_list {
@@ -414,7 +440,10 @@ func ApplySubstitutionOnProofList(s Lib.List[Unif.MixedSubstitution], proof_list
 		for _, f := range p.GetResultFormulas() {
 			new_result_formulas = append(
 				new_result_formulas,
-				MakeIntFormAndTermsList(f.GetI(), Core.ApplySubstitutionsOnFormAndTermsList(s, f.GetFL())),
+				MakeIntFormAndTermsList(
+					f.GetI(),
+					Core.ApplySubstitutionsOnFormAndTermsList(s, f.GetFL()),
+				),
 			)
 		}
 		p.SetResultFormulasProof(new_result_formulas)

@@ -37,6 +37,7 @@
 package AST
 
 import (
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -52,7 +53,8 @@ type Term interface {
 	ToMeta() Meta
 	GetMetas() Lib.Set[Meta]
 	GetMetaList() Lib.List[Meta] // Metas appearing in the term ORDERED
-	GetSubTerms() Lib.List[Term]
+	GetSubTerms() Lib.Set[Term]
+	GetSymbols() Lib.Set[Id]
 	ReplaceSubTermBy(original_term, new_term Term) Term
 	SubstTy(old TyGenVar, new Ty) Term
 	Less(any) bool
@@ -83,4 +85,25 @@ func MakeFun(p Id, ty_args Lib.List[Ty], args Lib.List[Term], metas Lib.Set[Meta
 
 func TermEquals(x, y Term) bool {
 	return x.Equals(y)
+}
+
+func GetSymbol(tm Term) Lib.Option[Id] {
+	switch t := tm.(type) {
+	case Var, Meta:
+		return Lib.MkNone[Id]()
+	case Fun:
+		return Lib.MkSome(t.GetID())
+	case Id:
+		return Lib.MkSome(tm)
+	}
+
+	debug(Lib.MkLazy(func() string {
+		return tm.ToString()
+	}))
+
+	Glob.Anomaly(
+		"term",
+		"Found a term that was neither a bound variable nor a free variable nor a function",
+	)
+	return Lib.MkNone[Id]()
 }

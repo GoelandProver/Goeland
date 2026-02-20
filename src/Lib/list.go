@@ -72,6 +72,12 @@ func (l *List[T]) Append(value ...T) {
 	l.values = append(l.values, value...)
 }
 
+// Functional version of Append
+func (l List[T]) Push(values ...T) List[T] {
+	l.values = append(l.values, values...)
+	return l
+}
+
 func (l *List[T]) Upd(i int, v T) {
 	l.values[i] = v
 }
@@ -238,6 +244,27 @@ func (l List[T]) Filter(pred Func[T, bool]) List[T] {
 		}
 	}
 	return res
+}
+
+func (l List[T]) InsertAt(i int, x T) List[T] {
+	if i == l.Len() {
+		l.values = append(l.values, x)
+	} else if l.Len() <= 0 || i > l.Len() {
+		return l
+	} else {
+		l.values = append(l.values[:i+1], l.values[i:]...)
+		l.values[i] = x
+	}
+	return l
+}
+
+// Shallow copy of the list (returns simply a new list with the same elements)
+func (l List[T]) Clone() List[T] {
+	nl := MkList[T](l.Len())
+	for i, x := range l.values {
+		nl.Upd(i, x)
+	}
+	return nl
 }
 
 func ToStrictlyOrderedList[T StrictlyOrdered](l List[T]) StrictlyOrderedList[T] {

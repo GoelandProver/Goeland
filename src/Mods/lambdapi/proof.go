@@ -39,11 +39,11 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/CertifUtils"
-	"github.com/GoelandProver/Goeland/Mods/gs3"
+	"github.com/GoelandProver/Goeland/Search"
 )
 
-func makeLambdaPiProofFromGS3(proof *gs3.GS3Sequent) string {
-	formula := proof.GetTargetForm()
+func makeLambdaPiProofFromIProof(proof Search.IProof) string {
+	formula := proof.AppliedOn()
 	axioms, conjecture := processMainFormula(formula)
 
 	resulting_string, to_introduce := makeTheorem(axioms, conjecture)
@@ -51,44 +51,50 @@ func makeLambdaPiProofFromGS3(proof *gs3.GS3Sequent) string {
 	resulting_string += "begin\n  "
 	str, local_context := assume(to_introduce, context)
 	if to_introduce.Len() != 1 {
-		proof = proof.Child(0)
+		proof = proof.Children().At(0)
 	}
 	return resulting_string + str + makeProofStep(proof, local_context) + "end;\n"
 }
 
-func makeProofStep(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func makeProofStep(proof Search.IProof, context Lib.List[AST.Form]) string {
 	var resultingString string
-	switch proof.Rule() {
-	case gs3.AX:
+	switch proof.RuleApplied() {
+	case Search.RuleClosure:
 		resultingString = closureAxiom(proof, context)
-	case gs3.NNOT:
+	case Search.RuleNotNot:
 		resultingString = alphaNotNot(proof, context)
-	case gs3.AND:
+	case Search.RuleAnd:
 		resultingString = alphaAnd(proof, context)
-	case gs3.NOR:
+	case Search.RuleNotOr:
 		resultingString = alphaNotOr(proof, context)
-	case gs3.NIMP:
+	case Search.RuleNotImp:
 		resultingString = alphaNotImp(proof, context)
-	case gs3.OR:
+	case Search.RuleOr:
 		resultingString = betaOr(proof, context)
-	case gs3.NAND:
+	case Search.RuleNotAnd:
 		resultingString = betaNotAnd(proof, context)
-	case gs3.IMP:
+	case Search.RuleImp:
 		resultingString = betaImp(proof, context)
-	case gs3.EQU:
+	case Search.RuleEqu:
 		resultingString = betaEqu(proof, context)
-	case gs3.NEQU:
+	case Search.RuleNotEqu:
 		resultingString = betaNotEqu(proof, context)
-	case gs3.EX:
+	case Search.RuleEx:
 		resultingString = deltaEx(proof, context)
-	case gs3.NALL:
+	case Search.RuleNotAll:
 		resultingString = deltaNotAll(proof, context)
-	case gs3.ALL:
+	case Search.RuleAll:
 		resultingString = gammaAll(proof, context)
-	case gs3.NEX:
+	case Search.RuleNotEx:
 		resultingString = gammaNotEx(proof, context)
 	default:
-		Glob.Fatal("LambdaPi", fmt.Sprintf("Translation of rule %s not implemented yet", proof.Rule().ToString()))
+		Glob.Fatal(
+			"LambdaPi",
+			fmt.Sprintf(
+				"Translation of rule %s not implemented yet",
+				proof.RuleApplied().ToString(),
+			),
+		)
 	}
 
 	return resultingString
@@ -110,12 +116,12 @@ func refine(lemma string, arguments Lib.List[string], in_con string, goals int) 
 	return fmt.Sprintf("  refine %s %s %s %s\n", lemma, arguments_string, goals_string, in_con)
 }
 
-func closureAxiom(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
-	if CertifUtils.IsPredEqual(proof.GetTargetForm()) {
+func closureAxiom(proof Search.IProof, context Lib.List[AST.Form]) string {
+	if CertifUtils.IsPredEqual(proof.AppliedOn()) {
 		Glob.Fatal("LambdaPi", "congruence closure is not implemented yet")
 	}
 
-	target, notTarget := getPosAndNeg(proof.GetTargetForm())
+	target, notTarget := getPosAndNeg(proof.AppliedOn())
 	result := ""
 	switch target.(type) {
 	case AST.Pred:
@@ -140,20 +146,34 @@ func getPosAndNeg(target AST.Form) (pos, neg AST.Form) {
 	return target, AST.MakerNot(target)
 }
 
-func refineGenericRule(lemma string, proof *gs3.GS3Sequent, remaining_goals int, context Lib.List[AST.Form]) string {
+func refineGenericRule(
+	lemma string,
+	proof Search.IProof,
+	remaining_goals int,
+	context Lib.List[AST.Form],
+) string {
 	formulas_list := Lib.NewList[string]()
 
 	// If a term was generated, get its type and place the stuff in the right order: the type of
 	// the generated term, the formula and then the term.
-	if gs3.IsGammaRule(proof.Rule()) || gs3.IsDeltaRule(proof.Rule()) {
-		ty := getTypeOfFirstBoundVar(proof.GetTargetForm())
-		formated_child := getFormattedChild(proof.GetTargetForm())
-		formulas_list = Lib.MkListV("("+strings.ReplaceAll(ty.ToString(), "τ", "")+")", "("+formated_child+")")
-		if gs3.IsGammaRule(proof.Rule()) {
-			// FIXME: use an option type instead of nil
-			if proof.TermGenerated() != nil {
-				formulas_list.Append(getFormattedTerm(proof.TermGenerated()))
-			} else {
+	if Search.KindOfRule(proof.RuleApplied()) == Search.KindGamma ||
+		Search.KindOfRule(proof.RuleApplied()) == Search.KindDelta {
+		ty := getTypeOfFirstBoundVar(proof.AppliedOn())
+		formated_child := getFormattedChild(proof.AppliedOn())
+		formulas_list = Lib.MkListV(
+			"("+strings.ReplaceAll(ty.ToString(), "τ", "")+")",
+			"("+formated_child+")",
+		)
+		if Search.KindOfRule(proof.RuleApplied()) == Search.KindGamma {
+			switch t := proof.TermGenerated().(type) {
+			case Lib.Some[Lib.Either[AST.Ty, AST.Term]]:
+				switch t0 := t.Val.(type) {
+				case Lib.Left[AST.Ty, AST.Term]:
+					Glob.Fatal("LambdaPi", "Not yet implemented")
+				case Lib.Right[AST.Ty, AST.Term]:
+					formulas_list.Append(getFormattedTerm(t0.Val))
+				}
+			default:
 				// Try to find something in the global env, otherwise: fail
 				// FIXME: we should also try to find something in the local (term) environment
 				//       (this does not exist yet)
@@ -164,14 +184,14 @@ func refineGenericRule(lemma string, proof *gs3.GS3Sequent, remaining_goals int,
 					Glob.Fatal("LambdaPi", fmt.Sprintf(
 						"no term of type %s available to instantiate the universal formula %s.",
 						ty.ToString(),
-						proof.GetTargetForm().ToString(),
+						proof.AppliedOn().ToString(),
 					))
 				}
 			}
 		}
 	} else {
-		child_formulas := proof.GetTargetForm().GetChildFormulas()
-		switch f := proof.GetTargetForm().(type) {
+		child_formulas := proof.AppliedOn().GetChildFormulas()
+		switch f := proof.AppliedOn().(type) {
 		case AST.Not:
 			child_formulas = f.GetForm().GetChildFormulas()
 		}
@@ -180,22 +200,44 @@ func refineGenericRule(lemma string, proof *gs3.GS3Sequent, remaining_goals int,
 		}
 	}
 
-	result_string := refine(lemma, formulas_list, getFromLocalContext(proof.GetTargetForm(), context), remaining_goals)
+	result_string := refine(
+		lemma,
+		formulas_list,
+		getFromLocalContext(proof.AppliedOn(), context),
+		remaining_goals,
+	)
 
 	if remaining_goals <= 1 {
 		result_string = result_string[:len(result_string)-1] + ";\n"
-		assumptions, con := assume(proof.GetResultFormulasOfChild(0), Lib.ListCpy(context))
-		if gs3.IsDeltaRule(proof.Rule()) {
-			assumptions = fmt.Sprintf("assume %s;", getFormattedTerm(proof.TermGenerated())) + assumptions
+		assumptions, con := assume(proof.ResultFormulas().At(0), Lib.ListCpy(context))
+		if Search.KindOfRule(proof.RuleApplied()) == Search.KindDelta {
+			var tm AST.Term
+
+			switch t := proof.TermGenerated().(type) {
+			case Lib.None[Lib.Either[AST.Ty, AST.Term]]:
+				Glob.Fatal("LambdaPi", "output does not manage assuming empty terms")
+			case Lib.Some[Lib.Either[AST.Ty, AST.Term]]:
+				switch t0 := t.Val.(type) {
+				case Lib.Left[AST.Ty, AST.Term]:
+					Glob.Fatal("LambdaPi", "output does not manage assuming types")
+				case Lib.Right[AST.Ty, AST.Term]:
+					tm = t0.Val
+				}
+			}
+
+			assumptions = fmt.Sprintf(
+				"assume %s;",
+				getFormattedTerm(tm),
+			) + assumptions
 		}
 		result_string += assumptions
-		result_string += makeProofStep(proof.Child(0), con)
+		result_string += makeProofStep(proof.Children().At(0), con)
 	} else {
 		for i := 0; i < remaining_goals; i++ {
 			result_string += "{\n"
-			assumptions, con := assume(proof.GetResultFormulasOfChild(i), Lib.ListCpy(context))
+			assumptions, con := assume(proof.ResultFormulas().At(i), Lib.ListCpy(context))
 			result_string += assumptions
-			result_string += makeProofStep(proof.Child(i), con)
+			result_string += makeProofStep(proof.Children().At(i), con)
 			result_string += "}\n"
 		}
 		result_string = result_string[:len(result_string)-1] + ";\n"
@@ -301,63 +343,63 @@ func getFormattedChild(form AST.Form) string {
 	return ""
 }
 
-func refineUnaryRule(lemma string, proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func refineUnaryRule(lemma string, proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineGenericRule(lemma, proof, 1, context)
 }
 
-func refineBinaryRule(lemma string, proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func refineBinaryRule(lemma string, proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineGenericRule(lemma, proof, 2, context)
 }
 
-func alphaNotNot(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func alphaNotNot(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineUnaryRule("GS3nnot", proof, context)
 }
 
-func alphaAnd(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func alphaAnd(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineUnaryRule("GS3and", proof, context)
 }
 
-func alphaNotOr(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func alphaNotOr(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineUnaryRule("GS3nor", proof, context)
 }
 
-func alphaNotImp(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func alphaNotImp(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineUnaryRule("GS3nimp", proof, context)
 }
 
-func betaOr(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func betaOr(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineBinaryRule("GS3or", proof, context)
 }
 
-func betaNotAnd(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func betaNotAnd(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineBinaryRule("GS3nand", proof, context)
 }
 
-func betaImp(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func betaImp(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineBinaryRule("GS3imp", proof, context)
 }
 
-func betaEqu(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func betaEqu(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineBinaryRule("GS3equ", proof, context)
 }
 
-func betaNotEqu(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func betaNotEqu(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineBinaryRule("GS3nequ", proof, context)
 }
 
-func deltaEx(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func deltaEx(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineUnaryRule("GS3ex", proof, context)
 }
 
-func deltaNotAll(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func deltaNotAll(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineUnaryRule("GS3nall", proof, context)
 }
 
-func gammaAll(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func gammaAll(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineUnaryRule("GS3all", proof, context)
 }
 
-func gammaNotEx(proof *gs3.GS3Sequent, context Lib.List[AST.Form]) string {
+func gammaNotEx(proof Search.IProof, context Lib.List[AST.Form]) string {
 	return refineUnaryRule("GS3nex", proof, context)
 }
 

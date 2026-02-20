@@ -38,6 +38,7 @@ package AST
 
 import (
 	"fmt"
+
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
@@ -134,6 +135,8 @@ func (a All) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return All{a.quantifier.replaceMetaByTerm(meta, term)}
 }
 
+func (a All) Less(oth any) bool { return less(a, oth) }
+
 // -----------------------------------------------------------------------------
 // Exists
 
@@ -189,6 +192,8 @@ func (e Ex) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return Ex{e.quantifier.replaceMetaByTerm(meta, term)}
 }
 
+func (e Ex) Less(oth any) bool { return less(e, oth) }
+
 // -----------------------------------------------------------------------------
 // Or
 
@@ -228,11 +233,21 @@ func (o Or) GetMetas() Lib.Set[Meta] {
 	return o.metas.Get(o)
 }
 
-func (o Or) GetSubTerms() Lib.List[Term] {
-	res := Lib.NewList[Term]()
+func (o Or) GetSubTerms() Lib.Set[Term] {
+	res := Lib.EmptySet[Term]()
 
 	for _, tl := range o.forms.GetSlice() {
-		res.Add(TermEquals, tl.GetSubTerms().GetSlice()...)
+		res = res.Union(tl.GetSubTerms())
+	}
+
+	return res
+}
+
+func (o Or) GetSymbols() Lib.Set[Id] {
+	res := Lib.EmptySet[Id]()
+
+	for _, tl := range o.forms.GetSlice() {
+		res = res.Union(tl.GetSymbols())
 	}
 
 	return res
@@ -293,6 +308,8 @@ func (o Or) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return MakeOr(o.GetIndex(), LsSubstByTerm(o.forms, meta, term))
 }
 
+func (o Or) Less(oth any) bool { return less(o, oth) }
+
 // -----------------------------------------------------------------------------
 // And
 
@@ -349,11 +366,21 @@ func (a And) GetMetas() Lib.Set[Meta] {
 	return a.metas.Get(a)
 }
 
-func (a And) GetSubTerms() Lib.List[Term] {
-	res := Lib.NewList[Term]()
+func (a And) GetSubTerms() Lib.Set[Term] {
+	res := Lib.EmptySet[Term]()
 
 	for _, tl := range a.forms.GetSlice() {
-		res.Add(TermEquals, tl.GetSubTerms().GetSlice()...)
+		res = res.Union(tl.GetSubTerms())
+	}
+
+	return res
+}
+
+func (a And) GetSymbols() Lib.Set[Id] {
+	res := Lib.EmptySet[Id]()
+
+	for _, tl := range a.forms.GetSlice() {
+		res = res.Union(tl.GetSymbols())
 	}
 
 	return res
@@ -416,6 +443,8 @@ func (a And) GetChildFormulas() Lib.List[Form] {
 func (a And) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return MakeAnd(a.GetIndex(), LsSubstByTerm(a.forms, meta, term))
 }
+
+func (a And) Less(oth any) bool { return less(a, oth) }
 
 // -----------------------------------------------------------------------------
 // Equivalence
@@ -505,11 +534,12 @@ func (e Equ) RenameVariables() Form {
 	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
 }
 
-func (e Equ) GetSubTerms() Lib.List[Term] {
-	res := e.GetF1().GetSubTerms().Copy(Term.Copy)
-	res.Add(TermEquals, e.GetF2().GetSubTerms().GetSlice()...)
+func (e Equ) GetSubTerms() Lib.Set[Term] {
+	return e.GetF1().GetSubTerms().Union(e.GetF2().GetSubTerms())
+}
 
-	return res
+func (e Equ) GetSymbols() Lib.Set[Id] {
+	return e.GetF1().GetSymbols().Union(e.GetF2().GetSymbols())
 }
 
 func (e Equ) SubstituteVarByMeta(old Var, new Meta) Form {
@@ -526,8 +556,14 @@ func (e Equ) GetChildFormulas() Lib.List[Form] {
 }
 
 func (e Equ) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeEqu(e.GetIndex(), e.f1.ReplaceMetaByTerm(meta, term), e.f2.ReplaceMetaByTerm(meta, term))
+	return MakeEqu(
+		e.GetIndex(),
+		e.f1.ReplaceMetaByTerm(meta, term),
+		e.f2.ReplaceMetaByTerm(meta, term),
+	)
 }
+
+func (e Equ) Less(oth any) bool { return less(e, oth) }
 
 // -----------------------------------------------------------------------------
 // Implication
@@ -620,11 +656,12 @@ func (i Imp) RenameVariables() Form {
 	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
 }
 
-func (i Imp) GetSubTerms() Lib.List[Term] {
-	res := i.GetF1().GetSubTerms().Copy(Term.Copy)
-	res.Add(TermEquals, i.GetF2().GetSubTerms().GetSlice()...)
+func (i Imp) GetSubTerms() Lib.Set[Term] {
+	return i.GetF1().GetSubTerms().Union(i.GetF2().GetSubTerms())
+}
 
-	return res
+func (i Imp) GetSymbols() Lib.Set[Id] {
+	return i.GetF1().GetSymbols().Union(i.GetF2().GetSymbols())
 }
 
 func (i Imp) SubstituteVarByMeta(old Var, new Meta) Form {
@@ -641,8 +678,14 @@ func (i Imp) GetChildFormulas() Lib.List[Form] {
 }
 
 func (i Imp) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeImp(i.GetIndex(), i.f1.ReplaceMetaByTerm(meta, term), i.f2.ReplaceMetaByTerm(meta, term))
+	return MakeImp(
+		i.GetIndex(),
+		i.f1.ReplaceMetaByTerm(meta, term),
+		i.f2.ReplaceMetaByTerm(meta, term),
+	)
 }
+
+func (i Imp) Less(oth any) bool { return less(i, oth) }
 
 // -----------------------------------------------------------------------------
 // Not
@@ -683,8 +726,12 @@ func (n Not) GetMetas() Lib.Set[Meta] {
 	return n.metas.Get(n)
 }
 
-func (n Not) GetSubTerms() Lib.List[Term] {
+func (n Not) GetSubTerms() Lib.Set[Term] {
 	return n.GetForm().GetSubTerms()
+}
+
+func (n Not) GetSymbols() Lib.Set[Id] {
+	return n.GetForm().GetSymbols()
 }
 
 func (n Not) Equals(other any) bool {
@@ -782,6 +829,8 @@ func getDeepFormWithoutNot(form Form, isEven bool) (Form, bool) {
 		return form, isEven
 	}
 }
+
+func (n Not) Less(oth any) bool { return less(n, oth) }
 
 // -----------------------------------------------------------------------------
 // Predicates
@@ -943,12 +992,21 @@ func (p Pred) SubstTy(old TyGenVar, new Ty) Form {
 	)
 }
 
-func (p Pred) GetSubTerms() Lib.List[Term] {
-	res := Lib.NewList[Term]()
+func (p Pred) GetSubTerms() Lib.Set[Term] {
+	res := Lib.EmptySet[Term]()
 
 	for _, t := range p.GetArgs().GetSlice() {
-		res.Add(TermEquals, t)
-		res.Add(TermEquals, t.GetSubTerms().GetSlice()...)
+		res = res.Add(t).Union(t.GetSubTerms())
+	}
+
+	return res
+}
+
+func (p Pred) GetSymbols() Lib.Set[Id] {
+	res := Lib.EmptySet[Id]()
+
+	for _, t := range p.GetArgs().GetSlice() {
+		res = res.Union(t.GetSymbols())
 	}
 
 	return res
@@ -993,6 +1051,8 @@ func (p Pred) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	)
 }
 
+func (p Pred) Less(oth any) bool { return less(p, oth) }
+
 // -----------------------------------------------------------------------------
 // True and False
 
@@ -1016,12 +1076,14 @@ func (t Top) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeTop(t.Get
 func (t Top) SubstTy(TyGenVar, Ty) Form                   { return t }
 func (t Top) RenameVariables() Form                       { return MakeTop(t.GetIndex()) }
 func (t Top) GetIndex() int                               { return t.index }
-func (t Top) GetSubTerms() Lib.List[Term]                 { return Lib.NewList[Term]() }
+func (t Top) GetSubTerms() Lib.Set[Term]                  { return Lib.EmptySet[Term]() }
+func (t Top) GetSymbols() Lib.Set[Id]                     { return Lib.EmptySet[Id]() }
 func (t Top) SubstituteVarByMeta(Var, Meta) Form          { return t }
 func (t Top) GetInternalMetas() Lib.Set[Meta]             { return Lib.EmptySet[Meta]() }
 func (t Top) GetSubFormulasRecur() Lib.List[Form]         { return Lib.MkListV[Form](t) }
 func (t Top) GetChildFormulas() Lib.List[Form]            { return Lib.NewList[Form]() }
 func (t Top) ReplaceMetaByTerm(meta Meta, term Term) Form { return t }
+func (t Top) Less(oth any) bool                           { return less(t, oth) }
 
 /* Bot (always false) definition */
 type Bot struct {
@@ -1044,9 +1106,11 @@ func (b Bot) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeBot(b.Get
 func (b Bot) SubstTy(TyGenVar, Ty) Form                   { return b }
 func (b Bot) RenameVariables() Form                       { return MakeBot(b.GetIndex()) }
 func (b Bot) GetIndex() int                               { return b.index }
-func (b Bot) GetSubTerms() Lib.List[Term]                 { return Lib.NewList[Term]() }
+func (b Bot) GetSubTerms() Lib.Set[Term]                  { return Lib.EmptySet[Term]() }
+func (b Bot) GetSymbols() Lib.Set[Id]                     { return Lib.EmptySet[Id]() }
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form          { return b }
 func (b Bot) GetInternalMetas() Lib.Set[Meta]             { return Lib.EmptySet[Meta]() }
 func (b Bot) GetSubFormulasRecur() Lib.List[Form]         { return Lib.MkListV[Form](b) }
 func (b Bot) GetChildFormulas() Lib.List[Form]            { return Lib.NewList[Form]() }
 func (b Bot) ReplaceMetaByTerm(meta Meta, term Term) Form { return b }
+func (b Bot) Less(oth any) bool                           { return less(b, oth) }

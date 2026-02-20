@@ -433,7 +433,10 @@ func GetArgsTy(ty Ty) Lib.List[Ty] {
 	}
 	Glob.Anomaly(
 		"Ty.GetArgs",
-		fmt.Sprintf("Tried to extract types of arguments of a non-functional type %s", ty.ToString()),
+		fmt.Sprintf(
+			"Tried to extract types of arguments of a non-functional type %s",
+			ty.ToString(),
+		),
 	)
 	return Lib.NewList[Ty]()
 }
@@ -453,6 +456,14 @@ func GetOutTy(ty Ty) Ty {
 	return nil
 }
 
+func GetTySymbol(ty Ty) Lib.Option[string] {
+	switch t := ty.(type) {
+	case TyConstr:
+		return Lib.MkSome(t.symbol)
+	}
+	return Lib.MkNone[string]()
+}
+
 func TyToTerm(ty Ty) Term {
 	switch nty := ty.(type) {
 	case TyMeta:
@@ -467,7 +478,10 @@ func TyToTerm(ty Ty) Term {
 
 	Glob.Anomaly(
 		"AST.Ty",
-		fmt.Sprintf("Trying to convert the non-atomic (or bound var) type %s to a term", ty.ToString()),
+		fmt.Sprintf(
+			"Trying to convert the non-atomic (or bound var) type %s to a term",
+			ty.ToString(),
+		),
 	)
 	return nil
 }
@@ -485,7 +499,10 @@ func TermToTy(trm Term) Ty {
 
 	Glob.Anomaly(
 		"AST.Ty",
-		fmt.Sprintf("Trying to convert the non-atomic (or bound var) term %s to a type", trm.ToString()),
+		fmt.Sprintf(
+			"Trying to convert the non-atomic (or bound var) term %s to a type",
+			trm.ToString(),
+		),
 	)
 	return nil
 }

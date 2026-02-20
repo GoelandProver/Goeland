@@ -34,661 +34,701 @@
 * This file provides a TPTP proof from Goéland's proof.
 **/
 
-// TODO :
-// Equality
-// unbound variables
-
 package tptp
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
-	"sync"
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Mods/gs3"
+	"github.com/GoelandProver/Goeland/Mods/CertifUtils"
+	"github.com/GoelandProver/Goeland/Search"
 )
 
-var mutex_proof_step sync.Mutex
-var id_proof_step = 0
-var mutex_constant sync.Mutex
-var original_term = make([]AST.Term, 0)
-var constant_created = make([]AST.Term, 0)
+type proof_with_id struct {
+	id    int
+	proof Search.IProof
+}
+
+var original_terms = Lib.NewList[Lib.Either[AST.Ty, AST.Term]]()
 var prefix_step = "f"
 var prefix_axiom_cut = "ac"
 var prefix_const = "sko_"
 var dummyTerm = AST.MakerConst(AST.MakerId("Goeland_I"))
+var dummyType = AST.MkTyConst("Goeland_T")
+var epsilon CertifUtils.Epsilon
+var current_id = 0
 
-func makeTptpProofFromGS3(proof *gs3.GS3Sequent) string {
-	axioms, conjecture := processMainFormula(proof.GetTargetForm())
+func makeTPTPProofFromIProof(proof Search.IProof) string {
+	axioms, conjecture := CertifUtils.ProcessMainFormula(proof.AppliedOn())
 	resultingString := makeTheorem(axioms, conjecture)
-	hypotheses := Lib.ListCpy(axioms)
-	hypotheses.Append(AST.MakerNot(conjecture.Copy()))
+	hypotheses := Lib.ListCpy(axioms).Push(AST.MakerNot(conjecture))
+	cut_hypotheses := performCutAxiomStep(axioms, conjecture)
+	first_steps, next_id := performFirstStep(axioms, conjecture)
 
-	AxiomCut := performCutAxiomStep(axioms, conjecture)
+	epsilon = CertifUtils.EmptyEpsilon(
+		proof.AppliedOn().GetSubTerms(),
+		func(term AST.Term) AST.Term {
+			new_term_name := fmt.Sprintf("%s%d", prefix_const, original_terms.Len())
+			new_term := AST.MakerConst(AST.MakerNewId(new_term_name))
+			original_terms.Append(Lib.MkRight[AST.Ty, AST.Term](term))
+			return new_term
+		},
+		func(ty AST.Ty) AST.Ty {
+			new_ty_name := fmt.Sprintf("%s%d", prefix_const, original_terms.Len())
+			new_ty := AST.MkTyConst(new_ty_name)
+			original_terms.Append(Lib.MkLeft[AST.Ty, AST.Term](ty))
+			return new_ty
+		},
+		func(t Lib.Either[AST.Ty, AST.Term]) string {
+			switch index := original_terms.IndexOf(t, Lib.EitherEquals).(type) {
+			case Lib.Some[int]:
+				return fmt.Sprintf("%s%d", prefix_const, index.Val)
+			}
+			Glob.Anomaly("tptp", "introduced constant not found")
+			return ""
+		},
+	)
 
-	firstStep, nextId := performFirstStep(axioms, conjecture, hypotheses, 0)
+	annotated_proof := proof_with_id{id: next_id, proof: proof}
+	current_id = next_id
 
 	if axioms.Len() == 0 {
-		resultingString += followProofSteps(proof, hypotheses, nextId)
+		resultingString += followProofSteps(annotated_proof, hypotheses)
 	} else {
-		resultingString += followProofSteps(proof.Child(0), hypotheses, nextId)
+		annotated_proof.proof = proof.Children().At(0)
+		resultingString += followProofSteps(annotated_proof, hypotheses)
 	}
 
-	res := resultingString + "\n" + firstStep + AxiomCut
+	return resultingString + "\n" + first_steps + "\n\n" + cut_hypotheses
+}
 
-	return res
+func fofInference(
+	node_id, inference_type string,
+	sequent_lhs, sequent_rhs Lib.List[AST.Form],
+	rule string,
+	additional_infos string,
+	next_steps Lib.List[Lib.String],
+) string {
+	if additional_infos != "" {
+		additional_infos = ", " + additional_infos
+	}
+
+	return fmt.Sprintf(
+		"fof(%s, %s, [%s] --> [%s], inference(%s, [status(thm)%s], [%s])).",
+		node_id,
+		inference_type,
+		Lib.ListToString(sequent_lhs, ", ", ""),
+		Lib.ListToString(sequent_rhs, ", ", ""),
+		rule,
+		additional_infos,
+		Lib.ListToString(next_steps, ", ", ""),
+	)
+}
+
+func performCutAxiomStep(axioms Lib.List[AST.Form], conjecture AST.Form) string {
+	axiom_steps := []string{}
+
+	for i, ax := range axioms.GetSlice() {
+		var nextStep string
+		if i == axioms.Len()-1 {
+			nextStep = prefix_step + "0"
+		} else {
+			nextStep = fmt.Sprintf("%s%d", prefix_axiom_cut, i+1)
+		}
+
+		cut_axiom_step := fofInference(
+			fmt.Sprintf("%s%d", prefix_axiom_cut, i),
+			"plain",
+			Lib.MkListV(axioms.Get(0, i)...),
+			Lib.MkListV(conjecture),
+			"cut",
+			"0",
+			Lib.MkListV(
+				Lib.MkString(fmt.Sprintf("ax%d", ax.GetIndex())),
+				Lib.MkString(nextStep),
+			),
+		)
+
+		axiom_steps = append(axiom_steps, cut_axiom_step)
+	}
+
+	return strings.Join(axiom_steps, "\n")
 }
 
 /*** Proof Steps ***/
 
-func followProofSteps(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], new_current_id int) string {
+func followProofSteps(
+	proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+) string {
 	var resultingString string
-	var resultingStringParent string
-	var childrenHypotheses []Lib.List[AST.Form]
-	if !proof.IsEmpty() {
-		resultingStringParent, childrenHypotheses, new_current_id = makeProofStep(proof, hypotheses, new_current_id)
-	}
-	for i, child := range proof.Children() {
-		if proof.IsEmpty() {
-			resultingString += followProofSteps(child, Lib.ListCpy(hypotheses), new_current_id) + "\n"
-		} else {
-			newHypotheses := Lib.ListCpy(hypotheses)
-			newHypotheses = Lib.ListAdd(newHypotheses, childrenHypotheses[i].GetSlice()...)
-			resultingString += followProofSteps(child, newHypotheses, new_current_id) + "\n"
-		}
+	resultingStringParent, childrenHypotheses, childrenAnnotated := makeStep(
+		proof,
+		hypotheses,
+	)
+	for i, child := range childrenAnnotated {
+		newHypotheses := Lib.ListCpy(hypotheses)
+		newHypotheses = Lib.ListAdd(newHypotheses, childrenHypotheses[i].GetSlice()...)
+		resultingString += followProofSteps(child, newHypotheses) + "\n"
 	}
 	return resultingString + resultingStringParent
 }
 
-func makeProofStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], new_current_id int) (string, []Lib.List[AST.Form], int) {
-	stepResult, childrenHypotheses, next_child_weakened_id := makeStep(proof, hypotheses, new_current_id)
-	return stepResult, childrenHypotheses, next_child_weakened_id
-}
+func find_index_of_pos(f AST.Form, hypotheses Lib.List[AST.Form], target int) int {
+	if form, is_not := f.(AST.Not); is_not {
+		target = CertifUtils.GetTargetFormIndex(form, hypotheses)
 
-func findIndexPos(f AST.Form, hypotheses Lib.List[AST.Form], target int) int {
-	targetPos := -1
-
-	switch initial_formula := f.(type) {
-	case AST.Not:
-		targetPos = get(initial_formula.GetForm(), hypotheses)
-	default:
-		targetPos = target
+		if target == CertifUtils.INVALID_INDEX {
+			raise_anomaly("Complementary litteral not found")
+		}
 	}
 
-	if targetPos == -1 {
-		Glob.Anomaly("TPTP - makeStep", "complementary literal not found")
-	}
-
-	return targetPos
+	return target
 }
 
-func makeStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], new_current_id int) (string, []Lib.List[AST.Form], int) {
+func makeStep(
+	annotated_proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+) (string, []Lib.List[AST.Form], []proof_with_id) {
 	var resultingString string
 	childrenHypotheses := []Lib.List[AST.Form]{hypotheses}
-	next_child_weakened_id := -1
+	childrenAnnotated := []proof_with_id{}
 
-	updateId(proof, new_current_id)
-	target := get(proof.GetTargetForm(), hypotheses)
+	proof := annotated_proof.proof
+	assigned_id := annotated_proof.id
 
-	switch proof.Rule() {
+	target_form := epsilon.Substitute(dummyTerm, proof.AppliedOn())
+	target := CertifUtils.GetTargetFormIndex(target_form, hypotheses)
+	switch Search.KindOfRule(proof.RuleApplied()) {
+	case Search.KindAlpha, Search.KindBeta, Search.KindDelta, Search.KindGamma:
+		if target == CertifUtils.INVALID_INDEX {
+			raise_anomaly("Non closure rule targets an equality.")
+		}
+	}
 
-	// Closure.
-	case gs3.AX:
-		if isPredEqual(proof.GetTargetForm()) {
-			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, [status(thm)], [%s])).",
-				proof.GetId(),
-				Lib.ListToString(hypotheses, ", ", ""),
-				"congruence",
-				"")
+	closure_rule := func(rule string, target string) string {
+		return fofInference(
+			fmt.Sprintf("%s%d", prefix_step, assigned_id),
+			"plain",
+			hypotheses,
+			Lib.NewList[AST.Form](),
+			rule,
+			target,
+			Lib.NewList[Lib.String](),
+		)
+	}
+	alpha_rule := func(rule string) (string, []Lib.List[AST.Form], []proof_with_id) {
+		return alphaStep(
+			annotated_proof,
+			hypotheses,
+			target,
+			rule,
+		)
+	}
+	beta_rule := func(rule string) (string, []Lib.List[AST.Form], []proof_with_id) {
+		return betaStep(
+			annotated_proof,
+			hypotheses,
+			target,
+			rule,
+		)
+	}
+	delta_rule := func(rule string) (string, []Lib.List[AST.Form], []proof_with_id) {
+		return deltaStep(
+			annotated_proof,
+			hypotheses,
+			target,
+			rule,
+		)
+	}
+	gamma_rule := func(rule string) (string, []Lib.List[AST.Form], []proof_with_id) {
+		return gammaStep(
+			annotated_proof,
+			hypotheses,
+			target,
+			rule,
+		)
+	}
+
+	switch proof.RuleApplied() {
+
+	case Search.RuleClosure:
+		if CertifUtils.IsPredEqual(proof.AppliedOn()) {
+			resultingString = closure_rule("congruence", "")
 		} else {
-			targetPos := findIndexPos(proof.GetTargetForm(), hypotheses, target)
-
-			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
-				proof.GetId(),
-				Lib.ListToString(hypotheses, ", ", ""),
-				"leftHyp",
-				targetPos,
-				"")
+			target_positive := find_index_of_pos(target_form, hypotheses, target)
+			resultingString = closure_rule("leftHyp", fmt.Sprintf("%d", target_positive))
 		}
 
-	// Alpha rules
-	case gs3.NNOT:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "leftNotNot")
-	case gs3.AND:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "leftAnd")
-	case gs3.NOR:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "leftNotOr")
-	case gs3.NIMP:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "leftNotImplies")
+	case Search.RuleNotNot:
+		resultingString, childrenHypotheses, childrenAnnotated = alpha_rule("leftNotNot")
+	case Search.RuleAnd:
+		resultingString, childrenHypotheses, childrenAnnotated = alpha_rule("leftAnd")
+	case Search.RuleNotOr:
+		resultingString, childrenHypotheses, childrenAnnotated = alpha_rule("leftNotOr")
+	case Search.RuleNotImp:
+		resultingString, childrenHypotheses, childrenAnnotated = alpha_rule("leftNotImplies")
 
-	// Beta rules
-	case gs3.NAND:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftNotAnd")
-	case gs3.NEQU:
-		resultingString, childrenHypotheses = NotEquStep(proof, hypotheses, target)
-	case gs3.OR:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftOr")
-	case gs3.IMP:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "leftImp2")
-	case gs3.EQU:
-		resultingString, childrenHypotheses = EquStep(proof, hypotheses, target)
+	case Search.RuleNotAnd:
+		resultingString, childrenHypotheses, childrenAnnotated = beta_rule("leftNotAnd")
+	case Search.RuleOr:
+		resultingString, childrenHypotheses, childrenAnnotated = beta_rule("leftOr")
+	case Search.RuleImp:
+		resultingString, childrenHypotheses, childrenAnnotated = beta_rule("leftImp2")
+	case Search.RuleNotEqu:
+		resultingString, childrenHypotheses, childrenAnnotated = notEquStep(
+			annotated_proof,
+			hypotheses,
+			target,
+		)
+	case Search.RuleEqu:
+		resultingString, childrenHypotheses, childrenAnnotated = equStep(
+			annotated_proof,
+			hypotheses,
+			target,
+		)
 
-	// Delta rules
-	case gs3.NALL:
-		resultingString, childrenHypotheses = deltaStep(proof, hypotheses, target, "leftNotAll")
-	case gs3.EX:
-		resultingString, childrenHypotheses = deltaStep(proof, hypotheses, target, "leftExists")
+	case Search.RuleNotAll:
+		resultingString, childrenHypotheses, childrenAnnotated = delta_rule("leftNotAll")
+	case Search.RuleEx:
+		resultingString, childrenHypotheses, childrenAnnotated = delta_rule("leftExists")
 
-	// Gamma rules
-	case gs3.ALL:
-		resultingString, childrenHypotheses = gammaStep(proof, hypotheses, target, "leftForall")
-	case gs3.NEX:
-		resultingString, childrenHypotheses = gammaStep(proof, hypotheses, target, "leftNotEx")
+	case Search.RuleAll:
+		resultingString, childrenHypotheses, childrenAnnotated = gamma_rule("leftForall")
+	case Search.RuleNotEx:
+		resultingString, childrenHypotheses, childrenAnnotated = gamma_rule("leftNotEx")
 
 	// Weakening rule
-	case gs3.W:
-		if proof.TermGenerated() != nil {
-			resultingString = fmt.Sprintf("leftWeaken %s", findInConstants(proof.TermGenerated()).ToString())
-		} else {
-			resultingString, childrenHypotheses, next_child_weakened_id = weakenStep(proof, hypotheses, target, "leftWeaken")
+	case Search.RuleWeaken:
+		resultingString, childrenHypotheses, childrenAnnotated = weakenStep(
+			annotated_proof,
+			hypotheses,
+			target,
+		)
+
+	case Search.RuleRew:
+		Glob.Fatal("tptp", "rewrite rules not yet implemented")
+	}
+
+	return resultingString + "\n", childrenHypotheses, childrenAnnotated
+}
+
+func alphaStep(
+	annotated_proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+	target int,
+	rule string,
+) (string, []Lib.List[AST.Form], []proof_with_id) {
+	result_hyps, children_id, annotated_children := genAnnotateChildren(annotated_proof, hypotheses)
+
+	resultingString := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, annotated_proof.id),
+		"plain",
+		hypotheses,
+		Lib.NewList[AST.Form](),
+		rule,
+		fmt.Sprintf("%d", target),
+		children_id,
+	)
+
+	return resultingString, result_hyps, annotated_children
+}
+
+func genAnnotateChildren(
+	annotated_proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+) ([]Lib.List[AST.Form], Lib.List[Lib.String], []proof_with_id) {
+	result_hyps := []Lib.List[AST.Form]{}
+	annotated_children := []proof_with_id{}
+	proof := annotated_proof.proof
+	children_id := Lib.NewList[Lib.String]()
+
+	for i, c := range proof.Children().GetSlice() {
+		current_id++
+		annotated_children = append(annotated_children,
+			proof_with_id{id: current_id, proof: c},
+		)
+		child_hyps := Lib.ListMap(proof.ResultFormulas().At(i),
+			func(f AST.Form) AST.Form { return epsilon.Substitute(dummyTerm, f) },
+		)
+		result_hyps = append(
+			result_hyps,
+			Lib.ListCpy(hypotheses).Push(child_hyps.GetSlice()...),
+		)
+		children_id = children_id.Push(
+			Lib.MkString(fmt.Sprintf("%s%d", prefix_step, current_id)),
+		)
+	}
+
+	return result_hyps, children_id, annotated_children
+}
+
+func betaStep(
+	annotated_proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+	target int,
+	rule string,
+) (string, []Lib.List[AST.Form], []proof_with_id) {
+	result_hyps, children_id, annotated_children := genAnnotateChildren(annotated_proof, hypotheses)
+
+	resulting_string := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, annotated_proof.id),
+		"plain",
+		hypotheses,
+		Lib.NewList[AST.Form](),
+		rule,
+		fmt.Sprintf("%d", target),
+		children_id,
+	)
+
+	return resulting_string, result_hyps, annotated_children
+}
+
+func deltaStep(
+	annotated_proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+	target int,
+	rule string,
+) (string, []Lib.List[AST.Form], []proof_with_id) {
+	var generated_term string
+	switch tm := epsilon.Generate(annotated_proof.proof.TermGenerated()).(type) {
+	case Lib.Some[Lib.Either[AST.Ty, AST.Term]]:
+		switch t := tm.Val.(type) {
+		case Lib.Left[AST.Ty, AST.Term]:
+			generated_term = t.Val.ToString()
+		case Lib.Right[AST.Ty, AST.Term]:
+			generated_term = t.Val.ToString()
 		}
-
-	case gs3.REWRITE:
-		resultingString, childrenHypotheses = rewriteStep(proof.GetRewriteWith(), hypotheses, target, proof.GetResultFormulasOfChild(0).At(0))
+	default:
+		generated_term = dummyTerm.ToString()
 	}
 
-	return resultingString + "\n", childrenHypotheses, next_child_weakened_id
+	result_hyps, children_id, annotated_children := genAnnotateChildren(annotated_proof, hypotheses)
+
+	resulting_string := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, annotated_proof.id),
+		"plain",
+		hypotheses,
+		Lib.NewList[AST.Form](),
+		rule,
+		fmt.Sprintf("%d, '%s'", target, generated_term),
+		children_id,
+	)
+
+	return resulting_string, result_hyps, annotated_children
 }
 
-func alphaStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], target int, format string) (string, []Lib.List[AST.Form]) {
+func gammaStep(
+	annotated_proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+	target int,
+	rule string,
+) (string, []Lib.List[AST.Form], []proof_with_id) {
+	result_hyps, children_id, annotated_children := genAnnotateChildren(annotated_proof, hypotheses)
 
-	children_id := []int{}
-	for _, c := range proof.Children() {
-		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
-		children_id = append(children_id, new_id)
-		c.SetId(new_id)
-	}
+	resulting_string := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, annotated_proof.id),
+		"plain",
+		hypotheses,
+		Lib.NewList[AST.Form](),
+		rule,
+		fmt.Sprintf(
+			"%d, $fot(%s)",
+			target,
+			epsilon.Instantiate(
+				dummyType.ToString(),
+				dummyTerm.ToString(),
+				annotated_proof.proof.TermGenerated(),
+			),
+		),
+		children_id,
+	)
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
-		prefix_step,
-		proof.GetId(),
-		Lib.ListToString(hypotheses, ", ", ""),
-		format,
-		target,
-		Glob.IntListToString(children_id, prefix_step))
-
-	newHypotheses := Lib.ListCpy(hypotheses)
-	newHypotheses = Lib.ListAdd(newHypotheses, proof.GetResultFormulasOfChild(0).GetSlice()...)
-	return resultingString, []Lib.List[AST.Form]{newHypotheses}
+	return resulting_string, result_hyps, annotated_children
 }
 
-func betaStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], target int, format string) (string, []Lib.List[AST.Form]) {
-	resultHyps := []Lib.List[AST.Form]{}
-	children_id := []int{}
+func weakenStep(
+	annotated_proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+	target int,
+) (string, []Lib.List[AST.Form], []proof_with_id) {
+	_, children_id, annotated_children := genAnnotateChildren(annotated_proof, hypotheses)
 
-	for i, c := range proof.Children() {
-		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
-		children_id = append(children_id, new_id)
-		c.SetId(new_id)
-		newHypotheses := Lib.ListCpy(hypotheses)
-		newHypotheses = Lib.ListAdd(newHypotheses, proof.GetResultFormulasOfChild(i).GetSlice()...)
-		resultHyps = append(resultHyps, newHypotheses)
-	}
+	var additional_infos string
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
-		prefix_step,
-		proof.GetId(),
-		Lib.ListToString(hypotheses, ", ", ""),
-		format,
-		target,
-		Glob.IntListToString(children_id, prefix_step))
-
-	return resultingString, resultHyps
-}
-
-func deltaStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], target int, format string) (string, []Lib.List[AST.Form]) {
-	children_id := []int{}
-	for _, c := range proof.Children() {
-		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
-		children_id = append(children_id, new_id)
-		c.SetId(new_id)
-	}
-
-	new_term := createNewConstant(proof.TermGenerated())
-
-	proof = updateSkolemSymbol(proof.TermGenerated(), new_term, proof)
-
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, '%s'], [%s])).",
-		prefix_step,
-		proof.GetId(),
-		Lib.ListToString(hypotheses, ", ", ""),
-		format,
-		target,
-		new_term.ToString(),
-		Glob.IntListToString(children_id, prefix_step))
-
-	newHypotheses := Lib.ListCpy(hypotheses)
-	newHypotheses = Lib.ListAdd(newHypotheses, proof.GetResultFormulasOfChild(0).GetSlice()...)
-
-	return resultingString, []Lib.List[AST.Form]{newHypotheses}
-}
-
-func gammaStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], target int, format string) (string, []Lib.List[AST.Form]) {
-	children_id := []int{}
-	for _, c := range proof.Children() {
-		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
-		children_id = append(children_id, new_id)
-		c.SetId(new_id)
-	}
-
-	get(proof.GetTargetForm(), hypotheses)
-
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, $fot(%s)], [%s])).",
-		prefix_step,
-		proof.GetId(),
-		Lib.ListToString(hypotheses, ", ", ""),
-		format,
-		target,
-		findInConstants(proof.TermGenerated()).ToString(),
-		Glob.IntListToString(children_id, prefix_step))
-
-	newHypotheses := Lib.ListCpy(hypotheses)
-	newHypotheses = Lib.ListAdd(newHypotheses, proof.GetResultFormulasOfChild(0).GetSlice()...)
-
-	return resultingString, []Lib.List[AST.Form]{newHypotheses}
-}
-
-func weakenStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], target int, format string) (string, []Lib.List[AST.Form], int) {
-	child_id := incrByOne(&id_proof_step, &mutex_proof_step)
-
-	if target != -1 {
+	switch t := annotated_proof.proof.TermGenerated().(type) {
+	case Lib.Some[Lib.Either[AST.Ty, AST.Term]]:
+		additional_infos = fmt.Sprintf("'%s'", epsilon.Instantiate(dummyTerm.ToString(), dummyType.ToString(), t))
+	default:
+		additional_infos = fmt.Sprintf("%d", target)
 		hypotheses = hypotheses.RemoveAt(target)
 	}
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).",
-		prefix_step,
-		proof.GetId(),
-		Lib.ListToString(hypotheses, ", ", ""),
-		format,
-		target,
-		prefix_step,
-		child_id)
-
-	return resultingString, []Lib.List[AST.Form]{hypotheses}, child_id
+	resulting_string := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, annotated_proof.id),
+		"plain",
+		hypotheses,
+		Lib.NewList[AST.Form](),
+		"leftWeaken",
+		additional_infos,
+		children_id,
+	)
+	return resulting_string, []Lib.List[AST.Form]{hypotheses}, annotated_children
 }
 
-func rewriteStep(rewriteRule AST.Form, hypotheses Lib.List[AST.Form], target int, replacementForm AST.Form) (string, []Lib.List[AST.Form]) {
-	// resultingString := fmt.Sprintf("rewrite %s in %s.", introName(get(rewriteRule, hypotheses)), introName(target))
-	// hypotheses[target] = replacementForm
-	// return resultingString, []Lib.List[AST.Form]{hypotheses}
-	return "", []Lib.List[AST.Form]{}
-}
+func equStep(
+	annotated_proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+	target int,
+) (string, []Lib.List[AST.Form], []proof_with_id) {
+	result_hyps, children_id, annotated_children := genAnnotateChildren(annotated_proof, hypotheses)
 
-func EquStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], target int) (string, []Lib.List[AST.Form]) {
-	resultingString := ""
-	resultHyps := []Lib.List[AST.Form]{}
-	children_id := []int{}
+	var A, B, notA, notB, A_imp_B, B_imp_A AST.Form
+	switch form := hypotheses.At(target).(type) {
+	case AST.Equ:
+		A = form.GetF1()
+		B = form.GetF2()
+		notA = AST.MakerNot(A)
+		notB = AST.MakerNot(B)
+		A_imp_B = AST.MakerImp(A, B)
+		B_imp_A = AST.MakerImp(B, A)
 
-	for i, c := range proof.Children() {
-		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
-		children_id = append(children_id, new_id)
-		c.SetId(new_id)
-		newHypotheses := Lib.ListCpy(hypotheses)
-		newHypotheses = Lib.ListAdd(newHypotheses, proof.GetResultFormulasOfChild(i).GetSlice()...)
-		resultHyps = append(resultHyps, newHypotheses)
+	default:
+		raise_anomaly(fmt.Sprintf("Expected %s to be an equivalence.", form.ToString()))
 	}
 
-	// Sub-formulas
-	A := hypotheses.At(target).(AST.Equ).GetF1()
-	B := hypotheses.At(target).(AST.Equ).GetF2()
-	notA := AST.MakerNot(A)
-	notB := AST.MakerNot(B)
-	A_imp_B := AST.MakerImp(A, B)
-	B_imp_A := AST.MakerImp(B, A)
+	// Expansion of the tableau rules to match TPTP rules.
+	// 1. apply the rule [leftIff] to generate one branch [Gamma, A_imp_B, B_imp_A |-].
+	// 2. do 2 applications of the rule [leftImp2] to get 4 branches:
+	//   - [Gamma, A_imp_B, B_imp_A, ~A, ~B |-]
+	//   - [Gamma, A_imp_B, B_imp_A, ~A, A |-]
+	//   - [Gamma, A_imp_B, B_imp_A, B, ~B |-]
+	//   - [Gamma, A_imp_B, B_imp_A, B, A |-]
+	// 3. conclude on the children 2 & 3 and continue outputing the proof for the others.
 
-	// from A <=> B to A => B, B => A (unary)
-	s1_id := fmt.Sprintf("%s%dext1", prefix_step, proof.GetId())
-	resultingString = fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
-		prefix_step,
-		proof.GetId(),
-		Lib.ListToString(hypotheses, ", ", ""),
+	// 1.
+	child1_ext_id := fmt.Sprintf("%s%dext1", prefix_step, annotated_proof.id)
+	first_inference := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, annotated_proof.id),
+		"plain",
+		hypotheses,
+		Lib.NewList[AST.Form](),
 		"leftIff",
-		target,
-		s1_id) + resultingString
+		fmt.Sprintf("%d", target),
+		Lib.MkListV(Lib.MkString(child1_ext_id)),
+	)
 
-	// from A => B, B => A to ~A, B => A | B, B => A (binary)
-	s2_id := fmt.Sprintf("%s%dext2", prefix_step, proof.GetId())
-	s3_id := fmt.Sprintf("%s%dext3", prefix_step, proof.GetId())
-	newHyp := Lib.ListCpy(hypotheses)
-	newHyp = Lib.ListAdd(newHyp, []AST.Form{A_imp_B, B_imp_A}...)
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s])).\n\n",
-		s1_id,
-		Lib.ListToString(newHyp, ", ", ""),
+	// 2.
+	child2_ext_id := fmt.Sprintf("%s%dext2", prefix_step, annotated_proof.id)
+	child3_ext_id := fmt.Sprintf("%s%dext3", prefix_step, annotated_proof.id)
+	child2_closure_rule_id := fmt.Sprintf("%sext1", child2_ext_id)
+	child3_closure_rule_id := fmt.Sprintf("%sext1", child3_ext_id)
+
+	child1_inference := fofInference(
+		child1_ext_id,
+		"plain",
+		Lib.ListCpy(hypotheses).Push(A_imp_B, B_imp_A),
+		Lib.NewList[AST.Form](),
 		"leftImp2",
-		get(A_imp_B, newHyp),
-		s2_id,
-		s3_id) + resultingString
+		fmt.Sprintf("%d", hypotheses.Len()),
+		Lib.MkListV(Lib.MkString(child2_ext_id), Lib.MkString(child3_ext_id)),
+	)
 
-	// Branch s2 : from ~A, B => A to ~A, ~B | ~A, A
-	s2_closure_id := fmt.Sprintf("%sext1", s2_id)
-	newHypS2 := Lib.ListCpy(newHyp)
-	newHypS2 = Lib.ListAdd(newHypS2, notA.Copy())
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d, %s])).\n\n",
-		s2_id,
-		Lib.ListToString(newHypS2, ", ", ""),
+	child2_inference := fofInference(
+		child2_ext_id,
+		"plain",
+		Lib.ListCpy(hypotheses).Push(A_imp_B, B_imp_A, notA),
+		Lib.NewList[AST.Form](),
 		"leftImp2",
-		get(B_imp_A, newHypS2),
-		prefix_step,
-		children_id[0],
-		s2_closure_id) + resultingString
-	resultHyps[0] = Lib.ListAdd(resultHyps[0], newHypS2.GetSlice()...)
+		fmt.Sprintf("%d", hypotheses.Len()+1),
+		Lib.MkListV(
+			children_id.At(0),
+			Lib.MkString(child2_closure_rule_id),
+		),
+	)
+	result_hyps[0] = result_hyps[0].Push(A_imp_B, B_imp_A, notA, notB)
 
-	// Branch 2.closure : from ~A, A closure - check polarity before
-	newHypS2Closure := Lib.ListCpy(newHypS2)
-	newHypS2Closure = Lib.ListAdd(newHypS2Closure, A)
-	targetPosS2 := findIndexPos(A, newHypS2Closure, get(A, newHypS2Closure))
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).\n\n",
-		s2_closure_id,
-		Lib.ListToString(newHypS2Closure, ", ", ""),
+	child2_closure := fofInference(
+		child2_closure_rule_id,
+		"plain",
+		Lib.ListCpy(hypotheses).Push(A_imp_B, B_imp_A, notA, A),
+		Lib.NewList[AST.Form](),
 		"leftHyp",
-		targetPosS2,
-		"") + resultingString
+		fmt.Sprintf("%d", hypotheses.Len()+3),
+		Lib.NewList[Lib.String](),
+	)
 
-	// Branch s3: from B, B => A to B, ~B | B, A
-	s3_closure_id := fmt.Sprintf("%sext1", s3_id)
-	newHypS3 := Lib.ListCpy(newHyp)
-	newHypS3 = Lib.ListAdd(newHypS3, B)
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s%d])).\n\n",
-		s3_id,
-		Lib.ListToString(newHypS3, ", ", ""),
+	child3_inference := fofInference(
+		child3_ext_id,
+		"plain",
+		Lib.ListCpy(hypotheses).Push(A_imp_B, B_imp_A, B),
+		Lib.NewList[AST.Form](),
 		"leftImp2",
-		get(B_imp_A, newHypS3),
-		s3_closure_id,
-		prefix_step,
-		children_id[1]) + resultingString
-	resultHyps[1] = Lib.ListAdd(resultHyps[1], newHypS3.GetSlice()...)
+		fmt.Sprintf("%d", hypotheses.Len()+1),
+		Lib.MkListV(
+			Lib.MkString(child3_closure_rule_id),
+			children_id.At(1),
+		),
+	)
+	result_hyps[1] = result_hyps[1].Push(A_imp_B, B_imp_A, B, A)
 
-	// Branch 3.closure : from B, ~B closure - check polarity before
-	newHypS3Closure := Lib.ListCpy(newHypS3)
-	newHypS3Closure = Lib.ListAdd(newHypS3Closure, notB.Copy())
-	targetPosS3 := findIndexPos(B, newHypS3Closure, get(B, newHypS3Closure))
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).\n\n",
-		s3_closure_id,
-		Lib.ListToString(newHypS3Closure, ", ", ""),
+	child3_closure := fofInference(
+		child3_closure_rule_id,
+		"plain",
+		Lib.ListCpy(hypotheses).Push(A_imp_B, B_imp_A, B, notB),
+		Lib.NewList[AST.Form](),
 		"leftHyp",
-		targetPosS3,
-		"") + resultingString
+		fmt.Sprintf("%d", hypotheses.Len()+2),
+		Lib.NewList[Lib.String](),
+	)
 
-	return resultingString, resultHyps
+	return child3_closure + "\n\n" + child3_inference + "\n\n" + child2_closure + "\n\n" + child2_inference + "\n\n" +
+		child1_inference + "\n\n" + first_inference, result_hyps, annotated_children
 }
 
-func NotEquStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], target int) (string, []Lib.List[AST.Form]) {
-	resultingString := ""
-	resultHyps := []Lib.List[AST.Form]{}
-	children_id := []int{}
+func notEquStep(
+	annotated_proof proof_with_id,
+	hypotheses Lib.List[AST.Form],
+	target int,
+) (string, []Lib.List[AST.Form], []proof_with_id) {
+	result_hyps, children_id, annotated_children := genAnnotateChildren(annotated_proof, hypotheses)
 
-	for i, c := range proof.Children() {
-		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
-		children_id = append(children_id, new_id)
-		c.SetId(new_id)
-		newHypotheses := Lib.ListCpy(hypotheses)
-		newHypotheses = Lib.ListAdd(newHypotheses, proof.GetResultFormulasOfChild(i).GetSlice()...)
-		resultHyps = append(resultHyps, newHypotheses)
+	var A, B, not_A_imp_B, not_B_imp_A AST.Form
+
+	switch formula := hypotheses.At(target).(type) {
+	case AST.Not:
+		switch f := formula.GetForm().(type) {
+		case AST.Equ:
+			A = f.GetF1()
+			B = f.GetF2()
+			not_A_imp_B = AST.MakerNot(AST.MakerImp(A, B))
+			not_B_imp_A = AST.MakerNot(AST.MakerImp(B, A))
+
+		default:
+			raise_anomaly(fmt.Sprintf("Expected formula %s to be an equivalence", f.ToString()))
+		}
+
+	default:
+		raise_anomaly(fmt.Sprintf("Expected formula %s to be a negation", formula.ToString()))
 	}
 
-	// Sub-formulas
-	equ := hypotheses.At(target).(AST.Not).GetForm().(AST.Equ)
-	A := equ.GetF1()
-	B := equ.GetF2()
-	not_A_imp_B := AST.MakerNot(AST.MakerImp(A, B))
-	not_B_imp_A := AST.MakerNot(AST.MakerImp(B, A))
+	// Expansion of the tableau rules to match TPTP rules.
+	// 1. apply the rule [leftNotIff] to generate two branches [Gamma, not_A_imp_B |-] and [Gamma, not_B_imp_A |-]
+	// 2. apply the rule [leftNotImplies] in both branches to get [Gamma, A, ~B |-] and [Gamma, B, ~A |-].
 
-	// from ~(A <=> B) to ~(A => B) | ~(B => A) (binary)
-	s1_id := fmt.Sprintf("%s%dext1", prefix_step, proof.GetId())
-	s2_id := fmt.Sprintf("%s%dext2", prefix_step, proof.GetId())
-	resultingString = fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s])).",
-		prefix_step,
-		proof.GetId(),
-		Lib.ListToString(hypotheses, ", ", ""),
+	// 1.
+	ext_child1_id := fmt.Sprintf("%s%dext1", prefix_step, annotated_proof.id)
+	ext_child2_id := fmt.Sprintf("%s%dext2", prefix_step, annotated_proof.id)
+	first_inference := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, annotated_proof.id),
+		"plain",
+		hypotheses,
+		Lib.NewList[AST.Form](),
 		"leftNotIff",
-		target,
-		s1_id,
-		s2_id) + resultingString
+		fmt.Sprintf("%d", target),
+		Lib.MkListV(Lib.MkString(ext_child1_id), Lib.MkString(ext_child2_id)),
+	)
 
-	// from ~(A => B) to A, ~B
-	newHyp1 := Lib.ListCpy(hypotheses)
-	newHyp1 = Lib.ListAdd(newHyp1, not_A_imp_B.Copy())
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).\n\n",
-		s1_id,
-		Lib.ListToString(newHyp1, ", ", ""),
+	// 2.
+	child1_inference := fofInference(
+		ext_child1_id,
+		"plain",
+		Lib.ListCpy(hypotheses).Push(not_A_imp_B),
+		Lib.NewList[AST.Form](),
 		"leftNotImplies",
-		get(not_A_imp_B, newHyp1),
-		prefix_step,
-		children_id[1]) + resultingString
-	resultHyps[1] = Lib.ListAdd(resultHyps[1], newHyp1.GetSlice()...)
+		fmt.Sprintf("%d", hypotheses.Len()),
+		Lib.MkListV(children_id.At(1)),
+	)
+	result_hyps[1] = result_hyps[1].Push(not_A_imp_B)
 
-	// from ~(B => A) to B, ~A
-	newHyp2 := Lib.ListCpy(hypotheses)
-	newHyp2 = Lib.ListAdd(newHyp2, not_B_imp_A.Copy())
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).\n\n",
-		s2_id,
-		Lib.ListToString(newHyp2, ", ", ""),
+	child2_inference := fofInference(
+		ext_child2_id,
+		"plain",
+		Lib.ListCpy(hypotheses).Push(not_B_imp_A),
+		Lib.NewList[AST.Form](),
 		"leftNotImplies",
-		get(not_B_imp_A, newHyp2),
-		prefix_step,
-		children_id[0]) + resultingString
-	resultHyps[0] = Lib.ListAdd(resultHyps[0], newHyp2.GetSlice()...)
+		fmt.Sprintf("%d", hypotheses.Len()),
+		Lib.MkListV(children_id.At(0)),
+	)
+	result_hyps[0] = result_hyps[0].Push(not_B_imp_A)
 
-	return resultingString, resultHyps
+	return child2_inference + "\n\n" + child1_inference + "\n\n" + first_inference, result_hyps, annotated_children
 }
 
 /*** Initial Formula Management ***/
 
-// Processes the formula that was proven by Goéland.
-func processMainFormula(form AST.Form) (Lib.List[AST.Form], AST.Form) {
-	formList := Lib.NewList[AST.Form]()
-	switch nf := form.(type) {
-	case AST.Not:
-		form = nf.GetForm()
-	case AST.And:
-		last := nf.GetChildFormulas().Len() - 1
-		formList = Lib.MkListV(nf.GetChildFormulas().Get(0, last)...)
-		form = nf.GetChildFormulas().At(last).(AST.Not).GetForm()
-	}
-	return formList, form
-}
-
-// Prints the theorem's name & properly formats the first formula.
+// TPTP-style first formula declaration:
+// 1. declare all the hypotheses of the theorem as axioms
+// 2. declare the base formula
 func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
-	var resulting_string string
-	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(Glob.GetProblemName(), ".", "_"), "=", "_"), "+", "_")
+	problemName := CertifUtils.SanitizedTheoremName()
 
+	declared_axioms := []string{}
 	for _, ax := range axioms.GetSlice() {
-		resulting_string = resulting_string + "fof(" + fmt.Sprintf("ax%d", ax.GetIndex()) + ", axiom, " +
-			ax.ToString() + ").\n\n"
-	}
-
-	resulting_string = resulting_string + "fof(c_" + problemName + ", conjecture, " + conjecture.ToString() + ").\n\n"
-	return resulting_string
-}
-
-// Perform the first step to go from ax |- c to ax, ~c |-
-func performFirstStep(axioms Lib.List[AST.Form], conjecture AST.Form, hypothesis Lib.List[AST.Form], nextId int) (string, int) {
-	cutFormNotId := incrByOne(&id_proof_step, &mutex_proof_step)
-	cutFormHypId := incrByOne(&id_proof_step, &mutex_proof_step)
-	nextFormId := incrByOne(&id_proof_step, &mutex_proof_step)
-
-	// Cut initial formula, |- ~c, c step
-	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, [status(thm), %d], [%s])).",
-		cutFormNotId,
-		Lib.ListToString(axioms, ", ", ""),
-		conjecture.ToString(),
-		AST.MakerNot(conjecture).ToString(),
-		"rightNot",
-		1,
-		prefix_step+strconv.Itoa(cutFormHypId))
-
-	// Cut initial formula, c |- c step
-	cutFormHyp := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s], inference(%s, [status(thm), %d], [%s])).",
-		cutFormHypId,
-		Lib.ListToString(Lib.MkListV(append(axioms.GetSlice(), conjecture)...), ", ", ""),
-		conjecture.ToString(),
-		"hyp",
-		axioms.Len(),
-		// 0,
-		"")
-
-	// Actual start of the formula with H |- C
-	// indexHyp, _ := hypothesis.GetIndexOf(AST.MakerNot(conjecture))
-	startForm := fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d], [%s%d, %s%d])).\n\n",
-		nextId,
-		Lib.ListToString(axioms, ", ", ""),
-		conjecture.ToString(),
-		1,
-		//indexHyp,
-		prefix_step,
-		cutFormNotId,
-		prefix_step,
-		nextFormId)
-
-	return cutFormHyp + "\n\n" + cutFormNot + "\n\n" + startForm, nextFormId
-}
-
-// Perform the cut axiom steps
-func performCutAxiomStep(axioms Lib.List[AST.Form], conjecture AST.Form) string {
-
-	resultString := ""
-
-	// Loop on axioms
-	for i, ax := range axioms.GetSlice() {
-		var nextStep string
-		if i == axioms.Len()-1 {
-			nextStep = "f0"
-		} else {
-			nextStep = prefix_axiom_cut + strconv.Itoa(i+1)
-		}
-
-		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d], [%s%d, %s])).\n",
-			prefix_axiom_cut,
-			i,
-			// AST.ListToMappedString(axioms.GetElements(0, i), ", ", "", tptpMapConnectors(), GetTypeProof()),
-			Lib.ListToString(Lib.MkListV(axioms.Get(0, i)...), ", ", ""),
-			conjecture.ToString(),
-			0,
-			//i,
-			"ax",
-			ax.GetIndex(),
-			nextStep)
-
-		resultString = cutAxiomStep + "\n" + resultString
-	}
-	return resultString + "\n"
-}
-
-/*** Utility Functions ***/
-
-func get(f AST.Form, fl Lib.List[AST.Form]) int {
-	switch index := Lib.ListIndexOf(f, fl).(type) {
-	case Lib.Some[int]:
-		return index.Val
-	case Lib.None[int]:
-		Glob.Anomaly(
-			"TPTP",
-			fmt.Sprintf("Formula %s not found in context", f.ToString()),
+		declared_axioms = append(
+			declared_axioms,
+			fmt.Sprintf("fof(ax%d, axiom, %s).", ax.GetIndex(), ax.ToString()),
 		)
 	}
-	return -1
+
+	declared_axioms = append(
+		declared_axioms,
+		fmt.Sprintf("fof(c_%s, conjecture, %s).", problemName, conjecture.ToString()),
+	)
+
+	return strings.Join(declared_axioms, "\n\n") + "\n\n"
 }
 
-func isPredEqual(f AST.Form) bool {
-	if not, isNot := f.(AST.Not); isNot {
-		f = not.GetForm()
-	}
-	if p, isPred := f.(AST.Pred); isPred {
-		return p.GetID().Equals(AST.Id_eq)
-	}
-	return false
-}
+// Use DNE to perform the first step to go from [ax |- c] to [ax, ~c |-].
+func performFirstStep(
+	axioms Lib.List[AST.Form],
+	conjecture AST.Form,
+) (string, int) {
+	cut_form_not_id := 1
+	cut_form_hyp_id := 2
+	next_form_id := 3
 
-func incrByOne(cpt *int, mutex *sync.Mutex) int {
-	res := -1
-	mutex.Lock()
-	*cpt = (*cpt) + 1
-	res = *cpt
-	mutex.Unlock()
-	return res
-}
+	// From a sequent [H1, ..., Hn |- c], cut ~c to get two chidren: [H1, ..., Hn, ~c |-] and [H1, ..., Hn |- ~c, c].
+	start := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, 0),
+		"plain",
+		axioms,
+		Lib.MkListV(conjecture),
+		"cut",
+		"1",
+		Lib.MkListV(
+			Lib.MkString(fmt.Sprintf("%s%d", prefix_step, cut_form_not_id)),
+			Lib.MkString(fmt.Sprintf("%s%d", prefix_step, next_form_id)),
+		),
+	)
 
-func updateId(proof *gs3.GS3Sequent, i int) {
-	if i != -1 {
-		proof.SetId(i)
-	}
-}
+	// On the branch [H1, ..., Hn |- ~c, c], apply [rightNot] to get [H1, ..., Hn, c |- c].
+	cut_form_not := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, cut_form_not_id),
+		"plain",
+		axioms,
+		Lib.MkListV[AST.Form](conjecture, AST.MakerNot(conjecture)),
+		"rightNot",
+		"1",
+		Lib.MkListV(
+			Lib.MkString(fmt.Sprintf("%s%d", prefix_step, cut_form_hyp_id)),
+		),
+	)
 
-func updateSkolemSymbol(old, new AST.Term, proof *gs3.GS3Sequent) *gs3.GS3Sequent {
+	// Conclude this branch.
+	cut_form_hyp := fofInference(
+		fmt.Sprintf("%s%d", prefix_step, cut_form_hyp_id),
+		"plain",
+		axioms.Push(conjecture),
+		Lib.MkListV(conjecture),
+		"hyp",
+		fmt.Sprintf("%d", axioms.Len()),
+		Lib.NewList[Lib.String](),
+	)
 
-	// Update Target Form
-	new_target_form, _ := proof.GetTargetForm().ReplaceTermByTerm(old, new)
-	proof.SetTargetForm(new_target_form)
-
-	// Update generated term
-	if proof.TermGenerated() != nil {
-		new_generated_term := proof.TermGenerated().ReplaceSubTermBy(old, new)
-		proof.SetTermGenerated(new_generated_term)
-	}
-
-	new_forms_generated := make([]Lib.List[AST.Form], len(proof.GetResultFormulasOfChildren()))
-	for i, fg := range proof.GetResultFormulasOfChildren() {
-		new_forms_generated_bis := Lib.NewList[AST.Form]()
-		for _, fg_bis := range fg.GetSlice() {
-			new_term, _ := fg_bis.ReplaceTermByTerm(old, new)
-			new_forms_generated_bis.Append(new_term)
-		}
-		new_forms_generated[i] = new_forms_generated_bis
-	}
-	proof.SetFormGenerated(new_forms_generated)
-
-	// Update Children
-	new_children := make([]*gs3.GS3Sequent, len(proof.Children()))
-	for i, child := range proof.Children() {
-		new_children[i] = updateSkolemSymbol(old, new, child)
-	}
-
-	proof.SetChildren(new_children)
-
-	return proof
-}
-
-/*** Constant created Management ***/
-
-func createNewConstant(term AST.Term) AST.Term {
-	mutex_constant.Lock()
-	new_id := len(constant_created)
-	new_term_name := fmt.Sprintf("%s%d", prefix_const, new_id)
-	new_term := AST.MakerConst(AST.MakerNewId(new_term_name))
-	original_term = append(original_term, term)
-	constant_created = append(constant_created, new_term)
-	mutex_constant.Unlock()
-	return new_term
-}
-
-func findInConstants(term AST.Term) AST.Term {
-	if term == nil {
-		return dummyTerm
-	} else {
-		return getCreatedFromOriginal(term)
-	}
-}
-
-func getCreatedFromOriginal(term AST.Term) AST.Term {
-	for i, t := range original_term {
-		if t.Equals(term) {
-			return constant_created[i]
-		}
-	}
-	return term
+	// Use a sequent style and start by the last inference down to the first one
+	return cut_form_hyp + "\n\n" + cut_form_not + "\n\n" + start, next_form_id
 }

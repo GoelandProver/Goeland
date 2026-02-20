@@ -88,8 +88,16 @@ func (t TermForm) GetMetas() Lib.Set[AST.Meta] {
 	}
 }
 
-func (t TermForm) GetSubTerms() Lib.List[AST.Term] {
+func (t TermForm) GetSubTerms() Lib.Set[AST.Term] {
 	return t.GetTerm().GetSubTerms()
+}
+
+func (t TermForm) GetSymbols() Lib.Set[AST.Id] {
+	return t.GetTerm().GetSymbols()
+}
+
+func (t TermForm) Less(oth any) bool {
+	return t.GetTerm().Less(oth)
 }
 
 func (t TermForm) ReplaceMetaByTerm(meta AST.Meta, term AST.Term) AST.Form {
@@ -144,7 +152,10 @@ func ParseFormula(formula AST.Form) Sequence {
 }
 
 /* Parses a predicate to machine instructions */
-func getFunctionalArguments(ty_args Lib.List[AST.Ty], trm_args Lib.List[AST.Term]) Lib.List[AST.Term] {
+func getFunctionalArguments(
+	ty_args Lib.List[AST.Ty],
+	trm_args Lib.List[AST.Term],
+) Lib.List[AST.Term] {
 	args := Lib.ListMap(ty_args, AST.TyToTerm)
 
 	for _, arg := range trm_args.GetSlice() {

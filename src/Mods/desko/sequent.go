@@ -29,40 +29,51 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
+package desko
 
-package Lib
+import (
+	"fmt"
 
-type Pair[T, U any] struct {
-	Fst T
-	Snd U
+	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Search"
+)
+
+type GS3Sequent struct {
+	rule           Search.TableauxRule
+	appliedOn      AST.Form
+	rewriteWith    Lib.Option[AST.Form]
+	termGenerated  Lib.Option[Lib.Either[AST.Ty, AST.Term]]
+	formsGenerated Lib.List[Lib.List[AST.Form]]
+	children       Lib.List[*GS3Sequent]
 }
 
-func MkPair[T, U any](x T, y U) Pair[T, U] {
-	return Pair[T, U]{x, y}
+// IProof interface
+
+func (s *GS3Sequent) AppliedOn() AST.Form                          { return s.appliedOn }
+func (s *GS3Sequent) RuleApplied() Search.TableauxRule             { return s.rule }
+func (s *GS3Sequent) ResultFormulas() Lib.List[Lib.List[AST.Form]] { return s.formsGenerated }
+
+func (s *GS3Sequent) Children() Lib.List[Search.IProof] {
+	return Lib.ListMap(
+		s.children,
+		func(child *GS3Sequent) Search.IProof { return Search.IProof(child) },
+	)
 }
 
-func (p Pair[T, U]) ToString(f Func[T, string], g Func[U, string], sep string) string {
-	return "(" + f(p.Fst) + sep + g(p.Snd) + ")"
-}
+func (s *GS3Sequent) RewrittenWith() Lib.Option[AST.Form] { return s.rewriteWith }
 
-// Managing lists of pairs
-func Pr1[T, U any](ls List[Pair[T, U]]) List[T] {
-	return ListMap(ls, func(p Pair[T, U]) T { return p.Fst })
-}
+func (s *GS3Sequent) TermGenerated() Lib.Option[Lib.Either[AST.Ty, AST.Term]] { return s.termGenerated }
 
-func Pr2[T, U any](ls List[Pair[T, U]]) List[U] {
-	return ListMap(ls, func(p Pair[T, U]) U { return p.Snd })
-}
+func (s *GS3Sequent) ToString() string {
+	res := Lib.ListToString(s.children, "\n", "")
 
-func MemAssoc[T, U Comparable](x T, l List[Pair[T, U]]) bool {
-	return ListMem(x, Pr1(l))
-}
-
-func AssqOpt[T, U Comparable](x T, l List[Pair[T, U]]) Option[U] {
-	return OptBind(
-		ListIndexOf(x, Pr1(l)),
-		func(i int) Option[U] {
-			return MkSome(l.At(i).Snd)
-		},
+	return fmt.Sprintf(
+		"%s\ngs3(%p, %s, %s ---> %s)",
+		res,
+		s,
+		s.appliedOn.ToString(),
+		s.rule.ToString(),
+		s.children.ToString(func(c *GS3Sequent) string { return fmt.Sprintf("%p", c) }, ",", "[]"),
 	)
 }

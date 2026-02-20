@@ -11,10 +11,10 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/assisted"
+	"github.com/GoelandProver/Goeland/Mods/desko"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 	equality "github.com/GoelandProver/Goeland/Mods/equality/bse"
 	"github.com/GoelandProver/Goeland/Mods/equality/sateq"
-	"github.com/GoelandProver/Goeland/Mods/gs3"
 	"github.com/GoelandProver/Goeland/Mods/lambdapi"
 	"github.com/GoelandProver/Goeland/Mods/rocq"
 	"github.com/GoelandProver/Goeland/Mods/tptp"
@@ -69,7 +69,13 @@ Using this function, you can initialize an option of type T.
 
 - funcAlways : a function that will be called regardless if the option was used or not (if it wasn't, the parameter will be 'defaultValue')
 */
-func (op *option[T]) init(name string, defaultValue T, usage string, funcNotDefault func(T), funcAlways func(T)) {
+func (op *option[T]) init(
+	name string,
+	defaultValue T,
+	usage string,
+	funcNotDefault func(T),
+	funcAlways func(T),
+) {
 	op.initOption(defaultValue, funcNotDefault, funcAlways)
 
 	switch any(defaultValue).(type) {
@@ -96,21 +102,24 @@ func initOpts() {
 	}
 }
 
-/**
+/*
+*
 *  An option has a type T and is initialized with five parameters:
 *  name string: the name of the option that will be used in the command line.
 *  defaultValue T: the default value that will be used if the option is not used.
 *  usage string: the description on how to use and what the option does.
 *  funcNotDefault func(T): a function that will be run if the option has changed from its default value. The parameter will be the value of the option.
 *  funcAlways func(T): a function that will always be run. The parameter will be the value of the option.
-**/
+*
+ */
 func buildOptions() {
 	(&option[string]{}).init(
 		"debug",
 		"none",
 		"Enables printing debug information in the terminal. Debugging a specific part of the code is possible via -debug a,b,c which will output the debugs of parts a, b and c. If you want all the debugs, use -debug all.",
 		Glob.SetDebug,
-		func(string) {})
+		func(string) {},
+	)
 	(&option[bool]{}).init(
 		"silent",
 		false,
@@ -207,7 +216,8 @@ func buildOptions() {
 		false,
 		"Should only be used with the -proof parameter. Enables UTF-8 characters in prints for a pretty proof",
 		func(bool) { AST.SetPrinter(AST.PrettyPrinter) },
-		func(bool) {})
+		func(bool) {},
+	)
 	(&option[bool]{}).init(
 		"dmt",
 		false,
@@ -301,7 +311,8 @@ func buildOptions() {
 		false,
 		"Should only be used with the -orocq or the -olp parameters. Enables the context for a standalone execution",
 		func(bool) { rocq.SetContextEnabled(true) },
-		func(bool) {})
+		func(bool) {},
+	)
 	(&option[bool]{}).init(
 		"inner",
 		false,
@@ -319,7 +330,8 @@ func buildOptions() {
 			Core.SetSelectedSkolemization(Sko.MkPreInnerSkolemization())
 			Glob.SetPreInnerSko(true)
 		},
-		func(bool) {})
+		func(bool) {},
+	)
 	(&option[bool]{}).init(
 		"assisted",
 		false,
@@ -361,7 +373,8 @@ func buildOptions() {
 		func(bool) {
 			chronoInit()
 		},
-		func(bool) {})
+		func(bool) {},
+	)
 	(&option[bool]{}).init(
 		"incr",
 		false,
@@ -377,7 +390,8 @@ func buildOptions() {
 		func(string) {},
 		func(val string) {
 			Glob.ProofFile = val
-		})
+		},
+	)
 	(&option[bool]{}).init(
 		"vec",
 		false,
@@ -388,7 +402,8 @@ func buildOptions() {
 			maxInt := math.MaxInt
 			Glob.SetLimit(maxInt)
 		},
-		func(bool) {})
+		func(bool) {},
+	)
 	(&option[bool]{}).init(
 		"print-id",
 		false,
@@ -423,7 +438,7 @@ func buildOptions() {
 
 func chronoInit() {
 	old_rocq := rocq.MakeRocqProof
-	rocq.MakeRocqProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
+	rocq.MakeRocqProof = func(proof Search.IProof, meta Lib.List[AST.Meta]) string {
 		start := time.Now()
 		result := old_rocq(proof, meta)
 		printChrono("Rocq", start)
@@ -431,15 +446,15 @@ func chronoInit() {
 	}
 
 	oldLP := lambdapi.MakeLambdaPiProof
-	lambdapi.MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
+	lambdapi.MakeLambdaPiProof = func(proof Search.IProof, meta Lib.List[AST.Meta]) string {
 		start := time.Now()
 		result := oldLP(proof, meta)
 		printChrono("LP", start)
 		return result
 	}
 
-	oldGS3 := gs3.MakeGS3Proof
-	gs3.MakeGS3Proof = func(proof []Search.ProofStruct) *gs3.GS3Sequent {
+	oldGS3 := desko.MakeDeskolemizedProof
+	desko.MakeDeskolemizedProof = func(proof Search.IProof) *desko.GS3Sequent {
 		start := time.Now()
 		result := oldGS3(proof)
 		printChrono("GS3", start)

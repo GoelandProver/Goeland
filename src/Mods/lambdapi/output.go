@@ -39,13 +39,18 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Mods/gs3"
+	"github.com/GoelandProver/Goeland/Mods/desko"
 	"github.com/GoelandProver/Goeland/Search"
 )
 
 var contextEnabled bool = false
 var debug Glob.Debugger
-var LambdapiOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeLambdapiOutput, Name: "Lambdapi", Extension: ".lp"}
+
+var LambdapiOutputProofStruct = &Search.OutputProofStruct{
+	ProofOutput: MakeLambdapiOutput,
+	Name:        "Lambdapi",
+	Extension:   ".lp",
+}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
@@ -60,17 +65,13 @@ func InitDebugger() {
 	debug = Glob.CreateDebugger("LambdaPi")
 }
 
-func MakeLambdapiOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
-	if len(prf) == 0 {
-		Glob.Fatal("LambdaPi", "Nothing to output")
-	}
-
+func MakeLambdapiOutput(prf Search.IProof, meta Lib.List[AST.Meta]) string {
 	connectives := LambdapiPrinterConnectives()
 	printer := AST.Printer{PrinterAction: LambdapiPrinterAction(), PrinterConnective: &connectives}
 	AST.SetPrinter(printer)
 
 	// Transform tableaux's proof in GS3 proof
-	return MakeLambdaPiProof(gs3.MakeGS3Proof(prf), meta)
+	return MakeLambdaPiProof(desko.MakeDeskolemizedProof(prf), meta)
 }
 
 func LambdapiPrinterConnectives() AST.PrinterConnective {
@@ -173,9 +174,9 @@ func LambdapiPrinterAction() AST.PrinterAction {
 	return lambdapi_action.Compose(AST.RemoveSuperfluousParenthesesAction(connectives))
 }
 
-var MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
-	contextString := makeContextIfNeeded(proof.GetTargetForm(), meta)
-	proofString := makeLambdaPiProofFromGS3(proof)
+var MakeLambdaPiProof = func(proof Search.IProof, meta Lib.List[AST.Meta]) string {
+	contextString := makeContextIfNeeded(proof.AppliedOn(), meta)
+	proofString := makeLambdaPiProofFromIProof(proof)
 	return contextString + "\n" + proofString
 }
 
