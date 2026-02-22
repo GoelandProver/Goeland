@@ -5,6 +5,7 @@ pkgs.mkShell {
     go
     gopls
     gotools
+    golines
     python314
     rocq-core
     rocqPackages.stdlib
