@@ -36,6 +36,7 @@ import (
 )
 
 type SMapping map[Glob.Pair[*termRecord, *eqClass]]Lit
+
 type EMapping map[int]map[unorderedPair[*eqClass]]Lit // we make unorderedPairs of *eqClass, which is correct only as long as we don't mutate (merge) them
 type RMapping map[Glob.Pair[*eqClass, *termRecord]]Lit
 type OMapping map[Glob.Pair[*eqClass, *eqClass]]Lit
@@ -120,7 +121,14 @@ func (sb *SatBuilder) getVarFromTMapping(index int, r1, r2, r3 *eqClass) Lit {
 	if !found {
 		sb.tMapping[index] = make(map[Glob.Pair[unorderedPair[*eqClass], *eqClass]]Lit)
 	}
-	triplet := Glob.MakePair[unorderedPair[*eqClass], *eqClass](makeUnorderedPair[*eqClass](r1.representative(), r2.representative()), r3.representative())
-	lit, _ := getIdAndRegister[Glob.Pair[unorderedPair[*eqClass], *eqClass]](sb, triplet, sb.tMapping[index])
+	triplet := Glob.MakePair[unorderedPair[*eqClass], *eqClass](
+		makeUnorderedPair[*eqClass](r1.representative(), r2.representative()),
+		r3.representative(),
+	)
+	lit, _ := getIdAndRegister[Glob.Pair[unorderedPair[*eqClass], *eqClass]](
+		sb,
+		triplet,
+		sb.tMapping[index],
+	)
 	return lit
 }

@@ -53,10 +53,16 @@ func TestAxiomRewriting(t *testing.T) {
 	initDMT()
 
 	// forall x.P(x)
-	axiom := basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{}))
+	axiom := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{}),
+	)
 
 	if dmt.RegisterAxiom(axiom) {
-		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't.", axiom.ToString())
+		t.Fatalf(
+			"Error: %s has been registered as a rewrite rule when it shouldn't.",
+			axiom.ToString(),
+		)
 	}
 
 	// Top
@@ -97,10 +103,16 @@ func TestAxiomRewriting2(t *testing.T) {
 	initDMT()
 
 	// forall x.¬P(x)
-	axiom := basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerNot(basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{})))
+	axiom := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerNot(basictypes.MakerPred(P, basictypes.NewTermList(x), []typing.TypeApp{})),
+	)
 
 	if dmt.RegisterAxiom(axiom) {
-		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't.", axiom.ToString())
+		t.Fatalf(
+			"Error: %s has been registered as a rewrite rule when it shouldn't.",
+			axiom.ToString(),
+		)
 	}
 
 	// Bot
@@ -141,10 +153,16 @@ func TestAxiomRewriting3(t *testing.T) {
 	initDMT()
 
 	// forall x.P(x)
-	axiom := basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(P, basictypes.NewTermList(x, x), []typing.TypeApp{}))
+	axiom := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerPred(P, basictypes.NewTermList(x, x), []typing.TypeApp{}),
+	)
 
 	if dmt.RegisterAxiom(axiom) {
-		t.Fatalf("Error: %s has been registered as a rewrite rule when it shouldn't.", axiom.ToString())
+		t.Fatalf(
+			"Error: %s has been registered as a rewrite rule when it shouldn't.",
+			axiom.ToString(),
+		)
 	}
 
 	// X := basictypes.MakerMeta("X", 1)
@@ -222,30 +240,66 @@ func TestAxiomRewriting4(t *testing.T) {
 	initDMT()
 
 	// forall x.x = x
-	axiom := basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, x), []typing.TypeApp{}))
+	axiom := basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, x), []typing.TypeApp{}),
+	)
 
 	if dmt.RegisterAxiom(axiom) {
-		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
+		t.Fatalf(
+			"Error: %s has been registered as a rewrite rule when it's an equality.",
+			axiom.ToString(),
+		)
 	}
 
 	// forall x.x != x
-	axiom = basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, x), []typing.TypeApp{}))
+	axiom = basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, x), []typing.TypeApp{}),
+	)
 
 	if dmt.RegisterAxiom(axiom) {
-		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
+		t.Fatalf(
+			"Error: %s has been registered as a rewrite rule when it's an equality.",
+			axiom.ToString(),
+		)
 	}
 
 	// forall x.¬(x = x)
-	axiom = basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, x), []typing.TypeApp{})))
+	axiom = basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerNot(
+			basictypes.MakerPred(
+				basictypes.Id_eq,
+				basictypes.NewTermList(x, x),
+				[]typing.TypeApp{},
+			),
+		),
+	)
 
 	if dmt.RegisterAxiom(axiom) {
-		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
+		t.Fatalf(
+			"Error: %s has been registered as a rewrite rule when it's an equality.",
+			axiom.ToString(),
+		)
 	}
 
 	// forall x.¬(x != x)
-	axiom = basictypes.MakerAll([]basictypes.Var{x}, basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, x), []typing.TypeApp{})))
+	axiom = basictypes.MakerAll(
+		[]basictypes.Var{x},
+		basictypes.MakerNot(
+			basictypes.MakerPred(
+				basictypes.Id_eq,
+				basictypes.NewTermList(x, x),
+				[]typing.TypeApp{},
+			),
+		),
+	)
 
 	if dmt.RegisterAxiom(axiom) {
-		t.Fatalf("Error: %s has been registered as a rewrite rule when it's an equality.", axiom.ToString())
+		t.Fatalf(
+			"Error: %s has been registered as a rewrite rule when it's an equality.",
+			axiom.ToString(),
+		)
 	}
 }

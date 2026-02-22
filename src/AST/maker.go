@@ -157,7 +157,13 @@ func MakerMeta(s string, formula int, t ...TypeApp) Meta {
 
 /* Const maker (given a id, create a fun without args) */
 func MakerConst(id Id, t ...TypeApp) Fun {
-	return MakeFun(id, Lib.NewList[Term](), []TypeApp{}, getType(t).(TypeScheme), Lib.EmptySet[Meta]())
+	return MakeFun(
+		id,
+		Lib.NewList[Term](),
+		[]TypeApp{},
+		getType(t).(TypeScheme),
+		Lib.EmptySet[Meta](),
+	)
 }
 
 /* Fun maker, with given id and args */

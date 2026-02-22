@@ -117,7 +117,9 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.
 	}
 
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Subst intermédiaire res : %v", res.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Subst intermédiaire res : %v", res.ToString()) },
+		),
 	)
 	debug(
 		Lib.MkLazy(func() string {
@@ -144,10 +146,13 @@ func RemoveElementWithoutMM(subs Unif.Substitutions, mm Lib.Set[AST.Meta]) Unif.
 
 }
 
-/* *
+/*
+	*
+
 * Take a substitution wich conatins elements like (meta_mother, meta_current), returning only relevante substitution like (meta_mother, meta_mother)
 * (X, X2) (Y, X2) -> (X, Y)
-**/
+*
+*/
 func ReorganizeSubstitution(subs Unif.Substitutions) Unif.Substitutions {
 	res := Unif.Substitutions{}
 	metaSeen := Lib.NewList[AST.Meta]()
@@ -269,10 +274,18 @@ func ApplySubstitutionOnTermList(
 	return res
 }
 
-func applySubstitutionOnTypeList(old_symbol AST.Meta, new_symbol AST.Term, tl []AST.TypeApp) []AST.TypeApp {
+func applySubstitutionOnTypeList(
+	old_symbol AST.Meta,
+	new_symbol AST.Term,
+	tl []AST.TypeApp,
+) []AST.TypeApp {
 	res := make([]AST.TypeApp, len(tl))
 	for i, t := range tl {
-		res[i] = applySubstitutionOnType(old_symbol.GetTypeApp(), new_symbol.(AST.TypedTerm).GetTypeApp(), t)
+		res[i] = applySubstitutionOnType(
+			old_symbol.GetTypeApp(),
+			new_symbol.(AST.TypedTerm).GetTypeApp(),
+			t,
+		)
 	}
 	return res
 }
@@ -358,7 +371,10 @@ func ApplySubstitutionsOnFormAndTerms(s Unif.Substitutions, fat FormAndTerms) Fo
 }
 
 /* For each element of the substitution, apply it on the entire formAndTerms list */
-func ApplySubstitutionsOnFormAndTermsList(s Unif.Substitutions, lf FormAndTermsList) FormAndTermsList {
+func ApplySubstitutionsOnFormAndTermsList(
+	s Unif.Substitutions,
+	lf FormAndTermsList,
+) FormAndTermsList {
 	lf_res := MakeEmptyFormAndTermsList()
 	for _, f := range lf {
 		new_form := ApplySubstitutionsOnFormAndTerms(s, f)
@@ -393,7 +409,10 @@ func ApplySubstitutionOnMetaGen(s Unif.Substitutions, mg MetaGen) MetaGen {
 }
 
 /* Dispatch a list of substitution : containing mm or not */
-func DispatchSubst(subsList []Unif.Substitutions, mm Lib.Set[AST.Meta]) ([]Unif.Substitutions, []Unif.Substitutions, []Unif.Substitutions) {
+func DispatchSubst(
+	subsList []Unif.Substitutions,
+	mm Lib.Set[AST.Meta],
+) ([]Unif.Substitutions, []Unif.Substitutions, []Unif.Substitutions) {
 	var subsWithMM []Unif.Substitutions
 	var subsWithMMUncleared []Unif.Substitutions
 	var subsWithoutMM []Unif.Substitutions
@@ -434,7 +453,8 @@ func AreEqualsModuloaLaphaConversion(s1, s2 Unif.Substitutions) bool {
 	i := 0
 	for i < len(s1) && cpt == i {
 		for _, s2_element := range s2 {
-			if (s1[i].Key().GetName() == s2_element.Key().GetName()) && (s1[i].Value().Equals(s2_element.Value())) {
+			if (s1[i].Key().GetName() == s2_element.Key().GetName()) &&
+				(s1[i].Value().Equals(s2_element.Value())) {
 				cpt++
 			}
 		}

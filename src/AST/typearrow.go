@@ -70,7 +70,9 @@ func (ta TypeArrow) toMappedString(subst map[string]string) string {
 
 /* TypeArrow methods */
 func (ta TypeArrow) substitute(mapSubst map[TypeVar]string) TypeScheme {
-	return MkTypeArrow(ta.left.substitute(mapSubst).(TypeApp), substTypeAppList(mapSubst, ta.right)...)
+	return MkTypeArrow(
+		ta.left.substitute(mapSubst).(TypeApp),
+		substTypeAppList(mapSubst, ta.right)...)
 }
 func (ta TypeArrow) instanciate(mapSubst map[TypeVar]TypeApp) TypeScheme {
 	return MkTypeArrow(ta.left.instanciate(mapSubst), instanciateList(mapSubst, ta.right)...)
@@ -92,7 +94,8 @@ func (ta TypeArrow) Equals(oth interface{}) bool {
 	}
 
 	othTA := Glob.To[TypeArrow](oth)
-	return ((ta.left == nil && othTA.left == nil) || ta.left.Equals(othTA.left)) && ta.right.Equals(othTA.right)
+	return ((ta.left == nil && othTA.left == nil) || ta.left.Equals(othTA.left)) &&
+		ta.right.Equals(othTA.right)
 }
 
 func (ta TypeArrow) Size() int {
@@ -108,7 +111,11 @@ func (ta TypeArrow) GetPrimitives() []TypeApp {
 /* Makes a TypeArrow from two TypeSchemes */
 func MkTypeArrow(left TypeApp, typeApps ...TypeApp) TypeArrow {
 	if len(typeApps) < 1 {
-		debug(Lib.MkLazy(func() string { return "There should be at least one out type in a TypeArrow." }))
+		debug(
+			Lib.MkLazy(
+				func() string { return "There should be at least one out type in a TypeArrow." },
+			),
+		)
 		return TypeArrow{}
 	}
 	ta := TypeArrow{left: left, right: make(Lib.ComparableList[TypeApp], len(typeApps))}

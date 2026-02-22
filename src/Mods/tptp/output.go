@@ -46,7 +46,11 @@ import (
 	"github.com/GoelandProver/Goeland/Search"
 )
 
-var TptpOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeTptpOutput, Name: "TPTP", Extension: ".p"}
+var TptpOutputProofStruct = &Search.OutputProofStruct{
+	ProofOutput: MakeTptpOutput,
+	Name:        "TPTP",
+	Extension:   ".p",
+}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
@@ -78,7 +82,11 @@ var MakeTptpProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string 
 
 // Replace defined symbols by TSTP's defined symbols.
 func mapDefault(str string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, " : $i", ""), " : $o", ""), " : , ", " : ")
+	return strings.ReplaceAll(
+		strings.ReplaceAll(strings.ReplaceAll(str, " : $i", ""), " : $o", ""),
+		" : , ",
+		" : ",
+	)
 }
 func tptpMapConnectors() map[AST.FormulaType]string {
 	return map[AST.FormulaType]string{

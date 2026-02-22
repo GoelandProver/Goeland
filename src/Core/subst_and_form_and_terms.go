@@ -92,7 +92,10 @@ func (s SubstAndFormAndTerms) ToString() string {
 	return res
 }
 
-func MakeSubstAndFormAndTerms(subst Unif.Substitutions, form FormAndTermsList) SubstAndFormAndTerms {
+func MakeSubstAndFormAndTerms(
+	subst Unif.Substitutions,
+	form FormAndTermsList,
+) SubstAndFormAndTerms {
 	return SubstAndFormAndTerms{subst.Copy(), form.Copy()}
 }
 func MakeEmptySubstAndFormAndTerms() SubstAndFormAndTerms {
@@ -110,7 +113,10 @@ func ContainsSubstAndFormAndTerms(s SubstAndFormAndTerms, sl []SubstAndFormAndTe
 }
 
 /* Append a substitution s to a list of substitution sl if s is not in sl */
-func AppendIfNotContainsSubstAndFormAndTerms(sl []SubstAndFormAndTerms, s SubstAndFormAndTerms) []SubstAndFormAndTerms {
+func AppendIfNotContainsSubstAndFormAndTerms(
+	sl []SubstAndFormAndTerms,
+	s SubstAndFormAndTerms,
+) []SubstAndFormAndTerms {
 	if !ContainsSubstAndFormAndTerms(s, sl) {
 		return append(sl, s)
 	} else {

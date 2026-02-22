@@ -36,6 +36,7 @@ package Parser
 
 import (
 	"fmt"
+
 	"github.com/GoelandProver/Goeland/Lib"
 )
 

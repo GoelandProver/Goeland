@@ -134,7 +134,11 @@ func (root *ProofTree) dump() (string, error) {
 		Children:     childrenProofs,
 	})
 
-	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(string(bytes), "\\", ""), "\"{", "{"), "}\"", "}"), err
+	return strings.ReplaceAll(
+		strings.ReplaceAll(strings.ReplaceAll(string(bytes), "\\", ""), "\"{", "{"),
+		"}\"",
+		"}",
+	), err
 }
 
 /* Utils */

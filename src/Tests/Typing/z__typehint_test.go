@@ -89,8 +89,13 @@ func TestTypeHintPrimitives(t *testing.T) {
 
 	for _, test := range testTable {
 		t.Run(fmt.Sprintf("%v", test.expected), func(t *testing.T) {
-			if len(test.type_.GetPrimitives()) != 1 || !test.type_.GetPrimitives()[0].(TypeHint).Equals(test.type_) {
-				t.Fatalf("Expected: %v, actual: %v", []TypeApp{test.type_}, test.type_.GetPrimitives())
+			if len(test.type_.GetPrimitives()) != 1 ||
+				!test.type_.GetPrimitives()[0].(TypeHint).Equals(test.type_) {
+				t.Fatalf(
+					"Expected: %v, actual: %v",
+					[]TypeApp{test.type_},
+					test.type_.GetPrimitives(),
+				)
 			}
 		})
 	}
@@ -140,11 +145,14 @@ func TestTypeHintNotEquals2(t *testing.T) {
 
 	for _, test := range testTable {
 		for _, test2 := range testTable2 {
-			t.Run(fmt.Sprintf("%v/%v", test.type_.ToString(), test2.type_.ToString()), func(t *testing.T) {
-				if test.type_.Equals(test2.type_) {
-					t.Fatalf("Expected that a TypeHint is not a TypeVar")
-				}
-			})
+			t.Run(
+				fmt.Sprintf("%v/%v", test.type_.ToString(), test2.type_.ToString()),
+				func(t *testing.T) {
+					if test.type_.Equals(test2.type_) {
+						t.Fatalf("Expected that a TypeHint is not a TypeVar")
+					}
+				},
+			)
 		}
 	}
 }

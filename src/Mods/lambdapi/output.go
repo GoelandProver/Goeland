@@ -62,7 +62,11 @@ var lambdaPiMapConnectors = map[AST.FormulaType]string{
 	AST.TypeVarType:    "Type",
 }
 
-var LambdapiOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeLambdapiOutput, Name: "Lambdapi", Extension: ".lp"}
+var LambdapiOutputProofStruct = &Search.OutputProofStruct{
+	ProofOutput: MakeLambdapiOutput,
+	Name:        "Lambdapi",
+	Extension:   ".lp",
+}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
@@ -90,7 +94,15 @@ var MakeLambdaPiProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) str
 }
 
 func mapDefault(str string) string {
-	result := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, "$i", "ι"), "$o", "Prop"), "->", "→"), "*", "→")
+	result := strings.ReplaceAll(
+		strings.ReplaceAll(
+			strings.ReplaceAll(strings.ReplaceAll(str, "$i", "ι"), "$o", "Prop"),
+			"->",
+			"→",
+		),
+		"*",
+		"→",
+	)
 	return result
 }
 

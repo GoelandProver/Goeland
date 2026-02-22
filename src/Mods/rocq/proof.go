@@ -64,7 +64,10 @@ func makeRocqProofFromGS3(proof *gs3.GS3Sequent) string {
 		for i, form := range axioms.Slice() {
 			indices[i], hypotheses = introduce(form, hypotheses)
 		}
-		resultingString += "intros " + strings.Join(Glob.MapTo(indices, func(_ int, index int) string { return introName(index) }), " ") + ". "
+		resultingString += "intros " + strings.Join(
+			Glob.MapTo(indices, func(_ int, index int) string { return introName(index) }),
+			" ",
+		) + ". "
 		if totalAxioms > 0 {
 			proof = proof.Child(0)
 		}
@@ -76,15 +79,27 @@ func makeRocqProofFromGS3(proof *gs3.GS3Sequent) string {
 	return resultingString + "\nQed.\n"
 }
 
-func followProofSteps(proof *gs3.GS3Sequent, hypotheses *AST.FormList, constantsCreated []AST.Term) string {
+func followProofSteps(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	constantsCreated []AST.Term,
+) string {
 	var resultingString string
 	var childrenHypotheses []*AST.FormList
 	if !proof.IsEmpty() {
-		resultingString, childrenHypotheses, constantsCreated = makeProofStep(proof, hypotheses, constantsCreated)
+		resultingString, childrenHypotheses, constantsCreated = makeProofStep(
+			proof,
+			hypotheses,
+			constantsCreated,
+		)
 	}
 	for i, child := range proof.Children() {
 		if proof.IsEmpty() {
-			resultingString += "\n" + followProofSteps(child, hypotheses.Copy(), cp(constantsCreated))
+			resultingString += "\n" + followProofSteps(
+				child,
+				hypotheses.Copy(),
+				cp(constantsCreated),
+			)
 		} else {
 			resultingString += "\n" + followProofSteps(child, childrenHypotheses[i].Copy(), cp(constantsCreated))
 		}
@@ -92,12 +107,24 @@ func followProofSteps(proof *gs3.GS3Sequent, hypotheses *AST.FormList, constants
 	return resultingString
 }
 
-func makeProofStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, constantsCreated []AST.Term) (string, []*AST.FormList, []AST.Term) {
-	stepResult, childrenHypotheses, constantsCreated := makeStep(proof, hypotheses, constantsCreated)
+func makeProofStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	constantsCreated []AST.Term,
+) (string, []*AST.FormList, []AST.Term) {
+	stepResult, childrenHypotheses, constantsCreated := makeStep(
+		proof,
+		hypotheses,
+		constantsCreated,
+	)
 	return stepResult, childrenHypotheses, constantsCreated
 }
 
-func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, constantsCreated []AST.Term) (string, []*AST.FormList, []AST.Term) {
+func makeStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	constantsCreated []AST.Term,
+) (string, []*AST.FormList, []AST.Term) {
 	var resultingString string
 	childrenHypotheses := []*AST.FormList{hypotheses}
 
@@ -115,59 +142,145 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, constantsCreated 
 	case gs3.NNOT:
 		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "%s")
 	case gs3.AND:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "(goeland_and_s _ _ %s)")
+		resultingString, childrenHypotheses = alphaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_and_s _ _ %s)",
+		)
 	case gs3.NOR:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "(goeland_notor_s _ _ %s)")
+		resultingString, childrenHypotheses = alphaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_notor_s _ _ %s)",
+		)
 	case gs3.NIMP:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "(goeland_notimply_s _ _ %s)")
+		resultingString, childrenHypotheses = alphaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_notimply_s _ _ %s)",
+		)
 
 	// Beta rules
 	case gs3.NAND:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_notand_s _ _ %s)")
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_notand_s _ _ %s)",
+		)
 	case gs3.NEQU:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_notequiv_s _ _ %s)")
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_notequiv_s _ _ %s)",
+		)
 	case gs3.OR:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_or_s _ _ %s)")
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_or_s _ _ %s)",
+		)
 	case gs3.IMP:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_imply_s _ _ %s)")
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_imply_s _ _ %s)",
+		)
 	case gs3.EQU:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_equiv_s _ _ %s)")
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_equiv_s _ _ %s)",
+		)
 
 	// Delta rules
 	case gs3.NALL:
-		resultingString, childrenHypotheses, constantsCreated = deltaStep(proof, hypotheses, target, "apply %s. intros %s. apply NNPP. intros %s. ", constantsCreated)
+		resultingString, childrenHypotheses, constantsCreated = deltaStep(
+			proof,
+			hypotheses,
+			target,
+			"apply %s. intros %s. apply NNPP. intros %s. ",
+			constantsCreated,
+		)
 	case gs3.EX:
-		resultingString, childrenHypotheses, constantsCreated = deltaStep(proof, hypotheses, target, "elim %s. intros %s. intros %s. ", constantsCreated)
+		resultingString, childrenHypotheses, constantsCreated = deltaStep(
+			proof,
+			hypotheses,
+			target,
+			"elim %s. intros %s. intros %s. ",
+			constantsCreated,
+		)
 
 	// Gamma rules
 	case gs3.ALL:
-		resultingString, childrenHypotheses = gammaStep(proof, hypotheses, target, "generalize (%s %s). intros %s. ", constantsCreated)
+		resultingString, childrenHypotheses = gammaStep(
+			proof,
+			hypotheses,
+			target,
+			"generalize (%s %s). intros %s. ",
+			constantsCreated,
+		)
 	case gs3.NEX:
-		resultingString, childrenHypotheses = gammaStep(proof, hypotheses, target, "apply %s. exists %s. apply NNPP. intros %s. ", constantsCreated)
+		resultingString, childrenHypotheses = gammaStep(
+			proof,
+			hypotheses,
+			target,
+			"apply %s. exists %s. apply NNPP. intros %s. ",
+			constantsCreated,
+		)
 
 	// Weakening rule
 	case gs3.W:
 		if proof.TermGenerated() != nil {
-			resultingString = fmt.Sprintf("clear %s.", getConstantName(proof.TermGenerated().(AST.Fun).GetID()))
+			resultingString = fmt.Sprintf(
+				"clear %s.",
+				getConstantName(proof.TermGenerated().(AST.Fun).GetID()),
+			)
 		} else {
 			resultingString, childrenHypotheses = cleanHypotheses(hypotheses, proof.GetTargetForm())
 		}
 
 	case gs3.REWRITE:
-		resultingString, childrenHypotheses = rewriteStep(proof.GetRewriteWith(), hypotheses, target, proof.GetResultFormulasOfChild(0).Get(0))
+		resultingString, childrenHypotheses = rewriteStep(
+			proof.GetRewriteWith(),
+			hypotheses,
+			target,
+			proof.GetResultFormulasOfChild(0).Get(0),
+		)
 	}
 
 	return resultingString, childrenHypotheses, constantsCreated
 }
 
-func alphaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string) (string, []*AST.FormList) {
+func alphaStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+	format string,
+) (string, []*AST.FormList) {
 	var indices []int
 	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
-	resultingString := fmt.Sprintf("apply "+format+". intros %s. ", introName(target), introNames(indices))
+	resultingString := fmt.Sprintf(
+		"apply "+format+". intros %s. ",
+		introName(target),
+		introNames(indices),
+	)
 	return resultingString, []*AST.FormList{hypotheses}
 }
 
-func betaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string) (string, []*AST.FormList) {
+func betaStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+	format string,
+) (string, []*AST.FormList) {
 	resultHyps := []*AST.FormList{}
 	var indices []int
 	resultingString := fmt.Sprintf("apply "+format+"; ", introName(target))
@@ -182,7 +295,13 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, forma
 	return resultingString + "[ " + strings.Join(introducedNames, " | ") + " ].", resultHyps
 }
 
-func deltaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string, constantsCreated []AST.Term) (string, []*AST.FormList, []AST.Term) {
+func deltaStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+	format string,
+	constantsCreated []AST.Term,
+) (string, []*AST.FormList, []AST.Term) {
 	var indices []int
 	var name string
 	//PrintInfo("DELTA", fmt.Sprintf("%s\n%s", hypotheses[target].ToString(), proof.GetResultFormulasOfChild(0).ToString()))
@@ -192,7 +311,13 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, form
 	return resultingString, []*AST.FormList{hypotheses}, constantsCreated
 }
 
-func gammaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string, constantsCreated []AST.Term) (string, []*AST.FormList) {
+func gammaStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+	format string,
+	constantsCreated []AST.Term,
+) (string, []*AST.FormList) {
 	var indices []int
 	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
 	name := "(" + getRealConstantName(constantsCreated, proof.TermGenerated()) + ")"
@@ -200,7 +325,12 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, form
 	return resultingString, []*AST.FormList{hypotheses}
 }
 
-func rewriteStep(rewriteRule AST.Form, hypotheses *AST.FormList, target int, replacementForm AST.Form) (string, []*AST.FormList) {
+func rewriteStep(
+	rewriteRule AST.Form,
+	hypotheses *AST.FormList,
+	target int,
+	replacementForm AST.Form,
+) (string, []*AST.FormList) {
 	index, _ := hypotheses.GetIndexOf(rewriteRule)
 	resultingString := fmt.Sprintf("rewrite %s in %s.", introName(index), introName(target))
 	hypotheses.Set(target, replacementForm)
@@ -223,12 +353,18 @@ func processMainFormula(form AST.Form) (*AST.FormList, AST.Form) {
 
 // Prints the theorem's name & properly formats the first formula.
 func makeTheorem(axioms *AST.FormList, conjecture AST.Form) string {
-	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(Glob.GetProblemName(), ".", "_"), "=", "_"), "+", "_")
+	problemName := strings.ReplaceAll(
+		strings.ReplaceAll(strings.ReplaceAll(Glob.GetProblemName(), ".", "_"), "=", "_"),
+		"+",
+		"_",
+	)
 	axiomsWithConj := axioms.Copy()
 	axiomsWithConj.Append(AST.MakerNot(AST.MakerNot(conjecture)))
 	formattedProblem := makeImpChain(axiomsWithConj)
 	return "Theorem goeland_proof_of_" + problemName + " : " +
-		mapDefault(formattedProblem.ToMappedString(rocqMapConnectors(), Glob.GetTypeProof())) + ".\n"
+		mapDefault(
+			formattedProblem.ToMappedString(rocqMapConnectors(), Glob.GetTypeProof()),
+		) + ".\n"
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).

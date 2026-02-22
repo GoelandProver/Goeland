@@ -167,8 +167,10 @@ func (problem *Problem) mergeEquivalenceClasses(ec1, ec2 *eqClass) {
 	}
 
 	// update indexes (see invariant above)
-	problem.partitionIndex[ecMerged].Append(problem.partitionIndex[ecDeleted].Slice()...) // the entries of partitionIndex are disjoint
-	problem.supertermIndex[ecMerged].AppendIfNotContains(problem.supertermIndex[ecDeleted].Slice()...)
+	problem.partitionIndex[ecMerged].Append(
+		problem.partitionIndex[ecDeleted].Slice()...) // the entries of partitionIndex are disjoint
+	problem.supertermIndex[ecMerged].AppendIfNotContains(
+		problem.supertermIndex[ecDeleted].Slice()...)
 	delete(problem.partitionIndex, ecDeleted)
 	delete(problem.supertermIndex, ecDeleted)
 
@@ -186,14 +188,22 @@ func (problem *Problem) mergeEquivalenceClasses(ec1, ec2 *eqClass) {
 }
 
 func (problem *Problem) AddAssumption(eq eqStruct.TermPair) {
-	problem.mergeEquivalenceClasses(problem.getEquivalenceClass(eq.GetT1()), problem.getEquivalenceClass(eq.GetT2()))
+	problem.mergeEquivalenceClasses(
+		problem.getEquivalenceClass(eq.GetT1()),
+		problem.getEquivalenceClass(eq.GetT2()),
+	)
 }
 
 func (problem *Problem) AddGoal(goal []eqStruct.TermPair) {
 	g := Glob.NewList[*Glob.BasicPair[*eqClass, *eqClass]]()
 
 	for _, eq := range goal {
-		g.AppendIfNotContains(Glob.NewBasicPair(problem.getEquivalenceClass(eq.GetT1()), problem.getEquivalenceClass(eq.GetT2())))
+		g.AppendIfNotContains(
+			Glob.NewBasicPair(
+				problem.getEquivalenceClass(eq.GetT1()),
+				problem.getEquivalenceClass(eq.GetT2()),
+			),
+		)
 	}
 
 	problem.goals.AppendIfNotContains(g)

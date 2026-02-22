@@ -57,7 +57,12 @@ type QuantifiedType struct {
 /* TypeScheme interface */
 func (qt QuantifiedType) isScheme() {}
 func (qt QuantifiedType) toMappedString(subst map[string]string) string {
-	return "Π " + strings.Join(convert(qt.vars, typeTToString[TypeVar]), ", ") + ": Type. " + qt.scheme.toMappedString(subst)
+	return "Π " + strings.Join(
+		convert(qt.vars, typeTToString[TypeVar]),
+		", ",
+	) + ": Type. " + qt.scheme.toMappedString(
+		subst,
+	)
 }
 
 func (qt QuantifiedType) Equals(oth interface{}) bool {
@@ -121,7 +126,10 @@ func (qt QuantifiedType) Instanciate(types []TypeApp) TypeScheme {
 
 	if Glob.Is[TypeApp](qt.scheme) {
 		if len(tv) > 0 {
-			return MkQuantifiedType(tv, Glob.To[TypeScheme](Glob.To[TypeApp](qt.scheme).instanciate(substMap)))
+			return MkQuantifiedType(
+				tv,
+				Glob.To[TypeScheme](Glob.To[TypeApp](qt.scheme).instanciate(substMap)),
+			)
 		}
 		return Glob.To[TypeScheme](Glob.To[TypeApp](qt.scheme).instanciate(substMap))
 	} else if Glob.Is[TypeArrow](qt.scheme) {

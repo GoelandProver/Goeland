@@ -74,7 +74,21 @@ func MakeWcdArgs(
 	childOrdering []int,
 	toReintroduce []int,
 ) wcdArgs {
-	return wcdArgs{fatherId, st, c, children, givenSubsts, currentSubst, substsBT, formsBT, nodeId, originalNodeId, overwrite, childOrdering, toReintroduce}
+	return wcdArgs{
+		fatherId,
+		st,
+		c,
+		children,
+		givenSubsts,
+		currentSubst,
+		substsBT,
+		formsBT,
+		nodeId,
+		originalNodeId,
+		overwrite,
+		childOrdering,
+		toReintroduce,
+	}
 }
 
 func (args wcdArgs) printDebugMessages() {
@@ -100,7 +114,8 @@ func (args wcdArgs) printDebugMessages() {
 				args.st.GetBTOnFormulas(),
 				Core.SubstAndFormListToString(args.givenSubsts),
 				args.st.GetAppliedSubst().ToString(),
-				Core.SubstAndFormListToString(args.st.GetSubstsFound()))
+				Core.SubstAndFormListToString(args.st.GetSubstsFound()),
+			)
 		}),
 	)
 	debug(Lib.MkLazy(func() string {
@@ -119,16 +134,26 @@ func (args wcdArgs) printDebugMessages() {
 
 /* Utilitary subfunctions */
 
-func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChildren [][]ProofStruct) error {
+func (ds *destructiveSearch) childrenClosedByThemselves(
+	args wcdArgs,
+	proofChildren [][]ProofStruct,
+) error {
 	debug(Lib.MkLazy(func() string { return "All children has finished by themselves" }))
 
 	// All children are closed & did not send any subst, i.e., they can be closed.
 	closeChildren(&args.children, true)
 
 	// Remove all the metavariables that have been introduced in this node: the parent do not know them.
-	substForFather := Core.RemoveElementWithoutMM(args.st.GetAppliedSubst().GetSubst(), args.st.GetMM())
+	substForFather := Core.RemoveElementWithoutMM(
+		args.st.GetAppliedSubst().GetSubst(),
+		args.st.GetMM(),
+	)
 	if !substForFather.IsEmpty() {
-		args.st.SetSubstsFound([]Core.SubstAndForm{Core.MakeSubstAndForm(substForFather, args.st.GetAppliedSubst().GetForm())})
+		args.st.SetSubstsFound(
+			[]Core.SubstAndForm{
+				Core.MakeSubstAndForm(substForFather, args.st.GetAppliedSubst().GetForm()),
+			},
+		)
 	} else {
 		args.st.SetSubstsFound([]Core.SubstAndForm{})
 	}
@@ -136,26 +161,51 @@ func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChild
 	// No need to append the current substitution, because the children returns it anyway (if it exists)
 	// So here, the current substitution should be empty. Otherwise, there's a big bug somewhere else.
 	if !args.currentSubst.IsEmpty() {
-		return errors.New("current substitution is not empty but children close by themselves which shouldn't happen")
+		return errors.New(
+			"current substitution is not empty but children close by themselves which shouldn't happen",
+		)
 	}
 
 	// Updates the proof using the proofs of the children of the node.
 	args.st = updateProof(args, proofChildren)
 
 	toMerge := Core.MakeUnifier()
-	toMerge.AddSubstitutions(args.st.GetAppliedSubst().GetSubst(), args.st.GetAppliedSubst().GetSubst())
+	toMerge.AddSubstitutions(
+		args.st.GetAppliedSubst().GetSubst(),
+		args.st.GetAppliedSubst().GetSubst(),
+	)
 	unifier := args.st.GetGlobUnifier()
 	unifier.Merge(toMerge)
 	unifier.PruneMetasInSubsts(args.st.GetMC())
 	args.st.SetGlobUnifier(unifier)
 
-	WriteExchanges(args.fatherId, args.st, nil, Core.MakeEmptySubstAndForm(), "WaitChildren - To father - all closed")
+	WriteExchanges(
+		args.fatherId,
+		args.st,
+		nil,
+		Core.MakeEmptySubstAndForm(),
+		"WaitChildren - To father - all closed",
+	)
 
-	ds.sendSubToFather(args.c, true, false, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, args.toReintroduce)
+	ds.sendSubToFather(
+		args.c,
+		true,
+		false,
+		args.fatherId,
+		args.st,
+		args.givenSubsts,
+		args.nodeId,
+		args.originalNodeId,
+		args.toReintroduce,
+	)
 	return nil
 }
 
-func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]ProofStruct, substs []Core.SubstAndForm) error {
+func (ds *destructiveSearch) passSubstToParent(
+	args wcdArgs,
+	proofChildren [][]ProofStruct,
+	substs []Core.SubstAndForm,
+) error {
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
@@ -190,7 +240,10 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 		err, merged := Core.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
 
 		if err != nil {
-			Glob.PrintError("WC", "Error when merging the children substitution's with the applied one.")
+			Glob.PrintError(
+				"WC",
+				"Error when merging the children substitution's with the applied one.",
+			)
 			return err
 		}
 
@@ -207,12 +260,17 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 			for i := 0; !added && i < len(resultingSubsts); i++ {
 				if resultingSubstsAndForms[i].GetSubst().Equals(cleaned) {
 					added = true
-					resultingSubstsAndForms[i] = resultingSubstsAndForms[i].AddFormulas(subst.GetForm())
+					resultingSubstsAndForms[i] = resultingSubstsAndForms[i].AddFormulas(
+						subst.GetForm(),
+					)
 				}
 			}
 
 			if !added {
-				resultingSubstsAndForms = append(resultingSubstsAndForms, substAndFormCleaned.Copy())
+				resultingSubstsAndForms = append(
+					resultingSubstsAndForms,
+					substAndFormCleaned.Copy(),
+				)
 				resultingSubsts = append(resultingSubsts, substAndFormCleaned.GetSubst())
 			}
 
@@ -231,7 +289,10 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 	}
 
 	toMerge := Core.MakeUnifier()
-	toMerge.AddSubstitutions(args.st.GetAppliedSubst().GetSubst(), args.st.GetAppliedSubst().GetSubst())
+	toMerge.AddSubstitutions(
+		args.st.GetAppliedSubst().GetSubst(),
+		args.st.GetAppliedSubst().GetSubst(),
+	)
 	unifier := args.st.GetGlobUnifier()
 	unifier.Merge(toMerge)
 	unifier.PruneMetasInSubsts(args.st.GetMC())
@@ -239,16 +300,35 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 
 	resultingSubstsAndForms = Core.RemoveEmptySubstFromSubstAndFormList(resultingSubstsAndForms)
 	args.st.SetSubstsFound(resultingSubstsAndForms)
-	WriteExchanges(args.fatherId, args.st, resultingSubstsAndForms, Core.MakeEmptySubstAndForm(), "WaitChildren - To father - all agree")
+	WriteExchanges(
+		args.fatherId,
+		args.st,
+		resultingSubstsAndForms,
+		Core.MakeEmptySubstAndForm(),
+		"WaitChildren - To father - all agree",
+	)
 
 	closeChildren(&args.children, true)
-	ds.sendSubToFather(args.c, true, len(args.st.GetSubstsFound()) != 0, args.fatherId, args.st, args.givenSubsts, args.nodeId, args.originalNodeId, newMetas)
+	ds.sendSubToFather(
+		args.c,
+		true,
+		len(args.st.GetSubstsFound()) != 0,
+		args.fatherId,
+		args.st,
+		args.givenSubsts,
+		args.nodeId,
+		args.originalNodeId,
+		newMetas,
+	)
 	return nil
 }
 
 // If there is a problem of a child always checking the same substitution, it can be avoided here.
 func (bs *destructiveSearch) passSubstToChildren(args wcdArgs, substs []Core.SubstAndForm) {
-	subst, resultingSubsts := bs.chooseSubstitutionDestructive(Core.CopySubstAndFormList(substs), args.st.GetMM())
+	subst, resultingSubsts := bs.chooseSubstitutionDestructive(
+		Core.CopySubstAndFormList(substs),
+		args.st.GetMM(),
+	)
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
@@ -278,7 +358,12 @@ func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
 
 	// If the completeness mode is active, then we need to deal with forbidden substitutions.
 	if Glob.GetCompleteness() {
-		args.st.SetForbiddenSubsts(Unif.AddSubstToSubstitutionsList(args.st.GetForbiddenSubsts(), args.currentSubst.GetSubst()))
+		args.st.SetForbiddenSubsts(
+			Unif.AddSubstToSubstitutionsList(
+				args.st.GetForbiddenSubsts(),
+				args.currentSubst.GetSubst(),
+			),
+		)
 	}
 
 	if args.st.GetBTOnFormulas() && len(args.formsBT) > 0 {
@@ -322,12 +407,22 @@ func (ds *destructiveSearch) manageBacktrackForDMT(args wcdArgs) {
 	nextSaF := args.formsBT[0].Copy()
 	nextForm := nextSaF.GetSaf().GetForm()[0].Copy()
 	args.formsBT = args.formsBT[1:]
-	WriteExchanges(args.fatherId, args.st, []Core.SubstAndForm{}, nextSaF.GetSaf().ToSubstAndForm(), "WaitChildren - Backtrack on form")
+	WriteExchanges(
+		args.fatherId,
+		args.st,
+		[]Core.SubstAndForm{},
+		nextSaF.GetSaf().ToSubstAndForm(),
+		"WaitChildren - Backtrack on form",
+	)
 
 	childNode := Glob.IncrCptNode()
 
 	// Update the proof-tree with the
-	args.st.SetCurrentProofResultFormulas([]IntFormAndTermsList{MakeIntFormAndTermsList(childNode, Core.MakeSingleElementFormAndTermList(nextForm))})
+	args.st.SetCurrentProofResultFormulas(
+		[]IntFormAndTermsList{
+			MakeIntFormAndTermsList(childNode, Core.MakeSingleElementFormAndTermList(nextForm)),
+		},
+	)
 	args.st.SetCurrentProofRule("Rewrite")
 	args.st.SetCurrentProofRuleName("Rewrite")
 	args.st.SetCurrentProofIdDMT(nextSaF.GetId_rewrite())
@@ -337,7 +432,16 @@ func (ds *destructiveSearch) manageBacktrackForDMT(args wcdArgs) {
 
 	copiedState := args.st.Copy()
 	communicationChild := Communication{make(chan bool), make(chan Result)}
-	go ds.ProofSearch(Glob.GetGID(), copiedState, communicationChild, nextSaF.GetSaf().ToSubstAndForm(), childNode, args.originalNodeId, args.toReintroduce, false)
+	go ds.ProofSearch(
+		Glob.GetGID(),
+		copiedState,
+		communicationChild,
+		nextSaF.GetSaf().ToSubstAndForm(),
+		childNode,
+		args.originalNodeId,
+		args.toReintroduce,
+		false,
+	)
 	debug(Lib.MkLazy(func() string { return "GO !" }))
 	Glob.IncrGoRoutine(1)
 
@@ -355,7 +459,8 @@ func updateProof(args wcdArgs, proofChildren [][]ProofStruct) State {
 		proofList := args.st.GetProof()
 		if args.overwrite {
 			// TODO: check if it gets properly rewritten when a backtrack on it is done.
-			if proofList[len(proofList)-1].Rule == "Rewrite" && (proofChildren[0][0].Rule != "Rewrite" || proofChildren[0][0].Node_id != proofList[len(proofList)-1].Node_id) {
+			if proofList[len(proofList)-1].Rule == "Rewrite" &&
+				(proofChildren[0][0].Rule != "Rewrite" || proofChildren[0][0].Node_id != proofList[len(proofList)-1].Node_id) {
 				proofList[len(proofList)-1].Children = [][]ProofStruct{}
 				proofList = append(proofList, proofChildren[0]...)
 			} else {

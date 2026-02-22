@@ -40,6 +40,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Typing"
 )
@@ -57,7 +58,13 @@ func TestMain(m *testing.M) {
 func TestSimpleExistSkolemization(t *testing.T) {
 	// exists x. P(x) ==> x should be a new constant expression
 	x := Core.MakerVar("x")
-	form := Core.MakeFormAndTerm(Core.MakerEx([]Core.Var{x}, Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{})), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerEx(
+			[]Core.Var{x},
+			Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}),
+		),
+		Core.NewTermList(),
+	)
 	f := Core.Skolemize(form, Core.NewMetaList())
 
 	if pred, ok := f.GetForm().(AST.Pred); ok {
@@ -84,7 +91,15 @@ func TestSimpleExistSkolemization(t *testing.T) {
 func TestSimpleNotForallSkolemization(t *testing.T) {
 	// not(forall x. P(x)) ==> x should be a new constant expression
 	x := Core.MakerVar("x")
-	form := Core.MakeFormAndTerm(Core.MakerNot(Core.MakerAll([]Core.Var{x}, Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}))), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerNot(
+			Core.MakerAll(
+				[]Core.Var{x},
+				Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}),
+			),
+		),
+		Core.NewTermList(),
+	)
 	f := Core.Skolemize(form, Core.NewMetaList())
 
 	if neg, ok := f.GetForm().(AST.Not); ok {
@@ -115,7 +130,13 @@ func TestSimpleNotForallSkolemization(t *testing.T) {
 func TestSimpleForallInstantiation(t *testing.T) {
 	// forall x. P(x) ==> x should be a new meta
 	x := Core.MakerVar("x")
-	form := Core.MakeFormAndTerm(Core.MakerAll([]Core.Var{x}, Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{})), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerAll(
+			[]Core.Var{x},
+			Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}),
+		),
+		Core.NewTermList(),
+	)
 	f, metas := Core.Instantiate(form, 0)
 
 	if metas.Len() != 1 {
@@ -146,7 +167,15 @@ func TestSimpleForallInstantiation(t *testing.T) {
 func TestSimpleNotExistsInstantiation(t *testing.T) {
 	// neg(exists x. P(x)) ==> x should be a new meta
 	x := Core.MakerVar("x")
-	form := Core.MakeFormAndTerm(Core.MakerNot(Core.MakerEx([]Core.Var{x}, Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}))), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerNot(
+			Core.MakerEx(
+				[]Core.Var{x},
+				Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}),
+			),
+		),
+		Core.NewTermList(),
+	)
 	f, metas := Core.Instantiate(form, 0)
 
 	if metas.Len() != 1 {
@@ -184,7 +213,13 @@ func TestSimpleTypedExistSkolemization(t *testing.T) {
 	tInt := polymorphism.MkTypeHint("int")
 	// exists x. P(x) ==> x should be a new constant expression
 	x := Core.MakerVar("x", tInt)
-	form := Core.MakeFormAndTerm(Core.MakerEx([]Core.Var{x}, Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{})), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerEx(
+			[]Core.Var{x},
+			Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}),
+		),
+		Core.NewTermList(),
+	)
 	f := Core.Skolemize(form, Core.NewMetaList())
 
 	if pred, ok := f.GetForm().(AST.Pred); ok {
@@ -212,7 +247,15 @@ func TestSimpleTypedNotForallSkolemization(t *testing.T) {
 	tInt := polymorphism.MkTypeHint("int")
 	// not(forall x. P(x)) ==> x should be a new constant expression
 	x := Core.MakerVar("x", tInt)
-	form := Core.MakeFormAndTerm(Core.MakerNot(Core.MakerAll([]Core.Var{x}, Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}))), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerNot(
+			Core.MakerAll(
+				[]Core.Var{x},
+				Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}),
+			),
+		),
+		Core.NewTermList(),
+	)
 	f := Core.Skolemize(form, Core.NewMetaList())
 
 	if neg, ok := f.GetForm().(AST.Not); ok {
@@ -244,7 +287,13 @@ func TestSimpleTypedForallInstantiation(t *testing.T) {
 	tInt := polymorphism.MkTypeHint("int")
 	// forall x. P(x) ==> x should be a new meta
 	x := Core.MakerVar("x", tInt)
-	form := Core.MakeFormAndTerm(Core.MakerAll([]Core.Var{x}, Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{})), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerAll(
+			[]Core.Var{x},
+			Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}),
+		),
+		Core.NewTermList(),
+	)
 	f, metas := Core.Instantiate(form, 0)
 
 	if metas.Len() != 1 {
@@ -276,7 +325,15 @@ func TestSimpleTypedNotExistsInstantiation(t *testing.T) {
 	tInt := polymorphism.MkTypeHint("int")
 	// neg(exists x. P(x)) ==> x should be a new meta
 	x := Core.MakerVar("x", tInt)
-	form := Core.MakeFormAndTerm(Core.MakerNot(Core.MakerEx([]Core.Var{x}, Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}))), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerNot(
+			Core.MakerEx(
+				[]Core.Var{x},
+				Core.MakerPred(Core.MakerId("P"), Core.NewTermList(x), []polymorphism.TypeApp{}),
+			),
+		),
+		Core.NewTermList(),
+	)
 	f, metas := Core.Instantiate(form, 0)
 
 	if metas.Len() != 1 {
@@ -314,7 +371,30 @@ func TestSyntaxicTransformationOnFormula(t *testing.T) {
 	// Formula definition
 	vars := []Core.Var{Core.MakerVar("x"), Core.MakerVar("y"), Core.MakerVar("z")}
 	// forall x. P(x) => forall y. exists z.R(z, y)
-	form := Core.MakeFormAndTerm(Core.MakerAll([]Core.Var{vars[0]}, Core.MakerImp(Core.MakerPred(Core.MakerId("P"), Core.NewTermList(vars[0]), []polymorphism.TypeApp{}), Core.MakerAll([]Core.Var{vars[1]}, Core.MakerEx([]Core.Var{vars[2]}, Core.MakerPred(Core.MakerId("R"), Core.NewTermList(vars[2], vars[1]), []polymorphism.TypeApp{}))))), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerAll(
+			[]Core.Var{vars[0]},
+			Core.MakerImp(
+				Core.MakerPred(
+					Core.MakerId("P"),
+					Core.NewTermList(vars[0]),
+					[]polymorphism.TypeApp{},
+				),
+				Core.MakerAll(
+					[]Core.Var{vars[1]},
+					Core.MakerEx(
+						[]Core.Var{vars[2]},
+						Core.MakerPred(
+							Core.MakerId("R"),
+							Core.NewTermList(vars[2], vars[1]),
+							[]polymorphism.TypeApp{},
+						),
+					),
+				),
+			),
+		),
+		Core.NewTermList(),
+	)
 
 	// Instantiate x
 	f1_inst, metas := Core.Instantiate(form, 0)
@@ -326,7 +406,13 @@ func TestSyntaxicTransformationOnFormula(t *testing.T) {
 	}
 
 	// Skolemize y & Instantiate z
-	f2_inst, metas_2 := Core.Instantiate(Core.MakeFormAndTerm(form.GetForm().(AST.All).GetForm().(AST.Imp).GetF2(), Core.NewTermList()), 0)
+	f2_inst, metas_2 := Core.Instantiate(
+		Core.MakeFormAndTerm(
+			form.GetForm().(AST.All).GetForm().(AST.Imp).GetF2(),
+			Core.NewTermList(),
+		),
+		0,
+	)
 	metas.AppendIfNotContains(metas_2.Slice()...)
 	f2_sko := Core.Skolemize(f2_inst, Core.NewMetaList())
 
@@ -361,7 +447,31 @@ func TestSyntaxicTransformationOnTypedFormula(t *testing.T) {
 	// Formula definition
 	vars := []Core.Var{Core.MakerVar("x", tInt), Core.MakerVar("y", tInt), Core.MakerVar("z", tInt)}
 	// forall x. P(x) => forall y. exists z.R(z, y)
-	form := Core.MakeFormAndTerm(Core.MakerAll([]Core.Var{vars[0]}, Core.MakerImp(Core.MakerPred(Core.MakerId("P"), Core.NewTermList(vars[0]), []polymorphism.TypeApp{}), Core.MakerAll([]Core.Var{vars[1]}, Core.MakerEx([]Core.Var{vars[2]}, Core.MakerPred(Core.MakerId("R"), Core.NewTermList(vars[2], vars[1]), []polymorphism.TypeApp{}, polymorphism.MkTypeArrow(polymorphism.MkTypeCross(tInt, tInt), tProp)))))), Core.NewTermList())
+	form := Core.MakeFormAndTerm(
+		Core.MakerAll(
+			[]Core.Var{vars[0]},
+			Core.MakerImp(
+				Core.MakerPred(
+					Core.MakerId("P"),
+					Core.NewTermList(vars[0]),
+					[]polymorphism.TypeApp{},
+				),
+				Core.MakerAll(
+					[]Core.Var{vars[1]},
+					Core.MakerEx(
+						[]Core.Var{vars[2]},
+						Core.MakerPred(
+							Core.MakerId("R"),
+							Core.NewTermList(vars[2], vars[1]),
+							[]polymorphism.TypeApp{},
+							polymorphism.MkTypeArrow(polymorphism.MkTypeCross(tInt, tInt), tProp),
+						),
+					),
+				),
+			),
+		),
+		Core.NewTermList(),
+	)
 
 	// Instantiate x
 	f1_inst, metas := Core.Instantiate(form, 0)
@@ -373,7 +483,13 @@ func TestSyntaxicTransformationOnTypedFormula(t *testing.T) {
 	}
 
 	// Skolemize y & Instantiate z
-	f2_inst, metas_2 := Core.Instantiate(Core.MakeFormAndTerm(form.GetForm().(AST.All).GetForm().(AST.Imp).GetF2(), Core.NewTermList()), 0)
+	f2_inst, metas_2 := Core.Instantiate(
+		Core.MakeFormAndTerm(
+			form.GetForm().(AST.All).GetForm().(AST.Imp).GetF2(),
+			Core.NewTermList(),
+		),
+		0,
+	)
 	metas.AppendIfNotContains(metas_2.Slice()...)
 	f2_sko := Core.Skolemize(f2_inst, Core.NewMetaList())
 

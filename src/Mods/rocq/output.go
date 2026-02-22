@@ -48,7 +48,11 @@ import (
 
 var contextEnabled bool = false
 
-var RocqOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeRocqOutput, Name: "Rocq", Extension: ".v"}
+var RocqOutputProofStruct = &Search.OutputProofStruct{
+	ProofOutput: MakeRocqOutput,
+	Name:        "Rocq",
+	Extension:   ".v",
+}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.

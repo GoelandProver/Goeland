@@ -140,7 +140,12 @@ func TestNormalTS(t *testing.T) {
 			err := SaveTypeScheme(test.name, test.in, test.out)
 			if test.expectedError {
 				if err == nil {
-					t.Fatalf("Expected error when saving %s : (%s -> %s) but it didn't happen", test.name, test.in.ToString(), test.out.ToString())
+					t.Fatalf(
+						"Expected error when saving %s : (%s -> %s) but it didn't happen",
+						test.name,
+						test.in.ToString(),
+						test.out.ToString(),
+					)
 				}
 			} else {
 				if err != nil {
@@ -184,7 +189,11 @@ func TestTSConstantSave(t *testing.T) {
 			err := SaveConstant(test.name, test.out)
 			if test.err {
 				if err == nil {
-					t.Fatalf("Expected error when saving %s : %s but it didn't happen", test.name, test.out.ToString())
+					t.Fatalf(
+						"Expected error when saving %s : %s but it didn't happen",
+						test.name,
+						test.out.ToString(),
+					)
 				}
 			} else {
 				if err != nil {
@@ -245,7 +254,12 @@ func TestTSConstantSaveWithOthersSchemes(t *testing.T) {
 				}
 				testScheme := MkTypeArrow(tInt, test.out)
 				if !scheme.Equals(testScheme) {
-					t.Fatalf("Wrong type for %s. Expected: %s, actual: %s", test.name, testScheme.ToString(), scheme.ToString())
+					t.Fatalf(
+						"Wrong type for %s. Expected: %s, actual: %s",
+						test.name,
+						testScheme.ToString(),
+						scheme.ToString(),
+					)
 				}
 			}
 		})
@@ -268,10 +282,12 @@ func TestFunTypeOrDefault(t *testing.T) {
 
 	for _, test := range testTable {
 		t.Run(fmt.Sprintf("%v", test.name), func(t *testing.T) {
-			if test.defaultExpected && !GetOutType(GetTypeOrDefault(test.name, Fun, test.args)).Equals(DefaultType()) {
+			if test.defaultExpected &&
+				!GetOutType(GetTypeOrDefault(test.name, Fun, test.args)).Equals(DefaultType()) {
 				t.Fatalf("%s should have default type", test.name)
 			}
-			if !test.defaultExpected && GetOutType(GetTypeOrDefault(test.name, Fun, test.args)).Equals(DefaultType()) {
+			if !test.defaultExpected &&
+				GetOutType(GetTypeOrDefault(test.name, Fun, test.args)).Equals(DefaultType()) {
 				t.Fatalf("%s shouldn't have default type", test.name)
 			}
 		})
@@ -299,7 +315,11 @@ func TestPolymorphicSaving(t *testing.T) {
 			err := SavePolymorphScheme(test.name, test.scheme)
 			if test.expectErr {
 				if err == nil {
-					t.Fatalf("Expected error when saving %s : %s but it didn't happen", test.name, test.scheme.ToString())
+					t.Fatalf(
+						"Expected error when saving %s : %s but it didn't happen",
+						test.name,
+						test.scheme.ToString(),
+					)
 				}
 			} else {
 				if err != nil {
@@ -311,10 +331,18 @@ func TestPolymorphicSaving(t *testing.T) {
 
 	for i, test := range testTable {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			scheme := GetPolymorphicType(test.name, test.scheme.QuantifiedVarsLen(), test.scheme.Size()-1)
+			scheme := GetPolymorphicType(
+				test.name,
+				test.scheme.QuantifiedVarsLen(),
+				test.scheme.Size()-1,
+			)
 			if test.saved {
 				if scheme == nil {
-					t.Fatalf("Couldn't retrieve type scheme %s : %s when it should have been saved", test.name, test.scheme.ToString())
+					t.Fatalf(
+						"Couldn't retrieve type scheme %s : %s when it should have been saved",
+						test.name,
+						test.scheme.ToString(),
+					)
 				}
 				if !scheme.Equals(test.scheme) {
 					t.Fatalf("Wrong type for polymorphic scheme %s", test.name)

@@ -353,7 +353,9 @@ func (st State) Print() {
 		debug(Lib.MkLazy(func() string { return "Subst_found: " }))
 		debug(
 			Lib.MkLazy(func() string {
-				return Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))
+				return Unif.SubstListToString(
+					Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound()),
+				)
 			}),
 		)
 	}
@@ -369,7 +371,9 @@ func (st State) Print() {
 	}
 
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("BT on formulas : %v", st.GetBTOnFormulas()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("BT on formulas : %v", st.GetBTOnFormulas()) },
+		),
 	)
 
 }
@@ -456,14 +460,18 @@ func (st State) CanApplyGammaRule() bool {
 
 /* Check if rules are appliable */
 func (st State) AreRulesApplicable() bool {
-	return len(st.GetAlpha()) > 0 || len(st.GetDelta()) > 0 || len(st.GetBeta()) > 0 || (len(st.GetGamma()) > 0 && st.CanApplyGammaRule()) || (Glob.IsDestructive() && len(st.GetMetaGen()) > 0)
+	return len(st.GetAlpha()) > 0 || len(st.GetDelta()) > 0 || len(st.GetBeta()) > 0 ||
+		(len(st.GetGamma()) > 0 && st.CanApplyGammaRule()) ||
+		(Glob.IsDestructive() && len(st.GetMetaGen()) > 0)
 }
 
 /* Put the given formula in the right rule box in the given state */
 func (st *State) DispatchForm(f Core.FormAndTerms) {
 	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Dispatch the form : %v ", f.ToString()) }))
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Kind of rule : %v ", Core.ShowKindOfRule(f.GetForm())) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Kind of rule : %v ", Core.ShowKindOfRule(f.GetForm())) },
+		),
 	)
 	switch Core.ShowKindOfRule(f.GetForm()) {
 	case Core.Atomic:

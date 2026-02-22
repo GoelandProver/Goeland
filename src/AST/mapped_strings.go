@@ -123,11 +123,22 @@ func (fms MappedString) ToString() string {
 func (fms MappedString) ToMappedString(mapping MapString, displayType bool) string {
 	surround := fms.ToMappedStringSurround(mapping, displayType)
 	separator, emptyValue := fms.ToMappedStringChild(mapping, displayType)
-	children := ListToMappedString(fms.GetChildrenForMappedString(), separator, emptyValue, mapping, displayType)
+	children := ListToMappedString(
+		fms.GetChildrenForMappedString(),
+		separator,
+		emptyValue,
+		mapping,
+		displayType,
+	)
 	return fmt.Sprintf(surround, children)
 }
 
-func ListToMappedString[T MappableString](sgbl []T, separator, emptyValue string, mapping MapString, displayTypes bool) string {
+func ListToMappedString[T MappableString](
+	sgbl []T,
+	separator, emptyValue string,
+	mapping MapString,
+	displayTypes bool,
+) string {
 	strArr := []string{}
 
 	for _, element := range sgbl {
@@ -163,7 +174,10 @@ func (ssm *SimpleStringMappable) ToMappedStringSurround(MapString, bool) string 
 	return ""
 }
 
-func (ssm *SimpleStringMappable) ToMappedStringChild(MapString, bool) (separator string, emptyValue string) {
+func (ssm *SimpleStringMappable) ToMappedStringChild(
+	MapString,
+	bool,
+) (separator string, emptyValue string) {
 	return "", ""
 }
 

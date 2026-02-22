@@ -39,13 +39,14 @@ package Glob
 import (
 	"bytes"
 	"fmt"
-	"github.com/GoelandProver/Goeland/Lib"
 	"os"
 	"runtime"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 var orocq = false

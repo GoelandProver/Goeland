@@ -89,7 +89,11 @@ func followProofSteps(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_curre
 	var resultingStringParent string
 	var childrenHypotheses []*AST.FormList
 	if !proof.IsEmpty() {
-		resultingStringParent, childrenHypotheses, new_current_id = makeProofStep(proof, hypotheses, new_current_id)
+		resultingStringParent, childrenHypotheses, new_current_id = makeProofStep(
+			proof,
+			hypotheses,
+			new_current_id,
+		)
 	}
 	for i, child := range proof.Children() {
 		if proof.IsEmpty() {
@@ -103,8 +107,16 @@ func followProofSteps(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_curre
 	return resultingString + resultingStringParent
 }
 
-func makeProofStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id int) (string, []*AST.FormList, int) {
-	stepResult, childrenHypotheses, next_child_weakened_id := makeStep(proof, hypotheses, new_current_id)
+func makeProofStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	new_current_id int,
+) (string, []*AST.FormList, int) {
+	stepResult, childrenHypotheses, next_child_weakened_id := makeStep(
+		proof,
+		hypotheses,
+		new_current_id,
+	)
 	return stepResult, childrenHypotheses, next_child_weakened_id
 }
 
@@ -125,7 +137,11 @@ func findIndexPos(f AST.Form, hypotheses *AST.FormList, target int) int {
 	return targetPos
 }
 
-func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id int) (string, []*AST.FormList, int) {
+func makeStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	new_current_id int,
+) (string, []*AST.FormList, int) {
 	var resultingString string
 	childrenHypotheses := []*AST.FormList{hypotheses}
 	next_child_weakened_id := -1
@@ -138,11 +154,21 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id in
 	// Closure.
 	case gs3.AX:
 		if isPredEqual(proof.GetTargetForm()) {
-			resultingString = fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, [status(thm)], [%s])).",
+			resultingString = fmt.Sprintf(
+				"fof("+prefix_step+"%d, plain, [%s] --> [], inference(%s, [status(thm)], [%s])).",
 				proof.GetId(),
-				mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+				mapDefault(
+					AST.ListToMappedString(
+						hypotheses.Slice(),
+						", ",
+						"",
+						tptpMapConnectors(),
+						Glob.GetTypeProof(),
+					),
+				),
 				"congruence",
-				"")
+				"",
+			)
 		} else {
 			targetPos := findIndexPos(proof.GetTargetForm(), hypotheses, target)
 
@@ -191,19 +217,34 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, new_current_id in
 	// Weakening rule
 	case gs3.W:
 		if proof.TermGenerated() != nil {
-			resultingString = fmt.Sprintf("leftWeaken %s", findInConstants(proof.TermGenerated()).ToMappedString(tptpMapConnectors(), Glob.GetTypeProof()))
+			resultingString = fmt.Sprintf(
+				"leftWeaken %s",
+				findInConstants(
+					proof.TermGenerated(),
+				).ToMappedString(tptpMapConnectors(), Glob.GetTypeProof()),
+			)
 		} else {
 			resultingString, childrenHypotheses, next_child_weakened_id = weakenStep(proof, hypotheses, target, "leftWeaken")
 		}
 
 	case gs3.REWRITE:
-		resultingString, childrenHypotheses = rewriteStep(proof.GetRewriteWith(), hypotheses, target, proof.GetResultFormulasOfChild(0).Get(0))
+		resultingString, childrenHypotheses = rewriteStep(
+			proof.GetRewriteWith(),
+			hypotheses,
+			target,
+			proof.GetResultFormulasOfChild(0).Get(0),
+		)
 	}
 
 	return resultingString + "\n", childrenHypotheses, next_child_weakened_id
 }
 
-func alphaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string) (string, []*AST.FormList) {
+func alphaStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+	format string,
+) (string, []*AST.FormList) {
 
 	children_id := []int{}
 	for _, c := range proof.Children() {
@@ -212,20 +253,35 @@ func alphaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, form
 		c.SetId(new_id)
 	}
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
+	resultingString := fmt.Sprintf(
+		"fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+		mapDefault(
+			AST.ListToMappedString(
+				hypotheses.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
 		format,
 		target,
-		Glob.IntListToString(children_id, prefix_step))
+		Glob.IntListToString(children_id, prefix_step),
+	)
 
 	newHypotheses := hypotheses.Copy()
 	newHypotheses.AppendIfNotContains(proof.GetResultFormulasOfChild(0).Slice()...)
 	return resultingString, []*AST.FormList{newHypotheses}
 }
 
-func betaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string) (string, []*AST.FormList) {
+func betaStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+	format string,
+) (string, []*AST.FormList) {
 	resultHyps := []*AST.FormList{}
 	children_id := []int{}
 
@@ -238,18 +294,27 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, forma
 		resultHyps = append(resultHyps, newHypotheses)
 	}
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
+	resultingString := fmt.Sprintf(
+		"fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), false)),
+		mapDefault(
+			AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), false),
+		),
 		format,
 		target,
-		Glob.IntListToString(children_id, prefix_step))
+		Glob.IntListToString(children_id, prefix_step),
+	)
 
 	return resultingString, resultHyps
 }
 
-func deltaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string) (string, []*AST.FormList) {
+func deltaStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+	format string,
+) (string, []*AST.FormList) {
 	children_id := []int{}
 	for _, c := range proof.Children() {
 		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
@@ -258,17 +323,27 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, form
 	}
 
 	new_term := createNewConstant(proof.TermGenerated())
-	
+
 	proof = updateSkolemSymbol(proof.TermGenerated(), new_term, proof)
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, '%s'], [%s])).",
+	resultingString := fmt.Sprintf(
+		"fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, '%s'], [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+		mapDefault(
+			AST.ListToMappedString(
+				hypotheses.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
 		format,
 		target,
 		new_term.ToMappedString(tptpMapConnectors(), Glob.GetTypeProof()),
-		Glob.IntListToString(children_id, prefix_step))
+		Glob.IntListToString(children_id, prefix_step),
+	)
 
 	newHypotheses := hypotheses.Copy()
 	newHypotheses.AppendIfNotContains(proof.GetResultFormulasOfChild(0).Slice()...)
@@ -276,7 +351,12 @@ func deltaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, form
 	return resultingString, []*AST.FormList{newHypotheses}
 }
 
-func gammaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string) (string, []*AST.FormList) {
+func gammaStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+	format string,
+) (string, []*AST.FormList) {
 	children_id := []int{}
 	for _, c := range proof.Children() {
 		new_id := incrByOne(&id_proof_step, &mutex_proof_step)
@@ -286,14 +366,26 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, form
 
 	get(proof.GetTargetForm(), hypotheses)
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, $fot(%s)], [%s])).",
+	resultingString := fmt.Sprintf(
+		"fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d, $fot(%s)], [%s])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+		mapDefault(
+			AST.ListToMappedString(
+				hypotheses.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
 		format,
 		target,
-		findInConstants(proof.TermGenerated()).ToMappedString(tptpMapConnectors(), Glob.GetTypeProof()),
-		Glob.IntListToString(children_id, prefix_step))
+		findInConstants(
+			proof.TermGenerated(),
+		).ToMappedString(tptpMapConnectors(), Glob.GetTypeProof()),
+		Glob.IntListToString(children_id, prefix_step),
+	)
 
 	newHypotheses := hypotheses.Copy()
 	newHypotheses.AppendIfNotContains(proof.GetResultFormulasOfChild(0).Slice()...)
@@ -301,33 +393,51 @@ func gammaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, form
 	return resultingString, []*AST.FormList{newHypotheses}
 }
 
-func weakenStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string) (string, []*AST.FormList, int) {
+func weakenStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+	format string,
+) (string, []*AST.FormList, int) {
 	child_id := incrByOne(&id_proof_step, &mutex_proof_step)
 
 	if target != -1 {
 		hypotheses.Remove(target)
 	}
 
-	resultingString := fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).",
+	resultingString := fmt.Sprintf(
+		"fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).",
 		prefix_step,
 		proof.GetId(),
-		mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), false)),
+		mapDefault(
+			AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), false),
+		),
 		format,
 		target,
 		prefix_step,
-		child_id)
+		child_id,
+	)
 
 	return resultingString, []*AST.FormList{hypotheses}, child_id
 }
 
-func rewriteStep(rewriteRule AST.Form, hypotheses *AST.FormList, target int, replacementForm AST.Form) (string, []*AST.FormList) {
+func rewriteStep(
+	rewriteRule AST.Form,
+	hypotheses *AST.FormList,
+	target int,
+	replacementForm AST.Form,
+) (string, []*AST.FormList) {
 	// resultingString := fmt.Sprintf("rewrite %s in %s.", introName(get(rewriteRule, hypotheses)), introName(target))
 	// hypotheses[target] = replacementForm
 	// return resultingString, []*AST.FormList{hypotheses}
 	return "", []*AST.FormList{}
 }
 
-func EquStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int) (string, []*AST.FormList) {
+func EquStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+) (string, []*AST.FormList) {
 	resultingString := ""
 	resultHyps := []*AST.FormList{}
 	children_id := []int{}
@@ -351,82 +461,145 @@ func EquStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int) (strin
 
 	// from A <=> B to A => B, B => A (unary)
 	s1_id := fmt.Sprintf("%s%dext1", prefix_step, proof.GetId())
-	resultingString = fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
-	prefix_step,
-	proof.GetId(),
-	mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
-	"leftIff",
-	target,
-	s1_id) + resultingString 
+	resultingString = fmt.Sprintf(
+		"fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).",
+		prefix_step,
+		proof.GetId(),
+		mapDefault(
+			AST.ListToMappedString(
+				hypotheses.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
+		"leftIff",
+		target,
+		s1_id,
+	) + resultingString
 
 	// from A => B, B => A to ~A, B => A | B, B => A (binary)
 	s2_id := fmt.Sprintf("%s%dext2", prefix_step, proof.GetId())
 	s3_id := fmt.Sprintf("%s%dext3", prefix_step, proof.GetId())
 	newHyp := hypotheses.Copy()
 	newHyp.AppendIfNotContains([]AST.Form{A_imp_B, B_imp_A}...)
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s])).\n\n",
-	s1_id,
-	mapDefault(AST.ListToMappedString(newHyp.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
-	"leftImp2",
-	get(A_imp_B, newHyp),
-	s2_id, 
-	s3_id) + resultingString
+	resultingString = fmt.Sprintf(
+		"fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s])).\n\n",
+		s1_id,
+		mapDefault(
+			AST.ListToMappedString(
+				newHyp.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
+		"leftImp2",
+		get(A_imp_B, newHyp),
+		s2_id,
+		s3_id,
+	) + resultingString
 
 	// Branch s2 : from ~A, B => A to ~A, ~B | ~A, A
 	s2_closure_id := fmt.Sprintf("%sext1", s2_id)
 	newHypS2 := newHyp.Copy()
 	newHypS2.AppendIfNotContains(notA)
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d, %s])).\n\n",
-	s2_id,
-	mapDefault(AST.ListToMappedString(newHypS2.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
-	"leftImp2",
-	get(B_imp_A, newHypS2),
-	prefix_step,
-	children_id[0], 
-	s2_closure_id) + resultingString
+	resultingString = fmt.Sprintf(
+		"fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d, %s])).\n\n",
+		s2_id,
+		mapDefault(
+			AST.ListToMappedString(
+				newHypS2.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
+		"leftImp2",
+		get(B_imp_A, newHypS2),
+		prefix_step,
+		children_id[0],
+		s2_closure_id,
+	) + resultingString
 	resultHyps[0].AppendIfNotContains(newHypS2.Slice()...)
-
 
 	// Branch 2.closure : from ~A, A closure - check polarity before
 	newHypS2Closure := newHypS2.Copy()
 	newHypS2Closure.AppendIfNotContains(A)
 	targetPosS2 := findIndexPos(A, newHypS2Closure, get(A, newHypS2Closure))
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).\n\n",
-	s2_closure_id,
-	mapDefault(AST.ListToMappedString(newHypS2Closure.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
-	"leftHyp",
-	targetPosS2,
-	"") + resultingString
+	resultingString = fmt.Sprintf(
+		"fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).\n\n",
+		s2_closure_id,
+		mapDefault(
+			AST.ListToMappedString(
+				newHypS2Closure.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
+		"leftHyp",
+		targetPosS2,
+		"",
+	) + resultingString
 
 	// Branch s3: from B, B => A to B, ~B | B, A
 	s3_closure_id := fmt.Sprintf("%sext1", s3_id)
 	newHypS3 := newHyp.Copy()
 	newHypS3.AppendIfNotContains(B)
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s%d])).\n\n",
-	s3_id,
-	mapDefault(AST.ListToMappedString(newHypS3.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
-	"leftImp2",
-	get(B_imp_A, newHypS3),
-	s3_closure_id,
-	prefix_step,
-	children_id[1]) + resultingString
+	resultingString = fmt.Sprintf(
+		"fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s%d])).\n\n",
+		s3_id,
+		mapDefault(
+			AST.ListToMappedString(
+				newHypS3.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
+		"leftImp2",
+		get(B_imp_A, newHypS3),
+		s3_closure_id,
+		prefix_step,
+		children_id[1],
+	) + resultingString
 	resultHyps[1].AppendIfNotContains(newHypS3.Slice()...)
 
 	// Branch 3.closure : from B, ~B closure - check polarity before
 	newHypS3Closure := newHypS3.Copy()
 	newHypS3Closure.AppendIfNotContains(notB)
 	targetPosS3 := findIndexPos(B, newHypS3Closure, get(B, newHypS3Closure))
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).\n\n",
-	s3_closure_id,
-	mapDefault(AST.ListToMappedString(newHypS3Closure.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
-	"leftHyp",
-	targetPosS3,
-	"") + resultingString
+	resultingString = fmt.Sprintf(
+		"fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s])).\n\n",
+		s3_closure_id,
+		mapDefault(
+			AST.ListToMappedString(
+				newHypS3Closure.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
+		"leftHyp",
+		targetPosS3,
+		"",
+	) + resultingString
 
 	return resultingString, resultHyps
 }
 
-func NotEquStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int) (string, []*AST.FormList) {
+func NotEquStep(
+	proof *gs3.GS3Sequent,
+	hypotheses *AST.FormList,
+	target int,
+) (string, []*AST.FormList) {
 	resultingString := ""
 	resultHyps := []*AST.FormList{}
 	children_id := []int{}
@@ -450,42 +623,71 @@ func NotEquStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int) (st
 	// from ~(A <=> B) to ~(A => B) | ~(B => A) (binary)
 	s1_id := fmt.Sprintf("%s%dext1", prefix_step, proof.GetId())
 	s2_id := fmt.Sprintf("%s%dext2", prefix_step, proof.GetId())
-	resultingString = fmt.Sprintf("fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s])).",
-	prefix_step,
-	proof.GetId(),
-	mapDefault(AST.ListToMappedString(hypotheses.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
-	"leftNotIff",
-	target,
-	s1_id,
-	s2_id) + resultingString 
+	resultingString = fmt.Sprintf(
+		"fof(%s%d, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s, %s])).",
+		prefix_step,
+		proof.GetId(),
+		mapDefault(
+			AST.ListToMappedString(
+				hypotheses.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
+		"leftNotIff",
+		target,
+		s1_id,
+		s2_id,
+	) + resultingString
 
 	// from ~(A => B) to A, ~B
 	newHyp1 := hypotheses.Copy()
 	newHyp1.AppendIfNotContains(not_A_imp_B)
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).\n\n",
-	s1_id,
-	mapDefault(AST.ListToMappedString(newHyp1.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
-	"leftNotImplies",
-	get(not_A_imp_B, newHyp1),
-	prefix_step,
-	children_id[1]) + resultingString
+	resultingString = fmt.Sprintf(
+		"fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).\n\n",
+		s1_id,
+		mapDefault(
+			AST.ListToMappedString(
+				newHyp1.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
+		"leftNotImplies",
+		get(not_A_imp_B, newHyp1),
+		prefix_step,
+		children_id[1],
+	) + resultingString
 	resultHyps[1].AppendIfNotContains(newHyp1.Slice()...)
 
 	// from ~(B => A) to B, ~A
 	newHyp2 := hypotheses.Copy()
 	newHyp2.AppendIfNotContains(not_B_imp_A)
-	resultingString = fmt.Sprintf("fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).\n\n",
-	s2_id,
-	mapDefault(AST.ListToMappedString(newHyp2.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
-	"leftNotImplies",
-	get(not_B_imp_A, newHyp2),
-	prefix_step,
-	children_id[0]) + resultingString
+	resultingString = fmt.Sprintf(
+		"fof(%s, plain, [%s] --> [], inference(%s, [status(thm), %d], [%s%d])).\n\n",
+		s2_id,
+		mapDefault(
+			AST.ListToMappedString(
+				newHyp2.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
+		"leftNotImplies",
+		get(not_B_imp_A, newHyp2),
+		prefix_step,
+		children_id[0],
+	) + resultingString
 	resultHyps[0].AppendIfNotContains(newHyp2.Slice()...)
 
 	return resultingString, resultHyps
 }
-
 
 /*** Initial Formula Management ***/
 
@@ -506,58 +708,105 @@ func processMainFormula(form AST.Form) (*AST.FormList, AST.Form) {
 // Prints the theorem's name & properly formats the first formula.
 func makeTheorem(axioms *AST.FormList, conjecture AST.Form) string {
 	var resulting_string string
-	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(Glob.GetProblemName(), ".", "_"), "=", "_"), "+", "_")
+	problemName := strings.ReplaceAll(
+		strings.ReplaceAll(strings.ReplaceAll(Glob.GetProblemName(), ".", "_"), "=", "_"),
+		"+",
+		"_",
+	)
 
 	for _, ax := range axioms.Slice() {
-		resulting_string = resulting_string + "fof(" + fmt.Sprintf("ax%d", ax.GetIndex()) + ", axiom, " + mapDefault(ax.ToMappedString(tptpMapConnectors(), Glob.GetTypeProof())) + ").\n\n"
+		resulting_string = resulting_string + "fof(" + fmt.Sprintf(
+			"ax%d",
+			ax.GetIndex(),
+		) + ", axiom, " + mapDefault(
+			ax.ToMappedString(tptpMapConnectors(), Glob.GetTypeProof()),
+		) + ").\n\n"
 	}
 
-	resulting_string = resulting_string + "fof(c_" + problemName + ", conjecture, " + mapDefault(conjecture.ToMappedString(tptpMapConnectors(), Glob.GetTypeProof())) + ").\n\n"
+	resulting_string = resulting_string + "fof(c_" + problemName + ", conjecture, " + mapDefault(
+		conjecture.ToMappedString(tptpMapConnectors(), Glob.GetTypeProof()),
+	) + ").\n\n"
 	return resulting_string
 }
 
 // Perform the first step to go from ax |- c to ax, ~c |-
-func performFirstStep(axioms *AST.FormList, conjecture AST.Form, hypothesis *AST.FormList, nextId int) (string, int) {
+func performFirstStep(
+	axioms *AST.FormList,
+	conjecture AST.Form,
+	hypothesis *AST.FormList,
+	nextId int,
+) (string, int) {
 	cutFormNotId := incrByOne(&id_proof_step, &mutex_proof_step)
 	cutFormHypId := incrByOne(&id_proof_step, &mutex_proof_step)
 	nextFormId := incrByOne(&id_proof_step, &mutex_proof_step)
 
 	// Cut initial formula, |- ~c, c step
-	cutFormNot := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, [status(thm), %d], [%s])).",
+	cutFormNot := fmt.Sprintf(
+		"fof("+prefix_step+"%d, plain, [%s] --> [%s, %s], inference(%s, [status(thm), %d], [%s])).",
 		cutFormNotId,
-		mapDefault(AST.ListToMappedString(axioms.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+		mapDefault(
+			AST.ListToMappedString(
+				axioms.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
 		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), false)),
-		mapDefault(AST.MakerNot(conjecture).ToMappedString(tptpMapConnectors(), Glob.GetTypeProof())),
+		mapDefault(
+			AST.MakerNot(conjecture).ToMappedString(tptpMapConnectors(), Glob.GetTypeProof()),
+		),
 		"rightNot",
 		1,
-		prefix_step+strconv.Itoa(cutFormHypId))
+		prefix_step+strconv.Itoa(cutFormHypId),
+	)
 
 	// Cut initial formula, c |- c step
-	cutFormHyp := fmt.Sprintf("fof("+prefix_step+"%d, plain, [%s] --> [%s], inference(%s, [status(thm), %d], [%s])).",
+	cutFormHyp := fmt.Sprintf(
+		"fof("+prefix_step+"%d, plain, [%s] --> [%s], inference(%s, [status(thm), %d], [%s])).",
 		cutFormHypId,
-		mapDefault(AST.ListToMappedString(append(axioms.Slice(), conjecture), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+		mapDefault(
+			AST.ListToMappedString(
+				append(axioms.Slice(), conjecture),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
 		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), Glob.GetTypeProof())),
 		"hyp",
 		axioms.Len(),
 		// 0,
-		"")
+		"",
+	)
 
 	// Actual start of the formula with H |- C
 	// indexHyp, _ := hypothesis.GetIndexOf(AST.MakerNot(conjecture))
-	startForm := fmt.Sprintf("fof(f%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d], [%s%d, %s%d])).\n\n",
+	startForm := fmt.Sprintf(
+		"fof(f%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d], [%s%d, %s%d])).\n\n",
 		nextId,
-		mapDefault(AST.ListToMappedString(axioms.Slice(), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+		mapDefault(
+			AST.ListToMappedString(
+				axioms.Slice(),
+				", ",
+				"",
+				tptpMapConnectors(),
+				Glob.GetTypeProof(),
+			),
+		),
 		mapDefault(conjecture.ToMappedString(tptpMapConnectors(), Glob.GetTypeProof())),
 		1,
 		//indexHyp,
 		prefix_step,
 		cutFormNotId,
 		prefix_step,
-		nextFormId)
+		nextFormId,
+	)
 
 	return cutFormHyp + "\n\n" + cutFormNot + "\n\n" + startForm, nextFormId
 }
-
 
 // Perform the cut axiom steps
 func performCutAxiomStep(axioms *AST.FormList, conjecture AST.Form) string {
@@ -573,17 +822,27 @@ func performCutAxiomStep(axioms *AST.FormList, conjecture AST.Form) string {
 			nextStep = prefix_axiom_cut + strconv.Itoa(i+1)
 		}
 
-		cutAxiomStep := fmt.Sprintf("fof(%s%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d], [%s%d, %s])).\n",
+		cutAxiomStep := fmt.Sprintf(
+			"fof(%s%d, plain, [%s] --> [%s], inference(cut, [status(thm), %d], [%s%d, %s])).\n",
 			prefix_axiom_cut,
 			i,
 			// AST.ListToMappedString(axioms.GetElements(0, i), ", ", "", tptpMapConnectors(), GetTypeProof()),
-			mapDefault(AST.ListToMappedString(axioms.GetElements(0, i), ", ", "", tptpMapConnectors(), Glob.GetTypeProof())),
+			mapDefault(
+				AST.ListToMappedString(
+					axioms.GetElements(0, i),
+					", ",
+					"",
+					tptpMapConnectors(),
+					Glob.GetTypeProof(),
+				),
+			),
 			mapDefault(conjecture.ToMappedString(tptpMapConnectors(), Glob.GetTypeProof())),
 			0,
 			//i,
 			"ax",
 			ax.GetIndex(),
-			nextStep)
+			nextStep,
+		)
 
 		resultString = cutAxiomStep + "\n" + resultString
 	}
@@ -646,7 +905,7 @@ func updateSkolemSymbol(old, new AST.Term, proof *gs3.GS3Sequent) *gs3.GS3Sequen
 			new_forms_generated_bis.Append(new_term)
 		}
 		new_forms_generated[i] = new_forms_generated_bis
-	}	
+	}
 	proof.SetFormGenerated(new_forms_generated)
 
 	// Update Children
@@ -666,7 +925,7 @@ func createNewConstant(term AST.Term) AST.Term {
 	mutex_constant.Lock()
 	new_id := len(constant_created)
 	new_term_name := fmt.Sprintf("%s%d", prefix_const, new_id)
-	new_term := AST	.MakerConst(AST.MakerNewId(new_term_name))
+	new_term := AST.MakerConst(AST.MakerNewId(new_term_name))
 	original_term = append(original_term, term)
 	constant_created = append(constant_created, new_term)
 	mutex_constant.Unlock()

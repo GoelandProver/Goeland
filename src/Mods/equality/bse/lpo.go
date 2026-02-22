@@ -67,7 +67,9 @@ func makeEmptyCompareStruct() compareStruct {
 **/
 func compareLPO(s, t AST.Term) compareStruct {
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Compare %v and %v", s.ToString(), t.ToString()) },
+		),
 	)
 	switch s_type := s.(type) {
 	case AST.Fun:
@@ -116,12 +118,14 @@ func compareLPO(s, t AST.Term) compareStruct {
 	return makeCompareStruct(0, false, s, t)
 }
 
-/**
+/*
+*
 * Compare a metavariable and a function.
 * Return code comes for the compare function and code must be 1 or -1. It correspond to the code to return of the CompreMetaFun fits the LPO.
 * It's needed to keep the order.
 * For example, x < f(x) is ok but f(x) < x isn't
-**/
+*
+ */
 func compareMetaFun(m AST.Meta, f AST.Fun, return_code int) compareStruct {
 	debug(
 		Lib.MkLazy(func() string { return "Compare Meta Fun" }),
@@ -129,13 +133,17 @@ func compareMetaFun(m AST.Meta, f AST.Fun, return_code int) compareStruct {
 	// Check argument inside f
 	if found, res := compareMetaFunInside(m, f, return_code); found {
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("Found after compare inside : %v", res) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Found after compare inside : %v", res) },
+			),
 		)
 		return res
 	}
 
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Not found and return_code is %v", return_code) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Not found and return_code is %v", return_code) },
+		),
 	)
 	// f has no args or all respect LPO
 	if return_code == 1 {
@@ -240,7 +248,14 @@ func caseFEqualsG(s, t AST.Fun) (bool, compareStruct) {
 		Lib.MkLazy(func() string { return "Case F = G" }),
 	)
 	if s.GetArgs().Len() != t.GetArgs().Len() {
-		Glob.PrintError("F=G", fmt.Sprintf("Error : %v and %v don't have the same number of arguments", s.GetID().ToString(), t.GetID().ToString()))
+		Glob.PrintError(
+			"F=G",
+			fmt.Sprintf(
+				"Error : %v and %v don't have the same number of arguments",
+				s.GetID().ToString(),
+				t.GetID().ToString(),
+			),
+		)
 		return true, makeCompareStruct(0, false, nil, nil)
 	}
 

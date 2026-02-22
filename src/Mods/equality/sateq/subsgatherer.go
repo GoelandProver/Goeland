@@ -38,14 +38,21 @@ import (
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
-func gatherSubs(truthValues map[Lit]bool, sMapping map[Glob.Pair[*termRecord, *eqClass]]Lit, rMapping map[Glob.Pair[*eqClass, *termRecord]]Lit) (subs []Unif.Substitutions, success bool) {
+func gatherSubs(
+	truthValues map[Lit]bool,
+	sMapping map[Glob.Pair[*termRecord, *eqClass]]Lit,
+	rMapping map[Glob.Pair[*eqClass, *termRecord]]Lit,
+) (subs []Unif.Substitutions, success bool) {
 	sub := getSubstitution(truthValues, sMapping)
 	correspondence := getTranslation(truthValues, rMapping)
 
 	return translateSub(sub, correspondence), true
 }
 
-func getSubstitution(truthValue map[Lit]bool, sMapping map[Glob.Pair[*termRecord, *eqClass]]Lit) map[*termRecord]*eqClass {
+func getSubstitution(
+	truthValue map[Lit]bool,
+	sMapping map[Glob.Pair[*termRecord, *eqClass]]Lit,
+) map[*termRecord]*eqClass {
 	subsMap := make(map[*termRecord]*eqClass)
 
 	for pair, lit := range sMapping {
@@ -57,7 +64,10 @@ func getSubstitution(truthValue map[Lit]bool, sMapping map[Glob.Pair[*termRecord
 	return subsMap
 }
 
-func getTranslation(truthValue map[Lit]bool, rMapping map[Glob.Pair[*eqClass, *termRecord]]Lit) map[*eqClass]*termRecord {
+func getTranslation(
+	truthValue map[Lit]bool,
+	rMapping map[Glob.Pair[*eqClass, *termRecord]]Lit,
+) map[*eqClass]*termRecord {
 	transMap := make(map[*eqClass]*termRecord)
 
 	for firstLit, assignedTrue := range truthValue {
@@ -87,7 +97,10 @@ func translate(toTranslate *eqClass, correspondence map[*eqClass]*termRecord) AS
 	}
 }
 
-func translateSub(sub map[*termRecord]*eqClass, correspondence map[*eqClass]*termRecord) []Unif.Substitutions {
+func translateSub(
+	sub map[*termRecord]*eqClass,
+	correspondence map[*eqClass]*termRecord,
+) []Unif.Substitutions {
 	result := Unif.MakeEmptySubstitutionList()
 	subs := Unif.MakeEmptySubstitution()
 

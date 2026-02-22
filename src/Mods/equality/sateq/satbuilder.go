@@ -116,7 +116,10 @@ func (sb *SatBuilder) buildMappingConstraints() {
 			eci := sb.eqClasses.Get(i)
 			for j := i + 1; j < sb.eqClasses.Len(); j++ {
 				ecj := sb.eqClasses.Get(j)
-				sb.addClause(sb.getVarFromSMapping(meta, eci).Not(), sb.getVarFromSMapping(meta, ecj).Not())
+				sb.addClause(
+					sb.getVarFromSMapping(meta, eci).Not(),
+					sb.getVarFromSMapping(meta, ecj).Not(),
+				)
 			}
 		}
 	}
@@ -227,7 +230,10 @@ func (sb *SatBuilder) buildGoalConstraints() {
 		conjunction = append(conjunction, cVar)
 
 		for _, eq := range goal.Slice() {
-			sb.addClause(cVar.Not(), sb.getVarFromEMapping(sb.numberOfPairs, eq.GetFst(), eq.GetSnd()))
+			sb.addClause(
+				cVar.Not(),
+				sb.getVarFromEMapping(sb.numberOfPairs, eq.GetFst(), eq.GetSnd()),
+			)
 		}
 	}
 
@@ -268,7 +274,16 @@ func (sb *SatBuilder) buildTransitivityConstraints() {
 			if !iConst.congruent(jConst) {
 				for _, kConst := range sb.eqClasses.Slice() {
 					if !jConst.congruent(kConst) {
-						oVarji, oVarkj, oVarki := sb.getVarFromOMapping(jConst, iConst), sb.getVarFromOMapping(kConst, jConst), sb.getVarFromOMapping(kConst, iConst)
+						oVarji, oVarkj, oVarki := sb.getVarFromOMapping(
+							jConst,
+							iConst,
+						), sb.getVarFromOMapping(
+							kConst,
+							jConst,
+						), sb.getVarFromOMapping(
+							kConst,
+							iConst,
+						)
 						sb.addClause(oVarji.Not(), oVarkj.Not(), oVarki)
 					}
 				}
@@ -284,8 +299,20 @@ func (sb *SatBuilder) buildSubstitutionConstraints() {
 				for _, eck := range sb.eqClasses.Slice() {
 					ecj := meta.eqClass
 					sVar, rVar := sb.getVarFromSMapping(meta, eci), sb.getVarFromRMapping(ecj, meta)
-					oVarjk, oVarik := sb.getVarFromOMapping(ecj, eck), sb.getVarFromOMapping(eci, eck)
-					oVarki, oVarkj := sb.getVarFromOMapping(eck, eci), sb.getVarFromOMapping(eck, ecj)
+					oVarjk, oVarik := sb.getVarFromOMapping(
+						ecj,
+						eck,
+					), sb.getVarFromOMapping(
+						eci,
+						eck,
+					)
+					oVarki, oVarkj := sb.getVarFromOMapping(
+						eck,
+						eci,
+					), sb.getVarFromOMapping(
+						eck,
+						ecj,
+					)
 
 					sb.addClause(sVar.Not(), rVar.Not(), oVarki.Not(), oVarkj)
 					sb.addClause(sVar.Not(), rVar.Not(), oVarjk.Not(), oVarik)

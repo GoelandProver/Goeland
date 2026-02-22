@@ -72,7 +72,10 @@ func (i Id) ToMappedStringSurround(mapping MapString, displayTypes bool) string 
 	return "%s"
 }
 
-func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (i Id) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return "", ToStringId(i)
 }
 
@@ -154,14 +157,25 @@ type Fun struct {
 }
 
 func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return f.ToMappedStringSurroundWithId(f.GetID().ToMappedString(mapping, displayTypes), mapping, displayTypes)
+	return f.ToMappedStringSurroundWithId(
+		f.GetID().ToMappedString(mapping, displayTypes),
+		mapping,
+		displayTypes,
+	)
 }
 
-func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (f Fun) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return ", ", mapping[PredEmpty]
 }
 
-func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, displayTypes bool) string {
+func (f Fun) ToMappedStringSurroundWithId(
+	idString string,
+	mapping MapString,
+	displayTypes bool,
+) string {
 	if len(f.typeVars) == 0 && f.GetArgs().Len() == 0 {
 		return idString + "%s"
 	}
@@ -182,7 +196,12 @@ func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, di
 	return str
 }
 
-func ToFlatternStringSurrountWithId(f Fun, idString string, mapping MapString, displayTypes bool) string {
+func ToFlatternStringSurrountWithId(
+	f Fun,
+	idString string,
+	mapping MapString,
+	displayTypes bool,
+) string {
 
 	if len(f.typeVars) == 0 && f.GetArgs().Len() == 0 {
 		return idString + "%s"
@@ -241,11 +260,23 @@ func (f Fun) Equals(t any) bool {
 }
 
 func (f Fun) Copy() Term {
-	return MakeFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint(), f.metas.Raw())
+	return MakeFun(
+		f.GetP(),
+		f.GetArgs(),
+		CopyTypeAppList(f.GetTypeVars()),
+		f.GetTypeHint(),
+		f.metas.Raw(),
+	)
 }
 
 func (f Fun) PointerCopy() *Fun {
-	nf := MakeFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint(), f.metas.Raw())
+	nf := MakeFun(
+		f.GetP(),
+		f.GetArgs(),
+		CopyTypeAppList(f.GetTypeVars()),
+		f.GetTypeHint(),
+		f.metas.Raw(),
+	)
 	return &nf
 }
 
@@ -375,7 +406,10 @@ func (v Var) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "%s"
 }
 
-func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (v Var) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	if displayTypes {
 		return "", fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
 	} else {
@@ -426,7 +460,10 @@ func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) strin
 	return "%s"
 }
 
-func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (m Meta) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	if displayTypes {
 		return "", fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.GetTypeHint().ToString())
 	} else {

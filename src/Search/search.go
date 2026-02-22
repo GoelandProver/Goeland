@@ -49,7 +49,15 @@ import (
 type SearchAlgorithm interface {
 	Search(AST.Form, int) bool
 	SetApplyRules(func(uint64, State, Communication, Core.FormAndTermsList, int, int, []int))
-	ManageClosureRule(uint64, *State, Communication, []Unif.Substitutions, Core.FormAndTerms, int, int) (bool, []Core.SubstAndForm)
+	ManageClosureRule(
+		uint64,
+		*State,
+		Communication,
+		[]Unif.Substitutions,
+		Core.FormAndTerms,
+		int,
+		int,
+	) (bool, []Core.SubstAndForm)
 }
 
 var UsedSearch SearchAlgorithm
@@ -70,7 +78,9 @@ func SetSearchAlgorithm(algo SearchAlgorithm) {
 	UsedSearch = algo
 }
 
-func SetApplyRules(function func(uint64, State, Communication, Core.FormAndTermsList, int, int, []int)) {
+func SetApplyRules(
+	function func(uint64, State, Communication, Core.FormAndTermsList, int, int, []int),
+) {
 	UsedSearch.SetApplyRules(function)
 }
 

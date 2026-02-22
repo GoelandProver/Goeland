@@ -245,59 +245,193 @@ func initTestVariable() {
 	f_a_fbc = basictypes.MakerFun(f_id, basictypes.NewTermList(a, fbc), []typing.TypeApp{})
 
 	// Equalities
-	eq_x_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, y), []typing.TypeApp{})
-	eq_x_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, a), []typing.TypeApp{})
-	eq_y_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(y, a), []typing.TypeApp{})
-	eq_z1_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(z1, c1), []typing.TypeApp{})
-	eq_z1_c2 = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(z1, c2), []typing.TypeApp{})
-	eq_z2_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(z2, c1), []typing.TypeApp{})
-	eq_z3_c1 = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(z3, c1), []typing.TypeApp{})
+	eq_x_y = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(x, y),
+		[]typing.TypeApp{},
+	)
+	eq_x_a = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(x, a),
+		[]typing.TypeApp{},
+	)
+	eq_y_a = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(y, a),
+		[]typing.TypeApp{},
+	)
+	eq_z1_c1 = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(z1, c1),
+		[]typing.TypeApp{},
+	)
+	eq_z1_c2 = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(z1, c2),
+		[]typing.TypeApp{},
+	)
+	eq_z2_c1 = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(z2, c1),
+		[]typing.TypeApp{},
+	)
+	eq_z3_c1 = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(z3, c1),
+		[]typing.TypeApp{},
+	)
 
-	eq_ggx_fa = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ggx, fa), []typing.TypeApp{})
-	eq_gfy_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(gfy, y), []typing.TypeApp{})
-	eq_gx_fx = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(gx, fx), []typing.TypeApp{})
-	eq_fa_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fa, a), []typing.TypeApp{})
-	eq_a_b = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, b), []typing.TypeApp{})
-	eq_b_c = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(b, c), []typing.TypeApp{})
-	eq_a_c = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, c), []typing.TypeApp{})
-	eq_b_d = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(b, d), []typing.TypeApp{})
-	eq_x_d = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, d), []typing.TypeApp{})
-	eq_fx_gab = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fx, gab), []typing.TypeApp{})
-	eq_fy_y = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fy, y), []typing.TypeApp{})
-	eq_a_ffb = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, ffb), []typing.TypeApp{})
-	eq_b_fb = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(b, fb), []typing.TypeApp{})
-	eq_fgy_gfy = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fgy, gfy), []typing.TypeApp{})
-	eq_fdc_a = basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fdc, a), []typing.TypeApp{})
+	eq_ggx_fa = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(ggx, fa),
+		[]typing.TypeApp{},
+	)
+	eq_gfy_y = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(gfy, y),
+		[]typing.TypeApp{},
+	)
+	eq_gx_fx = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(gx, fx),
+		[]typing.TypeApp{},
+	)
+	eq_fa_a = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(fa, a),
+		[]typing.TypeApp{},
+	)
+	eq_a_b = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(a, b),
+		[]typing.TypeApp{},
+	)
+	eq_b_c = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(b, c),
+		[]typing.TypeApp{},
+	)
+	eq_a_c = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(a, c),
+		[]typing.TypeApp{},
+	)
+	eq_b_d = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(b, d),
+		[]typing.TypeApp{},
+	)
+	eq_x_d = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(x, d),
+		[]typing.TypeApp{},
+	)
+	eq_fx_gab = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(fx, gab),
+		[]typing.TypeApp{},
+	)
+	eq_fy_y = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(fy, y),
+		[]typing.TypeApp{},
+	)
+	eq_a_ffb = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(a, ffb),
+		[]typing.TypeApp{},
+	)
+	eq_b_fb = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(b, fb),
+		[]typing.TypeApp{},
+	)
+	eq_fgy_gfy = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(fgy, gfy),
+		[]typing.TypeApp{},
+	)
+	eq_fdc_a = basictypes.MakerPred(
+		basictypes.Id_eq,
+		basictypes.NewTermList(fdc, a),
+		[]typing.TypeApp{},
+	)
 
 	// Inequalites
-	neq_x_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, a), []typing.TypeApp{}))
-	neq_y_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(y, a), []typing.TypeApp{}))
-	neq_a_b = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, b), []typing.TypeApp{}))
-	neq_a_d = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, d), []typing.TypeApp{}))
-	neq_gggx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(gggx, x), []typing.TypeApp{}))
-	neq_fx_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fx, a), []typing.TypeApp{}))
-	neq_fx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fx, x), []typing.TypeApp{}))
-	neq_fab_fcd = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fab, fcd), []typing.TypeApp{}))
-	neq_fb_fc = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fb, fc), []typing.TypeApp{}))
-	neq_hfab_hgxbffb = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(hfab, hgxbffb), []typing.TypeApp{}))
-	neq_ffb_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ffb, a), []typing.TypeApp{}))
-	neq_x_y = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, y), []typing.TypeApp{}))
-	neq_ghx_x = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ghx, x), []typing.TypeApp{}))
-	neq_b_e = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(b, e), []typing.TypeApp{}))
-	neq_ga_a = basictypes.MakerNot(basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ga, a), []typing.TypeApp{}))
+	neq_x_a = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, a), []typing.TypeApp{}),
+	)
+	neq_y_a = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(y, a), []typing.TypeApp{}),
+	)
+	neq_a_b = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, b), []typing.TypeApp{}),
+	)
+	neq_a_d = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(a, d), []typing.TypeApp{}),
+	)
+	neq_gggx_x = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(gggx, x), []typing.TypeApp{}),
+	)
+	neq_fx_a = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fx, a), []typing.TypeApp{}),
+	)
+	neq_fx_x = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fx, x), []typing.TypeApp{}),
+	)
+	neq_fab_fcd = basictypes.MakerNot(
+		basictypes.MakerPred(
+			basictypes.Id_eq,
+			basictypes.NewTermList(fab, fcd),
+			[]typing.TypeApp{},
+		),
+	)
+	neq_fb_fc = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(fb, fc), []typing.TypeApp{}),
+	)
+	neq_hfab_hgxbffb = basictypes.MakerNot(
+		basictypes.MakerPred(
+			basictypes.Id_eq,
+			basictypes.NewTermList(hfab, hgxbffb),
+			[]typing.TypeApp{},
+		),
+	)
+	neq_ffb_a = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ffb, a), []typing.TypeApp{}),
+	)
+	neq_x_y = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(x, y), []typing.TypeApp{}),
+	)
+	neq_ghx_x = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ghx, x), []typing.TypeApp{}),
+	)
+	neq_b_e = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(b, e), []typing.TypeApp{}),
+	)
+	neq_ga_a = basictypes.MakerNot(
+		basictypes.MakerPred(basictypes.Id_eq, basictypes.NewTermList(ga, a), []typing.TypeApp{}),
+	)
 
 	// Predicates
 	pggab = basictypes.MakerPred(p_id, basictypes.NewTermList(gga, b), []typing.TypeApp{})
-	not_pac = basictypes.MakerNot(basictypes.MakerPred(p_id, basictypes.NewTermList(a, c), []typing.TypeApp{}))
+	not_pac = basictypes.MakerNot(
+		basictypes.MakerPred(p_id, basictypes.NewTermList(a, c), []typing.TypeApp{}),
+	)
 	pa = basictypes.MakerPred(p_id, basictypes.NewTermList(a), []typing.TypeApp{})
 	pb = basictypes.MakerPred(p_id, basictypes.NewTermList(b), []typing.TypeApp{})
-	not_pc = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.NewTermList(c), []typing.TypeApp{}))
+	not_pc = basictypes.RefuteForm(
+		basictypes.MakerPred(p_id, basictypes.NewTermList(c), []typing.TypeApp{}),
+	)
 	pab = basictypes.MakerPred(p_id, basictypes.NewTermList(a, b), []typing.TypeApp{})
 	pax = basictypes.MakerPred(p_id, basictypes.NewTermList(a, x), []typing.TypeApp{})
-	not_pcd = basictypes.RefuteForm(basictypes.MakerPred(p_id, basictypes.NewTermList(c, d), []typing.TypeApp{}))
+	not_pcd = basictypes.RefuteForm(
+		basictypes.MakerPred(p_id, basictypes.NewTermList(c, d), []typing.TypeApp{}),
+	)
 }
 
-func initCodeTreesTests(lf *basictypes.FormList) (datastruct.DataStructure, datastruct.DataStructure) {
+func initCodeTreesTests(
+	lf *basictypes.FormList,
+) (datastruct.DataStructure, datastruct.DataStructure) {
 	tp = treesearch.NewNode()
 	tn = treesearch.NewNode()
 	tp = tp.MakeDataStruct(lf, true)
@@ -316,7 +450,10 @@ func initEqualityTest() {
 	global.EnableDebug()
 }
 
-func checkAllCompatibleWith(areCompatbile []treetypes.Substitutions, with ...treetypes.Substitutions) bool {
+func checkAllCompatibleWith(
+	areCompatbile []treetypes.Substitutions,
+	with ...treetypes.Substitutions,
+) bool {
 	for _, isCompatible := range areCompatbile {
 		if !checkSubsIsCompatibleWith(isCompatible, with...) {
 			return false
@@ -326,7 +463,10 @@ func checkAllCompatibleWith(areCompatbile []treetypes.Substitutions, with ...tre
 	return true
 }
 
-func checkSubsIsCompatibleWith(isCompatible treetypes.Substitutions, with ...treetypes.Substitutions) bool {
+func checkSubsIsCompatibleWith(
+	isCompatible treetypes.Substitutions,
+	with ...treetypes.Substitutions,
+) bool {
 	for _, sub := range with {
 		if isFirstIncludedInSecond(sub, isCompatible) {
 			return true
@@ -377,7 +517,13 @@ func TestEQ1(t *testing.T) {
 	expectedSubst2.Set(x, gfa)
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst1, expectedSubst2) {
-		t.Fatalf("Error: %v - %v is not the expected substitution. expected : %v or %v", res, treetypes.SubstListToString(subst), expectedSubst1.ToString(), expectedSubst2.ToString())
+		t.Fatalf(
+			"Error: %v - %v is not the expected substitution. expected : %v or %v",
+			res,
+			treetypes.SubstListToString(subst),
+			expectedSubst1.ToString(),
+			expectedSubst2.ToString(),
+		)
 	}
 }
 
@@ -404,7 +550,13 @@ func TestEQ2(t *testing.T) {
 	expectedSubst2 := treetypes.MakeEmptySubstitution()
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst1, expectedSubst2) {
-		t.Fatalf("Error: %v - %v is not the expected substitution. expected : %v or %v", res, treetypes.SubstListToString(subst), expectedSubst1.ToString(), expectedSubst2.ToString())
+		t.Fatalf(
+			"Error: %v - %v is not the expected substitution. expected : %v or %v",
+			res,
+			treetypes.SubstListToString(subst),
+			expectedSubst1.ToString(),
+			expectedSubst2.ToString(),
+		)
 	}
 }
 
@@ -436,7 +588,12 @@ func TestEQ3(t *testing.T) {
 	expectedSubst3.Set(y, a)
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst1, expectedSubst2, expectedSubst3) {
-		t.Fatalf("Error: %v - %v is not the expected substitution. expected : %v", res, treetypes.SubstListToString(subst), expectedSubst1.ToString())
+		t.Fatalf(
+			"Error: %v - %v is not the expected substitution. expected : %v",
+			res,
+			treetypes.SubstListToString(subst),
+			expectedSubst1.ToString(),
+		)
 	}
 }
 
@@ -467,7 +624,12 @@ func TestEQ3bis(t *testing.T) {
 	expectedSubst3.Set(y, a)
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst1, expectedSubst2, expectedSubst3) {
-		t.Fatalf("Error: %v - %v is not the expected substitution. expected : %v", res, treetypes.SubstListToString(subst), expectedSubst1.ToString())
+		t.Fatalf(
+			"Error: %v - %v is not the expected substitution. expected : %v",
+			res,
+			treetypes.SubstListToString(subst),
+			expectedSubst1.ToString(),
+		)
 	}
 }
 
@@ -492,7 +654,13 @@ func TestEQ4(t *testing.T) {
 	expectedSubst.Set(x, a)
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst) {
-		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expectedSubst.ToString())
+		t.Fatalf(
+			"Error: %v - %v - %v is not the expected substitution. expected : %v",
+			res,
+			len(subst),
+			treetypes.SubstListToString(subst),
+			expectedSubst.ToString(),
+		)
 	}
 }
 
@@ -521,7 +689,13 @@ func TestEQ5(t *testing.T) {
 	expectedSubst2.Set(z2, a)
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst1, expectedSubst2) {
-		t.Fatalf("Error: %v -  %v is not the expected substitution. expected : %v or %v", res, treetypes.SubstListToString(subst), expectedSubst1.ToString(), expectedSubst2.ToString())
+		t.Fatalf(
+			"Error: %v -  %v is not the expected substitution. expected : %v or %v",
+			res,
+			treetypes.SubstListToString(subst),
+			expectedSubst1.ToString(),
+			expectedSubst2.ToString(),
+		)
 	}
 
 }
@@ -582,11 +756,29 @@ func TestEQ6(t *testing.T) {
 	expectedSubst3Bis.Set(z3, a)
 
 	if !res || len(subst) == 0 {
-		t.Fatalf("Error: %v -  %v is not the expected substitution. Expected true and 3", res, len(subst))
+		t.Fatalf(
+			"Error: %v -  %v is not the expected substitution. Expected true and 3",
+			res,
+			len(subst),
+		)
 	}
 
-	if !checkAllCompatibleWith(subst, expectedSubst1, expectedSubst1Bis, expectedSubst2, expectedSubst2Bis, expectedSubst3, expectedSubst3Bis) {
-		t.Fatalf("Error: %v is not the expected substitution. Expected : %v or %v or %v", subst[0].ToString(), expectedSubst1.ToString(), expectedSubst2.ToString(), expectedSubst3.ToString())
+	if !checkAllCompatibleWith(
+		subst,
+		expectedSubst1,
+		expectedSubst1Bis,
+		expectedSubst2,
+		expectedSubst2Bis,
+		expectedSubst3,
+		expectedSubst3Bis,
+	) {
+		t.Fatalf(
+			"Error: %v is not the expected substitution. Expected : %v or %v or %v",
+			subst[0].ToString(),
+			expectedSubst1.ToString(),
+			expectedSubst2.ToString(),
+			expectedSubst3.ToString(),
+		)
 	}
 }
 
@@ -606,7 +798,11 @@ func TestEQ7(t *testing.T) {
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if !res || !checkAllCompatibleWith(subst, treetypes.MakeEmptySubstitution()) {
-		t.Fatalf("Error: %v - %v is not the expected substitution. Expected empty solution", res, treetypes.SubstListToString(subst))
+		t.Fatalf(
+			"Error: %v - %v is not the expected substitution. Expected empty solution",
+			res,
+			treetypes.SubstListToString(subst),
+		)
 	}
 }
 
@@ -626,7 +822,11 @@ func TestEQ8(t *testing.T) {
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if res {
-		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
+		t.Fatalf(
+			"Error: %v - %v is not the expected solution. Expected no solution",
+			res,
+			treetypes.SubstListToString(subst),
+		)
 	}
 
 }
@@ -647,7 +847,11 @@ func TestImpossible(t *testing.T) {
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if res {
-		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
+		t.Fatalf(
+			"Error: %v - %v is not the expected solution. Expected no solution",
+			res,
+			treetypes.SubstListToString(subst),
+		)
 	}
 }
 
@@ -670,7 +874,13 @@ func TestSimon(t *testing.T) {
 	expectedSubst.Set(x, fa)
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst) {
-		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expectedSubst.ToString())
+		t.Fatalf(
+			"Error: %v - %v - %v is not the expected substitution. expected : %v",
+			res,
+			len(subst),
+			treetypes.SubstListToString(subst),
+			expectedSubst.ToString(),
+		)
 	}
 }
 
@@ -691,7 +901,11 @@ func TestSeparation(t *testing.T) {
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if !res || !checkAllCompatibleWith(subst, treetypes.MakeEmptySubstitution()) {
-		t.Fatalf("Error: %v - %v is not the expected substitution. Expected empty solution", res, treetypes.SubstListToString(subst))
+		t.Fatalf(
+			"Error: %v - %v is not the expected substitution. Expected empty solution",
+			res,
+			treetypes.SubstListToString(subst),
+		)
 	}
 }
 
@@ -718,7 +932,13 @@ func TestDeuxiemeSeparation(t *testing.T) {
 	expectedSubst2.Set(x, b)
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst1, expectedSubst2) {
-		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expectedSubst1.ToString())
+		t.Fatalf(
+			"Error: %v - %v - %v is not the expected substitution. expected : %v",
+			res,
+			len(subst),
+			treetypes.SubstListToString(subst),
+			expectedSubst1.ToString(),
+		)
 	}
 }
 
@@ -747,7 +967,13 @@ func TestMultiListes(t *testing.T) {
 	expectedSubst3 := treetypes.MakeEmptySubstitution()
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst1, expectedSubst2, expectedSubst3) {
-		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expectedSubst1.ToString())
+		t.Fatalf(
+			"Error: %v - %v - %v is not the expected substitution. expected : %v",
+			res,
+			len(subst),
+			treetypes.SubstListToString(subst),
+			expectedSubst1.ToString(),
+		)
 	}
 }
 
@@ -774,7 +1000,13 @@ func TestSubsEnMeta(t *testing.T) {
 	expectedSubst3.Set(y, a)
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst1, expectedSubst2, expectedSubst3) {
-		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expectedSubst1.ToString())
+		t.Fatalf(
+			"Error: %v - %v - %v is not the expected substitution. expected : %v",
+			res,
+			len(subst),
+			treetypes.SubstListToString(subst),
+			expectedSubst1.ToString(),
+		)
 	}
 }
 
@@ -803,7 +1035,13 @@ func TestContreExemple(t *testing.T) {
 	expectedSubstBis.Set(y, b)
 
 	if !res || !checkAllCompatibleWith(subst, expectedSubst, expectedSubstBis) {
-		t.Fatalf("Error: %v - %v - %v is not the expected substitution. expected : %v", res, len(subst), treetypes.SubstListToString(subst), expectedSubst.ToString())
+		t.Fatalf(
+			"Error: %v - %v - %v is not the expected substitution. expected : %v",
+			res,
+			len(subst),
+			treetypes.SubstListToString(subst),
+			expectedSubst.ToString(),
+		)
 	}
 }
 
@@ -823,7 +1061,11 @@ func TestCycle(t *testing.T) {
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if res {
-		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
+		t.Fatalf(
+			"Error: %v - %v is not the expected solution. Expected no solution",
+			res,
+			treetypes.SubstListToString(subst),
+		)
 	}
 }
 
@@ -844,6 +1086,10 @@ func TestTemp(t *testing.T) {
 	res, subst := equality.EqualityReasoning(eqStruct, tp, tn, lf, 0)
 
 	if res {
-		t.Fatalf("Error: %v - %v is not the expected solution. Expected no solution", res, treetypes.SubstListToString(subst))
+		t.Fatalf(
+			"Error: %v - %v is not the expected solution. Expected no solution",
+			res,
+			treetypes.SubstListToString(subst),
+		)
 	}
 }

@@ -25,13 +25,17 @@ type RulesManager struct {
 }
 
 func makeRulesManager() *RulesManager {
-	manager := &RulesManager{reintroRules: &ReintroRuleList{}, metaVariables: Lib.NewList[AST.Meta]()}
+	manager := &RulesManager{
+		reintroRules:  &ReintroRuleList{},
+		metaVariables: Lib.NewList[AST.Meta](),
+	}
 
 	return manager
 }
 
 func (rm *RulesManager) onlyReintroOrClosureLeft() bool {
-	return len(rm.alphaRules) == 0 && len(rm.betaRules) == 0 && len(rm.gammaRules) == 0 && len(rm.deltaRules) == 0
+	return len(rm.alphaRules) == 0 && len(rm.betaRules) == 0 && len(rm.gammaRules) == 0 &&
+		len(rm.deltaRules) == 0
 }
 
 func (rm *RulesManager) insertForm(formula AST.Form) {
@@ -226,7 +230,9 @@ func (rm *RulesManager) getAtomicsWithoutTopOrBottom() (pos, neg RuleList) {
 	return pos, neg
 }
 
-func (rm *RulesManager) tryToApply(category RuleList) (success bool, applied Rule, resultRules []RuleList, resultManagers []RulesManager) {
+func (rm *RulesManager) tryToApply(
+	category RuleList,
+) (success bool, applied Rule, resultRules []RuleList, resultManagers []RulesManager) {
 	success, applied, resultRules = category.TryToApply()
 
 	if success {

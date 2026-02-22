@@ -62,14 +62,70 @@ func getTestQuantTypeTable() []struct {
 		expectedVars []TypeVar
 		primitives   ComparableList[TypeApp]
 	}{
-		{MkQuantifiedType([]TypeVar{a}, MkTypeArrow(a, a)), "Π a: Type. (a > a)", []int{0, 1}, 2, []TypeVar{a}, []TypeApp{a, a}},
-		{MkQuantifiedType([]TypeVar{b}, MkTypeArrow(b, b)), "Π b: Type. (b > b)", []int{0, 1}, 2, []TypeVar{b}, []TypeApp{b, b}},
-		{MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(a, b)), "Π a, b: Type. (a > b)", []int{2}, 2, []TypeVar{a, b}, []TypeApp{a, b}},
-		{MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(b, a)), "Π a, b: Type. (b > a)", []int{3}, 2, []TypeVar{a, b}, []TypeApp{b, a}},
-		{MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(MkTypeCross(a, b), a)), "Π a, b: Type. ((a * b) > a)", []int{4}, 3, []TypeVar{a, b}, []TypeApp{a, b, a}},
-		{MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(MkTypeCross(a, b), b)), "Π a, b: Type. ((a * b) > b)", []int{5}, 3, []TypeVar{a, b}, []TypeApp{a, b, b}},
-		{MkQuantifiedType([]TypeVar{a}, MkTypeArrow(MkTypeCross(a, a), a)), "Π a: Type. ((a * a) > a)", []int{6, 7}, 3, []TypeVar{a}, []TypeApp{a, a, a}},
-		{MkQuantifiedType([]TypeVar{b}, MkTypeArrow(MkTypeCross(b, b), b)), "Π b: Type. ((b * b) > b)", []int{6, 7}, 3, []TypeVar{b}, []TypeApp{b, b, b}},
+		{
+			MkQuantifiedType([]TypeVar{a}, MkTypeArrow(a, a)),
+			"Π a: Type. (a > a)",
+			[]int{0, 1},
+			2,
+			[]TypeVar{a},
+			[]TypeApp{a, a},
+		},
+		{
+			MkQuantifiedType([]TypeVar{b}, MkTypeArrow(b, b)),
+			"Π b: Type. (b > b)",
+			[]int{0, 1},
+			2,
+			[]TypeVar{b},
+			[]TypeApp{b, b},
+		},
+		{
+			MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(a, b)),
+			"Π a, b: Type. (a > b)",
+			[]int{2},
+			2,
+			[]TypeVar{a, b},
+			[]TypeApp{a, b},
+		},
+		{
+			MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(b, a)),
+			"Π a, b: Type. (b > a)",
+			[]int{3},
+			2,
+			[]TypeVar{a, b},
+			[]TypeApp{b, a},
+		},
+		{
+			MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(MkTypeCross(a, b), a)),
+			"Π a, b: Type. ((a * b) > a)",
+			[]int{4},
+			3,
+			[]TypeVar{a, b},
+			[]TypeApp{a, b, a},
+		},
+		{
+			MkQuantifiedType([]TypeVar{a, b}, MkTypeArrow(MkTypeCross(a, b), b)),
+			"Π a, b: Type. ((a * b) > b)",
+			[]int{5},
+			3,
+			[]TypeVar{a, b},
+			[]TypeApp{a, b, b},
+		},
+		{
+			MkQuantifiedType([]TypeVar{a}, MkTypeArrow(MkTypeCross(a, a), a)),
+			"Π a: Type. ((a * a) > a)",
+			[]int{6, 7},
+			3,
+			[]TypeVar{a},
+			[]TypeApp{a, a, a},
+		},
+		{
+			MkQuantifiedType([]TypeVar{b}, MkTypeArrow(MkTypeCross(b, b), b)),
+			"Π b: Type. ((b * b) > b)",
+			[]int{6, 7},
+			3,
+			[]TypeVar{b},
+			[]TypeApp{b, b, b},
+		},
 	}
 }
 
@@ -90,11 +146,18 @@ func TestQuantTypeInequality(t *testing.T) {
 
 	for _, test := range testTable {
 		for j, test2 := range testTable {
-			t.Run(fmt.Sprintf("%v/%v", test.type_.ToString(), test2.type_.ToString()), func(t *testing.T) {
-				if !primitiveContains(test.expectedEq, j) && test.type_.Equals(test2.type_) {
-					t.Fatalf("Expected: %s != %s, but it was equal", test.expectedName, test2.expectedName)
-				}
-			})
+			t.Run(
+				fmt.Sprintf("%v/%v", test.type_.ToString(), test2.type_.ToString()),
+				func(t *testing.T) {
+					if !primitiveContains(test.expectedEq, j) && test.type_.Equals(test2.type_) {
+						t.Fatalf(
+							"Expected: %s != %s, but it was equal",
+							test.expectedName,
+							test2.expectedName,
+						)
+					}
+				},
+			)
 		}
 	}
 }
@@ -104,11 +167,18 @@ func TestQuantTypeEquality(t *testing.T) {
 
 	for _, test := range testTable {
 		for j, test2 := range testTable {
-			t.Run(fmt.Sprintf("%v/%v", test.type_.ToString(), test2.type_.ToString()), func(t *testing.T) {
-				if primitiveContains(test.expectedEq, j) && !test.type_.Equals(test2.type_) {
-					t.Fatalf("Expected: %s == %s, but it was not equal", test.expectedName, test2.expectedName)
-				}
-			})
+			t.Run(
+				fmt.Sprintf("%v/%v", test.type_.ToString(), test2.type_.ToString()),
+				func(t *testing.T) {
+					if primitiveContains(test.expectedEq, j) && !test.type_.Equals(test2.type_) {
+						t.Fatalf(
+							"Expected: %s == %s, but it was not equal",
+							test.expectedName,
+							test2.expectedName,
+						)
+					}
+				},
+			)
 		}
 	}
 }
@@ -131,7 +201,11 @@ func TestQuantTypeVarsSize(t *testing.T) {
 	for _, test := range testTable {
 		t.Run(fmt.Sprintf("%v", test.type_.ToString()), func(t *testing.T) {
 			if test.type_.QuantifiedVarsLen() != len(test.expectedVars) {
-				t.Fatalf("Expected: %d, actual: %d", len(test.expectedVars), test.type_.QuantifiedVarsLen())
+				t.Fatalf(
+					"Expected: %d, actual: %d",
+					len(test.expectedVars),
+					test.type_.QuantifiedVarsLen(),
+				)
 			}
 		})
 	}
@@ -143,7 +217,11 @@ func TestQuantTypeVars(t *testing.T) {
 	for _, test := range testTable {
 		t.Run(fmt.Sprintf("%v", test.type_.ToString()), func(t *testing.T) {
 			if !test.type_.QuantifiedVars().Equals(test.expectedVars) {
-				t.Fatalf("Expected: %d, actual: %d", len(test.expectedVars), test.type_.QuantifiedVarsLen())
+				t.Fatalf(
+					"Expected: %d, actual: %d",
+					len(test.expectedVars),
+					test.type_.QuantifiedVarsLen(),
+				)
 			}
 		})
 	}
@@ -168,9 +246,15 @@ func TestQuantPrimitives2(t *testing.T) {
 		e ComparableList[TypeApp]
 	}{
 		{MkQuantifiedType([]TypeVar{a}, MkTypeArrow(tInt, a)), []TypeApp{tInt, a}},
-		{MkQuantifiedType([]TypeVar{a}, MkTypeArrow(MkTypeCross(tInt, a), a)), []TypeApp{tInt, a, a}},
+		{
+			MkQuantifiedType([]TypeVar{a}, MkTypeArrow(MkTypeCross(tInt, a), a)),
+			[]TypeApp{tInt, a, a},
+		},
 		{MkQuantifiedType([]TypeVar{a}, MkTypeArrow(tInt, a)), []TypeApp{tInt, a}},
-		{MkQuantifiedType([]TypeVar{a}, MkTypeArrow(MkTypeCross(tInt, a), MkTypeCross(tInt, a))), []TypeApp{tInt, a, tInt, a}},
+		{
+			MkQuantifiedType([]TypeVar{a}, MkTypeArrow(MkTypeCross(tInt, a), MkTypeCross(tInt, a))),
+			[]TypeApp{tInt, a, tInt, a},
+		},
 	}
 
 	for _, test := range testTable {

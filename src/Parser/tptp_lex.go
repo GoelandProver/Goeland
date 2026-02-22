@@ -398,13 +398,15 @@ func (lexer *TPTPLex) distinctObject(yylval *TPTPSymType) {
 // <sq_char>              ::: ([\40-\46\50-\133\135-\176]|[\\]['\\])
 func (lexer TPTPLex) isSqChar() bool {
 	ascii := int(lexer.c)
-	return (ascii >= 32 && ascii <= 38) || (ascii >= 40 && ascii <= 91) || (ascii >= 93 && ascii <= 126)
+	return (ascii >= 32 && ascii <= 38) || (ascii >= 40 && ascii <= 91) ||
+		(ascii >= 93 && ascii <= 126)
 }
 
 // <do_char>              ::: ([\40-\41\43-\133\135-\176]|[\\]["\\])
 func (lexer TPTPLex) isDoChar() bool {
 	ascii := int(lexer.c)
-	return (ascii >= 32 && ascii <= 33) || (ascii >= 35 && ascii <= 91) || (ascii >= 93 && ascii <= 126)
+	return (ascii >= 32 && ascii <= 33) || (ascii >= 35 && ascii <= 91) ||
+		(ascii >= 93 && ascii <= 126)
 }
 
 // ----------------------------------------------------------------------------

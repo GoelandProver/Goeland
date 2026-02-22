@@ -64,15 +64,87 @@ func getTestTypeArrowTable() []struct {
 		expectedInput      ComparableList[TypeApp]
 		expectedOutput     TypeApp
 	}{
-		{MkTypeArrow(tInt, tInt), fmt.Sprintf("(%s -> %s)", intName, intName), 2, []int{0}, []TypeHint{tInt, tInt}, ComparableList[TypeApp]{tInt}, tInt},
-		{MkTypeArrow(tInt, tRat), fmt.Sprintf("(%s -> %s)", intName, ratName), 2, []int{1}, []TypeHint{tInt, tRat}, ComparableList[TypeApp]{tInt}, tRat},
-		{MkTypeArrow(tRat, tInt), fmt.Sprintf("(%s -> %s)", ratName, intName), 2, []int{2}, []TypeHint{tRat, tInt}, ComparableList[TypeApp]{tRat}, tInt},
-		{MkTypeArrow(tRat, tRat), fmt.Sprintf("(%s -> %s)", ratName, ratName), 2, []int{3}, []TypeHint{tRat, tRat}, ComparableList[TypeApp]{tRat}, tRat},
-		{MkTypeArrow(tInt, tRat, tInt), fmt.Sprintf("(%s -> %s -> %s)", intName, ratName, intName), 3, []int{4}, []TypeHint{tInt, tRat, tInt}, ComparableList[TypeApp]{tInt, tRat}, tInt},
-		{MkTypeArrow(MkTypeCross(tInt, tInt), tRat), fmt.Sprintf("((%s * %s) -> %s)", intName, intName, ratName), 3, []int{5}, []TypeHint{tInt, tInt, tRat}, ComparableList[TypeApp]{MkTypeCross(tInt, tInt)}, tRat},
-		{MkTypeArrow(MkTypeCross(tRat, tRat), MkTypeCross(tInt, tInt)), fmt.Sprintf("((%s * %s) -> (%s * %s))", ratName, ratName, intName, intName), 4, []int{6}, []TypeHint{tRat, tRat, tInt, tInt}, ComparableList[TypeApp]{MkTypeCross(tRat, tRat)}, MkTypeCross(tInt, tInt)},
-		{MkTypeArrow(MkTypeCross(tRat, tRat, tInt), tInt), fmt.Sprintf("((%s * %s * %s) -> %s)", ratName, ratName, intName, intName), 4, []int{7}, []TypeHint{tRat, tRat, tInt, tInt}, ComparableList[TypeApp]{MkTypeCross(tRat, tRat, tInt)}, tInt},
-		{MkTypeArrow(tRat, tRat, tInt, tInt), fmt.Sprintf("(%s -> %s -> %s -> %s)", ratName, ratName, intName, intName), 4, []int{8}, []TypeHint{tRat, tRat, tInt, tInt}, ComparableList[TypeApp]{tRat, tRat, tInt}, tInt},
+		{
+			MkTypeArrow(tInt, tInt),
+			fmt.Sprintf("(%s -> %s)", intName, intName),
+			2,
+			[]int{0},
+			[]TypeHint{tInt, tInt},
+			ComparableList[TypeApp]{tInt},
+			tInt,
+		},
+		{
+			MkTypeArrow(tInt, tRat),
+			fmt.Sprintf("(%s -> %s)", intName, ratName),
+			2,
+			[]int{1},
+			[]TypeHint{tInt, tRat},
+			ComparableList[TypeApp]{tInt},
+			tRat,
+		},
+		{
+			MkTypeArrow(tRat, tInt),
+			fmt.Sprintf("(%s -> %s)", ratName, intName),
+			2,
+			[]int{2},
+			[]TypeHint{tRat, tInt},
+			ComparableList[TypeApp]{tRat},
+			tInt,
+		},
+		{
+			MkTypeArrow(tRat, tRat),
+			fmt.Sprintf("(%s -> %s)", ratName, ratName),
+			2,
+			[]int{3},
+			[]TypeHint{tRat, tRat},
+			ComparableList[TypeApp]{tRat},
+			tRat,
+		},
+		{
+			MkTypeArrow(tInt, tRat, tInt),
+			fmt.Sprintf("(%s -> %s -> %s)", intName, ratName, intName),
+			3,
+			[]int{4},
+			[]TypeHint{tInt, tRat, tInt},
+			ComparableList[TypeApp]{tInt, tRat},
+			tInt,
+		},
+		{
+			MkTypeArrow(MkTypeCross(tInt, tInt), tRat),
+			fmt.Sprintf("((%s * %s) -> %s)", intName, intName, ratName),
+			3,
+			[]int{5},
+			[]TypeHint{tInt, tInt, tRat},
+			ComparableList[TypeApp]{MkTypeCross(tInt, tInt)},
+			tRat,
+		},
+		{
+			MkTypeArrow(MkTypeCross(tRat, tRat), MkTypeCross(tInt, tInt)),
+			fmt.Sprintf("((%s * %s) -> (%s * %s))", ratName, ratName, intName, intName),
+			4,
+			[]int{6},
+			[]TypeHint{tRat, tRat, tInt, tInt},
+			ComparableList[TypeApp]{MkTypeCross(tRat, tRat)},
+			MkTypeCross(tInt, tInt),
+		},
+		{
+			MkTypeArrow(MkTypeCross(tRat, tRat, tInt), tInt),
+			fmt.Sprintf("((%s * %s * %s) -> %s)", ratName, ratName, intName, intName),
+			4,
+			[]int{7},
+			[]TypeHint{tRat, tRat, tInt, tInt},
+			ComparableList[TypeApp]{MkTypeCross(tRat, tRat, tInt)},
+			tInt,
+		},
+		{
+			MkTypeArrow(tRat, tRat, tInt, tInt),
+			fmt.Sprintf("(%s -> %s -> %s -> %s)", ratName, ratName, intName, intName),
+			4,
+			[]int{8},
+			[]TypeHint{tRat, tRat, tInt, tInt},
+			ComparableList[TypeApp]{tRat, tRat, tInt},
+			tInt,
+		},
 	}
 }
 
@@ -106,7 +178,11 @@ func TestTypeArrowPrimitives(t *testing.T) {
 	for _, test := range testTable {
 		t.Run(fmt.Sprintf("%v", test.type_.ToString()), func(t *testing.T) {
 			if !listEquals(test.expectedPrimitives, test.type_.GetPrimitives()) {
-				t.Fatalf("Expected: %v, actual: %v", test.expectedPrimitives, test.type_.GetPrimitives())
+				t.Fatalf(
+					"Expected: %v, actual: %v",
+					test.expectedPrimitives,
+					test.type_.GetPrimitives(),
+				)
 			}
 		})
 	}
@@ -129,11 +205,18 @@ func TestTypeArrowNotEquals(t *testing.T) {
 
 	for _, test := range testTable {
 		for j, test2 := range testTable {
-			t.Run(fmt.Sprintf("%v-%v", test.type_.ToString(), test2.type_.ToString()), func(t *testing.T) {
-				if !primitiveContains(test.expectedEq, j) && test.type_.Equals(test2.type_) {
-					t.Fatalf("Expected %s != %s, but it was equal", test.type_.ToString(), test2.type_.ToString())
-				}
-			})
+			t.Run(
+				fmt.Sprintf("%v-%v", test.type_.ToString(), test2.type_.ToString()),
+				func(t *testing.T) {
+					if !primitiveContains(test.expectedEq, j) && test.type_.Equals(test2.type_) {
+						t.Fatalf(
+							"Expected %s != %s, but it was equal",
+							test.type_.ToString(),
+							test2.type_.ToString(),
+						)
+					}
+				},
+			)
 		}
 	}
 }
@@ -150,11 +233,18 @@ func TestTypeArrowNotEquals2(t *testing.T) {
 
 	for _, test := range testTable {
 		for _, test2 := range testTable2 {
-			t.Run(fmt.Sprintf("%v-%v", test.type_.ToString(), test2.ToString()), func(t *testing.T) {
-				if test.type_.Equals(test2) {
-					t.Fatalf("Expected %s != %s, but it was equal", test.type_.ToString(), test2.ToString())
-				}
-			})
+			t.Run(
+				fmt.Sprintf("%v-%v", test.type_.ToString(), test2.ToString()),
+				func(t *testing.T) {
+					if test.type_.Equals(test2) {
+						t.Fatalf(
+							"Expected %s != %s, but it was equal",
+							test.type_.ToString(),
+							test2.ToString(),
+						)
+					}
+				},
+			)
 		}
 	}
 }
@@ -198,7 +288,11 @@ func TestRandomInputType(t *testing.T) {
 	for _, test := range testTable {
 		t.Run(fmt.Sprintf("%v", test.type_.ToString()), func(t *testing.T) {
 			if GetInputType(test.type_) == nil {
-				t.Fatalf("Expected: %v, actual: %v", test.type_.ToString(), GetInputType(test.type_))
+				t.Fatalf(
+					"Expected: %v, actual: %v",
+					test.type_.ToString(),
+					GetInputType(test.type_),
+				)
 			}
 		})
 	}
@@ -210,7 +304,11 @@ func TestRandomOutType(t *testing.T) {
 	for _, test := range testTable {
 		t.Run(fmt.Sprintf("%v", test.type_.ToString()), func(t *testing.T) {
 			if !GetOutType(test.type_).Equals(test.type_) {
-				t.Fatalf("Expected: %s, actual: %s", test.type_.ToString(), GetOutType(test.type_).ToString())
+				t.Fatalf(
+					"Expected: %s, actual: %s",
+					test.type_.ToString(),
+					GetOutType(test.type_).ToString(),
+				)
 			}
 		})
 	}

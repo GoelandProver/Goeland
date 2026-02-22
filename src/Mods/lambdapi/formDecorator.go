@@ -94,7 +94,10 @@ func MakeDecoratedVar(newVar AST.Var) DecoratedVar {
 	return decorated
 }
 
-func (da DecoratedVar) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
+func (da DecoratedVar) ToMappedStringChild(
+	mapping AST.MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	emptyValue = getFromContext(da.Var)
 	return "", emptyValue
 }
@@ -112,7 +115,10 @@ func MakeDecoratedPred(newPred AST.Pred) DecoratedPred {
 	return decorated
 }
 
-func (dp DecoratedPred) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
+func (dp DecoratedPred) ToMappedStringChild(
+	mapping AST.MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	_, emptyValue = dp.Pred.ToMappedStringChild(mapping, displayTypes)
 	return " ", emptyValue
 }
@@ -130,7 +136,10 @@ func MakeDecoratedFun(newFun AST.Fun) DecoratedFun {
 	return decorated
 }
 
-func (df DecoratedFun) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
+func (df DecoratedFun) ToMappedStringChild(
+	mapping AST.MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return " ", mapping[AST.PredEmpty]
 }
 

@@ -138,7 +138,11 @@ func TestPrimitive(t *testing.T) {
 		for j, p2 := range primitiveTypes {
 			if i != j {
 				if fst.Equals(p.MkTypeHint(p2)) {
-					t.Fatalf("Different primitive types (%s, %s) have the same UID !", primitive, p2)
+					t.Fatalf(
+						"Different primitive types (%s, %s) have the same UID !",
+						primitive,
+						p2,
+					)
 				}
 			}
 		}
@@ -150,7 +154,10 @@ func TestIsIntFunction(t *testing.T) {
 		t p.TypeHint
 		b bool
 	}{
-		{tInt, true}, {tRat, false}, {tReal, false}, {p.MkTypeHint("o"), false}, {p.MkTypeHint("i"), false},
+		{
+			tInt,
+			true,
+		}, {tRat, false}, {tReal, false}, {p.MkTypeHint("o"), false}, {p.MkTypeHint("i"), false},
 	}
 
 	for _, test := range testTable {
@@ -167,7 +174,10 @@ func TestIsRatFunction(t *testing.T) {
 		t p.TypeHint
 		b bool
 	}{
-		{tInt, false}, {tRat, true}, {tReal, false}, {p.MkTypeHint("$o"), false}, {p.MkTypeHint("$i"), false},
+		{
+			tInt,
+			false,
+		}, {tRat, true}, {tReal, false}, {p.MkTypeHint("$o"), false}, {p.MkTypeHint("$i"), false},
 	}
 
 	for _, test := range testTable {
@@ -184,7 +194,10 @@ func TestIsRealFunction(t *testing.T) {
 		t p.TypeHint
 		b bool
 	}{
-		{tInt, false}, {tRat, false}, {tReal, true}, {p.MkTypeHint("$o"), false}, {p.MkTypeHint("$i"), false},
+		{
+			tInt,
+			false,
+		}, {tRat, false}, {tReal, true}, {p.MkTypeHint("$o"), false}, {p.MkTypeHint("$i"), false},
 	}
 
 	for _, test := range testTable {
@@ -239,7 +252,11 @@ func TestDefaultType3(t *testing.T) {
 
 	for _, test := range testTable {
 		if p.DefaultFunType(test.size).ToString() != test.name {
-			t.Fatalf("Wrong default fun type. Expected: %s, actual: %s", test.name, p.DefaultFunType(test.size).ToString())
+			t.Fatalf(
+				"Wrong default fun type. Expected: %s, actual: %s",
+				test.name,
+				p.DefaultFunType(test.size).ToString(),
+			)
 		}
 	}
 }
@@ -257,7 +274,11 @@ func TestDefaultProp3(t *testing.T) {
 
 	for _, test := range testTable {
 		if p.DefaultPropType(test.size).ToString() != test.name {
-			t.Fatalf("Wrong default fun type. Expected: %s, actual: %s", test.name, p.DefaultPropType(test.size).ToString())
+			t.Fatalf(
+				"Wrong default fun type. Expected: %s, actual: %s",
+				test.name,
+				p.DefaultPropType(test.size).ToString(),
+			)
 		}
 	}
 }

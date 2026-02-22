@@ -126,7 +126,11 @@ func presearchLoader() (AST.Form, int) {
 
 	Glob.PrintInfo(
 		"preloader",
-		fmt.Sprintf("You are running problem %s on Goeland v.%s", path.Base(problem), Glob.GetVersion()),
+		fmt.Sprintf(
+			"You are running problem %s on Goeland v.%s",
+			path.Base(problem),
+			Glob.GetVersion(),
+		),
 	)
 	debug(
 		Lib.MkLazy(func() string {
@@ -205,7 +209,11 @@ func initDebuggers() {
 	Unif.InitDebugger()
 }
 
-func StatementListToFormula(statements []Core.Statement, old_bound int, problemDir string) (form AST.Form, bound int, containsEquality bool) {
+func StatementListToFormula(
+	statements []Core.Statement,
+	old_bound int,
+	problemDir string,
+) (form AST.Form, bound int, containsEquality bool) {
 	and_list := AST.NewFormList()
 	var not_form AST.Form
 	bound = old_bound
@@ -216,7 +224,9 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			file_name := statement.GetName()
 
 			realname, err := getFile(file_name, problemDir)
-			debug(Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }))
+			debug(
+				Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }),
+			)
 
 			if err != nil {
 				Glob.PrintError(main_label, err.Error())
@@ -308,7 +318,10 @@ func doTypeStatement(atomTyping Core.TFFAtomTyping) {
 	typeScheme := atomTyping.Ts
 
 	if typeScheme == nil {
-		Glob.PrintWarn("main", fmt.Sprintf("The constant %s has no type!", atomTyping.Literal.ToString()))
+		Glob.PrintWarn(
+			"main",
+			fmt.Sprintf("The constant %s has no type!", atomTyping.Literal.ToString()),
+		)
 		return
 	}
 

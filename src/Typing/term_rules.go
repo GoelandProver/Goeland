@@ -100,7 +100,10 @@ func applyVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) R
 	if _, ok := getTermFromLocalContext(state.localContext, state.consequence.t); !ok {
 		return Reconstruct{
 			result: false,
-			err:    fmt.Errorf("term %s not found in the local context", state.consequence.t.ToString()),
+			err: fmt.Errorf(
+				"term %s not found in the local context",
+				state.consequence.t.ToString(),
+			),
 		}
 	}
 

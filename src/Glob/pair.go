@@ -95,7 +95,8 @@ func NewUnorderedBasicPair[T Basic](fst T, snd T) *UnorderedBasicPair[T] {
 
 func (ubp *UnorderedBasicPair[T]) Equals(other any) bool {
 	if typed, ok := other.(*UnorderedBasicPair[T]); ok {
-		return (ubp.fst.Equals(typed.fst) && ubp.snd.Equals(typed.snd)) || (ubp.fst.Equals(typed.snd) && ubp.snd.Equals(typed.fst))
+		return (ubp.fst.Equals(typed.fst) && ubp.snd.Equals(typed.snd)) ||
+			(ubp.fst.Equals(typed.snd) && ubp.snd.Equals(typed.fst))
 	}
 
 	return false

@@ -42,7 +42,15 @@ import (
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
-func ApplyRulesAssisted(fatherId uint64, state Search.State, c Search.Communication, newAtomics Core.FormAndTermsList, nodeID int, originalNodeId int, metaToReintroduce []int) {
+func ApplyRulesAssisted(
+	fatherId uint64,
+	state Search.State,
+	c Search.Communication,
+	newAtomics Core.FormAndTermsList,
+	nodeID int,
+	originalNodeId int,
+	metaToReintroduce []int,
+) {
 
 	ch := make(chan Choice)
 
@@ -56,32 +64,76 @@ func ApplyRulesAssisted(fatherId uint64, state Search.State, c Search.Communicat
 
 	switch chosenRule {
 	case "X":
-		applyAtomicRule(state, fatherId, c, nodeID, originalNodeId, chosenSubstitute, metaToReintroduce)
+		applyAtomicRule(
+			state,
+			fatherId,
+			c,
+			nodeID,
+			originalNodeId,
+			chosenSubstitute,
+			metaToReintroduce,
+		)
 	case "A":
 		applyAlphaRule(state, chosenFormIndex, fatherId, c, chosenSubstitute, originalNodeId)
 	case "B":
-		applyBetaRule(state, chosenSubstitute, c, fatherId, nodeID, originalNodeId, metaToReintroduce)
+		applyBetaRule(
+			state,
+			chosenSubstitute,
+			c,
+			fatherId,
+			nodeID,
+			originalNodeId,
+			metaToReintroduce,
+		)
 	case "D":
 		applyDeltaRule(state, chosenFormIndex, fatherId, c, chosenSubstitute, originalNodeId)
 	case "G":
 		applyGammaRule(state, chosenFormIndex, fatherId, c, chosenSubstitute, originalNodeId)
 	case "R":
-		applyReintroductionRule(state, fatherId, c, originalNodeId, metaToReintroduce, chosenReintro)
+		applyReintroductionRule(
+			state,
+			fatherId,
+			c,
+			originalNodeId,
+			metaToReintroduce,
+			chosenReintro,
+		)
 	}
 }
 
-func applyAtomicRule(state Search.State, fatherId uint64, c Search.Communication, nodeId int, originalNodeId int, substitut Core.SubstAndForm, metaToReintroduce []int) {
+func applyAtomicRule(
+	state Search.State,
+	fatherId uint64,
+	c Search.Communication,
+	nodeId int,
+	originalNodeId int,
+	substitut Core.SubstAndForm,
+	metaToReintroduce []int,
+) {
 	foundOne := false
 	listSubsts := [][]Core.SubstAndForm{}
 	finalBool := true
 	for _, f := range state.GetAtomic() {
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("##### Formula %v #####", f.ToString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("##### Formula %v #####", f.ToString()) },
+			),
 		)
 
-		clos_res_after_apply_subst, subst_after_apply_subst := Search.ApplyClosureRules(f.GetForm(), &state)
+		clos_res_after_apply_subst, subst_after_apply_subst := Search.ApplyClosureRules(
+			f.GetForm(),
+			&state,
+		)
 		if clos_res_after_apply_subst {
-			boolSubsts, resSubsts := searchAlgo.ManageClosureRule(fatherId, &state, c, Unif.CopySubstList(subst_after_apply_subst), f.Copy(), nodeId, originalNodeId)
+			boolSubsts, resSubsts := searchAlgo.ManageClosureRule(
+				fatherId,
+				&state,
+				c,
+				Unif.CopySubstList(subst_after_apply_subst),
+				f.Copy(),
+				nodeId,
+				originalNodeId,
+			)
 			if !boolSubsts {
 				finalBool = false
 			}
@@ -97,7 +149,16 @@ func applyAtomicRule(state Search.State, fatherId uint64, c Search.Communication
 			}),
 		)
 		assistedCounter.Increment()
-		go searchAlgo.ProofSearch(fatherId, state, c, substitut, nodeId, originalNodeId, metaToReintroduce, false)
+		go searchAlgo.ProofSearch(
+			fatherId,
+			state,
+			c,
+			substitut,
+			nodeId,
+			originalNodeId,
+			metaToReintroduce,
+			false,
+		)
 	} else {
 		listSubsts2 := []Core.SubstAndForm{}
 		for _, elem := range listSubsts {
@@ -117,7 +178,14 @@ func applyAtomicRule(state Search.State, fatherId uint64, c Search.Communication
 	}
 }
 
-func applyAlphaRule(state Search.State, indiceForm int, fatherId uint64, c Search.Communication, substitut Core.SubstAndForm, originalNodeId int) {
+func applyAlphaRule(
+	state Search.State,
+	indiceForm int,
+	fatherId uint64,
+	c Search.Communication,
+	substitut Core.SubstAndForm,
+	originalNodeId int,
+) {
 	debug(Lib.MkLazy(func() string { return "User chose Alpha rule" }))
 	hdf := state.GetAlpha()[indiceForm]
 	debug(
@@ -130,14 +198,33 @@ func applyAlphaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 
 	state.SetCurrentProofFormula(hdf)
 	id_children := Glob.IncrCptNode()
-	state.SetCurrentProofResultFormulas([]Search.IntFormAndTermsList{Search.MakeIntFormAndTermsList(id_children, result_forms)})
+	state.SetCurrentProofResultFormulas(
+		[]Search.IntFormAndTermsList{Search.MakeIntFormAndTermsList(id_children, result_forms)},
+	)
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	assistedCounter.Increment()
-	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{}, false)
+	go searchAlgo.ProofSearch(
+		fatherId,
+		state,
+		c,
+		substitut,
+		id_children,
+		originalNodeId,
+		[]int{},
+		false,
+	)
 }
 
-func applyBetaRule(state Search.State, substitut Core.SubstAndForm, c Search.Communication, fatherId uint64, nodeId int, originalNodeId int, metaToReintroduce []int) {
+func applyBetaRule(
+	state Search.State,
+	substitut Core.SubstAndForm,
+	c Search.Communication,
+	fatherId uint64,
+	nodeId int,
+	originalNodeId int,
+	metaToReintroduce []int,
+) {
 	debug(Lib.MkLazy(func() string { return "User chose Beta rule" }))
 	hdf := state.GetBeta()[0]
 	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Rule applied on : %s", hdf.ToString()) }))
@@ -148,7 +235,10 @@ func applyBetaRule(state Search.State, substitut Core.SubstAndForm, c Search.Com
 
 	int_form_list_list := []Search.IntFormAndTermsList{}
 	for _, fl := range reslf {
-		int_form_list_list = append(int_form_list_list, Search.MakeIntFormAndTermsList(Glob.IncrCptNode(), fl))
+		int_form_list_list = append(
+			int_form_list_list,
+			Search.MakeIntFormAndTermsList(Glob.IncrCptNode(), fl),
+		)
 	}
 	state.SetCurrentProofResultFormulas(int_form_list_list)
 	state.SetBTOnFormulas(false)
@@ -168,7 +258,16 @@ func applyBetaRule(state Search.State, substitut Core.SubstAndForm, c Search.Com
 		if Glob.IsDestructive() {
 			c_child := Search.MakeCommunication(make(chan bool), make(chan Search.Result))
 			chan_tab = append(chan_tab, c_child)
-			go searchAlgo.ProofSearch(Glob.GetGID(), st_copy, c_child, substitut, fl.GetI(), fl.GetI(), []int{}, false)
+			go searchAlgo.ProofSearch(
+				Glob.GetGID(),
+				st_copy,
+				c_child,
+				substitut,
+				fl.GetI(),
+				fl.GetI(),
+				[]int{},
+				false,
+			)
 		} else {
 			go searchAlgo.ProofSearch(Glob.GetGID(), st_copy, c, substitut, fl.GetI(), fl.GetI(), []int{}, false)
 		}
@@ -178,10 +277,26 @@ func applyBetaRule(state Search.State, substitut Core.SubstAndForm, c Search.Com
 
 	}
 
-	searchAlgo.DoEndManageBeta(fatherId, state, c, chan_tab, nodeId, originalNodeId, child_id_list, metaToReintroduce)
+	searchAlgo.DoEndManageBeta(
+		fatherId,
+		state,
+		c,
+		chan_tab,
+		nodeId,
+		originalNodeId,
+		child_id_list,
+		metaToReintroduce,
+	)
 }
 
-func applyDeltaRule(state Search.State, indiceForm int, fatherId uint64, c Search.Communication, substitut Core.SubstAndForm, originalNodeId int) {
+func applyDeltaRule(
+	state Search.State,
+	indiceForm int,
+	fatherId uint64,
+	c Search.Communication,
+	substitut Core.SubstAndForm,
+	originalNodeId int,
+) {
 	debug(Lib.MkLazy(func() string { return "User chose Delta rule" }))
 	hdf := state.GetDelta()[indiceForm]
 	debug(
@@ -194,14 +309,32 @@ func applyDeltaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 
 	state.SetCurrentProofFormula(hdf)
 	id_children := Glob.IncrCptNode()
-	state.SetCurrentProofResultFormulas([]Search.IntFormAndTermsList{Search.MakeIntFormAndTermsList(id_children, result_forms)})
+	state.SetCurrentProofResultFormulas(
+		[]Search.IntFormAndTermsList{Search.MakeIntFormAndTermsList(id_children, result_forms)},
+	)
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	assistedCounter.Increment()
-	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{}, false)
+	go searchAlgo.ProofSearch(
+		fatherId,
+		state,
+		c,
+		substitut,
+		id_children,
+		originalNodeId,
+		[]int{},
+		false,
+	)
 }
 
-func applyGammaRule(state Search.State, indiceForm int, fatherId uint64, c Search.Communication, substitut Core.SubstAndForm, originalNodeId int) {
+func applyGammaRule(
+	state Search.State,
+	indiceForm int,
+	fatherId uint64,
+	c Search.Communication,
+	substitut Core.SubstAndForm,
+	originalNodeId int,
+) {
 	debug(
 		Lib.MkLazy(func() string { return "User chose Gamma rule" }),
 	)
@@ -226,14 +359,32 @@ func applyGammaRule(state Search.State, indiceForm int, fatherId uint64, c Searc
 
 	state.SetCurrentProofFormula(hdf)
 	id_children := Glob.IncrCptNode()
-	state.SetCurrentProofResultFormulas([]Search.IntFormAndTermsList{Search.MakeIntFormAndTermsList(id_children, new_lf)})
+	state.SetCurrentProofResultFormulas(
+		[]Search.IntFormAndTermsList{Search.MakeIntFormAndTermsList(id_children, new_lf)},
+	)
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	assistedCounter.Decrement()
-	go searchAlgo.ProofSearch(fatherId, state, c, substitut, id_children, originalNodeId, []int{}, false)
+	go searchAlgo.ProofSearch(
+		fatherId,
+		state,
+		c,
+		substitut,
+		id_children,
+		originalNodeId,
+		[]int{},
+		false,
+	)
 }
 
-func applyReintroductionRule(state Search.State, fatherId uint64, c Search.Communication, originalNodeId int, metaToReintroduce []int, chosenReintro int) {
+func applyReintroductionRule(
+	state Search.State,
+	fatherId uint64,
+	c Search.Communication,
+	originalNodeId int,
+	metaToReintroduce []int,
+	chosenReintro int,
+) {
 	debug(Lib.MkLazy(func() string { return "Reintroduction" }))
 	debug(
 		Lib.MkLazy(func() string {
@@ -245,7 +396,9 @@ func applyReintroductionRule(state Search.State, fatherId uint64, c Search.Commu
 	newMetaGen := state.GetMetaGen()
 	reslf := Core.ReintroduceMeta(&newMetaGen, chosenReintro, state.GetN())
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Reintroduce the formula : %s", reslf.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Reintroduce the formula : %s", reslf.ToString()) },
+		),
 	)
 	state.SetLF(Core.MakeSingleElementFormAndTermList(reslf))
 
@@ -255,9 +408,22 @@ func applyReintroductionRule(state Search.State, fatherId uint64, c Search.Commu
 	state.SetCurrentProofRule("Reintroduction")
 	state.SetCurrentProofRuleName("Reintroduction")
 	state.SetCurrentProofFormula(reslf)
-	state.SetCurrentProofResultFormulas([]Search.IntFormAndTermsList{Search.MakeIntFormAndTermsList(childId, Core.MakeSingleElementFormAndTermList(reslf))})
+	state.SetCurrentProofResultFormulas(
+		[]Search.IntFormAndTermsList{
+			Search.MakeIntFormAndTermsList(childId, Core.MakeSingleElementFormAndTermList(reslf)),
+		},
+	)
 	state.SetProof(append(state.GetProof(), state.GetCurrentProof()))
 
 	assistedCounter.Increment()
-	go searchAlgo.ProofSearch(fatherId, state, c, Core.MakeEmptySubstAndForm(), childId, originalNodeId, metaToReintroduce, false)
+	go searchAlgo.ProofSearch(
+		fatherId,
+		state,
+		c,
+		Core.MakeEmptySubstAndForm(),
+		childId,
+		originalNodeId,
+		metaToReintroduce,
+		false,
+	)
 }

@@ -55,7 +55,12 @@ func launchEqualityReasoningProblem(ep EqualityProblem) []Unif.Substitutions {
 }
 
 /* try equalityReasoningProblem */
-func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, last_applied_rule_index, last_applied_rule_type int, father_id uint64) {
+func tryEqualityReasoningProblem(
+	ep EqualityProblem,
+	father_chan chan answerEP,
+	last_applied_rule_index, last_applied_rule_type int,
+	father_id uint64,
+) {
 	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Child of %v", father_id) }),
 	)
@@ -63,7 +68,12 @@ func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, 
 	case <-father_chan: // kil order
 	default:
 		// No kill order, let's apply the next rules.
-		found, substs := equalityReasoningProblem(ep, father_chan, last_applied_rule_index, last_applied_rule_type)
+		found, substs := equalityReasoningProblem(
+			ep,
+			father_chan,
+			last_applied_rule_index,
+			last_applied_rule_type,
+		)
 		debug(
 			Lib.MkLazy(func() string { return "Send solution to father_chan" }),
 		)
@@ -79,7 +89,11 @@ func tryEqualityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, 
 }
 
 /* launch an equality reasoning problem resolution. Stop when the first solution is found */
-func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, last_applied_rule_index, last_applied_rule_type int) (bool, []Unif.Substitutions) {
+func equalityReasoningProblem(
+	ep EqualityProblem,
+	father_chan chan answerEP,
+	last_applied_rule_index, last_applied_rule_type int,
+) (bool, []Unif.Substitutions) {
 	debug(Lib.MkLazy(func() string { return fmt.Sprintf("EP : %v", ep.ToString()) }))
 	substs_res := []Unif.Substitutions{}
 	unif_found := false
@@ -108,14 +122,21 @@ func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, las
 	}
 
 	// Apply available rule
-	solution_found, solution_subst := manageRLRules(ep, father_chan, last_applied_rule_index, last_applied_rule_type)
+	solution_found, solution_subst := manageRLRules(
+		ep,
+		father_chan,
+		last_applied_rule_index,
+		last_applied_rule_type,
+	)
 	if solution_found {
 		unif_found = true
 		substs_res = append(substs_res, solution_subst...)
 	}
 
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Send : %v !", Unif.SubstListToString(substs_res)) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Send : %v !", Unif.SubstListToString(substs_res)) },
+		),
 	)
 	return unif_found, substs_res
 }
@@ -123,11 +144,17 @@ func equalityReasoningProblem(ep EqualityProblem, father_chan chan answerEP, las
 /*** Launch rules ***/
 
 /* Manage application of right and left rules - // bewteen same type, sequential bewteen diffrent types */
-func manageRLRules(ep EqualityProblem, father chan answerEP, last_applied_rule_index, last_applied_rule_type int) (bool, []Unif.Substitutions) {
+func manageRLRules(
+	ep EqualityProblem,
+	father chan answerEP,
+	last_applied_rule_index, last_applied_rule_type int,
+) (bool, []Unif.Substitutions) {
 
 	// Compute right rule
 	debug(Lib.MkLazy(func() string { return "Try apply right rules !" }))
-	rules_to_apply := tryApplyRightRules(ep) // TODO : ne chercher la contradiction seulement avec l'index donné
+	rules_to_apply := tryApplyRightRules(
+		ep,
+	) // TODO : ne chercher la contradiction seulement avec l'index donné
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
@@ -163,7 +190,11 @@ func manageRLRules(ep EqualityProblem, father chan answerEP, last_applied_rule_i
 	}
 }
 
-func manageRule(ep EqualityProblem, rsl ruleStructList, father chan answerEP) (bool, []Unif.Substitutions) {
+func manageRule(
+	ep EqualityProblem,
+	rsl ruleStructList,
+	father chan answerEP,
+) (bool, []Unif.Substitutions) {
 	chan_tab := tryLaunchRule(ep, rsl)
 	return selectAnswerEP(chan_tab, father)
 }
@@ -186,7 +217,10 @@ func launchApplyRules(rs ruleStruct, ep EqualityProblem) chan answerEP {
 /*** Retrieve result ***/
 
 /* Wait for children to close. Return chen the fisrt child with a substitution answer */
-func selectAnswerEP(chan_tab [](chan answerEP), chan_parent chan answerEP) (bool, []Unif.Substitutions) {
+func selectAnswerEP(
+	chan_tab [](chan answerEP),
+	chan_parent chan answerEP,
+) (bool, []Unif.Substitutions) {
 	// Instantiation
 	cases := makeCases(chan_tab, chan_parent)
 	hasAnswered := make([]bool, len(chan_tab)) // Everything to false
@@ -250,7 +284,10 @@ func makeCases(chan_tab [](chan answerEP), chan_parent chan answerEP) []reflect.
 		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(chan_)}
 	}
 	// Parent
-	cases[len(chan_tab)] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(chan_parent)}
+	cases[len(chan_tab)] = reflect.SelectCase{
+		Dir:  reflect.SelectRecv,
+		Chan: reflect.ValueOf(chan_parent),
+	}
 	return cases
 }
 

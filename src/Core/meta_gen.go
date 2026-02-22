@@ -121,7 +121,8 @@ func chooseLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 	saved_cpt := -1
 	saved_index := 0
 	for i, v := range meta_generator {
-		if (allowed_indexes == nil || Glob.ContainsInt(i, allowed_indexes)) && ((v.GetCounter() < saved_cpt) || saved_cpt == -1) {
+		if (allowed_indexes == nil || Glob.ContainsInt(i, allowed_indexes)) &&
+			((v.GetCounter() < saved_cpt) || saved_cpt == -1) {
 			saved_index = i
 			saved_cpt = v.GetCounter()
 		}
@@ -135,9 +136,12 @@ func getAllLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 	saved_indexes := []int{}
 	for i, v := range meta_generator {
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("v.getCounter : %d - Min : %d", v.GetCounter(), min) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("v.getCounter : %d - Min : %d", v.GetCounter(), min) },
+			),
 		)
-		if (allowed_indexes == nil || Glob.ContainsInt(i, allowed_indexes)) && ((v.GetCounter() <= min) || min == -1) {
+		if (allowed_indexes == nil || Glob.ContainsInt(i, allowed_indexes)) &&
+			((v.GetCounter() <= min) || min == -1) {
 			new_min := v.GetCounter()
 			if new_min < min || min == -1 {
 				saved_indexes = []int{i}
@@ -158,7 +162,10 @@ func getAllLessReintroducedMeta(meta_generator []MetaGen, allowed_indexes []int)
 **/
 func ReintroduceMeta(meta_generator *[]MetaGen, index int, limit int) FormAndTerms {
 	if index != -1 && (*meta_generator)[index].GetCounter() <= limit {
-		(*meta_generator)[index] = MakeMetaGen((*meta_generator)[index].GetForm(), (*meta_generator)[index].GetCounter()+1)
+		(*meta_generator)[index] = MakeMetaGen(
+			(*meta_generator)[index].GetForm(),
+			(*meta_generator)[index].GetCounter()+1,
+		)
 		return (*meta_generator)[index].GetForm()
 	} else {
 		index_less_reintroduced_meta := chooseLessReintroducedMeta(*meta_generator, nil)
@@ -184,7 +191,10 @@ func ReintroduceMetaIfLessReintroduced(meta_generator *[]MetaGen, index int) For
 	} else {
 		index_less_reintroduced_meta = indexes_less_reintroduced_meta[0]
 	}
-	(*meta_generator)[index_less_reintroduced_meta] = MakeMetaGen((*meta_generator)[index_less_reintroduced_meta].GetForm(), (*meta_generator)[index_less_reintroduced_meta].GetCounter()+1)
+	(*meta_generator)[index_less_reintroduced_meta] = MakeMetaGen(
+		(*meta_generator)[index_less_reintroduced_meta].GetForm(),
+		(*meta_generator)[index_less_reintroduced_meta].GetCounter()+1,
+	)
 	return (*meta_generator)[index_less_reintroduced_meta].GetForm()
 
 }
