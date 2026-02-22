@@ -26,6 +26,29 @@ master*.
 If you are solving a bug referenced in the issue tracker, do not forget to link
 it in the PR.
 
+### Code formatting
+
+We expect the code to be formatted using the `golines` tool, with the linebreak configured
+at *100* characters. `golines` is furnished in the Nix environment, but can otherwise be
+installed by following the instructions of the [official
+repository](https://github.com/golangci/golines). You can enable `golines` to run on save
+in your IDE.
+
+#### Formatting on save in `emacs`
+
+```elisp
+(use-package go-mode
+  :init
+  (defun my/go-format ()
+    (interactive)
+	(when (eq major-mode 'go-mode)
+	  (shell-command
+	   (format "golines -m 100 -w %s" buffer-file-name))))
+
+  :hook ((after-save-hook . my/go-format)))
+```
+Moreover, if you don't have the `auto-revert-mode` enabled globally, you should probably hook it to `go-mode`.
+
 ### Error management
 
 When you add code or fix old code, try to find the possible error cases where an
