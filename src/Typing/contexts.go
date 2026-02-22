@@ -178,7 +178,10 @@ func flattenCross(ty AST.TypeApp) []AST.TypeApp {
 }
 
 /* Search for a TypeScheme with the name & the arguments type */
-func (gc GlobalContext) getSimpleTypeScheme(name string, termsType AST.TypeApp) (AST.TypeScheme, error) {
+func (gc GlobalContext) getSimpleTypeScheme(
+	name string,
+	termsType AST.TypeApp,
+) (AST.TypeScheme, error) {
 	if termsType == nil {
 		if typeScheme, found := gc.simpleSchemes[name]; found {
 			return typeScheme[0], nil
@@ -195,11 +198,18 @@ func (gc GlobalContext) getSimpleTypeScheme(name string, termsType AST.TypeApp) 
 			}
 		}
 	}
-	return nil, fmt.Errorf("no predicate/function with the name %s in the global context and arguments of type %s", name, termsType.ToString())
+	return nil, fmt.Errorf(
+		"no predicate/function with the name %s in the global context and arguments of type %s",
+		name,
+		termsType.ToString(),
+	)
 }
 
 /* Gets the polymorphic type scheme corresponding to the input. */
-func (gc GlobalContext) getPolymorphicTypeScheme(name string, varsLen, termsLen int) (AST.TypeScheme, error) {
+func (gc GlobalContext) getPolymorphicTypeScheme(
+	name string,
+	varsLen, termsLen int,
+) (AST.TypeScheme, error) {
 	if typeSchemeList, found := gc.polymorphSchemes[name]; found {
 		for _, typeScheme := range typeSchemeList {
 			if termsLen == typeScheme.Size()-1 && varsLen == typeScheme.QuantifiedVarsLen() {
@@ -312,7 +322,11 @@ func createGlobalContext(context map[string][]AST.App) (GlobalContext, error) {
  * Triggers rules to verify the global context while it's constructed.
  * It will avoid combinatorial explosion on global context well formedness verification.
  **/
-func incrementalVerificationOfGlobalContext(globalContext GlobalContext, name string, app AST.TypeScheme) error {
+func incrementalVerificationOfGlobalContext(
+	globalContext GlobalContext,
+	name string,
+	app AST.TypeScheme,
+) error {
 	if globalContextIsWellTyped {
 		return nil
 	}

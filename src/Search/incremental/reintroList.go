@@ -30,7 +30,9 @@ func (rrl *ReintroRuleList) Copy() *ReintroRuleList {
 	return &ReintroRuleList{reintrosCopy, limitsCopy}
 }
 
-func (rrl *ReintroRuleList) TryToApply(original *RulesManager) (success bool, applied Rule, resultRules []RuleList, resultManagers []RulesManager) {
+func (rrl *ReintroRuleList) TryToApply(
+	original *RulesManager,
+) (success bool, applied Rule, resultRules []RuleList, resultManagers []RulesManager) {
 	if !rrl.IsEmpty() {
 		index := 0
 		best := rrl.reintroRules[index]
@@ -66,7 +68,11 @@ func (rrl *ReintroRuleList) ToString() string {
 	str := "{"
 
 	for i := range rrl.reintroAmount {
-		str += strconv.Itoa(rrl.reintroAmount[i]) + ": " + rrl.reintroRules[i].GetForm().ToString() + ", "
+		str += strconv.Itoa(
+			rrl.reintroAmount[i],
+		) + ": " + rrl.reintroRules[i].GetForm().
+			ToString() +
+			", "
 	}
 
 	return str[:len(str)-2] + "}"

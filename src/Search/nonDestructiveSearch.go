@@ -54,20 +54,45 @@ func NewNonDestructiveSearch() BasicSearchAlgorithm {
 	return nil
 }
 
-func (nds *nonDestructiveSearch) setApplyRules(function func(uint64, State, Communication, Core.FormAndTermsList, int, int, []int)) {
-	Glob.PrintError("NDS", "Non-destructive search not compatible with the assisted plugin for now.")
+func (nds *nonDestructiveSearch) setApplyRules(
+	function func(uint64, State, Communication, Core.FormAndTermsList, int, int, []int),
+) {
+	Glob.PrintError(
+		"NDS",
+		"Non-destructive search not compatible with the assisted plugin for now.",
+	)
 }
 
-func (nds *nonDestructiveSearch) doEndManageBeta(fatherId uint64, state State, c Communication, channels []Communication, currentNodeId int, originalNodeId int, childIds []int, metaToReintroduce []int) {
+func (nds *nonDestructiveSearch) doEndManageBeta(
+	fatherId uint64,
+	state State,
+	c Communication,
+	channels []Communication,
+	currentNodeId int,
+	originalNodeId int,
+	childIds []int,
+	metaToReintroduce []int,
+) {
 	debug(Lib.MkLazy(func() string { return "Die" }))
 }
 
-func (nds *nonDestructiveSearch) manageRewriteRules(fatherId uint64, state State, c Communication, newAtomics Core.FormAndTermsList, currentNodeId int, originalNodeId int, metaToReintroduce []int) {
+func (nds *nonDestructiveSearch) manageRewriteRules(
+	fatherId uint64,
+	state State,
+	c Communication,
+	newAtomics Core.FormAndTermsList,
+	currentNodeId int,
+	originalNodeId int,
+	metaToReintroduce []int,
+) {
 	Glob.PrintError("NDS", "Non-destructive search not compatible with the DMT plugin for now.")
 }
 
 /* Choose substitution - whitout meta in lastAppliedSubst */
-func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestructive(sl []Core.SubstAndForm, ml Lib.List[AST.Meta]) (Core.SubstAndForm, []Core.SubstAndForm) {
+func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestructive(
+	sl []Core.SubstAndForm,
+	ml Lib.List[AST.Meta],
+) (Core.SubstAndForm, []Core.SubstAndForm) {
 	for i, v := range sl {
 		if !AST.IsIncludeInsideOF(v.GetSubst().GetMeta(), ml) {
 			return v, Core.RemoveSubstFromSubstAndFormList(i, sl)
@@ -77,7 +102,10 @@ func (nds *nonDestructiveSearch) chooseSubstitutionWithoutMetaLastApplyNonDestru
 }
 
 /* Choose substitution - whith meta in lastAppliedSubst */
-func (nds *nonDestructiveSearch) chooseSubstitutionWithtMetaLastApplyNonDestructive(sl []Core.SubstAndForm, last_applied_subst Core.SubstAndForm) (Core.SubstAndForm, []Core.SubstAndForm) {
+func (nds *nonDestructiveSearch) chooseSubstitutionWithtMetaLastApplyNonDestructive(
+	sl []Core.SubstAndForm,
+	last_applied_subst Core.SubstAndForm,
+) (Core.SubstAndForm, []Core.SubstAndForm) {
 	for i, v := range sl {
 		if !v.GetSubst().Equals(last_applied_subst.GetSubst()) {
 			return v, Core.RemoveSubstFromSubstAndFormList(i, sl)
@@ -87,8 +115,14 @@ func (nds *nonDestructiveSearch) chooseSubstitutionWithtMetaLastApplyNonDestruct
 }
 
 /* Choose the best substitution among subst_found_at_this_step and subst_found */
-func (nds *nonDestructiveSearch) chooseSubstitutionNonDestructive(substs_found_this_step []Core.SubstAndForm, st *State) Core.SubstAndForm {
-	res, sl := nds.chooseSubstitutionWithoutMetaLastApplyNonDestructive(substs_found_this_step, st.GetLastAppliedSubst().GetSubst().GetMeta())
+func (nds *nonDestructiveSearch) chooseSubstitutionNonDestructive(
+	substs_found_this_step []Core.SubstAndForm,
+	st *State,
+) Core.SubstAndForm {
+	res, sl := nds.chooseSubstitutionWithoutMetaLastApplyNonDestructive(
+		substs_found_this_step,
+		st.GetLastAppliedSubst().GetSubst().GetMeta(),
+	)
 	if !res.IsEmpty() { // subst without meta in last applied meta found in substs_found_at_this_step
 		st.SetSubstsFound(append(sl, st.GetSubstsFound()...))
 		return res
@@ -137,18 +171,30 @@ func (nds *nonDestructiveSearch) catchFormulaToInstantiate(subst_found Unif.Subs
 	return meta_to_reintroduce
 }
 
-/** Instantiate a formula with a substitution
+/*
+* Instantiate a formula with a substitution
 * Got the substitution (X, a) and reintroduce ForAll x P(x) -> need to reintroduce P(a). Remplace immediatly the new generated metavariable by a.
-**/
-func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Communication, index int, s Core.SubstAndForm) {
+*
+ */
+func (nds *nonDestructiveSearch) instantiate(
+	fatherId uint64,
+	state *State,
+	c Communication,
+	index int,
+	s Core.SubstAndForm,
+) {
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Instantiate with subst : %v ", s.GetSubst().ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Instantiate with subst : %v ", s.GetSubst().ToString()) },
+		),
 	)
 	newMetaGenerator := state.GetMetaGen()
 	reslf := Core.ReintroduceMeta(&newMetaGenerator, index, state.GetN())
 	state.SetMetaGen(newMetaGenerator)
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Instantiate the formula : %s", reslf.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Instantiate the formula : %s", reslf.ToString()) },
+		),
 	)
 
 	// Apply gamma rule
@@ -182,7 +228,8 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 			// Trouver celle de la formula de base
 			for _, f := range s.GetForm().Slice() {
 				for _, term_formula := range f.GetMetas().Elements().GetSlice() {
-					if !found && term_formula.IsMeta() && term_formula.GetName() == new_meta.GetName() {
+					if !found && term_formula.IsMeta() &&
+						term_formula.GetName() == new_meta.GetName() {
 						association_subst.Set(new_meta, term_formula)
 						found = true
 					}
@@ -211,7 +258,10 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 		}
 	}
 
-	new_subst, same_key := Unif.MergeSubstitutions(association_subst, state.GetAppliedSubst().GetSubst())
+	new_subst, same_key := Unif.MergeSubstitutions(
+		association_subst,
+		state.GetAppliedSubst().GetSubst(),
+	)
 	if same_key {
 		Glob.PrintInfo("PS", "Same key in S2 and S1")
 	}
@@ -273,7 +323,12 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 * Choose the best subtitution to instantiate : avoid the same than last used, and the one which contains meta already used in last applied
 **/
 
-func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64, st *State, c Communication, substs_found_at_this_step []Core.SubstAndFormAndTerms) (int, Core.SubstAndForm) {
+func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(
+	father_id uint64,
+	st *State,
+	c Communication,
+	substs_found_at_this_step []Core.SubstAndFormAndTerms,
+) (int, Core.SubstAndForm) {
 	form_to_instantiate := -1
 	choosen_subst := Core.MakeEmptySubstAndForm()
 	new_choosen_subst := Core.MakeEmptySubstAndForm()
@@ -308,7 +363,9 @@ func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64
 		)
 	}))
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("AreRulesApplicable : %v", st.AreRulesApplicable()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("AreRulesApplicable : %v", st.AreRulesApplicable()) },
+		),
 	)
 
 	choosen_subst = new_choosen_subst
@@ -316,7 +373,9 @@ func (nds *nonDestructiveSearch) manageSubstFoundNonDestructive(father_id uint64
 	// Catch all the meta which can be instantiate
 	form_to_instantiate = nds.catchFormulaToInstantiate(choosen_subst.GetSubst())
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Form_to_instantiate : %v", form_to_instantiate) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Form_to_instantiate : %v", form_to_instantiate) },
+		),
 	)
 
 	return form_to_instantiate, choosen_subst
@@ -397,9 +456,18 @@ func (ds *nonDestructiveSearch) manageResult(c Communication) (Core.Unifier, []P
 		time.Sleep(1 * time.Millisecond)
 
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("open is : %v from %v", open, res.getId()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("open is : %v from %v", open, res.getId()) },
+			),
 		)
-		Glob.PrintInfo("MAIN", fmt.Sprintf("%v goroutines still running - %v goroutines generated", runtime.NumGoroutine(), Glob.GetNbGoroutines()))
+		Glob.PrintInfo(
+			"MAIN",
+			fmt.Sprintf(
+				"%v goroutines still running - %v goroutines generated",
+				runtime.NumGoroutine(),
+				Glob.GetNbGoroutines(),
+			),
+		)
 	}
 
 	return Core.MakeUnifier(), []ProofStruct{}, !open

@@ -94,7 +94,10 @@ func (tp TermPair) ToString() string {
 	return tp.GetT1().ToString() + " ≈ " + tp.GetT2().ToString()
 }
 func (tp TermPair) ToTPTPString() string {
-	return tp.GetT1().ToMappedString(AST.DefaultMapString, false) + " = " + tp.GetT2().ToMappedString(AST.DefaultMapString, false)
+	return tp.GetT1().
+		ToMappedString(AST.DefaultMapString, false) +
+		" = " + tp.GetT2().
+		ToMappedString(AST.DefaultMapString, false)
 }
 func MakeTermPair(t1, t2 AST.Term) TermPair {
 	return TermPair{t1.Copy(), t2.Copy()}

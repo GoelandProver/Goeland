@@ -268,7 +268,16 @@ func getContextFromTerm(trm AST.Term) []string {
 			}
 		}
 
-		result = append(result, mapDefault(fmt.Sprintf("symbol %s : %s;", fun.GetID().ToMappedString(lambdaPiMapConnectors, false), typesStr)))
+		result = append(
+			result,
+			mapDefault(
+				fmt.Sprintf(
+					"symbol %s : %s;",
+					fun.GetID().ToMappedString(lambdaPiMapConnectors, false),
+					typesStr,
+				),
+			),
+		)
 		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}

@@ -101,7 +101,8 @@ func MakerAll(vars []Var, forms Form) All {
 
 func (a All) Equals(other any) bool {
 	if typed, ok := other.(All); ok {
-		return AreEqualsVarList(a.GetVarList(), typed.GetVarList()) && a.GetForm().Equals(typed.GetForm())
+		return AreEqualsVarList(a.GetVarList(), typed.GetVarList()) &&
+			a.GetForm().Equals(typed.GetForm())
 	}
 
 	return false
@@ -157,7 +158,8 @@ func MakerEx(vars []Var, forms Form) Ex {
 
 func (e Ex) Equals(other any) bool {
 	if typed, ok := other.(Ex); ok {
-		return AreEqualsVarList(e.GetVarList(), typed.GetVarList()) && e.GetForm().Equals(typed.GetForm())
+		return AreEqualsVarList(e.GetVarList(), typed.GetVarList()) &&
+			e.GetForm().Equals(typed.GetForm())
 	}
 
 	return false
@@ -239,7 +241,13 @@ func (a AllType) GetType() TypeScheme   { return DefaultPropType(0) }
 /* Form interface */
 
 func (a AllType) ToMappedString(mapping MapString, displayTypes bool) string {
-	return mapping[QuantVarOpen] + Glob.ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (" + a.GetForm().ToString() + ")"
+	return mapping[QuantVarOpen] + Glob.ListToString(
+		a.GetVarList(),
+		", ",
+		"",
+	) + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (" + a.GetForm().
+		ToString() +
+		")"
 }
 
 func (a AllType) ToString() string {
@@ -247,10 +255,17 @@ func (a AllType) ToString() string {
 }
 
 func (a AllType) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "(" + mapping[AllTypeQuant] + " " + mapping[QuantVarOpen] + Glob.ListToString(a.GetVarList(), ", ", "") + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (%s))"
+	return "(" + mapping[AllTypeQuant] + " " + mapping[QuantVarOpen] + Glob.ListToString(
+		a.GetVarList(),
+		", ",
+		"",
+	) + " : " + mapping[TypeVarType] + mapping[QuantVarClose] + mapping[QuantVarSep] + " (%s))"
 }
 
-func (a AllType) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (a AllType) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return "", ""
 }
 
@@ -406,7 +421,10 @@ func (o Or) ToMappedStringSurround(mapping MapString, displayTypes bool) string 
 	return "(%s)"
 }
 
-func (o Or) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (o Or) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return " " + mapping[OrConn] + " ", ""
 }
 
@@ -474,8 +492,13 @@ func MakeAndSimpleBinary(i int, forms *FormList, metas Lib.Set[Meta]) And {
 	default:
 		return MakeAndSimple(
 			i,
-			NewFormList([]Form{forms.Get(0), MakerAnd(NewFormList(forms.GetElements(1, forms.Len())...), true)}...),
-			metas)
+			NewFormList(
+				[]Form{
+					forms.Get(0),
+					MakerAnd(NewFormList(forms.GetElements(1, forms.Len())...), true),
+				}...),
+			metas,
+		)
 	}
 }
 
@@ -549,7 +572,10 @@ func (a And) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "(%s)"
 }
 
-func (a And) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (a And) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return " " + mapping[AndConn] + " ", ""
 }
 
@@ -626,7 +652,10 @@ func (e Equ) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "(%s)"
 }
 
-func (e Equ) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (e Equ) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return " " + mapping[EquConn] + " ", ""
 }
 
@@ -671,7 +700,11 @@ func (e Equ) Equals(f any) bool {
 }
 
 func (e Equ) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakeEqu(e.GetIndex(), e.GetF1().ReplaceTypeByMeta(varList, index), e.GetF2().ReplaceTypeByMeta(varList, index))
+	return MakeEqu(
+		e.GetIndex(),
+		e.GetF1().ReplaceTypeByMeta(varList, index),
+		e.GetF2().ReplaceTypeByMeta(varList, index),
+	)
 }
 
 func (e Equ) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -711,7 +744,11 @@ func (e Equ) GetChildFormulas() *FormList {
 }
 
 func (e Equ) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeEqu(e.GetIndex(), e.f1.ReplaceMetaByTerm(meta, term), e.f2.ReplaceMetaByTerm(meta, term))
+	return MakeEqu(
+		e.GetIndex(),
+		e.f1.ReplaceMetaByTerm(meta, term),
+		e.f2.ReplaceMetaByTerm(meta, term),
+	)
 }
 
 // -----------------------------------------------------------------------------
@@ -749,7 +786,10 @@ func (i Imp) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "(%s)"
 }
 
-func (i Imp) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (i Imp) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return " " + mapping[ImpConn] + " ", ""
 }
 
@@ -796,7 +836,11 @@ func (i Imp) Equals(other any) bool {
 }
 
 func (i Imp) ReplaceTypeByMeta(varList []TypeVar, index int) Form {
-	return MakeImp(i.GetIndex(), i.GetF1().ReplaceTypeByMeta(varList, index), i.GetF2().ReplaceTypeByMeta(varList, index))
+	return MakeImp(
+		i.GetIndex(),
+		i.GetF1().ReplaceTypeByMeta(varList, index),
+		i.GetF2().ReplaceTypeByMeta(varList, index),
+	)
 }
 
 func (i Imp) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -837,7 +881,11 @@ func (i Imp) GetChildFormulas() *FormList {
 }
 
 func (i Imp) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeImp(i.GetIndex(), i.f1.ReplaceMetaByTerm(meta, term), i.f2.ReplaceMetaByTerm(meta, term))
+	return MakeImp(
+		i.GetIndex(),
+		i.f1.ReplaceMetaByTerm(meta, term),
+		i.f2.ReplaceMetaByTerm(meta, term),
+	)
 }
 
 // -----------------------------------------------------------------------------
@@ -915,7 +963,10 @@ func (n Not) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return mapping[NotConn] + "(%s)"
 }
 
-func (n Not) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (n Not) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return "", ""
 }
 
@@ -1093,10 +1144,18 @@ func (p Pred) ToMappedStringSurround(mapping MapString, displayTypes bool) strin
 		return "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
 	}
 
-	return p.GetID().ToMappedString(mapping, displayTypes) + "(" + strings.Join(args, " "+mapping[PredTypeVarSep]+" ") + ")"
+	return p.GetID().
+		ToMappedString(mapping, displayTypes) +
+		"(" + strings.Join(
+		args,
+		" "+mapping[PredTypeVarSep]+" ",
+	) + ")"
 }
 
-func (p Pred) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (p Pred) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	if p.GetID().GetName() == "=" {
 		return " = ", mapping[PredEmpty]
 	}
@@ -1274,7 +1333,10 @@ func (t Top) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "%s"
 }
 
-func (t Top) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (t Top) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return "", mapping[TopType]
 }
 
@@ -1318,7 +1380,10 @@ func (b Bot) ToMappedStringSurround(mapping MapString, displayTypes bool) string
 	return "%s"
 }
 
-func (b Bot) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (b Bot) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return "", mapping[BotType]
 }
 

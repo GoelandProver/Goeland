@@ -199,7 +199,9 @@ func (n Node) printAux(tab int) {
 
 	if n.isLeaf() {
 		for _, form := range n.formulae.Slice() {
-			debug(Lib.MkLazy(func() string { return strings.Repeat("\t", tab+1) + form.ToString() }))
+			debug(
+				Lib.MkLazy(func() string { return strings.Repeat("\t", tab+1) + form.ToString() }),
+			)
 		}
 	}
 	debug(Lib.MkLazy(func() string { return "\n" }))
@@ -236,7 +238,8 @@ func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
 		//    * It's the end of the CodeBlock, but not of the sequence. In this case, check if the following instruction matches with any child.
 		if instr.IsEquivalent(current.value[oui]) {
 			oui += 1
-			if i == len(instructions)-1 && oui == len(current.value) && !current.formulae.Contains(form) {
+			if i == len(instructions)-1 && oui == len(current.value) &&
+				!current.formulae.Contains(form) {
 				current.formulae.Append(form)
 			} else if i < len(instructions)-1 && oui == len(current.value) {
 

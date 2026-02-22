@@ -103,8 +103,16 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 		debug(Lib.MkLazy(func() string { return "------------------------" }))
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Instr: %v", instr.ToString()) }))
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Meta : %v", m.meta.ToString()) }))
-		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Subst : %v", SubstPairListToString(m.subst)) }))
-		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Post : %v", IntPairistToString(m.post)) }))
+		debug(
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Subst : %v", SubstPairListToString(m.subst)) },
+			),
+		)
+		debug(
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Post : %v", IntPairistToString(m.post)) },
+			),
+		)
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("IsLocked : %v", m.isLocked()) }))
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("HasPushed : %v", m.hasPushed) }))
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("HasPoped : %v", m.hasPoped) }))
@@ -128,7 +136,9 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 			Lib.MkLazy(func() string { return fmt.Sprintf("Cursor: %v/%v", m.q, m.terms.Len()) }),
 		)
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("m.terms[cursor] : %v", m.terms.At(m.q).ToString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("m.terms[cursor] : %v", m.terms.At(m.q).ToString()) },
+			),
 		)
 		debug(
 			Lib.MkLazy(func() string {
@@ -174,9 +184,14 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 
 	if node.isLeaf() {
 		for _, f := range node.formulae.Slice() {
-			if reflect.TypeOf(f) == reflect.TypeOf(AST.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(TermForm{}) {
+			if reflect.TypeOf(f) == reflect.TypeOf(AST.Pred{}) ||
+				reflect.TypeOf(f) == reflect.TypeOf(TermForm{}) {
 				// Rebuild final substitution between meta and subst
-				final_subst := computeSubstitutions(CopySubstPairList(m.subst), m.meta.Copy(), f.Copy())
+				final_subst := computeSubstitutions(
+					CopySubstPairList(m.subst),
+					m.meta.Copy(),
+					f.Copy(),
+				)
 				if !final_subst.Equals(Failure()) {
 					matching = append(matching, MakeMatchingSubstitutions(f, final_subst))
 				}
@@ -203,7 +218,9 @@ func (m *Machine) launchChildrenSearch(node Node) []MatchingSubstitutions {
 	channels := []chan []MatchingSubstitutions{}
 	for _, c := range node.children {
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("Next symbol = %v", c.getValue()[0].ToString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Next symbol = %v", c.getValue()[0].ToString()) },
+			),
 		)
 		channels = append(channels, make(chan []MatchingSubstitutions))
 	}
@@ -215,7 +232,19 @@ func (m *Machine) launchChildrenSearch(node Node) []MatchingSubstitutions {
 		ip := CopyIntPairList(m.post)
 		sc := CopySubstPairList(m.subst)
 
-		copy := Machine{subst: sc, beginLock: m.beginLock, terms: st, meta: m.meta.Copy(), q: m.q, beginCount: m.beginCount, hasPushed: m.hasPushed, hasPoped: m.hasPoped, post: ip, topLevelTot: m.topLevelTot, topLevelCount: m.topLevelCount}
+		copy := Machine{
+			subst:         sc,
+			beginLock:     m.beginLock,
+			terms:         st,
+			meta:          m.meta.Copy(),
+			q:             m.q,
+			beginCount:    m.beginCount,
+			hasPushed:     m.hasPushed,
+			hasPoped:      m.hasPoped,
+			post:          ip,
+			topLevelTot:   m.topLevelTot,
+			topLevelCount: m.topLevelCount,
+		}
 
 		go copy.unifyAuxOnGoroutine(*n, ch, Glob.GetGID())
 		Glob.IncrGoRoutine(1)

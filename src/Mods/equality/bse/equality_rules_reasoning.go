@@ -51,7 +51,10 @@ type BasicEqualityStruct struct {
 }
 
 func NewBasicEqualityStruct() eqStruct.EqualityStruct {
-	return &BasicEqualityStruct{Glob.NewList[eqStruct.TermPair](), Glob.NewList[*Glob.List[eqStruct.TermPair]]()}
+	return &BasicEqualityStruct{
+		Glob.NewList[eqStruct.TermPair](),
+		Glob.NewList[*Glob.List[eqStruct.TermPair]](),
+	}
 }
 
 func (bes *BasicEqualityStruct) AddAssumption(assumption eqStruct.TermPair) {
@@ -80,7 +83,9 @@ func (bes *BasicEqualityStruct) Solve() (subs []Unif.Substitutions, success bool
 		epl := makeEqualityProblemList(bes.assumptions.Slice(), goal.Slice())
 
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("iteration on EPL : %v", epl.ToString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("iteration on EPL : %v", epl.ToString()) },
+			),
 		)
 		if has_solution, subst_res_tmp := equalityReasoningList(epl); has_solution {
 			debug(
@@ -92,7 +97,10 @@ func (bes *BasicEqualityStruct) Solve() (subs []Unif.Substitutions, success bool
 			)
 			found = true
 			for subst_res_tmp_element := range subst_res_tmp {
-				substs_res = Unif.AppendIfNotContainsSubst(substs_res, subst_res_tmp[subst_res_tmp_element])
+				substs_res = Unif.AppendIfNotContainsSubst(
+					substs_res,
+					subst_res_tmp[subst_res_tmp_element],
+				)
 			}
 		}
 	}
@@ -122,7 +130,10 @@ func (bes *BasicEqualityStruct) Copy() eqStruct.EqualityStruct {
 }
 
 // Add the new equality problems to the EqualityStruct and run the equality reasoning.
-func RunEqualityReasoning(es eqStruct.EqualityStruct, epml EqualityProblemMultiList) (bool, []Unif.Substitutions) {
+func RunEqualityReasoning(
+	es eqStruct.EqualityStruct,
+	epml EqualityProblemMultiList,
+) (bool, []Unif.Substitutions) {
 	for _, eq := range epml[0][0].GetE() {
 		es.AddAssumption(eq)
 	}
@@ -141,14 +152,18 @@ func RunEqualityReasoning(es eqStruct.EqualityStruct, epml EqualityProblemMultiL
 	return found, subs
 }
 
-/**
+/*
+*
 * EqualityReasoningList
 * Data : an equality problem list (EqualityProblemList), corresponding to an inequality or two complementary predicates
 * Result : true if all of the problem in the list agrees on at least one substitution, and the corresponding substitutions
-**/
+*
+ */
 func equalityReasoningList(epl EqualityProblemList) (bool, []Unif.Substitutions) {
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Start of Equality reasoning list : %v", epl.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Start of Equality reasoning list : %v", epl.ToString()) },
+		),
 	)
 
 	substs_res := []Unif.Substitutions{}
@@ -175,9 +190,14 @@ func equalityReasoningList(epl EqualityProblemList) (bool, []Unif.Substitutions)
 }
 
 /* return true if at least on subst on the subst list returns result, and the corresponding substitution list */
-func manageEqualityReasoningProblem(ep EqualityProblem, sl []Unif.Substitutions) (bool, []Unif.Substitutions) {
+func manageEqualityReasoningProblem(
+	ep EqualityProblem,
+	sl []Unif.Substitutions,
+) (bool, []Unif.Substitutions) {
 	debug(
-		Lib.MkLazy(func() string { return "Start on equality reasoning  problem with apply subst" }),
+		Lib.MkLazy(
+			func() string { return "Start on equality reasoning  problem with apply subst" },
+		),
 	)
 	if len(sl) == 0 {
 		subst := launchEqualityReasoningProblem(ep)

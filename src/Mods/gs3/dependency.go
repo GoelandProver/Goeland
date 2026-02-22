@@ -116,7 +116,12 @@ func getAllVariableOccurrences(v AST.Var, form AST.Form) occurrences {
 	return getVariableOccurrencesForm(v, form, occurrences{}, occurrence{})
 }
 
-func getVariableOccurrencesForm(v AST.Var, form AST.Form, currentOcc occurrences, path occurrence) occurrences {
+func getVariableOccurrencesForm(
+	v AST.Var,
+	form AST.Form,
+	currentOcc occurrences,
+	path occurrence,
+) occurrences {
 	workingPath := make(occurrence, len(path))
 	copy(workingPath, path)
 	switch f := form.(type) {
@@ -155,7 +160,12 @@ func getNAryOcc(v AST.Var, currentOcc occurrences, path occurrence, fl *AST.Form
 	return currentOcc
 }
 
-func getVariableOccurrencesTerm(v AST.Var, term AST.Term, currentOcc occurrences, path occurrence) occurrences {
+func getVariableOccurrencesTerm(
+	v AST.Var,
+	term AST.Term,
+	currentOcc occurrences,
+	path occurrence,
+) occurrences {
 	workingPath := make(occurrence, len(path))
 	copy(workingPath, path)
 	switch t := term.(type) {

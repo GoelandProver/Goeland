@@ -46,7 +46,11 @@ import (
  **/
 
 /* Applies the Var rule for a type variable: erase consequence */
-func applyLocalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+func applyLocalTypeVarRule(
+	state Sequent,
+	root *ProofTree,
+	fatherChan chan Reconstruct,
+) Reconstruct {
 	// Add applied rule to the prooftree
 	root.appliedRule = "Var"
 
@@ -54,7 +58,10 @@ func applyLocalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Recon
 	if _, ok := getTypeFromLocalContext(state.localContext, state.consequence.a.(AST.TypeVar)); !ok {
 		return Reconstruct{
 			result: false,
-			err:    fmt.Errorf("TypeVar %s not found in the local context", state.consequence.a.ToString()),
+			err: fmt.Errorf(
+				"TypeVar %s not found in the local context",
+				state.consequence.a.ToString(),
+			),
 		}
 	}
 
@@ -71,7 +78,11 @@ func applyLocalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Recon
 }
 
 /* Applies the Var rule for a type hint: erase consequence */
-func applyGlobalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
+func applyGlobalTypeVarRule(
+	state Sequent,
+	root *ProofTree,
+	fatherChan chan Reconstruct,
+) Reconstruct {
 	// Add applied rule to the prooftree
 	root.appliedRule = "Var"
 
@@ -79,7 +90,10 @@ func applyGlobalTypeVarRule(state Sequent, root *ProofTree, fatherChan chan Reco
 	if found := state.globalContext.isTypeInContext(Glob.To[AST.TypeScheme](state.consequence.a)); !found {
 		return Reconstruct{
 			result: false,
-			err:    fmt.Errorf("TypeVar %s not found in the global context", state.consequence.a.ToString()),
+			err: fmt.Errorf(
+				"TypeVar %s not found in the global context",
+				state.consequence.a.ToString(),
+			),
 		}
 	}
 
@@ -119,7 +133,11 @@ func applyCrossRule(state Sequent, root *ProofTree, fatherChan chan Reconstruct)
 
 	if tc, ok := state.consequence.a.(AST.TypeCross); ok {
 		// Construct a child for every type recovered
-		return launchChildren(constructWithTypes(state, tc.GetAllUnderlyingTypes()), root, fatherChan)
+		return launchChildren(
+			constructWithTypes(state, tc.GetAllUnderlyingTypes()),
+			root,
+			fatherChan,
+		)
 	} else {
 		return Reconstruct{
 			result: false,

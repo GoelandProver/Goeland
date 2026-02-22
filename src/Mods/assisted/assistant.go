@@ -178,7 +178,10 @@ func selectStatus() int {
 			}
 		}
 
-		fmt.Printf("\nState nº%d is not in the list. Please select a valid state ID.\n", chosenStatus)
+		fmt.Printf(
+			"\nState nº%d is not in the list. Please select a valid state ID.\n",
+			chosenStatus,
+		)
 	}
 }
 

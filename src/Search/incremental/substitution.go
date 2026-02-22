@@ -13,7 +13,8 @@ type TermWrapper struct {
 }
 
 func (tw *TermWrapper) Equals(other *TermWrapper) bool {
-	return (tw.term == anyTerm && other.term == anyTerm) || (tw.term != anyTerm && other.term != anyTerm && tw.term.Equals(other.term))
+	return (tw.term == anyTerm && other.term == anyTerm) ||
+		(tw.term != anyTerm && other.term != anyTerm && tw.term.Equals(other.term))
 }
 
 type SingleSub struct {

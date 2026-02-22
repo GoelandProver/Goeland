@@ -53,7 +53,13 @@ type quantifier struct {
 	symbol  FormulaType
 }
 
-func makeQuantifier(i int, vars []Var, subForm Form, metas Lib.Set[Meta], symbol FormulaType) quantifier {
+func makeQuantifier(
+	i int,
+	vars []Var,
+	subForm Form,
+	metas Lib.Set[Meta],
+	symbol FormulaType,
+) quantifier {
 	fms := &MappedString{}
 	qua := quantifier{
 		fms,
@@ -96,7 +102,10 @@ func (q quantifier) ToString() string {
 	return q.MappedString.ToString()
 }
 
-func (q quantifier) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
+func (q quantifier) ToMappedStringChild(
+	mapping MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return " ", ""
 }
 
@@ -139,7 +148,10 @@ func (q quantifier) ToMappedStringSurround(mapping MapString, displayTypes bool)
 		varStrings = append(varStrings, str+mapping[QuantVarClose])
 	}
 
-	return "(" + mapping[q.symbol] + " " + strings.Join(varStrings, " ") + mapping[QuantVarSep] + " (%s))"
+	return "(" + mapping[q.symbol] + " " + strings.Join(
+		varStrings,
+		" ",
+	) + mapping[QuantVarSep] + " (%s))"
 }
 
 func (q quantifier) GetChildrenForMappedString() []MappableString {

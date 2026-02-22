@@ -115,7 +115,6 @@ func parsePluginOptions() {
 	Glob.PrintInfo("DMT", output)
 }
 
-
 func GetRegisteredAxioms() *AST.FormList {
 	return registeredAxioms
 }

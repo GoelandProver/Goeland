@@ -227,11 +227,17 @@ func initTestVariable() {
 	neq_x_a = Core.MakerNot(Core.MakerPred(AST.Id_eq, Core.NewTermList(x, a), []Typing.TypeApp{}))
 	neq_a_b = Core.MakerNot(Core.MakerPred(AST.Id_eq, Core.NewTermList(a, b), []Typing.TypeApp{}))
 	neq_a_d = Core.MakerNot(Core.MakerPred(AST.Id_eq, Core.NewTermList(a, d), []Typing.TypeApp{}))
-	neq_gggx_x = Core.MakerNot(Core.MakerPred(AST.Id_eq, Core.NewTermList(gggx, x), []Typing.TypeApp{}))
+	neq_gggx_x = Core.MakerNot(
+		Core.MakerPred(AST.Id_eq, Core.NewTermList(gggx, x), []Typing.TypeApp{}),
+	)
 	neq_fx_a = Core.MakerNot(Core.MakerPred(AST.Id_eq, Core.NewTermList(fx, a), []Typing.TypeApp{}))
 	neq_fx_x = Core.MakerNot(Core.MakerPred(AST.Id_eq, Core.NewTermList(fx, x), []Typing.TypeApp{}))
-	neq_fab_fcd = Core.MakerNot(Core.MakerPred(AST.Id_eq, Core.NewTermList(fab, fcd), []Typing.TypeApp{}))
-	neq_fb_fc = Core.MakerNot(Core.MakerPred(AST.Id_eq, Core.NewTermList(fb, fc), []Typing.TypeApp{}))
+	neq_fab_fcd = Core.MakerNot(
+		Core.MakerPred(AST.Id_eq, Core.NewTermList(fab, fcd), []Typing.TypeApp{}),
+	)
+	neq_fb_fc = Core.MakerNot(
+		Core.MakerPred(AST.Id_eq, Core.NewTermList(fb, fc), []Typing.TypeApp{}),
+	)
 
 	// Predicates
 	pggab = Core.MakerPred(p_id, Core.NewTermList(gga, b), []Typing.TypeApp{})
@@ -305,7 +311,11 @@ func TestConstraints1(t *testing.T) {
 	append := cs.appendIfConsistant(constraint_ffx_x)
 
 	if append || len(cs.getPrec()) > 0 {
-		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected not consistant and empty PREC list", append, cs.getPrec().toString())
+		t.Fatalf(
+			"Error: %v and %v is not the expected PREC list. Expected not consistant and empty PREC list",
+			append,
+			cs.getPrec().toString(),
+		)
 	}
 }
 
@@ -317,7 +327,11 @@ func TestConstraints2(t *testing.T) {
 	append := cs.appendIfConsistant(constraint_x_ffx)
 
 	if !append || len(cs.getPrec()) > 0 {
-		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list", append, cs.getPrec().toString())
+		t.Fatalf(
+			"Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list",
+			append,
+			cs.getPrec().toString(),
+		)
 	}
 }
 
@@ -330,7 +344,12 @@ func TestConstraints3(t *testing.T) {
 
 	append := cs.appendIfConsistant(constraint_fx_a)
 	if !append || len(cs.getPrec()) != 1 || !cs.getPrec()[0].equals(constraint_fx_a) {
-		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and %v", append, cs.getPrec().toString(), constraint_fx_a.toString())
+		t.Fatalf(
+			"Error: %v and %v is not the expected PREC list. Expected consistant and %v",
+			append,
+			cs.getPrec().toString(),
+			constraint_fx_a.toString(),
+		)
 	}
 }
 
@@ -346,14 +365,24 @@ func TestConstaints4(t *testing.T) {
 
 	res_constraint_1 := cs.appendIfConsistant(constraint_fx_a)
 	if !res_constraint_1 || len(cs.getPrec()) != 1 || !cs.getPrec()[0].equals(constraint_fx_a) {
-		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and %v", res_constraint_1, cs.getPrec().toString(), constraint_fx_a.toString())
+		t.Fatalf(
+			"Error: %v and %v is not the expected PREC list. Expected consistant and %v",
+			res_constraint_1,
+			cs.getPrec().toString(),
+			constraint_fx_a.toString(),
+		)
 	}
 
 	tp_a_fx := eqStruct.MakeTermPair(a, fx)
 	constraint_a_fx := MakeConstraint(PREC, tp_a_fx)
 	res_constraint_2 := cs.appendIfConsistant(constraint_a_fx)
 	if res_constraint_2 || len(cs.getPrec()) != 1 || !cs.getPrec()[0].equals(constraint_fx_a) {
-		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected not consistant and %v", res_constraint_2, cs.getPrec().toString(), constraint_fx_a.toString())
+		t.Fatalf(
+			"Error: %v and %v is not the expected PREC list. Expected not consistant and %v",
+			res_constraint_2,
+			cs.getPrec().toString(),
+			constraint_fx_a.toString(),
+		)
 	}
 
 }
@@ -366,7 +395,11 @@ func TestConstraints5(t *testing.T) {
 	constraint_ffabc_fafbc := MakeConstraint(PREC, tp_ffabc_fafbc)
 	res_constraint_1 := cs.appendIfConsistant(constraint_ffabc_fafbc)
 	if res_constraint_1 || len(cs.getPrec()) > 0 {
-		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected not consistant and empty PREC list", res_constraint_1, cs.getPrec().toString())
+		t.Fatalf(
+			"Error: %v and %v is not the expected PREC list. Expected not consistant and empty PREC list",
+			res_constraint_1,
+			cs.getPrec().toString(),
+		)
 	}
 
 	/* Consistant but not relevant */
@@ -374,7 +407,11 @@ func TestConstraints5(t *testing.T) {
 	constraint_fafbc_ffabc := MakeConstraint(PREC, tp_fafbc_ffabc)
 	res_constraint_2 := cs.appendIfConsistant(constraint_fafbc_ffabc)
 	if !res_constraint_2 || len(cs.getPrec()) > 0 {
-		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list", res_constraint_1, cs.getPrec().toString())
+		t.Fatalf(
+			"Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list",
+			res_constraint_1,
+			cs.getPrec().toString(),
+		)
 	}
 }
 
@@ -386,7 +423,11 @@ func TestConstaintes6(t *testing.T) {
 	constraint_fafbc_ffabc := MakeConstraint(PREC, tp_fxfyz_ffxyz)
 	append := cs.appendIfConsistant(constraint_fafbc_ffabc)
 	if !append || len(cs.getPrec()) > 0 {
-		t.Fatalf("Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list", append, cs.getPrec().toString())
+		t.Fatalf(
+			"Error: %v and %v is not the expected PREC list. Expected consistant and empty PREC list",
+			append,
+			cs.getPrec().toString(),
+		)
 	}
 }
 

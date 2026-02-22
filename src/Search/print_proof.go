@@ -41,7 +41,11 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-var BasicOutputProofStruct = &OutputProofStruct{ProofOutput: ProofStructListToText, Name: "Basic", Extension: ".proof"}
+var BasicOutputProofStruct = &OutputProofStruct{
+	ProofOutput: ProofStructListToText,
+	Name:        "Basic",
+	Extension:   ".proof",
+}
 
 type OutputProofStruct struct {
 	ProofOutput func(finalProof []ProofStruct, metaList Lib.List[AST.Meta]) string
@@ -69,7 +73,10 @@ func PrintProof(final_proof []ProofStruct, metaList Lib.Set[AST.Meta]) {
 	fmt.Printf("%v SZS output end Proof for %v\n", "%", Glob.GetProblemName())
 }
 
-func (ps *OutputProofStruct) printProofWithProofStruct(finalProof []ProofStruct, metaList Lib.Set[AST.Meta]) {
+func (ps *OutputProofStruct) printProofWithProofStruct(
+	finalProof []ProofStruct,
+	metaList Lib.Set[AST.Meta],
+) {
 	output := ps.ProofOutput(finalProof, metaList.Elements())
 
 	if Glob.GetWriteLogs() {

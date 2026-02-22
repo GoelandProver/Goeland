@@ -130,7 +130,12 @@ func selectSequents(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) Re
 	}
 
 	selectCleanup(errorFound, hasAnswered, chansTab)
-	return Reconstruct{result: errorFound == nil, forms: AST.NewFormList(forms...), terms: terms, err: errorFound}
+	return Reconstruct{
+		result: errorFound == nil,
+		forms:  AST.NewFormList(forms...),
+		terms:  terms,
+		err:    errorFound,
+	}
 }
 
 /* Utils functions for selectSequents */
@@ -143,7 +148,10 @@ func makeCases(chansTab [](chan Reconstruct), chanQuit chan Reconstruct) []refle
 		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(chan_)}
 	}
 	// Father
-	cases[len(chansTab)] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(chanQuit)}
+	cases[len(chansTab)] = reflect.SelectCase{
+		Dir:  reflect.SelectRecv,
+		Chan: reflect.ValueOf(chanQuit),
+	}
 	return cases
 }
 

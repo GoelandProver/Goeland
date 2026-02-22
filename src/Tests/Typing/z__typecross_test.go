@@ -59,15 +59,69 @@ func getTestTypeCrossTable() []struct {
 		expectedEq         []int
 		expectedPrimitives []TypeHint
 	}{
-		{MkTypeCross(tInt, tInt), fmt.Sprintf("(%s * %s)", intName, intName), 2, []int{0}, []TypeHint{tInt, tInt}},
-		{MkTypeCross(tInt, tRat), fmt.Sprintf("(%s * %s)", intName, ratName), 2, []int{1}, []TypeHint{tInt, tRat}},
-		{MkTypeCross(tRat, tInt), fmt.Sprintf("(%s * %s)", ratName, intName), 2, []int{2}, []TypeHint{tRat, tInt}},
-		{MkTypeCross(tRat, tRat), fmt.Sprintf("(%s * %s)", ratName, ratName), 2, []int{3}, []TypeHint{tRat, tRat}},
-		{MkTypeCross(tInt, tRat, tInt), fmt.Sprintf("(%s * %s * %s)", intName, ratName, intName), 3, []int{4}, []TypeHint{tInt, tRat, tInt}},
-		{MkTypeCross(MkTypeCross(tInt, tInt), tRat), fmt.Sprintf("((%s * %s) * %s)", intName, intName, ratName), 3, []int{5}, []TypeHint{tInt, tInt, tRat}},
-		{MkTypeCross(MkTypeCross(tRat, tRat), MkTypeCross(tInt, tInt)), fmt.Sprintf("((%s * %s) * (%s * %s))", ratName, ratName, intName, intName), 4, []int{6}, []TypeHint{tRat, tRat, tInt, tInt}},
-		{MkTypeCross(MkTypeCross(tRat, tRat, tInt), tInt), fmt.Sprintf("((%s * %s * %s) * %s)", ratName, ratName, intName, intName), 4, []int{7}, []TypeHint{tRat, tRat, tInt, tInt}},
-		{MkTypeCross(tRat, tRat, tInt, tInt), fmt.Sprintf("(%s * %s * %s * %s)", ratName, ratName, intName, intName), 4, []int{8}, []TypeHint{tRat, tRat, tInt, tInt}},
+		{
+			MkTypeCross(tInt, tInt),
+			fmt.Sprintf("(%s * %s)", intName, intName),
+			2,
+			[]int{0},
+			[]TypeHint{tInt, tInt},
+		},
+		{
+			MkTypeCross(tInt, tRat),
+			fmt.Sprintf("(%s * %s)", intName, ratName),
+			2,
+			[]int{1},
+			[]TypeHint{tInt, tRat},
+		},
+		{
+			MkTypeCross(tRat, tInt),
+			fmt.Sprintf("(%s * %s)", ratName, intName),
+			2,
+			[]int{2},
+			[]TypeHint{tRat, tInt},
+		},
+		{
+			MkTypeCross(tRat, tRat),
+			fmt.Sprintf("(%s * %s)", ratName, ratName),
+			2,
+			[]int{3},
+			[]TypeHint{tRat, tRat},
+		},
+		{
+			MkTypeCross(tInt, tRat, tInt),
+			fmt.Sprintf("(%s * %s * %s)", intName, ratName, intName),
+			3,
+			[]int{4},
+			[]TypeHint{tInt, tRat, tInt},
+		},
+		{
+			MkTypeCross(MkTypeCross(tInt, tInt), tRat),
+			fmt.Sprintf("((%s * %s) * %s)", intName, intName, ratName),
+			3,
+			[]int{5},
+			[]TypeHint{tInt, tInt, tRat},
+		},
+		{
+			MkTypeCross(MkTypeCross(tRat, tRat), MkTypeCross(tInt, tInt)),
+			fmt.Sprintf("((%s * %s) * (%s * %s))", ratName, ratName, intName, intName),
+			4,
+			[]int{6},
+			[]TypeHint{tRat, tRat, tInt, tInt},
+		},
+		{
+			MkTypeCross(MkTypeCross(tRat, tRat, tInt), tInt),
+			fmt.Sprintf("((%s * %s * %s) * %s)", ratName, ratName, intName, intName),
+			4,
+			[]int{7},
+			[]TypeHint{tRat, tRat, tInt, tInt},
+		},
+		{
+			MkTypeCross(tRat, tRat, tInt, tInt),
+			fmt.Sprintf("(%s * %s * %s * %s)", ratName, ratName, intName, intName),
+			4,
+			[]int{8},
+			[]TypeHint{tRat, tRat, tInt, tInt},
+		},
 	}
 }
 
@@ -122,7 +176,11 @@ func TestTypeCrossPrimitives(t *testing.T) {
 	for _, test := range testTable {
 		t.Run(fmt.Sprintf("%v", test.type_.ToString()), func(t *testing.T) {
 			if !listEquals(test.expectedPrimitives, test.type_.GetPrimitives()) {
-				t.Fatalf("Expected: %v, actual: %v", test.expectedPrimitives, test.type_.GetPrimitives())
+				t.Fatalf(
+					"Expected: %v, actual: %v",
+					test.expectedPrimitives,
+					test.type_.GetPrimitives(),
+				)
 			}
 		})
 	}
@@ -157,11 +215,18 @@ func TestTypeCrossNotEquals(t *testing.T) {
 
 	for _, test := range testTable {
 		for j, test2 := range testTable {
-			t.Run(fmt.Sprintf("%v-%v", test.type_.ToString(), test2.type_.ToString()), func(t *testing.T) {
-				if !primitiveContains(test.expectedEq, j) && test.type_.Equals(test2.type_) {
-					t.Fatalf("Expected %s != %s, but it was equal", test.type_.ToString(), test2.type_.ToString())
-				}
-			})
+			t.Run(
+				fmt.Sprintf("%v-%v", test.type_.ToString(), test2.type_.ToString()),
+				func(t *testing.T) {
+					if !primitiveContains(test.expectedEq, j) && test.type_.Equals(test2.type_) {
+						t.Fatalf(
+							"Expected %s != %s, but it was equal",
+							test.type_.ToString(),
+							test2.type_.ToString(),
+						)
+					}
+				},
+			)
 		}
 	}
 }
@@ -172,11 +237,18 @@ func TestTypeCrossNotEquals2(t *testing.T) {
 
 	for _, test := range testTable {
 		for _, test2 := range testTable2 {
-			t.Run(fmt.Sprintf("%v-%v", test.type_.ToString(), test2.ToString()), func(t *testing.T) {
-				if test.type_.Equals(test2) {
-					t.Fatalf("Expected %s != %s, but it was equal", test.type_.ToString(), test2.ToString())
-				}
-			})
+			t.Run(
+				fmt.Sprintf("%v-%v", test.type_.ToString(), test2.ToString()),
+				func(t *testing.T) {
+					if test.type_.Equals(test2) {
+						t.Fatalf(
+							"Expected %s != %s, but it was equal",
+							test.type_.ToString(),
+							test2.ToString(),
+						)
+					}
+				},
+			)
 		}
 	}
 }

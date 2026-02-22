@@ -98,11 +98,18 @@ func TestPreskolemization(t *testing.T) {
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		substs[0].GetSaf().GetForm().Len() > 1 ||
 		!substs[0].GetSaf().GetForm().Get(0).Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form.ToString(), expected.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
+		t.Fatalf(
+			"Error: %s has not been rewritten as expected. Expected: %s, actual: %s.",
+			form.ToString(),
+			expected.ToString(),
+			substs[0].GetSaf().GetForm().Get(0).ToString(),
+		)
 	}
 
 	// Negative occurrences should be skolemized
-	form2 := basictypes.MakerNot(basictypes.MakerPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{}))
+	form2 := basictypes.MakerNot(
+		basictypes.MakerPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{}),
+	)
 	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
@@ -113,10 +120,22 @@ func TestPreskolemization(t *testing.T) {
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		substs[0].GetSaf().GetForm().Len() > 1 ||
 		reflect.TypeOf(substs[0].GetSaf().GetForm().Get(0)) != reflect.TypeOf(basictypes.Not{}) ||
-		reflect.TypeOf(substs[0].GetSaf().GetForm().Get(0).(basictypes.Not).GetForm()) != reflect.TypeOf(basictypes.Imp{}) ||
-		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Not).GetForm().(basictypes.Imp).GetF1().(basictypes.Pred).GetArgs().Get(0).IsFun() ||
-		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Not).GetForm().(basictypes.Imp).GetF2().(basictypes.Pred).GetArgs().Get(0).IsFun() {
-		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form2.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
+		reflect.TypeOf(
+			substs[0].GetSaf().GetForm().Get(0).(basictypes.Not).GetForm(),
+		) != reflect.TypeOf(
+			basictypes.Imp{},
+		) ||
+		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Not).GetForm().(basictypes.Imp).GetF1().(basictypes.Pred).GetArgs().
+			Get(0).
+			IsFun() ||
+		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Not).GetForm().(basictypes.Imp).GetF2().(basictypes.Pred).GetArgs().
+			Get(0).
+			IsFun() {
+		t.Fatalf(
+			"Error: %s has not been rewritten as expected. Actual: %s.",
+			form2.ToString(),
+			substs[0].GetSaf().GetForm().Get(0).ToString(),
+		)
 	}
 }
 
@@ -159,13 +178,23 @@ func TestPreskolemization2(t *testing.T) {
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		substs[0].GetSaf().GetForm().Len() > 1 ||
 		reflect.TypeOf(substs[0].GetSaf().GetForm().Get(0)) != reflect.TypeOf(basictypes.Imp{}) ||
-		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Imp).GetF1().(basictypes.Pred).GetArgs().Get(0).IsFun() ||
-		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Imp).GetF2().(basictypes.Pred).GetArgs().Get(0).IsFun() {
-		t.Fatalf("Error: %s has not been rewritten as expected. Actual: %s.", form.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
+		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Imp).GetF1().(basictypes.Pred).GetArgs().
+			Get(0).
+			IsFun() ||
+		!substs[0].GetSaf().GetForm().Get(0).(basictypes.Imp).GetF2().(basictypes.Pred).GetArgs().
+			Get(0).
+			IsFun() {
+		t.Fatalf(
+			"Error: %s has not been rewritten as expected. Actual: %s.",
+			form.ToString(),
+			substs[0].GetSaf().GetForm().Get(0).ToString(),
+		)
 	}
 
 	// Negative occurrences should be rewritten normally
-	form2 := basictypes.MakerNot(basictypes.MakerPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{}))
+	form2 := basictypes.MakerNot(
+		basictypes.MakerPred(subset, basictypes.NewTermList(a, b), []typing.TypeApp{}),
+	)
 	substs, err = dmt.Rewrite(form2)
 
 	if err != nil {
@@ -184,6 +213,11 @@ func TestPreskolemization2(t *testing.T) {
 		!substs[0].GetSaf().GetSubst().Equals(treetypes.MakeEmptySubstitution()) ||
 		substs[0].GetSaf().GetForm().Len() > 1 ||
 		!substs[0].GetSaf().GetForm().Get(0).Equals(expected) {
-		t.Fatalf("Error: %s has not been rewritten as expected. Expected: %s, actual: %s.", form2.ToString(), expected.ToString(), substs[0].GetSaf().GetForm().Get(0).ToString())
+		t.Fatalf(
+			"Error: %s has not been rewritten as expected. Expected: %s, actual: %s.",
+			form2.ToString(),
+			expected.ToString(),
+			substs[0].GetSaf().GetForm().Get(0).ToString(),
+		)
 	}
 }

@@ -53,7 +53,11 @@ func newSubsManager(node *SearchNode, doneSubs SubList) *SimpleSubsManager {
 	return newSubsManagerWithChild(node, 1, doneSubs)
 }
 
-func newSubsManagerWithChild(node *SearchNode, childAmount int, doneSubs SubList) *SimpleSubsManager {
+func newSubsManagerWithChild(
+	node *SearchNode,
+	childAmount int,
+	doneSubs SubList,
+) *SimpleSubsManager {
 	return &SimpleSubsManager{node, make([]SubList, childAmount), childAmount, doneSubs}
 }
 
@@ -63,7 +67,8 @@ func (ssm *SimpleSubsManager) AddClosingSubsForFather(subs SubList) {
 }
 
 func (ssm *SimpleSubsManager) addClosingSubs(subs SubList, childIndex int) {
-	ssm.closingSubsForEachChild[childIndex] = ssm.closingSubsForEachChild[childIndex].AppendIfNotContains(subs...)
+	ssm.closingSubsForEachChild[childIndex] = ssm.closingSubsForEachChild[childIndex].AppendIfNotContains(
+		subs...)
 	sendClosingSubsToFather(ssm)
 }
 
@@ -130,9 +135,17 @@ type BranchingSubsManager struct {
 	mutex sync.Mutex
 }
 
-func newBranchingSubsManager(node *SearchNode, childAmount int, doneSubs SubList) *BranchingSubsManager {
+func newBranchingSubsManager(
+	node *SearchNode,
+	childAmount int,
+	doneSubs SubList,
+) *BranchingSubsManager {
 	counter := Glob.NewEmptySyncCounter()
-	bsm := &BranchingSubsManager{newSubsManagerWithChild(node, childAmount, doneSubs), counter, sync.Mutex{}}
+	bsm := &BranchingSubsManager{
+		newSubsManagerWithChild(node, childAmount, doneSubs),
+		counter,
+		sync.Mutex{},
+	}
 
 	counter.SetWhenFinished(bsm.sendClosingSubsToFather)
 
@@ -149,7 +162,8 @@ func (bsm *BranchingSubsManager) addClosingSubs(subs SubList, childIndex int) {
 	bsm.mutex.Lock()
 	defer bsm.mutex.Unlock()
 
-	bsm.closingSubsForEachChild[childIndex] = bsm.closingSubsForEachChild[childIndex].AppendIfNotContains(subs...)
+	bsm.closingSubsForEachChild[childIndex] = bsm.closingSubsForEachChild[childIndex].AppendIfNotContains(
+		subs...)
 }
 
 func (bsm *BranchingSubsManager) sendClosingSubsToFather() {
@@ -191,7 +205,11 @@ type IntroSubsManager struct {
 	subsitutes Lib.List[AST.Term]
 }
 
-func newIntroSubsManager(node *SearchNode, metas Lib.List[AST.Meta], doneSubs SubList) *IntroSubsManager {
+func newIntroSubsManager(
+	node *SearchNode,
+	metas Lib.List[AST.Meta],
+	doneSubs SubList,
+) *IntroSubsManager {
 	return &IntroSubsManager{
 		newSubsManager(node, doneSubs),
 		metas,

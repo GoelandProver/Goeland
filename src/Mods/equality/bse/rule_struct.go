@@ -101,7 +101,23 @@ func (r ruleStruct) toString() string {
 	if r.getRule() == RIGHT {
 		type_rule = "RIGHT"
 	}
-	return "[ type = " + type_rule + ", s = " + r.getS().ToString() + ", t = " + r.getT().ToString() + ", l' = " + r.getLPrime().ToString() + ", l = " + r.getL().ToString() + ", r = " + r.getR().ToString() + ", is s modified = " + fmt.Sprintf("%v", r.getIsSModified()) + ", index = " + fmt.Sprintf("%v", r.getIndexEQList()) + " ]"
+	return "[ type = " + type_rule + ", s = " + r.getS().
+		ToString() +
+		", t = " + r.getT().
+		ToString() +
+		", l' = " + r.getLPrime().
+		ToString() +
+		", l = " + r.getL().
+		ToString() +
+		", r = " + r.getR().
+		ToString() +
+		", is s modified = " + fmt.Sprintf(
+		"%v",
+		r.getIsSModified(),
+	) + ", index = " + fmt.Sprintf(
+		"%v",
+		r.getIndexEQList(),
+	) + " ]"
 }
 func makeRuleStruct(rule int, l, r, l_prime, s, t AST.Term) ruleStruct {
 	return ruleStruct{rule, l, r, l_prime, s, t, true, -1}

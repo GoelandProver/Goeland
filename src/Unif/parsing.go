@@ -48,7 +48,10 @@ func (t TermForm) ToMappedStringSurround(mapping AST.MapString, displayTypes boo
 	return "%s"
 }
 
-func (t TermForm) ToMappedStringChild(mapping AST.MapString, displayTypes bool) (separator, emptyValue string) {
+func (t TermForm) ToMappedStringChild(
+	mapping AST.MapString,
+	displayTypes bool,
+) (separator, emptyValue string) {
 	return "", t.t.ToMappedString(mapping, displayTypes)
 }
 
@@ -56,7 +59,8 @@ func (t TermForm) GetChildrenForMappedString() []AST.MappableString {
 	return t.GetChildFormulas().ToMappableStringSlice()
 }
 
-func (t TermForm) GetTerm() AST.Term                             { return t.t.Copy() }
+func (t TermForm) GetTerm() AST.Term { return t.t.Copy() }
+
 func (t TermForm) Copy() AST.Form                                { return makeTermForm(t.GetIndex(), t.GetTerm()) }
 func (t TermForm) GetType() AST.TypeScheme                       { return AST.DefaultFunType(0) }
 func (t TermForm) RenameVariables() AST.Form                     { return t }

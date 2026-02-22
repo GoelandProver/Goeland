@@ -77,7 +77,14 @@ func (ep EqualityProblem) copy() EqualityProblem {
 	return makeEqualityProblem(ep.GetE(), ep.GetS(), ep.GetT(), ep.getC())
 }
 func (ep EqualityProblem) ToString() string {
-	return "<" + ep.GetE().ToString() + ", " + ep.GetS().ToString() + ", " + ep.GetT().ToString() + "> • " + ep.getC().toString()
+	return "<" + ep.GetE().
+		ToString() +
+		", " + ep.GetS().
+		ToString() +
+		", " + ep.GetT().
+		ToString() +
+		"> • " + ep.getC().
+		toString()
 }
 
 func (ep EqualityProblem) AxiomsToTPTPString() string {
@@ -85,7 +92,10 @@ func (ep EqualityProblem) AxiomsToTPTPString() string {
 }
 
 func (ep EqualityProblem) ToTPTPString() string {
-	return ep.GetS().ToMappedString(AST.DefaultMapString, false) + " = " + ep.GetT().ToMappedString(AST.DefaultMapString, false)
+	return ep.GetS().
+		ToMappedString(AST.DefaultMapString, false) +
+		" = " + ep.GetT().
+		ToMappedString(AST.DefaultMapString, false)
 }
 
 /* Apply a substitution on an equality problem */
@@ -95,7 +105,10 @@ func (ep EqualityProblem) applySubstitution(s Unif.Substitutions) EqualityProble
 	new_equalities := ep.GetE()
 
 	if !ep.getC().isEmpty() {
-		Glob.PrintError("EQ-AS", fmt.Sprintf("Constraint not null in applySubstitution : %v", ep.getC().toString()))
+		Glob.PrintError(
+			"EQ-AS",
+			fmt.Sprintf("Constraint not null in applySubstitution : %v", ep.getC().toString()),
+		)
 	}
 
 	for _, subst := range s {
@@ -131,7 +144,14 @@ func makeEqualityProblemList(E Equalities, goal []eqStruct.TermPair) EqualityPro
 }
 
 func makeEqualityProblem(E Equalities, s AST.Term, t AST.Term, c ConstraintStruct) EqualityProblem {
-	return EqualityProblem{makeDataStructFromEqualities(E.copy()), makeEQMapFromEqualities(E.copy()), E.copy(), s.Copy(), t.Copy(), c.copy()}
+	return EqualityProblem{
+		makeDataStructFromEqualities(E.copy()),
+		makeEQMapFromEqualities(E.copy()),
+		E.copy(),
+		s.Copy(),
+		t.Copy(),
+		c.copy(),
+	}
 }
 
 /* Take a list of equalities and build the corresponding code tree */

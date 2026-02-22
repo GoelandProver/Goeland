@@ -89,7 +89,9 @@ func makeEmptyConstaintsList() ConstraintList {
 /* Check if a constraint is consistant with LPO and constraint list */
 func (cl ConstraintList) isConsistantWithSubst(s Unif.Substitutions) bool {
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Is consistant with the subst : %v", s.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Is consistant with the subst : %v", s.ToString()) },
+		),
 	)
 	for _, c_element := range cl {
 		c := c_element.copy()
@@ -98,7 +100,9 @@ func (cl ConstraintList) isConsistantWithSubst(s Unif.Substitutions) bool {
 		)
 		c.applySubstitution(s)
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("Constraint after apply subst : %v", c.toString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Constraint after apply subst : %v", c.toString()) },
+			),
 		)
 		respect_lpo, is_comparable := c.checkLPO()
 		debug(
@@ -128,17 +132,41 @@ func (cl ConstraintList) checkConstraintList() bool {
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Constraint : %v", c.toString()) }))
 		switch c.getCType() {
 		case PREC:
-			if !appendToMapAndCheck(c.getTP().GetT1().ToString(), c.getTP().GetT2(), &map_constraintes, 1, 2) {
+			if !appendToMapAndCheck(
+				c.getTP().GetT1().ToString(),
+				c.getTP().GetT2(),
+				&map_constraintes,
+				1,
+				2,
+			) {
 				return false
 			}
-			if !appendToMapAndCheck(c.getTP().GetT2().ToString(), c.getTP().GetT1(), &map_constraintes, 2, 2) {
+			if !appendToMapAndCheck(
+				c.getTP().GetT2().ToString(),
+				c.getTP().GetT1(),
+				&map_constraintes,
+				2,
+				2,
+			) {
 				return false
 			}
 		case EQ:
-			if !appendToMapAndCheck(c.getTP().GetT1().ToString(), c.getTP().GetT2(), &map_constraintes, 0, 2) {
+			if !appendToMapAndCheck(
+				c.getTP().GetT1().ToString(),
+				c.getTP().GetT2(),
+				&map_constraintes,
+				0,
+				2,
+			) {
 				return false
 			}
-			if !appendToMapAndCheck(c.getTP().GetT2().ToString(), c.getTP().GetT1(), &map_constraintes, 0, 2) {
+			if !appendToMapAndCheck(
+				c.getTP().GetT2().ToString(),
+				c.getTP().GetT1(),
+				&map_constraintes,
+				0,
+				2,
+			) {
 				return false
 			}
 		}

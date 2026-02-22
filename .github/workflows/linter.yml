@@ -1,0 +1,36 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  Linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '>=1.22.0'
+      - run: go install golang.org/x/tools/cmd/goyacc@latest
+      - run: cd src && make
+      - uses: rrbutani/use-nix-shell-action@v1
+        with:
+          file: shell.nix
+          script: |
+            failure=0
+            for f in `find . -type f -name "src/*.go"`; do
+              if [[ ! -z `cmp $f <(golines -m 100 $f)` ]]; then
+                echo "$f is not properly formatted."
+                failure=1
+              fi
+            done
+
+            exit $failure

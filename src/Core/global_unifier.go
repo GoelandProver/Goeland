@@ -92,7 +92,10 @@ func (u *Unifier) AddSubstitutions(cleanedSubst, actualSubst substitutions) {
 		}
 	}
 	if !found {
-		u.localUnifiers = append(u.localUnifiers, Glob.MakePair(cleanedSubst, []substitutions{actualSubst}))
+		u.localUnifiers = append(
+			u.localUnifiers,
+			Glob.MakePair(cleanedSubst, []substitutions{actualSubst}),
+		)
 	}
 }
 
@@ -120,9 +123,15 @@ func (u Unifier) ToString() string {
 	}
 	str := "object Unifier{"
 	for _, unifier := range u.localUnifiers {
-		str += "[ " + strings.Join(Glob.MapTo(unifier.Fst, substsToString), ", ") + " ] --> [ " + strings.Join(Glob.MapTo(unifier.Snd, func(_ int, el substitutions) string {
-			return strings.Join(Glob.MapTo(el, substsToString), " ; ")
-		}), " ---- ") + " ], "
+		str += "[ " + strings.Join(
+			Glob.MapTo(unifier.Fst, substsToString),
+			", ",
+		) + " ] --> [ " + strings.Join(
+			Glob.MapTo(unifier.Snd, func(_ int, el substitutions) string {
+				return strings.Join(Glob.MapTo(el, substsToString), " ; ")
+			}),
+			" ---- ",
+		) + " ], "
 	}
 	str += "}"
 	return str
@@ -163,7 +172,9 @@ func (u *Unifier) Merge(other Unifier) {
 	}
 
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Current: %s, to merge: %s", u.ToString(), other.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Current: %s, to merge: %s", u.ToString(), other.ToString()) },
+		),
 	)
 
 	newUnifiers := []Glob.Pair[substitutions, []substitutions]{}
@@ -212,7 +223,11 @@ func (u *Unifier) PruneMetasInSubsts(metas Lib.Set[AST.Meta]) {
 	u.localUnifiers = newUnifiers
 }
 
-func appendNewUnifiersIfNeeded(unifiers []Glob.Pair[substitutions, []substitutions], res substitutions, newUnifs []substitutions) []Glob.Pair[substitutions, []substitutions] {
+func appendNewUnifiersIfNeeded(
+	unifiers []Glob.Pair[substitutions, []substitutions],
+	res substitutions,
+	newUnifs []substitutions,
+) []Glob.Pair[substitutions, []substitutions] {
 	for i, unif := range unifiers {
 		if unif.Fst.Equals(res) {
 			unifiers[i].Snd = append(unifiers[i].Snd, newUnifs...)

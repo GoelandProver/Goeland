@@ -83,13 +83,19 @@ func SaveTypeScheme(name string, in TypeApp, out TypeApp) error {
 		if tScheme.Equals(tArrow) {
 			return nil
 		}
-		return fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
+		return fmt.Errorf(
+			"trying to save a known type scheme with different return types for the function %s",
+			name,
+		)
 	}
 
 	// It's not in the map, it should be added
 	typeSchemesMap.lock.Lock()
 	if found {
-		typeSchemesMap.tsMap[name] = append(typeSchemesMap.tsMap[name], App{in: in, out: out, App: tArrow})
+		typeSchemesMap.tsMap[name] = append(
+			typeSchemesMap.tsMap[name],
+			App{in: in, out: out, App: tArrow},
+		)
 	} else {
 		typeSchemesMap.tsMap[name] = []App{{in: in, out: out, App: tArrow}}
 	}
@@ -102,7 +108,10 @@ func SavePolymorphScheme(name string, scheme TypeScheme) error {
 	tScheme, found := getPolymorphSchemeFromArgs(name, scheme)
 	if tScheme != nil {
 		if !GetOutType(tScheme).Equals(GetOutType(scheme)) {
-			return fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
+			return fmt.Errorf(
+				"trying to save a known type scheme with different return types for the function %s",
+				name,
+			)
 		}
 		return nil
 	}
@@ -126,7 +135,10 @@ func SaveConstant(name string, out TypeApp) error {
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		var err error
 		if !arr[0].out.Equals(out) {
-			err = fmt.Errorf("trying to save a known type scheme with different return types for the function %s", name)
+			err = fmt.Errorf(
+				"trying to save a known type scheme with different return types for the function %s",
+				name,
+			)
 		}
 		typeSchemesMap.lock.Unlock()
 		return err
@@ -190,7 +202,8 @@ func GetPolymorphicType(name string, lenVars, lenTerms int) TypeScheme {
 	typeSchemesMap.lock.Lock()
 	if arr, found := typeSchemesMap.tsMap[name]; found {
 		for _, fun := range arr {
-			if fun.App.Size()-1 == lenTerms && (Glob.Is[QuantifiedType](fun.App) && len(fun.App.(QuantifiedType).vars) == lenVars) {
+			if fun.App.Size()-1 == lenTerms &&
+				(Glob.Is[QuantifiedType](fun.App) && len(fun.App.(QuantifiedType).vars) == lenVars) {
 				typeSchemesMap.lock.Unlock()
 				return fun.App
 			}

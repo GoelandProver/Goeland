@@ -207,7 +207,13 @@ func removeOneVar(form AST.Form) (AST.Var, AST.Form) {
 }
 
 /* Makes the child treating the variable depending on which is set. */
-func mkQuantChildren(state Sequent, varInstantiated bool, varTreated AST.Var, typeTreated AST.TypeVar, newForm AST.Form) []Sequent {
+func mkQuantChildren(
+	state Sequent,
+	varInstantiated bool,
+	varTreated AST.Var,
+	typeTreated AST.TypeVar,
+	newForm AST.Form,
+) []Sequent {
 	var type_ AST.TypeApp
 	var newLocalContext LocalContext
 	if varInstantiated {

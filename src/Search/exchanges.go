@@ -83,7 +83,13 @@ func ResetExchangesFile() {
 	}
 }
 
-func makeJsonExchanges(father_uint uint64, st State, ss_subst []Unif.Substitutions, subst_received Unif.Substitutions, calling_function string) exchanges_struct {
+func makeJsonExchanges(
+	father_uint uint64,
+	st State,
+	ss_subst []Unif.Substitutions,
+	subst_received Unif.Substitutions,
+	calling_function string,
+) exchanges_struct {
 	// ID
 	id_process := Glob.GetGID()
 	id := int(id_process)
@@ -125,7 +131,13 @@ func makeJsonExchanges(father_uint uint64, st State, ss_subst []Unif.Substitutio
 	return exchanges_struct{id, version, father, forms, mm, mc, ss, sr, calling_function}
 }
 
-func WriteExchanges(father uint64, st State, sub_sent []Core.SubstAndForm, subst_received Core.SubstAndForm, calling_function string) {
+func WriteExchanges(
+	father uint64,
+	st State,
+	sub_sent []Core.SubstAndForm,
+	subst_received Core.SubstAndForm,
+	calling_function string,
+) {
 	if Glob.GetExchanges() {
 		mutex_file_exchanges.Lock()
 		debug(Lib.MkLazy(func() string { return calling_function }))
@@ -135,7 +147,13 @@ func WriteExchanges(father uint64, st State, sub_sent []Core.SubstAndForm, subst
 		} else {
 			file_exchanges.WriteString("[\n")
 		}
-		json_content := makeJsonExchanges(father, st, Core.RemoveEmptySubstFromSubstList(Core.GetSubstListFromSubstAndFormList(sub_sent)), subst_received.GetSubst(), calling_function)
+		json_content := makeJsonExchanges(
+			father,
+			st,
+			Core.RemoveEmptySubstFromSubstList(Core.GetSubstListFromSubstAndFormList(sub_sent)),
+			subst_received.GetSubst(),
+			calling_function,
+		)
 		json_string, _ := json.MarshalIndent(json_content, "", " ")
 		file_exchanges.Write(json_string)
 		mutex_file_exchanges.Unlock()

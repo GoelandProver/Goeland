@@ -77,12 +77,26 @@ func (cs ConstraintStruct) copy() ConstraintStruct {
 	return makeConstraintStruct(cs.getAllConstraints(), cs.getSubst(), cs.getPrec())
 }
 func (cs ConstraintStruct) toString() string {
-	return "EQ subst : " + cs.getSubst().ToString() + " - PREC List : " + cs.getPrec().toString() + " - All cst : " + cs.getAllConstraints().toString()
+	return "EQ subst : " + cs.getSubst().
+		ToString() +
+		" - PREC List : " + cs.getPrec().
+		toString() +
+		" - All cst : " + cs.getAllConstraints().
+		toString()
 }
 func makeEmptyConstraintStruct() ConstraintStruct {
-	return ConstraintStruct{makeEmptyConstaintsList(), Unif.MakeEmptySubstitution(), makeEmptyConstaintsList()}
+	return ConstraintStruct{
+		makeEmptyConstaintsList(),
+		Unif.MakeEmptySubstitution(),
+		makeEmptyConstaintsList(),
+	}
 }
-func makeConstraintStruct(ac ConstraintList, s Unif.Substitutions, p ConstraintList) ConstraintStruct {
+
+func makeConstraintStruct(
+	ac ConstraintList,
+	s Unif.Substitutions,
+	p ConstraintList,
+) ConstraintStruct {
 	res := makeEmptyConstraintStruct()
 	res.setAllConstraits(ac)
 	res.setSubst(s)
@@ -98,7 +112,9 @@ func (cs *ConstraintStruct) appendIfConsistant(c Constraint) bool {
 				Lib.MkLazy(func() string { return fmt.Sprintf("%v is consistant", c.toString()) }),
 			)
 			debug(
-				Lib.MkLazy(func() string { return fmt.Sprintf("CL at the end : %v", cs.toString()) }),
+				Lib.MkLazy(
+					func() string { return fmt.Sprintf("CL at the end : %v", cs.toString()) },
+				),
 			)
 			return true
 		} else {
@@ -147,9 +163,15 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 
 	case EQ:
 		// Check if the EQ constraint is unifiable
-		subst := Unif.AddUnification(c.getTP().GetT1().Copy(), c.getTP().GetT2().Copy(), Unif.MakeEmptySubstitution())
+		subst := Unif.AddUnification(
+			c.getTP().GetT1().Copy(),
+			c.getTP().GetT2().Copy(),
+			Unif.MakeEmptySubstitution(),
+		)
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("Candidate subst : %v", subst.ToString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Candidate subst : %v", subst.ToString()) },
+			),
 		)
 		if subst.Equals(Unif.Failure()) {
 			return false
@@ -178,7 +200,9 @@ func (cs *ConstraintStruct) isConsistantWith(c Constraint) bool {
 		// Add it to subst and check unification consistency
 		subst_all := Unif.AddUnification(c.getTP().GetT1(), c.getTP().GetT2(), cs.getSubst())
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("Subst all : %v", subst_all.ToString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Subst all : %v", subst_all.ToString()) },
+			),
 		)
 		if subst_all.Equals(Unif.Failure()) {
 			return false

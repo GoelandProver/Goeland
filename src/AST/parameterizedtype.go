@@ -41,6 +41,7 @@ import (
 	"strings"
 
 	"fmt"
+
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
@@ -107,7 +108,10 @@ func (pt ParameterizedType) GetParameters() []TypeApp {
 }
 
 func (pt ParameterizedType) Copy() TypeApp {
-	newPT := ParameterizedType{name: pt.name, parameters: make(Lib.ComparableList[TypeApp], len(pt.parameters))}
+	newPT := ParameterizedType{
+		name:       pt.name,
+		parameters: make(Lib.ComparableList[TypeApp], len(pt.parameters)),
+	}
 	copy(newPT.parameters, pt.parameters)
 	return newPT
 }
@@ -131,8 +135,14 @@ func MkParameterizedType(name string, types []TypeApp) ParameterizedType {
 		}
 		if k != len(types) {
 			pMap.lock.Unlock()
-			Glob.PrintInfo("PRMTR_TYPE", fmt.Sprintf("Name of the type: %s, length of the args: %d", name, len(types)))
-			Glob.PrintError("PRMTR_TYPE", "Parameterized type can not be instanciated with this number of arguments.")
+			Glob.PrintInfo(
+				"PRMTR_TYPE",
+				fmt.Sprintf("Name of the type: %s, length of the args: %d", name, len(types)),
+			)
+			Glob.PrintError(
+				"PRMTR_TYPE",
+				"Parameterized type can not be instanciated with this number of arguments.",
+			)
 			return ParameterizedType{}
 		}
 		types = nextTypes
