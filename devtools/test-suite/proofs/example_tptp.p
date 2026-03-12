@@ -1,4 +1,4 @@
-% args: -no_id -otptp
+% args: -otptp
 % result: VALID
 
 fof(test_tptp, conjecture, 

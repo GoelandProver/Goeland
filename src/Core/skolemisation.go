@@ -32,6 +32,7 @@
 package Core
 
 import (
+	"fmt"
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core/Sko"
 	"github.com/GoelandProver/Goeland/Glob"
@@ -93,7 +94,7 @@ func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 			return realSkolemize(
 				form,
 				f.GetForm(),
-				f.GetVarList()[0],
+				f.GetVarList().At(0),
 				f.GetVarList(),
 				branchMetas,
 				isNegAll,
@@ -105,7 +106,7 @@ func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 		return realSkolemize(
 			form,
 			nf.GetForm(),
-			nf.GetVarList()[0],
+			nf.GetVarList().At(0),
 			nf.GetVarList(),
 			branchMetas,
 			isExists,
@@ -119,27 +120,35 @@ func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 
 func realSkolemize(
 	initialForm, deltaForm AST.Form,
-	x AST.Var,
-	allVars []AST.Var,
+	x AST.TypedVar,
+	allVars Lib.List[AST.TypedVar],
 	metas Lib.Set[AST.Meta],
 	typ int,
 ) AST.Form {
-	sko, res := selectedSkolemization.Skolemize(
-		initialForm,
-		deltaForm,
-		x,
-		metas,
-	)
-	selectedSkolemization = sko
+	var res AST.Form
+
+	if AST.IsTType(x.GetTy()) {
+		id := AST.MakerId("skoTy")
+		id = AST.MakerId(fmt.Sprintf("skoTy@%d", id.GetIndex()))
+		res = deltaForm.SubstTy(x.ToTyBoundVar(), AST.MkTyConst(id.ToString()))
+	} else {
+		selectedSkolemization, res = selectedSkolemization.Skolemize(
+			initialForm,
+			deltaForm,
+			x,
+			metas,
+		)
+	}
+
 	switch typ {
 	case isNegAll:
-		if len(allVars) > 1 {
-			res = AST.MakerAll(allVars[1:], res)
+		if allVars.Len() > 1 {
+			res = AST.MakerAll(allVars.Slice(1, allVars.Len()), res)
 		}
 		res = AST.MakerNot(res)
 	case isExists:
-		if len(allVars) > 1 {
-			res = AST.MakerEx(allVars[1:], res)
+		if allVars.Len() > 1 {
+			res = AST.MakerEx(allVars.Slice(1, allVars.Len()), res)
 		}
 	default:
 		Glob.Anomaly("Skolemization", "impossible reconstruction case")

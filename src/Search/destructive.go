@@ -62,7 +62,7 @@ type BasicSearchAlgorithm interface {
 	ProofSearch(uint64, State, Communication, Core.SubstAndForm, int, int, []int, bool)
 	DoEndManageBeta(uint64, State, Communication, []Communication, int, int, []int, []int)
 	manageRewriteRules(uint64, State, Communication, Core.FormAndTermsList, int, int, []int)
-	ManageClosureRule(uint64, *State, Communication, []Unif.Substitutions, Core.FormAndTerms, int, int) (bool, []Core.SubstAndForm)
+	ManageClosureRule(uint64, *State, Communication, Lib.List[Lib.List[Unif.MixedSubstitution]], Core.FormAndTerms, int, int) (bool, []Core.SubstAndForm)
 	manageResult(c Communication) (Core.Unifier, []ProofStruct, bool)
 }
 
@@ -142,7 +142,7 @@ func (ds *destructiveSearch) doOneStep(limit int, formula AST.Form) (bool, int) 
 			PrintSearchResult(result)
 		}
 
-		if unif := unifier.GetUnifier(); !unif.IsEmpty() {
+		if unif := unifier.GetUnifier(); !unif.Empty() {
 			finalProof = ApplySubstitutionOnProofList(unif, finalProof)
 		}
 		uninstanciatedMeta := RetrieveUninstantiatedMetaFromProof(finalProof)
@@ -176,9 +176,9 @@ func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.Sub
 	i := 0
 	saved_i := 0
 
-	// Choix de la subst - celle qui ne contient pas de MM, ou la première
+	// Choose either a subst that does not contain any meta from the parents, or a random one
 	for i < len(subst_list)-1 && !found {
-		if !Core.ContainsMetaMother((subst_list)[i].GetSubst(), mm) {
+		if !Core.ContainsMetaMother(subst_list[i].GetSubst(), mm) {
 			subst_found = subst_list[i]
 			saved_i = i
 			found = true
@@ -193,7 +193,7 @@ func (ds *destructiveSearch) chooseSubstitutionDestructive(subst_list []Core.Sub
 		subst_found = subst_found.Copy()
 	}
 
-	// Maj subst_list avec les subst restantes pour le BT
+	// Remember the substs for backtracking
 	if len(subst_list) > 1 {
 		subst_list[saved_i] = subst_list[len(subst_list)-1]
 		subst_list = subst_list[:len(subst_list)-1]
@@ -214,7 +214,15 @@ func (ds *destructiveSearch) searchContradictionAfterApplySusbt(father_id uint64
 		)
 		// Check if exists a contradiction after applying the substitution
 		if res, subst := ApplyClosureRules(f.GetForm(), &st); res {
-			ds.ManageClosureRule(father_id, &st, cha, Unif.CopySubstList(subst), f.Copy(), node_id, original_node_id)
+			ds.ManageClosureRule(
+				father_id,
+				&st,
+				cha,
+				subst.Copy(Lib.ListCpy[Unif.MixedSubstitution]),
+				f.Copy(),
+				node_id,
+				original_node_id,
+			)
 			return true
 		}
 	}
@@ -233,7 +241,12 @@ func (ds *destructiveSearch) searchContradiction(atomic AST.Form, father_id uint
 	fAt := Core.MakeFormAndTerm(atomic, Lib.MkList[AST.Term](0))
 
 	if clos_res {
-		ds.ManageClosureRule(father_id, &st, cha, Unif.CopySubstList(subst), fAt, node_id, original_node_id)
+		ds.ManageClosureRule(
+			father_id,
+			&st,
+			cha,
+			subst.Copy(Lib.ListCpy[Unif.MixedSubstitution]),
+			fAt, node_id, original_node_id)
 		return true
 	}
 	return false
@@ -299,7 +312,8 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
 						"Current substitutions list: %v",
-						Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound())))
+						Unif.SubstsToString(Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound())),
+					)
 				}),
 			)
 		}
@@ -313,7 +327,12 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 		for _, f := range st.GetLF() {
 			if Core.ShowKindOfRule(f.GetForm()) == Core.Atomic {
 				if searchObviousClosureRule(f.GetForm()) {
-					ds.ManageClosureRule(father_id, &st, cha, []Unif.Substitutions{}, f, node_id, original_node_id)
+					ds.ManageClosureRule(
+						father_id,
+						&st,
+						cha,
+						Lib.NewList[Lib.List[Unif.MixedSubstitution]](),
+						f, node_id, original_node_id)
 					return
 				}
 				step_atomics = append(step_atomics, f)
@@ -427,7 +446,8 @@ func (ds *destructiveSearch) waitChildren(args wcdArgs) {
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Current substs : %v",
-					args.currentSubst.GetSubst().ToString())
+					Lib.ListToString(args.currentSubst.GetSubst(), ", ", "[]"),
+				)
 			}),
 		)
 		status, substs, proofs, unifiers := ds.selectChildren(args.c, &args.children, args.currentSubst, args.childOrdering)
@@ -502,12 +522,12 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 		)
 
 		// Check if the subst was already seen, returns eventually the subst with new formula(s)
-		if Unif.ContainsSubst(Core.GetSubstListFromSubstAndFormList(given_substs), answer_father.subst_for_children.GetSubst()) {
+		if Core.GetSubstListFromSubstAndFormList(given_substs).Contains(answer_father.subst_for_children.GetSubst(), Lib.ListEquals[Unif.MixedSubstitution]) {
 			debug(
 				Lib.MkLazy(func() string { return "This substitution was sent by this child" }),
 			)
 			for _, subst_sent := range given_substs {
-				if subst_sent.GetSubst().Equals(answer_father.subst_for_children.GetSubst()) {
+				if Lib.ListEquals(subst_sent.GetSubst(), answer_father.subst_for_children.GetSubst()) {
 					subst = answer_father.getSubstForChildren().AddFormulas(subst_sent.GetForm())
 				}
 			}
@@ -530,21 +550,23 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 			x1 := x.MakeDataStruct(x2, false)
 			st.SetTreeNeg(x1)
 
-			// Maj forbidden
-			if len(answer_father.forbidden) > 0 {
+			// Update forbidden
+			if answer_father.forbidden.Len() > 0 {
 				debug(
 					Lib.MkLazy(func() string {
 						return fmt.Sprintf(
-							"Forbidden received : %v",
-							Unif.SubstListToString(answer_father.getForbiddenSubsts()))
+							"Forbidden received : %s",
+							Unif.SubstsToString(answer_father.getForbiddenSubsts()),
+						)
 					}),
 				)
 				st.SetForbiddenSubsts(answer_father.getForbiddenSubsts())
 				debug(
 					Lib.MkLazy(func() string {
 						return fmt.Sprintf(
-							"New forbidden fo this state : %v",
-							Unif.SubstListToString(st.GetForbiddenSubsts()))
+							"New forbidden for this state: %s",
+							Unif.SubstsToString(st.GetForbiddenSubsts()),
+						)
 					}),
 				)
 			} else {
@@ -598,13 +620,14 @@ func (ds *destructiveSearch) waitFather(father_id uint64, st State, c Communicat
 			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
-						"Apply substitution on myself and wait : %v",
-						answer_father.getSubstForChildren().GetSubst().ToString())
+						"Apply substitution on myself and wait : %s",
+						Lib.ListToString(answer_father.getSubstForChildren().GetSubst(), ", ", "[]"),
+					)
 				}),
 			)
 			debug(
 				Lib.MkLazy(func() string {
-					return fmt.Sprintf("Forbidden : %v", Unif.SubstListToString(st_copy.GetForbiddenSubsts()))
+					return fmt.Sprintf("Forbidden : %s", Unif.SubstsToString(st_copy.GetForbiddenSubsts()))
 				}),
 			)
 			go ds.ProofSearch(Glob.GetGID(), st_copy, c2, answer_father.getSubstForChildren(), node_id, original_node_id, new_meta_to_reintroduce, false)
@@ -740,7 +763,8 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 						}),
 					)
 
-					if len(res.subst_list_for_father) == 1 && res.subst_list_for_father[0].GetSubst().Equals(current_subst.GetSubst()) {
+					if len(res.subst_list_for_father) == 1 &&
+						Lib.ListEquals(res.subst_list_for_father[0].GetSubst(), current_subst.GetSubst()) {
 						debug(
 							Lib.MkLazy(func() string {
 								return fmt.Sprintf(
@@ -758,12 +782,18 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 						// Check if there is common substitutions
 						for _, current_subst_from_children := range res.subst_list_for_father {
 							for i := range result_subst {
-								if current_subst_from_children.GetSubst().Equals(result_subst[i].GetSubst()) {
+								if Lib.ListEquals(
+									current_subst_from_children.GetSubst(),
+									result_subst[i].GetSubst(),
+								) {
 									debug(
 										Lib.MkLazy(func() string {
 											return fmt.Sprintf(
-												"Subst in common found : %v !",
-												current_subst_from_children.GetSubst().ToString())
+												"Subst in common found : %s !",
+												Lib.ListToString(
+													current_subst_from_children.GetSubst(),
+													", ", "[]"),
+											)
 										}),
 									)
 									common_substs = append(common_substs, result_subst[i].AddFormulas(current_subst_from_children.GetForm()))
@@ -780,17 +810,20 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 										v.ToString())
 								}),
 							)
-							if !v.GetSubst().Equals(new_current_subst.GetSubst()) {
+							if !Lib.ListEquals(v.GetSubst(), new_current_subst.GetSubst()) {
 								added := false
 								debug(
 									Lib.MkLazy(func() string {
 										return fmt.Sprintf(
-											"Result_subst :%v",
-											Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(result_subst)))
+											"Result_subst :%s",
+											Unif.SubstsToString(
+												Core.GetSubstListFromSubstAndFormList(result_subst),
+											),
+										)
 									}),
 								)
 								for i := range result_subst {
-									if v.GetSubst().Equals(result_subst[i].GetSubst()) {
+									if Lib.ListEquals(v.GetSubst(), result_subst[i].GetSubst()) {
 										added = true
 										debug(
 											Lib.MkLazy(func() string { return "Subst already in result_subst" }),
@@ -811,9 +844,11 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 									debug(
 										Lib.MkLazy(func() string {
 											return fmt.Sprintf(
-												"New result susbt : %v",
-												Unif.SubstListToString(
-													Core.GetSubstListFromSubstAndFormList(result_subst)))
+												"New result susbt : %s",
+												Unif.SubstsToString(
+													Core.GetSubstListFromSubstAndFormList(result_subst),
+												),
+											)
 										}),
 									)
 								}
@@ -869,7 +904,7 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 			if !new_current_subst.IsEmpty() {
 				new_result_subst := []Core.SubstAndForm{}
 				for _, s := range result_subst {
-					if !s.GetSubst().Equals(new_current_subst.GetSubst()) {
+					if !Lib.ListEquals(s.GetSubst(), new_current_subst.GetSubst()) {
 						err, new_subst := Core.MergeSubstAndForm(s.Copy(), new_current_subst.Copy())
 
 						if err != nil {
@@ -884,8 +919,9 @@ func (ds *destructiveSearch) selectChildren(father Communication, children *[]Co
 			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
-						"New subst at the end : %v",
-						Unif.SubstListToString(Core.GetSubstListFromSubstAndFormList(result_subst)))
+						"New subst at the end : %s",
+						Unif.SubstsToString(Core.GetSubstListFromSubstAndFormList(result_subst)),
+					)
 				}),
 			)
 		default:
@@ -965,7 +1001,7 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 	newRewritten := []Core.IntSubstAndFormAndTerms{}
 	for _, isaf := range rewritten {
 		newFNTs := Core.MakeEmptyFormAndTermsList()
-		for _, isaf_f := range isaf.GetSaf().GetForm().Slice() {
+		for _, isaf_f := range isaf.GetSaf().GetForm().GetSlice() {
 			newFNTs = append(newFNTs, Core.MakeFormAndTerm(isaf_f, f.GetTerms()))
 		}
 		newRewritten = append(newRewritten, Core.MakeIntSubstAndFormAndTerms(isaf.GetId_rewrite(), Core.MakeSubstAndFormAndTerms(isaf.GetSaf().GetSubst(), newFNTs)))
@@ -978,8 +1014,10 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 	newRewritten = Core.CopyIntSubstAndFormAndTermsList(newRewritten[1:])
 
 	// If we didn't rewrite as itself ?
-	if !choosenRewritten.GetSaf().GetSubst().Equals(Unif.Failure()) {
-		// Create a child with the current rewriting rule and make this process to wait for him, with a list of other subst to try
+	if Unif.UnifSucceeded(choosenRewritten.GetSaf().GetSubst()) {
+		// Create a child with the current rewriting rule and make this process to wait for him,
+		// with a list of other subst to try
+
 		// all atomics but not the chosen one
 		state.SetLF(append(remainingAtomics.Copy(), choosenRewrittenForm.Copy()))
 		state.SetBTOnFormulas(true) // I need to know that I can bt on form and my child needs to know it to to don't loop
@@ -992,7 +1030,7 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 		state.SetCurrentProofRuleName("Rewrite")
 		state.SetCurrentProofIdDMT(choosenRewritten.GetId_rewrite())
 
-		if choosenRewritten.GetSaf().GetSubst().IsEmpty() {
+		if choosenRewritten.GetSaf().GetSubst().Empty() {
 			choosenRewritten = Core.MakeEmptyIntSubstAndFormAndTerms()
 		}
 
@@ -1017,24 +1055,32 @@ func (ds *destructiveSearch) tryRewrite(rewritten []Core.IntSubstAndForm, f Core
 	}
 }
 
-//ILL TODO Clean the following function and be careful with the Coq output.
 /**
 * clos_res and subst are the result of applyClosureRule.
 * Manage this result, dispatch the subst and recreate data structures.
 * Return if the branch is closed without variable from its father
 **/
-func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Communication, substs []Unif.Substitutions, f Core.FormAndTerms, node_id int, original_node_id int) (bool, []Core.SubstAndForm) {
+func (ds *destructiveSearch) ManageClosureRule(
+	father_id uint64,
+	st *State,
+	c Communication,
+	substs Lib.List[Lib.List[Unif.MixedSubstitution]],
+	f Core.FormAndTerms,
+	node_id int,
+	original_node_id int,
+) (bool, []Core.SubstAndForm) {
 
 	mm := st.GetMM().Copy()
 	subst := st.GetAppliedSubst().GetSubst()
 	mm = mm.Union(Core.GetMetaFromSubst(subst))
-	substs_with_mm, substs_with_mm_uncleared, substs_without_mm := Core.DispatchSubst(Unif.CopySubstList(substs), mm)
+	substs_with_mm, substs_with_mm_uncleared, substs_without_mm :=
+		Core.DispatchSubst(substs.Copy(Lib.ListCpy[Unif.MixedSubstitution]), mm)
 
 	unifier := st.GetGlobUnifier()
 	appliedSubst := st.GetAppliedSubst().GetSubst()
 
 	switch {
-	case len(substs) == 0:
+	case substs.Empty():
 		debug(
 			Lib.MkLazy(func() string { return "Branch closed by ¬⊤ or ⊥ or a litteral and its opposite!" }),
 		)
@@ -1061,24 +1107,27 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 			ds.sendSubToFather(c, true, false, Glob.GetGID(), *st, []Core.SubstAndForm{}, node_id, original_node_id, []int{})
 		}
 
-	case len(substs_without_mm) > 0:
+	case !substs_without_mm.Empty():
 		debug(
 			Lib.MkLazy(func() string {
 				return fmt.Sprintf(
 					"Contradiction found (without mm) : %v",
-					Unif.SubstListToString(substs_without_mm))
+					Unif.SubstsToString(substs_without_mm))
 			}),
 		)
 
-		if Glob.GetAssisted() && !substs_without_mm[0].IsEmpty() {
+		if Glob.GetAssisted() && !substs_without_mm.At(0).Empty() {
 			fmt.Printf("The branch can be closed by using a substitution which has no impact elsewhere!\nApplying it automatically : ")
-			fmt.Printf("%v !\n", Unif.SubstListToString(substs_without_mm))
+			fmt.Printf("%v !\n", Unif.SubstsToString(substs_without_mm))
 		}
 
 		st.SetSubstsFound([]Core.SubstAndForm{st.GetAppliedSubst()})
 
 		// Proof
-		st.SetCurrentProofRule(fmt.Sprintf("⊙ / %v", substs_without_mm[0].ToString()))
+		st.SetCurrentProofRule(fmt.Sprintf(
+			"⊙ / %s",
+			Lib.ListToString(substs_without_mm.At(0), ", ", "(empty subst)"),
+		))
 		st.SetCurrentProofRuleName("CLOSURE")
 		st.SetCurrentProofFormula(f.Copy())
 		st.SetCurrentProofNodeId(node_id)
@@ -1086,8 +1135,8 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 
 		// As no MM is involved, these substitutions can be unified with all the others having an empty subst.
-		for _, subst := range substs_without_mm {
-			merge, _ := Unif.MergeSubstitutions(appliedSubst, subst)
+		for _, subst := range substs_without_mm.GetSlice() {
+			merge, _ := Unif.MergeMixedSubstitutions(appliedSubst, subst)
 			unifier.AddSubstitutions(appliedSubst, merge)
 		}
 		st.SetGlobUnifier(unifier)
@@ -1095,12 +1144,12 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 			ds.sendSubToFather(c, true, false, Glob.GetGID(), *st, []Core.SubstAndForm{}, node_id, original_node_id, []int{})
 		}
 
-	case len(substs_with_mm) > 0:
+	case !substs_with_mm.Empty():
 		debug(
 			Lib.MkLazy(func() string { return "Contradiction found (with mm) !" }),
 		)
 
-		// TODO : REMOVE vu qu fait dans wait father ?
+		// FIXME: should this be removed as it's done in WaitForFather?
 		st.SetCurrentProofRule("⊙")
 		st.SetCurrentProofRuleName("CLOSURE")
 		st.SetCurrentProofFormula(f.Copy())
@@ -1109,17 +1158,20 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 		st.SetProof(append(st.GetProof(), st.GetCurrentProof()))
 		meta_to_reintroduce := []int{}
 
-		for _, subst_for_father := range substs_with_mm {
-			// Check if subst_for_father is failure
-			if subst_for_father.Equals(Unif.Failure()) {
-				Glob.PrintError("MCR", fmt.Sprintf("Error : SubstForFather is failure between : %v and %v \n", subst_for_father.ToString(), st.GetAppliedSubst().ToString()))
+		for _, subst_for_father := range substs_with_mm.GetSlice() {
+			if !Unif.UnifSucceeded(subst_for_father) {
+				Glob.PrintError("MCR", fmt.Sprintf(
+					"Error : SubstForFather is failure between : %s and %s \n",
+					Lib.ListToString(subst_for_father, ", ", "(empty substs)"),
+					st.GetAppliedSubst().ToString()),
+				)
 			}
 			debug(
 				Lib.MkLazy(func() string { return fmt.Sprintf("Formula = : %v", f.ToString()) }),
 			)
 
 			// Create substAndForm with the current form and the subst found
-			subst_and_form_for_father := Core.MakeSubstAndForm(subst_for_father, AST.NewFormList(f.GetForm()))
+			subst_and_form_for_father := Core.MakeSubstAndForm(subst_for_father, Lib.MkListV(f.GetForm()))
 
 			debug(
 				Lib.MkLazy(func() string {
@@ -1155,17 +1207,19 @@ func (ds *destructiveSearch) ManageClosureRule(father_id uint64, st *State, c Co
 			debug(
 				Lib.MkLazy(func() string {
 					return fmt.Sprintf(
-						"Send subst(s) with mm to father : %v",
-						Unif.SubstListToString(
-							Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound())))
+						"Send subst(s) with mm to father : %s",
+						Unif.SubstsToString(
+							Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound()),
+						),
+					)
 				}),
 			)
 			sort.Ints(meta_to_reintroduce)
 
 			// Add substs_with_mm found with the corresponding subst
-			for i, subst := range substs_with_mm {
-				mergeUncleared, _ := Unif.MergeSubstitutions(appliedSubst, substs_with_mm_uncleared[i])
-				mergeCleared, _ := Unif.MergeSubstitutions(appliedSubst, subst)
+			for i, subst := range substs_with_mm.GetSlice() {
+				mergeUncleared, _ := Unif.MergeMixedSubstitutions(appliedSubst, substs_with_mm_uncleared.At(i))
+				mergeCleared, _ := Unif.MergeMixedSubstitutions(appliedSubst, subst)
 				unifier.AddSubstitutions(mergeCleared, mergeUncleared)
 			}
 			st.SetGlobUnifier(unifier)

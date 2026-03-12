@@ -43,6 +43,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Mods/CertifUtils"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 )
 
@@ -59,115 +60,52 @@ func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 		root = AST.MakerAnd(registeredAxioms)
 	}
 
-	if AST.EmptyGlobalContext() {
-		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
-
-		if metaList.Len() > 0 {
-			resultingString += contextualizeMetas(metaList)
-		}
-	} else {
-		context := AST.GetGlobalContext()
-		for k, v := range context {
-			if typed, ok := v[0].App.(AST.TypeHint); ok {
-				if k[0] != '$' && k == typed.ToString() {
-					resultingString += "Parameter " + k + ": Type.\n"
-
-				}
-			}
-		}
-
-		resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
-
-		if metaList.Len() > 0 {
-			resultingString += contextualizeMetas(metaList)
-		}
+	// if AST.EmptyGlobalContext() {
+	contextual_symbols := CertifUtils.GetContextFromFormula(root)
+	for _, p := range contextual_symbols.GetSlice() {
+		resultingString += fmt.Sprintf("Parameter %s : %s.\n", p.Fst.ToString(), p.Snd.ToString())
 	}
+
+	if metaList.Len() > 0 {
+		resultingString += contextualizeMetas(metaList)
+	}
+	// } else {
+	// 	context := AST.GetGlobalContext()
+	// 	for k, v := range context {
+	// 		if typed, ok := v[0].App.(AST.TypeHint); ok {
+	// 			if k[0] != '$' && k == typed.ToString() {
+	// 				resultingString += "Parameter " + k + ": Type.\n"
+
+	// 			}
+	// 		}
+	// 	}
+
+	// 	resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+
+	// 	if metaList.Len() > 0 {
+	// 		resultingString += contextualizeMetas(metaList)
+	// 	}
+	// }
 	return resultingString
 }
 
 func contextPreamble() string {
 	str := lemmas
-	str += "Parameter goeland_U : Set. (* goeland's universe *)\n"
+	str += "Parameter goeland_U : Type. (* goeland's universe *)\n"
 	str += "Parameter goeland_I : goeland_U. (* an individual in the universe. *)\n\n"
+	str += "Parameter goeland_T : Type. (* a witness type. *)\n\n"
 	return str
-}
-
-func getContextFromFormula(root AST.Form) []string {
-	result := []string{}
-	switch nf := root.(type) {
-	case AST.All:
-		result = getContextFromFormula(nf.GetForm())
-	case AST.Ex:
-		result = getContextFromFormula(nf.GetForm())
-	case AST.AllType:
-		result = getContextFromFormula(nf.GetForm())
-	case AST.And:
-		for _, f := range nf.FormList.Slice() {
-			result = append(result, clean(result, getContextFromFormula(f))...)
-		}
-	case AST.Or:
-		for _, f := range nf.FormList.Slice() {
-			result = append(result, clean(result, getContextFromFormula(f))...)
-		}
-	case AST.Imp:
-		result = clean(result, getContextFromFormula(nf.GetF1()))
-		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case AST.Equ:
-		result = clean(result, getContextFromFormula(nf.GetF1()))
-		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case AST.Not:
-		result = clean(result, getContextFromFormula(nf.GetForm()))
-	case AST.Pred:
-		if !nf.GetID().Equals(AST.Id_eq) {
-			result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.",
-				nf.GetID().ToMappedString(rocqMapConnectors(), false), nf.GetType().ToString())))
-		}
-		for _, term := range nf.GetArgs().GetSlice() {
-			result = append(result, clean(result, getContextFromTerm(term))...)
-		}
-	}
-	return result
-}
-
-func getContextFromTerm(trm AST.Term) []string {
-	result := []string{}
-	if fun, isFun := trm.(AST.Fun); isFun {
-		result = append(result, mapDefault(fmt.Sprintf("Parameter %s : %s.",
-			fun.GetID().ToMappedString(rocqMapConnectors(), false), fun.GetTypeHint().ToString())))
-		for _, term := range fun.GetArgs().GetSlice() {
-			result = append(result, clean(result, getContextFromTerm(term))...)
-		}
-	}
-	return result
-}
-
-// Returns everything in add not in set
-func clean(set, add []string) []string {
-	result := []string{}
-	for _, str := range add {
-		found := false
-		for _, s := range set {
-			if s == str {
-				found = true
-				break
-			}
-		}
-		if !found {
-			result = append(result, str)
-		}
-	}
-	return result
 }
 
 func contextualizeMetas(metaList Lib.List[AST.Meta]) string {
 	result := []string{}
 	for _, meta := range metaList.GetSlice() {
-		result = append(result, meta.ToMappedString(rocqMapConnectors(), false))
+		result = append(result, meta.ToString())
 	}
 	return "Parameters " + strings.Join(result, " ") + " : goeland_U."
 }
 
-var lemmas = `Require Export Classical.
+var lemmas = `From Stdlib Require Import Classical.
 
 Lemma goeland_notnot : forall P : Prop,
   P -> (~ P -> False).

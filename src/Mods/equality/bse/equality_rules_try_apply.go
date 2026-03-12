@@ -54,8 +54,12 @@ func tryApplyLeftRules(ep EqualityProblem, index_begin int) ruleStructList {
 	i := index_begin
 	for i < len(ep.GetE()) {
 		eq_pair := ep.GetE()[i]
-		res = append(res, tryApplyRuleAux(eq_pair.GetT1(), eq_pair.GetT2(), ep.copy(), LEFT, true, i)...)
-		res = append(res, tryApplyRuleAux(eq_pair.GetT2(), eq_pair.GetT1(), ep.copy(), LEFT, false, i)...)
+		res = append(
+			res,
+			tryApplyRuleAux(eq_pair.GetT1(), eq_pair.GetT2(), ep.copy(), LEFT, true, i)...)
+		res = append(
+			res,
+			tryApplyRuleAux(eq_pair.GetT2(), eq_pair.GetT1(), ep.copy(), LEFT, false, i)...)
 		i++
 	}
 	debug(
@@ -79,7 +83,13 @@ func tryApplyRightRules(ep EqualityProblem) ruleStructList {
 }
 
 /* Set rule's parameter */
-func tryApplyRuleAux(t1, t2 AST.Term, ep EqualityProblem, ruleType int, is_s_modified bool, index int) ruleStructList {
+func tryApplyRuleAux(
+	t1, t2 AST.Term,
+	ep EqualityProblem,
+	ruleType int,
+	is_s_modified bool,
+	index int,
+) ruleStructList {
 	res := tryApplyRuleCompute(t1.Copy(), t2.Copy(), ep.copy(), ruleType)
 	new_res := ruleStructList{}
 	for _, r := range res {
@@ -110,8 +120,8 @@ func tryApplyRuleCompute(s, t AST.Term, ep EqualityProblem, type_rule int) ruleS
 	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf(
 			"len subterms found : %v - %v",
-			subterms_of_s.Len(),
-			subterms_of_s.ToString(AST.Term.ToString, ",", "[]"),
+			subterms_of_s.Cardinal(),
+			Lib.ListToString(subterms_of_s.Elements(), ",", "[]"),
 		)
 	}))
 	debug(
@@ -119,9 +129,11 @@ func tryApplyRuleCompute(s, t AST.Term, ep EqualityProblem, type_rule int) ruleS
 	)
 
 	// for each l' substerm of s, return a list (l', l) unifiable
-	list_l_prime_l := searchUnifBewteenListAndEq(subterms_of_s, ep.getETree())
+	list_l_prime_l := searchUnifBewteenListAndEq(subterms_of_s.Elements(), ep.getETree())
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("len unifiable subterms found : %v", len(list_l_prime_l)) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("len unifiable subterms found : %v", len(list_l_prime_l)) },
+		),
 	)
 
 	// Now, for each (l', l),  retrieve the r corresponding to the l
@@ -129,7 +141,13 @@ func tryApplyRuleCompute(s, t AST.Term, ep EqualityProblem, type_rule int) ruleS
 }
 
 /* Retrieve the last membre of rule struct and return the list */
-func connectLAndR(list_l_prime_l []eqStruct.TermPair, ep EqualityProblem, s AST.Term, t AST.Term, type_rule int) ruleStructList {
+func connectLAndR(
+	list_l_prime_l []eqStruct.TermPair,
+	ep EqualityProblem,
+	s AST.Term,
+	t AST.Term,
+	type_rule int,
+) ruleStructList {
 	res := ruleStructList{}
 
 	for _, l_prime_l_pair := range list_l_prime_l {
@@ -163,7 +181,17 @@ func connectLAndR(list_l_prime_l []eqStruct.TermPair, ep EqualityProblem, s AST.
 				debug(
 					Lib.MkLazy(func() string { return "Try apply rule ok !" }),
 				)
-				res = append(res, makeRuleStruct(type_rule, l_prime_l_pair.GetT2(), r.Copy(), l_prime_l_pair.GetT1(), s.Copy(), t.Copy()))
+				res = append(
+					res,
+					makeRuleStruct(
+						type_rule,
+						l_prime_l_pair.GetT2(),
+						r.Copy(),
+						l_prime_l_pair.GetT1(),
+						s.Copy(),
+						t.Copy(),
+					),
+				)
 			} else {
 				debug(
 					Lib.MkLazy(func() string { return "Don't apply an equality on itself" }),
@@ -175,7 +203,10 @@ func connectLAndR(list_l_prime_l []eqStruct.TermPair, ep EqualityProblem, s AST.
 }
 
 /* return all the pair (l, l') unifiable */
-func searchUnifBewteenListAndEq(tl Lib.List[AST.Term], tree Unif.DataStructure) []eqStruct.TermPair {
+func searchUnifBewteenListAndEq(
+	tl Lib.List[AST.Term],
+	tree Unif.DataStructure,
+) []eqStruct.TermPair {
 	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf(
 			"Searching unfication between %v and the eq tree",
@@ -189,7 +220,9 @@ func searchUnifBewteenListAndEq(tl Lib.List[AST.Term], tree Unif.DataStructure) 
 			Lib.MkLazy(func() string { return "------------------------------------------" }),
 		)
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("Current subterm : %v", t_prime.ToString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Current subterm : %v", t_prime.ToString()) },
+			),
 		)
 		if !t_prime.IsMeta() {
 			res, tl := checkUnifInTree(t_prime, tree)
@@ -199,7 +232,9 @@ func searchUnifBewteenListAndEq(tl Lib.List[AST.Term], tree Unif.DataStructure) 
 				)
 				for _, t := range tl.GetSlice() {
 					debug(
-						Lib.MkLazy(func() string { return fmt.Sprintf("Unif found with : %v", t.ToString()) }),
+						Lib.MkLazy(
+							func() string { return fmt.Sprintf("Unif found with : %v", t.ToString()) },
+						),
 					)
 					term_pair_list = append(term_pair_list, eqStruct.MakeTermPair(t_prime, t))
 				}
@@ -229,8 +264,7 @@ func checkUnifInTree(t AST.Term, tree Unif.DataStructure) (bool, Lib.List[AST.Te
 	for _, subst := range ms {
 		debug(
 			Lib.MkLazy(func() string {
-				return fmt.Sprintf("Unif found with %v :%v",
-					subst.GetForm().ToString(), subst.GetSubst().ToString())
+				return fmt.Sprintf("Unif found with: %s", subst.ToString())
 			}),
 		)
 		result_list.Append(subst.GetForm().(Unif.TermForm).GetTerm())

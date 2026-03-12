@@ -29,6 +29,9 @@ ENABLED_TESTS=./Tests/Lib
 
 all: build
 
+test-suite:
+	cd ../devtools && make test-suite
+
 parser:
 	$(GOYACC) $(GOYACCFLAGS) -p $(PREFIX) -o $(GOPARSER) $(YACCFILE)
 

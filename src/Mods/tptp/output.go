@@ -37,16 +37,20 @@
 package tptp
 
 import (
-	"strings"
-
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Mods/gs3"
+	"github.com/GoelandProver/Goeland/Mods/desko"
 	"github.com/GoelandProver/Goeland/Search"
 )
 
-var TptpOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeTptpOutput, Name: "TPTP", Extension: ".p"}
+var raise_anomaly = func(msg string) { Glob.Anomaly("TPTP", msg) }
+
+var TptpOutputProofStruct = &Search.OutputProofStruct{
+	ProofOutput: MakeTptpOutput,
+	Name:        "TPTP",
+	Extension:   ".p",
+}
 
 // ----------------------------------------------------------------------------
 // Plugin initialisation and main function to call.
@@ -55,48 +59,19 @@ var TptpOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeTptpOutpu
 // Functions: MakeTptpOutput
 // Main functions of the TPTP module.
 
-func MakeTptpOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
-	if len(prf) == 0 {
-		Glob.PrintError("TPTP", "Nothing to output")
-		return ""
-	}
+func MakeTptpOutput(prf Search.IProof, meta Lib.List[AST.Meta]) string {
+	// FIXME: set AST's printer to be the one of TPTP
 
 	if Glob.IsSCTPTPOutput() {
+		// FIXME: the one of TSTP here
 		prefix_const = "Sko_"
 	}
 
 	// Transform tableaux's proof in GS3 proof
-	return MakeTptpProof(gs3.MakeGS3Proof(prf), meta)
+	return MakeTptpProof(desko.MakeDeskolemizedProof(prf), meta)
 }
 
-var MakeTptpProof = func(proof *gs3.GS3Sequent, meta Lib.List[AST.Meta]) string {
-	old := AST.ChangeVarSeparator(", ")
-	proofString := makeTptpProofFromGS3(proof)
-	AST.ChangeVarSeparator(old)
+var MakeTptpProof = func(proof Search.IProof, meta Lib.List[AST.Meta]) string {
+	proofString := makeTPTPProofFromIProof(proof)
 	return proofString
-}
-
-// Replace defined symbols by TSTP's defined symbols.
-func mapDefault(str string) string {
-	return strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(str, " : $i", ""), " : $o", ""), " : , ", " : ")
-}
-func tptpMapConnectors() map[AST.FormulaType]string {
-	return map[AST.FormulaType]string{
-		AST.AndConn:        "&",
-		AST.OrConn:         "|",
-		AST.ImpConn:        "=>",
-		AST.EquConn:        "<=>",
-		AST.NotConn:        "~",
-		AST.TopType:        "$true",
-		AST.BotType:        "$false",
-		AST.AllQuant:       "!",
-		AST.ExQuant:        "?",
-		AST.AllTypeQuant:   "!",
-		AST.QuantVarOpen:   "[",
-		AST.QuantVarClose:  "] : ",
-		AST.QuantVarSep:    ",",
-		AST.PredEmpty:      "",
-		AST.PredTypeVarSep: ",",
-		AST.TypeVarType:    "Type",
-	}
 }

@@ -37,10 +37,7 @@
 package AST
 
 import (
-	"fmt"
 	"strings"
-	"unicode"
-	"unicode/utf8"
 
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -50,7 +47,6 @@ import (
 // Predicates / functions symbols
 
 type Id struct {
-	*MappedString
 	index int
 	name  string
 }
@@ -63,43 +59,11 @@ func (i Id) Copy() Term                { return MakeId(i.GetIndex(), i.GetName()
 func (Id) ToMeta() Meta                { return MakeEmptyMeta() }
 func (Id) GetMetas() Lib.Set[Meta]     { return Lib.EmptySet[Meta]() }
 func (Id) GetMetaList() Lib.List[Meta] { return Lib.NewList[Meta]() }
-
-var ToStringId = func(i Id) string {
-	return fmt.Sprintf("%s_%d", i.GetName(), i.GetIndex())
-}
-
-func (i Id) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (i Id) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return "", ToStringId(i)
-}
-
-func NoIdToString(i Id) string {
-	return fmt.Sprintf("%s", i.GetName())
-}
-
-func QuotedToString(i Id) string {
-	if i.GetName() == "Goeland_I" || strings.Contains(i.GetName(), "Sko_") {
-		return fmt.Sprintf("%s", i.GetName())
-	} else {
-		r, _ := utf8.DecodeRuneInString(i.GetName())
-		if unicode.IsUpper(r) {
-			return fmt.Sprintf("'%s'", i.GetName())
-		} else {
-			return fmt.Sprintf("%s", i.GetName())
-		}
-	}
-}
-
-func (i Id) GetChildrenForMappedString() []MappableString {
-	return []MappableString{}
-}
+func (i Id) ToString() string          { return printer.StrId(i) }
 
 func (i Id) Equals(t any) bool {
 	if typed, ok := t.(Id); ok {
-		return typed.GetIndex() == i.GetIndex()
+		return typed.name == i.name
 	}
 	return false
 }
@@ -111,8 +75,14 @@ func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return i
 }
 
-func (i Id) GetSubTerms() Lib.List[Term] {
-	return Lib.MkListV[Term](i)
+func (i Id) SubstTy(TyGenVar, Ty) Term { return i }
+
+func (i Id) GetSubTerms() Lib.Set[Term] {
+	return Lib.Singleton[Term](i)
+}
+
+func (i Id) GetSymbols() Lib.Set[Id] {
+	return Lib.Singleton(i)
 }
 
 // id < other : -1; id = other : 0; id > other : 1
@@ -145,107 +115,54 @@ func (i Id) Less(u any) bool {
 // n-ary functions
 
 type Fun struct {
-	*MappedString
-	p        Id
-	args     Lib.List[Term]
-	typeVars []TypeApp
-	typeHint TypeScheme
-	metas    Lib.Cache[Lib.Set[Meta], Fun]
+	p     Id
+	tys   Lib.List[Ty]
+	args  Lib.List[Term]
+	metas Lib.Cache[Lib.Set[Meta], Fun]
 }
 
-func (f Fun) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return f.ToMappedStringSurroundWithId(f.GetID().ToMappedString(mapping, displayTypes), mapping, displayTypes)
-}
-
-func (f Fun) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	return ", ", mapping[PredEmpty]
-}
-
-func (f Fun) ToMappedStringSurroundWithId(idString string, mapping MapString, displayTypes bool) string {
-	if len(f.typeVars) == 0 && f.GetArgs().Len() == 0 {
-		return idString + "%s"
-	}
-	args := []string{}
-
-	if len(f.typeVars) > 0 {
-		if tv := Glob.ListToString(f.typeVars, ", ", mapping[PredEmpty]); tv != "" {
-			args = append(args, tv)
-		}
-	}
-	args = append(args, "%s")
-
-	str := idString + "(" + strings.Join(args, mapping[PredTypeVarSep]) + ")"
-	if displayTypes {
-		str += " : " + f.typeHint.ToString()
-	}
-
-	return str
-}
-
-func ToFlatternStringSurrountWithId(f Fun, idString string, mapping MapString, displayTypes bool) string {
-
-	if len(f.typeVars) == 0 && f.GetArgs().Len() == 0 {
-		return idString + "%s"
-	}
-	args := []string{}
-
-	if len(f.typeVars) > 0 {
-		if tv := Glob.ListToString(f.typeVars, "_", mapping[PredEmpty]); tv != "" {
-			args = append(args, tv)
-		}
-	}
-	args = append(args, "%s")
-
-	str := idString + "_" + strings.Join(args, mapping[PredTypeVarSep])
-	if displayTypes {
-		str += " : " + f.typeHint.ToString()
-	}
-
-	return str
-}
-
-func (f Fun) GetChildrenForMappedString() []MappableString {
-	mappableList := Lib.ListMap(f.GetArgs(), Glob.To[MappableString])
-	return mappableList.GetSlice()
+func (f Fun) ToString() string {
+	return printer.StrFunctional(
+		f.p,
+		Lib.ListMap(f.tys, Ty.ToString),
+		Lib.ListMap(f.args, Term.ToString),
+	)
 }
 
 func (f Fun) GetID() Id               { return f.p.Copy().(Id) }
 func (f Fun) GetP() Id                { return f.p.Copy().(Id) }
+func (f Fun) GetTyArgs() Lib.List[Ty] { return f.tys }
 func (f Fun) GetArgs() Lib.List[Term] { return f.args }
 
-func (f *Fun) SetArgs(tl Lib.List[Term])   { f.args = tl }
-func (f *Fun) SetTypeScheme(ts TypeScheme) { f.typeHint = ts }
+func (f *Fun) SetArgs(tl Lib.List[Term]) { f.args = tl }
 
-func (f Fun) GetTypeVars() []TypeApp  { return f.typeVars }
-func (f Fun) GetTypeApp() TypeApp     { return nil }
-func (f Fun) GetTypeHint() TypeScheme { return f.typeHint }
-func (f Fun) GetIndex() int           { return f.GetID().GetIndex() }
-func (f Fun) GetName() string         { return f.GetID().GetName() }
-func (f Fun) IsMeta() bool            { return false }
-func (f Fun) IsFun() bool             { return true }
-func (Fun) ToMeta() Meta              { return MakeEmptyMeta() }
+func (f Fun) GetIndex() int   { return f.GetID().GetIndex() }
+func (f Fun) GetName() string { return f.GetID().GetName() }
+func (f Fun) IsMeta() bool    { return false }
+func (f Fun) IsFun() bool     { return true }
+func (Fun) ToMeta() Meta      { return MakeEmptyMeta() }
 
 func (f Fun) Equals(t any) bool {
 	switch typed := t.(type) {
 	case Fun:
 		return typed.GetID().Equals(f.GetID()) &&
-			Lib.ListEquals(typed.GetArgs(), f.GetArgs()) &&
-			f.typeHint.Equals(typed.typeHint)
+			Lib.ListEquals(typed.GetTyArgs(), f.GetTyArgs()) &&
+			Lib.ListEquals(typed.GetArgs(), f.GetArgs())
 	case *Fun:
 		return typed.GetID().Equals(f.GetID()) &&
-			Lib.ListEquals(typed.GetArgs(), f.GetArgs()) &&
-			f.typeHint.Equals(typed.typeHint)
+			Lib.ListEquals(typed.GetTyArgs(), f.GetTyArgs()) &&
+			Lib.ListEquals(typed.GetArgs(), f.GetArgs())
 	default:
 		return false
 	}
 }
 
 func (f Fun) Copy() Term {
-	return MakeFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint(), f.metas.Raw())
+	return MakeFun(f.GetP(), Lib.ListCpy(f.GetTyArgs()), Lib.ListCpy(f.GetArgs()), f.metas.Raw())
 }
 
 func (f Fun) PointerCopy() *Fun {
-	nf := MakeFun(f.GetP(), f.GetArgs(), CopyTypeAppList(f.GetTypeVars()), f.GetTypeHint(), f.metas.Raw())
+	nf := MakeFun(f.GetP(), f.GetTyArgs(), f.GetArgs(), f.metas.Raw())
 	return &nf
 }
 
@@ -283,12 +200,29 @@ func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
 		return newTerm.Copy()
 	} else {
 		tl, res := replaceFirstOccurrenceTermList(f.GetArgs(), oldTerm, newTerm)
-		nf := MakeFun(f.GetID(), tl, f.GetTypeVars(), f.GetTypeHint(), f.metas.Raw())
+		nf := MakeFun(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
 		if !res && !f.metas.NeedsUpd() {
 			nf.metas.AvoidUpd()
 		}
 		return nf
 	}
+}
+
+func (f Fun) SubstTy(old TyGenVar, new Ty) Term {
+	typed_args := Lib.ListMap(
+		f.tys,
+		func(t Ty) Ty { return t.SubstTy(old, new) },
+	)
+	args := Lib.ListMap(
+		f.args,
+		func(t Term) Term { return t.SubstTy(old, new) },
+	)
+	return MakeFun(
+		f.GetID(),
+		typed_args,
+		args,
+		f.metas.Raw(),
+	)
 }
 
 func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
@@ -296,7 +230,7 @@ func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 		return newTerm.Copy()
 	} else {
 		tl, res := ReplaceOccurrence(f.GetArgs(), oldTerm, newTerm)
-		nf := MakeFun(f.GetID(), tl, f.GetTypeVars(), f.GetTypeHint(), f.metas.Raw())
+		nf := MakeFun(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
 		if !res && !f.metas.NeedsUpd() {
 			nf.metas.AvoidUpd()
 		}
@@ -304,12 +238,21 @@ func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 	}
 }
 
-func (f Fun) GetSubTerms() Lib.List[Term] {
-	res := Lib.NewList[Term]()
+func (f Fun) GetSubTerms() Lib.Set[Term] {
+	res := Lib.Singleton(Term(f))
 
-	res.Add(TermEquals, f)
 	for _, arg := range f.GetArgs().GetSlice() {
-		res.Add(TermEquals, arg.GetSubTerms().GetSlice()...)
+		res = res.Union(arg.GetSubTerms())
+	}
+
+	return res
+}
+
+func (f Fun) GetSymbols() Lib.Set[Id] {
+	res := Lib.Singleton(f.GetID())
+
+	for _, arg := range f.GetArgs().GetSlice() {
+		res = res.Union(arg.GetSymbols())
 	}
 
 	return res
@@ -329,19 +272,16 @@ func (f Fun) Less(u any) bool {
 // Bound variables
 
 type Var struct {
-	*MappedString
-	index    int
-	name     string
-	typeHint TypeApp
+	index int
+	name  string
 }
 
-func (v Var) GetTypeApp() TypeApp       { return v.typeHint }
-func (v Var) GetTypeHint() TypeScheme   { return v.typeHint.(TypeScheme) }
+func (v Var) ToString() string          { return printer.StrBound(v.name, v.index) }
 func (v Var) GetIndex() int             { return v.index }
 func (v Var) GetName() string           { return v.name }
 func (v Var) IsMeta() bool              { return false }
 func (v Var) IsFun() bool               { return false }
-func (v Var) Copy() Term                { return MakeVar(v.GetIndex(), v.GetName(), v.typeHint) }
+func (v Var) Copy() Term                { return MakeVar(v.GetIndex(), v.GetName()) }
 func (Var) ToMeta() Meta                { return MakeEmptyMeta() }
 func (Var) GetMetas() Lib.Set[Meta]     { return Lib.EmptySet[Meta]() }
 func (Var) GetMetaList() Lib.List[Meta] { return Lib.NewList[Meta]() }
@@ -353,8 +293,12 @@ func (v Var) Equals(t any) bool {
 	return false
 }
 
-func (v Var) GetSubTerms() Lib.List[Term] {
-	return Lib.MkListV[Term](v)
+func (v Var) GetSubTerms() Lib.Set[Term] {
+	return Lib.Singleton[Term](v)
+}
+
+func (v Var) GetSymbols() Lib.Set[Id] {
+	return Lib.EmptySet[Id]()
 }
 
 func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
@@ -364,28 +308,7 @@ func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return v
 }
 
-func (v Var) ToMappedString(map_ MapString, type_ bool) string {
-	if type_ {
-		return fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
-	}
-	return v.GetName()
-}
-
-func (v Var) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (v Var) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	if displayTypes {
-		return "", fmt.Sprintf("%s_%d : %s", v.GetName(), v.GetIndex(), v.typeHint.ToString())
-	} else {
-		return "", v.GetName()
-	}
-}
-
-func (v Var) GetChildrenForMappedString() []MappableString {
-	return []MappableString{}
-}
+func (v Var) SubstTy(TyGenVar, Ty) Term { return v }
 
 func (v Var) Less(u any) bool {
 	switch t := u.(type) {
@@ -401,18 +324,16 @@ func (v Var) Less(u any) bool {
 // Meta/Free variables
 
 type Meta struct {
-	*MappedString
 	index     int
 	occurence int
 	name      string
 	formula   int
-	typeHint  TypeApp
+	ty        Ty
 }
 
-func (m Meta) GetFormula() int { return m.formula }
+func (m Meta) ToString() string { return printer.StrMeta(m.name, m.index) }
+func (m Meta) GetFormula() int  { return m.formula }
 
-func (m Meta) GetTypeApp() TypeApp         { return m.typeHint }
-func (m Meta) GetTypeHint() TypeScheme     { return m.typeHint.(TypeScheme) }
 func (m Meta) GetName() string             { return m.name }
 func (m Meta) GetIndex() int               { return m.index }
 func (m Meta) GetOccurence() int           { return m.occurence }
@@ -421,22 +342,7 @@ func (m Meta) IsFun() bool                 { return false }
 func (m Meta) ToMeta() Meta                { return m }
 func (m Meta) GetMetas() Lib.Set[Meta]     { return Lib.Singleton(m) }
 func (m Meta) GetMetaList() Lib.List[Meta] { return Lib.MkListV(m) }
-
-func (m Meta) ToMappedStringSurround(mapping MapString, displayTypes bool) string {
-	return "%s"
-}
-
-func (m Meta) ToMappedStringChild(mapping MapString, displayTypes bool) (separator, emptyValue string) {
-	if displayTypes {
-		return "", fmt.Sprintf("%s_%d : %s", m.GetName(), m.GetIndex(), m.GetTypeHint().ToString())
-	} else {
-		return "", fmt.Sprintf("%s_%d", m.GetName(), m.GetIndex())
-	}
-}
-
-func (m Meta) GetChildrenForMappedString() []MappableString {
-	return []MappableString{}
-}
+func (m Meta) GetTy() Ty                   { return m.ty }
 
 func (m Meta) Equals(t any) bool {
 	if typed, ok := t.(Meta); ok {
@@ -446,7 +352,7 @@ func (m Meta) Equals(t any) bool {
 }
 
 func (m Meta) Copy() Term {
-	return MakeMeta(m.GetIndex(), m.GetOccurence(), m.GetName(), m.GetFormula(), m.GetTypeApp())
+	return MakeMeta(m.GetIndex(), m.GetOccurence(), m.GetName(), m.GetFormula(), m.GetTy())
 }
 
 func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
@@ -456,8 +362,14 @@ func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
 	return m
 }
 
-func (m Meta) GetSubTerms() Lib.List[Term] {
-	return Lib.MkListV[Term](m)
+func (m Meta) SubstTy(TyGenVar, Ty) Term { return m }
+
+func (m Meta) GetSubTerms() Lib.Set[Term] {
+	return Lib.Singleton[Term](m)
+}
+
+func (m Meta) GetSymbols() Lib.Set[Id] {
+	return Lib.EmptySet[Id]()
 }
 
 func (m Meta) Less(u any) bool {
@@ -471,7 +383,7 @@ func (m Meta) Less(u any) bool {
 }
 
 func MakeEmptyMeta() Meta {
-	return MakeMeta(-1, -1, "-1", -1, nil, DefaultType())
+	return MakeMeta(-1, -1, "-1", -1, TIndividual())
 }
 
 func MetaEquals(x, y Meta) bool {

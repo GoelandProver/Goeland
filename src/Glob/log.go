@@ -37,13 +37,14 @@ package Glob
 
 import (
 	"fmt"
-	"github.com/GoelandProver/Goeland/Lib"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
 	"runtime"
 	"time"
+
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 var (
@@ -136,7 +137,11 @@ func EnableWriteLogs() {
 
 	wrt = io.MultiWriter(os.Stdout, f)
 
-	f, err = os.OpenFile("/tmp/Goeland"+time.Now().Format("[2006-01-02 15:04:05]")+".log", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+	f, err = os.OpenFile(
+		"/tmp/Goeland"+time.Now().Format("[2006-01-02 15:04:05]")+".log",
+		os.O_RDWR|os.O_CREATE|os.O_TRUNC,
+		0666,
+	)
 
 	if err != nil {
 		log.Fatalf("Error opening log file: %v", err)
@@ -193,4 +198,19 @@ func CreateDebugger(name string) Debugger {
 		}
 	}
 	return debug
+}
+
+type InterruptingDebugger func()
+
+func CreateInterruptingDebugger(name string) func() {
+	debug := CreateDebugger(name)
+	return func() {
+		debug(Lib.MkLazy(
+			func() string {
+				fmt.Println("Press enter to continue...")
+				fmt.Scanln()
+				return ""
+			}),
+		)
+	}
 }

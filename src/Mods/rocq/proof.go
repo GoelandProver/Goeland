@@ -42,139 +42,279 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Mods/CertifUtils"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
-	"github.com/GoelandProver/Goeland/Mods/gs3"
+	"github.com/GoelandProver/Goeland/Search"
 )
 
 var dummy int
 
-func makeRocqProofFromGS3(proof *gs3.GS3Sequent) string {
+func makeRocqProofFromIProof(proof Search.IProof) string {
 	dummy = 0
-	axioms, conjecture := processMainFormula(proof.GetTargetForm())
+	axioms, conjecture := CertifUtils.ProcessMainFormula(proof.AppliedOn())
 	totalAxioms := axioms.Len()
 	if Glob.IsLoaded("dmt") {
-		axioms.Append(dmt.GetRegisteredAxioms().Slice()...)
+		axioms.Append(dmt.GetRegisteredAxioms().GetSlice()...)
 	}
 	var resultingString string
 	resultingString = makeTheorem(axioms, conjecture)
 	resultingString += "Proof.\n"
-	hypotheses := AST.NewFormList()
+	hypotheses := Lib.NewList[AST.Form]()
 	if axioms.Len() > 0 {
 		indices := make([]int, axioms.Len())
-		for i, form := range axioms.Slice() {
+		for i, form := range axioms.GetSlice() {
 			indices[i], hypotheses = introduce(form, hypotheses)
 		}
-		resultingString += "intros " + strings.Join(Glob.MapTo(indices, func(_ int, index int) string { return introName(index) }), " ") + ". "
+		resultingString += "intros " + strings.Join(
+			Glob.MapTo(indices, func(_ int, index int) string { return introName(index) }),
+			" ",
+		) + ". "
 		if totalAxioms > 0 {
-			proof = proof.Child(0)
+			proof = proof.Children().At(0)
 		}
 	}
 	index, hypotheses := introduce(AST.MakerNot(conjecture), hypotheses)
 	resultingString += "intro " + introName(index) + ". "
-	resultingString += followProofSteps(proof, hypotheses, make([]AST.Term, 0))
+
+	debug(
+		Lib.MkLazy(
+			func() string {
+				return fmt.Sprintf("Conjecture: %s, terms:\n%s",
+					proof.AppliedOn().ToString(),
+					Lib.ListToString(proof.AppliedOn().GetSubTerms().Elements(), "\n", "{}"),
+				)
+			}))
+
+	resultingString += followProofSteps(proof, hypotheses, CertifUtils.EmptyEpsilon(
+		proof.AppliedOn().GetSubTerms(),
+		func(t AST.Term) AST.Term {
+			switch id := AST.GetSymbol(t).(type) {
+			case Lib.Some[AST.Id]:
+				return AST.MakerConst(id.Val)
+			}
+			raise_anomaly(fmt.Sprintf("Expected %s to be a Skolem term", t.ToString()))
+			return nil
+		},
+		func(t AST.Ty) AST.Ty {
+			switch id := AST.GetTySymbol(t).(type) {
+			case Lib.Some[AST.TyConstr]:
+				return id.Val
+			}
+			raise_anomaly(fmt.Sprintf("Expected %s to be a Skolem type", t.ToString()))
+			return nil
+		},
+		getConstantName,
+	))
 
 	return resultingString + "\nQed.\n"
 }
 
-func followProofSteps(proof *gs3.GS3Sequent, hypotheses *AST.FormList, constantsCreated []AST.Term) string {
+func followProofSteps(
+	proof Search.IProof,
+	hypotheses Lib.List[AST.Form],
+	epsilon CertifUtils.Epsilon,
+) string {
 	var resultingString string
-	var childrenHypotheses []*AST.FormList
-	if !proof.IsEmpty() {
-		resultingString, childrenHypotheses, constantsCreated = makeProofStep(proof, hypotheses, constantsCreated)
-	}
-	for i, child := range proof.Children() {
-		if proof.IsEmpty() {
-			resultingString += "\n" + followProofSteps(child, hypotheses.Copy(), cp(constantsCreated))
-		} else {
-			resultingString += "\n" + followProofSteps(child, childrenHypotheses[i].Copy(), cp(constantsCreated))
-		}
+	var childrenHypotheses []Lib.List[AST.Form]
+	resultingString, childrenHypotheses, epsilon = makeStep(
+		proof,
+		hypotheses,
+		epsilon,
+	)
+	for i, child := range proof.Children().GetSlice() {
+		resultingString += "\n" + followProofSteps(
+			child,
+			Lib.ListCpy(childrenHypotheses[i]),
+			epsilon.Copy(),
+		)
 	}
 	return resultingString
 }
 
-func makeProofStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, constantsCreated []AST.Term) (string, []*AST.FormList, []AST.Term) {
-	stepResult, childrenHypotheses, constantsCreated := makeStep(proof, hypotheses, constantsCreated)
-	return stepResult, childrenHypotheses, constantsCreated
-}
-
-func makeStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, constantsCreated []AST.Term) (string, []*AST.FormList, []AST.Term) {
+func makeStep(
+	proof Search.IProof,
+	hypotheses Lib.List[AST.Form],
+	epsilon CertifUtils.Epsilon,
+) (string, []Lib.List[AST.Form], CertifUtils.Epsilon) {
 	var resultingString string
-	childrenHypotheses := []*AST.FormList{hypotheses}
+	childrenHypotheses := []Lib.List[AST.Form]{hypotheses}
 
-	target, _ := hypotheses.GetIndexOf(proof.GetTargetForm())
-	switch proof.Rule() {
+	target := CertifUtils.GetTargetFormIndex(proof.AppliedOn(), hypotheses)
+	switch Search.KindOfRule(proof.RuleApplied()) {
+	case Search.KindAlpha, Search.KindBeta, Search.KindDelta, Search.KindGamma:
+		if target == CertifUtils.INVALID_INDEX {
+			raise_anomaly("Non closure rule targets an equality.")
+		}
+	}
+
+	switch proof.RuleApplied() {
 	// Closure.
-	case gs3.AX:
-		if isPredEqual(proof.GetTargetForm()) {
+	case Search.RuleClosure:
+		if CertifUtils.IsPredEqual(proof.AppliedOn()) {
 			resultingString = "congruence."
 		} else {
 			resultingString = "auto."
 		}
 
 	// Alpha rules
-	case gs3.NNOT:
+	case Search.RuleNotNot:
 		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "%s")
-	case gs3.AND:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "(goeland_and_s _ _ %s)")
-	case gs3.NOR:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "(goeland_notor_s _ _ %s)")
-	case gs3.NIMP:
-		resultingString, childrenHypotheses = alphaStep(proof, hypotheses, target, "(goeland_notimply_s _ _ %s)")
+	case Search.RuleAnd:
+		resultingString, childrenHypotheses = alphaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_and_s _ _ %s)",
+		)
+	case Search.RuleNotOr:
+		resultingString, childrenHypotheses = alphaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_notor_s _ _ %s)",
+		)
+	case Search.RuleNotImp:
+		resultingString, childrenHypotheses = alphaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_notimply_s _ _ %s)",
+		)
 
 	// Beta rules
-	case gs3.NAND:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_notand_s _ _ %s)")
-	case gs3.NEQU:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_notequiv_s _ _ %s)")
-	case gs3.OR:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_or_s _ _ %s)")
-	case gs3.IMP:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_imply_s _ _ %s)")
-	case gs3.EQU:
-		resultingString, childrenHypotheses = betaStep(proof, hypotheses, target, "(goeland_equiv_s _ _ %s)")
+	case Search.RuleNotAnd:
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_notand_s _ _ %s)",
+		)
+	case Search.RuleNotEqu:
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_notequiv_s _ _ %s)",
+		)
+	case Search.RuleOr:
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_or_s _ _ %s)",
+		)
+	case Search.RuleImp:
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_imply_s _ _ %s)",
+		)
+	case Search.RuleEqu:
+		resultingString, childrenHypotheses = betaStep(
+			proof,
+			hypotheses,
+			target,
+			"(goeland_equiv_s _ _ %s)",
+		)
 
 	// Delta rules
-	case gs3.NALL:
-		resultingString, childrenHypotheses, constantsCreated = deltaStep(proof, hypotheses, target, "apply %s. intros %s. apply NNPP. intros %s. ", constantsCreated)
-	case gs3.EX:
-		resultingString, childrenHypotheses, constantsCreated = deltaStep(proof, hypotheses, target, "elim %s. intros %s. intros %s. ", constantsCreated)
+	case Search.RuleNotAll:
+		resultingString, childrenHypotheses, epsilon = deltaStep(
+			proof,
+			hypotheses,
+			target,
+			"apply %s. intros %s. apply NNPP. intros %s. ",
+			epsilon,
+		)
+	case Search.RuleEx:
+		resultingString, childrenHypotheses, epsilon = deltaStep(
+			proof,
+			hypotheses,
+			target,
+			"elim %s. intros %s. intros %s. ",
+			epsilon,
+		)
 
 	// Gamma rules
-	case gs3.ALL:
-		resultingString, childrenHypotheses = gammaStep(proof, hypotheses, target, "generalize (%s %s). intros %s. ", constantsCreated)
-	case gs3.NEX:
-		resultingString, childrenHypotheses = gammaStep(proof, hypotheses, target, "apply %s. exists %s. apply NNPP. intros %s. ", constantsCreated)
+	case Search.RuleAll:
+		resultingString, childrenHypotheses = gammaStep(
+			proof,
+			hypotheses,
+			target,
+			"generalize (%s %s). intros %s. ",
+			epsilon,
+		)
+	case Search.RuleNotEx:
+		resultingString, childrenHypotheses = gammaStep(
+			proof,
+			hypotheses,
+			target,
+			"apply %s. exists %s. apply NNPP. intros %s. ",
+			epsilon,
+		)
 
-	// Weakening rule
-	case gs3.W:
-		if proof.TermGenerated() != nil {
-			resultingString = fmt.Sprintf("clear %s.", getConstantName(proof.TermGenerated().(AST.Fun).GetID()))
-		} else {
-			resultingString, childrenHypotheses = cleanHypotheses(hypotheses, proof.GetTargetForm())
+	case Search.RuleWeaken:
+		switch tm := proof.TermGenerated().(type) {
+		case Lib.Some[Lib.Either[AST.Ty, AST.Term]]:
+			if epsilon.Introduced(tm.Val) {
+				resultingString = fmt.Sprintf(
+					"clear %s.",
+					getConstantName(tm.Val),
+				)
+			}
+		case Lib.None[Lib.Either[AST.Ty, AST.Term]]:
+			resultingString, childrenHypotheses = cleanHypotheses(hypotheses, proof.AppliedOn())
 		}
 
-	case gs3.REWRITE:
-		resultingString, childrenHypotheses = rewriteStep(proof.GetRewriteWith(), hypotheses, target, proof.GetResultFormulasOfChild(0).Get(0))
+	case Search.RuleRew:
+		resultingString, childrenHypotheses = rewriteStep(
+			proof.RewrittenWith(),
+			hypotheses,
+			target,
+			proof.ResultFormulas().At(0).At(0),
+		)
+
+	default:
+		Glob.Fatal(
+			label,
+			fmt.Sprintf("The rule %s has not yet been implemented", proof.RuleApplied().ToString()),
+		)
 	}
 
-	return resultingString, childrenHypotheses, constantsCreated
+	return resultingString, childrenHypotheses, epsilon
 }
 
-func alphaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string) (string, []*AST.FormList) {
+func alphaStep(
+	proof Search.IProof,
+	hypotheses Lib.List[AST.Form],
+	target int,
+	format string,
+) (string, []Lib.List[AST.Form]) {
 	var indices []int
-	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
-	resultingString := fmt.Sprintf("apply "+format+". intros %s. ", introName(target), introNames(indices))
-	return resultingString, []*AST.FormList{hypotheses}
+	indices, hypotheses = introduceList(proof.ResultFormulas().At(0), hypotheses)
+	resultingString := fmt.Sprintf(
+		"apply "+format+". intros %s. ",
+		introName(target),
+		introNames(indices),
+	)
+	return resultingString, []Lib.List[AST.Form]{hypotheses}
 }
 
-func betaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string) (string, []*AST.FormList) {
-	resultHyps := []*AST.FormList{}
+func betaStep(
+	proof Search.IProof,
+	hypotheses Lib.List[AST.Form],
+	target int,
+	format string,
+) (string, []Lib.List[AST.Form]) {
+	resultHyps := []Lib.List[AST.Form]{}
 	var indices []int
 	resultingString := fmt.Sprintf("apply "+format+"; ", introName(target))
 	introducedNames := make([]string, 0)
-	for i := range proof.Children() {
-		hypoCopy := hypotheses.Copy()
-		indices, hypoCopy = introduceList(proof.GetResultFormulasOfChild(i), hypoCopy)
+	for _, formulas := range proof.ResultFormulas().GetSlice() {
+		hypoCopy := Lib.ListCpy(hypotheses)
+		indices, hypoCopy = introduceList(formulas, hypoCopy)
 		introducedNames = append(introducedNames, "intros "+introNames(indices, " "))
 		resultHyps = append(resultHyps, hypoCopy)
 	}
@@ -182,75 +322,96 @@ func betaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, forma
 	return resultingString + "[ " + strings.Join(introducedNames, " | ") + " ].", resultHyps
 }
 
-func deltaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string, constantsCreated []AST.Term) (string, []*AST.FormList, []AST.Term) {
+func deltaStep(
+	proof Search.IProof,
+	hypotheses Lib.List[AST.Form],
+	target int,
+	format string,
+	epsilon CertifUtils.Epsilon,
+) (string, []Lib.List[AST.Form], CertifUtils.Epsilon) {
 	var indices []int
 	var name string
-	//PrintInfo("DELTA", fmt.Sprintf("%s\n%s", hypotheses[target].ToString(), proof.GetResultFormulasOfChild(0).ToString()))
-	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
-	constantsCreated, name = addTermGenerated(constantsCreated, proof.TermGenerated())
+	indices, hypotheses = introduceList(proof.ResultFormulas().At(0), hypotheses)
+	epsilon, name = addTermGenerated(epsilon, proof.TermGenerated())
 	resultingString := fmt.Sprintf(format, introName(target), name, introNames(indices))
-	return resultingString, []*AST.FormList{hypotheses}, constantsCreated
+	return resultingString, []Lib.List[AST.Form]{hypotheses}, epsilon
 }
 
-func gammaStep(proof *gs3.GS3Sequent, hypotheses *AST.FormList, target int, format string, constantsCreated []AST.Term) (string, []*AST.FormList) {
+func gammaStep(
+	proof Search.IProof,
+	hypotheses Lib.List[AST.Form],
+	target int,
+	format string,
+	epsilon CertifUtils.Epsilon,
+) (string, []Lib.List[AST.Form]) {
 	var indices []int
-	indices, hypotheses = introduceList(proof.GetResultFormulasOfChild(0), hypotheses)
-	name := "(" + getRealConstantName(constantsCreated, proof.TermGenerated()) + ")"
+	indices, hypotheses = introduceList(proof.ResultFormulas().At(0), hypotheses)
+	name := "(" + epsilon.Instantiate("goeland_T", "goeland_I", proof.TermGenerated()) + ")"
 	resultingString := fmt.Sprintf(format, introName(target), name, introNames(indices))
-	return resultingString, []*AST.FormList{hypotheses}
+	return resultingString, []Lib.List[AST.Form]{hypotheses}
 }
 
-func rewriteStep(rewriteRule AST.Form, hypotheses *AST.FormList, target int, replacementForm AST.Form) (string, []*AST.FormList) {
-	index, _ := hypotheses.GetIndexOf(rewriteRule)
-	resultingString := fmt.Sprintf("rewrite %s in %s.", introName(index), introName(target))
-	hypotheses.Set(target, replacementForm)
-	return resultingString, []*AST.FormList{hypotheses}
-}
-
-// Processes the formula that was proven by Goéland.
-func processMainFormula(form AST.Form) (*AST.FormList, AST.Form) {
-	formList := AST.NewFormList()
-	switch nf := form.(type) {
-	case AST.Not:
-		form = nf.GetForm()
-	case AST.And:
-		last := nf.FormList.Len() - 1
-		formList = AST.NewFormList(nf.FormList.GetElements(0, last)...)
-		form = nf.FormList.Get(last).(AST.Not).GetForm()
+func rewriteStep(
+	rewriteRule Lib.Option[AST.Form],
+	hypotheses Lib.List[AST.Form],
+	target int,
+	replacementForm AST.Form,
+) (string, []Lib.List[AST.Form]) {
+	var rewriteForm AST.Form
+	switch f := rewriteRule.(type) {
+	case Lib.Some[AST.Form]:
+		rewriteForm = f.Val
+	default:
+		raise_anomaly("Trying to rewrite using an empty rule")
 	}
-	return formList, form
+
+	index := Lib.ListIndexOf(rewriteForm, hypotheses)
+	var actualIndex int
+	switch i := index.(type) {
+	case Lib.Some[int]:
+		actualIndex = i.Val
+	case Lib.None[int]:
+		raise_anomaly(fmt.Sprintf(
+			"Index of %s not found in %s",
+			rewriteForm.ToString(),
+			Lib.ListToString(hypotheses, ", ", "[]"),
+		))
+	}
+
+	resultingString := fmt.Sprintf("rewrite %s in %s.", introName(actualIndex), introName(target))
+	hypotheses.Upd(target, replacementForm)
+	return resultingString, []Lib.List[AST.Form]{hypotheses}
 }
 
 // Prints the theorem's name & properly formats the first formula.
-func makeTheorem(axioms *AST.FormList, conjecture AST.Form) string {
-	problemName := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(Glob.GetProblemName(), ".", "_"), "=", "_"), "+", "_")
-	axiomsWithConj := axioms.Copy()
+func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
+	problemName := CertifUtils.SanitizedTheoremName()
+	axiomsWithConj := Lib.ListCpy(axioms)
 	axiomsWithConj.Append(AST.MakerNot(AST.MakerNot(conjecture)))
 	formattedProblem := makeImpChain(axiomsWithConj)
-	return "Theorem goeland_proof_of_" + problemName + " : " +
-		mapDefault(formattedProblem.ToMappedString(rocqMapConnectors(), Glob.GetTypeProof())) + ".\n"
+	return "Theorem goeland_proof_of_" + problemName + " : " + formattedProblem.ToString() + ".\n"
 }
 
 // If [F1, F2, F3] is a formlist, then this function returns F1 -> (F2 -> F3).
-func makeImpChain(forms *AST.FormList) AST.Form {
+func makeImpChain(forms Lib.List[AST.Form]) AST.Form {
 	last := forms.Len() - 1
-	form := forms.Get(last)
+	form := forms.At(last)
 	for i := last - 1; i >= 0; i-- {
-		form = AST.MakerImp(forms.Get(i), form)
+		form = AST.MakerImp(forms.At(i), form)
 	}
 	return form
 }
 
 // Introduces a new formula in rocq's hypotheses.
-func introduce(f AST.Form, hypotheses *AST.FormList) (int, *AST.FormList) {
+func introduce(f AST.Form, hypotheses Lib.List[AST.Form]) (int, Lib.List[AST.Form]) {
 	index := hypotheses.Len()
 	hypotheses.Append(f)
 	return index, hypotheses
 }
 
-func introduceList(fl, hypotheses *AST.FormList) ([]int, *AST.FormList) {
+func introduceList(fl, hypotheses Lib.List[AST.Form]) ([]int, Lib.List[AST.Form]) {
 	indices := make([]int, fl.Len())
-	for i, f := range fl.Slice() {
+	for i, f := range fl.GetSlice() {
 		indices[i], hypotheses = introduce(f, hypotheses)
 	}
 	return indices, hypotheses
@@ -271,59 +432,17 @@ func introNames(il []int, sep ...string) string {
 	return strings.Join(Glob.MapTo(il, func(_ int, f int) string { return introName(f) }), s)
 }
 
-func isPredEqual(f AST.Form) bool {
-	if not, isNot := f.(AST.Not); isNot {
-		f = not.GetForm()
-	}
-	if p, isPred := f.(AST.Pred); isPred {
-		return p.GetID().Equals(AST.Id_eq)
-	}
-	return false
-}
-
-func addTermGenerated(constantsCreated []AST.Term, term AST.Term) ([]AST.Term, string) {
-	if term == nil {
+func addTermGenerated(
+	epsilon CertifUtils.Epsilon,
+	term Lib.Option[Lib.Either[AST.Ty, AST.Term]],
+) (CertifUtils.Epsilon, string) {
+	switch tm := epsilon.Generate(term).(type) {
+	case Lib.Some[Lib.Either[AST.Ty, AST.Term]]:
+		return epsilon, getConstantName(tm.Val)
+	default:
 		dummy++
-		return constantsCreated, fmt.Sprintf("x%d", dummy-1)
+		return epsilon, fmt.Sprintf("x%d", dummy-1)
 	}
-	constantsCreated = append(constantsCreated, term)
-	return constantsCreated, getConstantName(term.(AST.Fun).GetID())
-}
-
-func getRealConstantName(constantsCreated []AST.Term, term AST.Term) string {
-	if term == nil {
-		return "goeland_I"
-	}
-	if fun, isFun := term.(AST.Fun); isFun {
-		res := ""
-		if isGroundTerm(fun.GetID()) {
-			res = fun.GetID().ToMappedString(rocqMapConnectors(), Glob.GetTypeProof())
-			subterms := make([]string, 0)
-			for _, t := range fun.GetArgs().GetSlice() {
-				subterms = append(subterms, getRealConstantName(constantsCreated, t))
-			}
-			if len(subterms) > 0 {
-				res += "(" + strings.Join(subterms, ", ") + ")"
-			}
-		} else {
-			res = findInConstants(constantsCreated, term)
-		}
-		return res
-	}
-	return findInConstants(constantsCreated, term)
-}
-
-func findInConstants(constantsCreated []AST.Term, term AST.Term) string {
-	if term == nil {
-		return "goeland_I"
-	}
-	if hasBeenCreated(constantsCreated, term) {
-		return getConstantName(term.(AST.Fun).GetID())
-	}
-	if isGroundTerm(term) {
-		return "(" + term.ToMappedString(rocqMapConnectors(), Glob.GetTypeProof()) + ")"
-	}
-	return "goeland_I"
 }
 
 func cp[T any](source []T) []T {
@@ -332,29 +451,42 @@ func cp[T any](source []T) []T {
 	return arr
 }
 
-func cleanHypotheses(hypotheses *AST.FormList, form AST.Form) (string, []*AST.FormList) {
+func cleanHypotheses(hypotheses Lib.List[AST.Form], form AST.Form) (string, []Lib.List[AST.Form]) {
 	result := ""
-	index, _ := hypotheses.GetIndexOf(form)
-	if index != -1 {
-		hypotheses.Set(index, AST.MakerTop())
-		result = fmt.Sprintf("clear %s. ", introName(index))
+	index := Lib.ListIndexOf(form, hypotheses)
+	var actualIndex int
+	switch i := index.(type) {
+	case Lib.Some[int]:
+		actualIndex = i.Val
+	case Lib.None[int]:
+		raise_anomaly(fmt.Sprintf(
+			"Index of %s not found in %s",
+			form.ToString(),
+			Lib.ListToString(hypotheses, ", ", "[]"),
+		))
 	}
-	return result, []*AST.FormList{hypotheses}
+
+	hypotheses.Upd(actualIndex, AST.MakerTop())
+	result = fmt.Sprintf("clear %s. ", introName(actualIndex))
+	return result, []Lib.List[AST.Form]{hypotheses}
 }
 
-func getConstantName(id AST.Id) string {
-	return id.ToString()
-}
+func getConstantName(x Lib.Either[AST.Ty, AST.Term]) string {
+	var str Lib.Option[string]
 
-func hasBeenCreated(constantsCreated []AST.Term, term AST.Term) bool {
-	for _, t := range constantsCreated {
-		if t.Equals(term) {
-			return true
-		}
+	switch t := x.(type) {
+	case Lib.Left[AST.Ty, AST.Term]:
+		str = AST.GetTySymbol(t.Val)
+	case Lib.Right[AST.Ty, AST.Term]:
+		str = Lib.OptBind(AST.GetSymbol(t.Val),
+			func(id AST.Id) Lib.Option[string] { return Lib.MkSome(id.ToString()) })
 	}
-	return false
-}
 
-func isGroundTerm(term AST.Term) bool {
-	return !strings.Contains(term.ToString(), "sko")
+	switch res := str.(type) {
+	case Lib.Some[string]:
+		return res.Val
+	}
+
+	raise_anomaly("Skolemized term/type is not a functional symbol")
+	return ""
 }

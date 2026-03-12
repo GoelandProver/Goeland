@@ -5,20 +5,24 @@ import os
 import sys
 import re
 import difflib
+import shutil
 from subprocess import PIPE, run
 
 class Parser:
-    ARGS = "% args: "
-    RES = "% result: "
-    ENV = "% env: "
-    EXIT_CODE = "% exit: "
+    PARAMETERS = ["args", "result", "env", "exit", "timeout"]
+    no_check = False
 
     def __init__(self, filename):
         self.filename = filename
-        self.parseArguments()
-        self.parseResult()
-        self.parseEnv()
-        self.parseExitCode()
+        self.parameters = {}
+        for param in self.PARAMETERS:
+            self.parameters[param] = self.parseGen(f"% {param}:").strip()
+
+        self.parameters["env"] = self.parameters["env"].replace("$(PWD)", os.path.dirname(os.path.abspath(__file__)))
+
+        args_avoid_chk = ["-proof", "-otptp", "-osctptp"]
+        if "no_chk" in filename or self.parameters["exit"] != "" or any(arg in self.parameters["args"] for arg in args_avoid_chk) or self.parameters["result"] == "NOT VALID":
+            self.no_check = True
 
     def parseGen(self, pat):
         with open(self.filename) as f:
@@ -28,65 +32,33 @@ class Parser:
         return ""
 
 
-    def parseArguments(self):
-        self.arguments = self.parseGen(self.ARGS).strip()
+    def getCommandLine(self, checker_args):
+        arguments = self.parameters["args"] + checker_args
+        timeout = ""
+        try:
+            timeout = f"timeout {int(self.parameters["timeout"])} "
+        except ValueError:
+            pass
 
-    def parseResult(self):
-        self.expectedResult = self.parseGen(self.RES).strip()
+        return self.parameters["env"] + " " + timeout + "../src/_build/goeland " + arguments + " " + self.filename
 
-    def parseEnv(self):
-        self.env = self.parseGen(self.ENV).strip()
-        # Special string: $(PWD) which replaces it by the directory of the script
-        self.env = self.env.replace("$(PWD)", os.path.dirname(os.path.abspath(__file__)))
-
-    def parseExitCode(self):
-        self.expectedExitCode = self.parseGen(self.EXIT_CODE).strip()
-
-    def getCommandLine(self):
-        return self.env + " ../src/_build/goeland " + self.arguments + " " + self.filename
+    def getArgsForPrinting(self):
+        chk_str = ""
+        timeout_str = ""
+        if self.no_check:
+            chk_str = " (no check)"
+        if self.parameters["timeout"] != "":
+            timeout_str = f" (timeout {self.parameters['timeout']}s)"
+        return self.parameters["args"] + timeout_str + chk_str
 
 def sanitize(s):
     return s.encode('utf-8', errors='ignore').decode(errors='ignore')
 
-def runProver(command):
-    print(f"Launching: {command}")
+def runProver(f, command):
     result = run(command, stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8')
     return (sanitize(result.stdout), sanitize(result.stderr), result.returncode)
 
-def runWithExpected(f, parser):
-    output, err, exit_code = runProver(parser.getCommandLine())
-
-    if err != "":
-        print(f"Runtime error: {err}")
-        exit(1)
-
-    search = re.compile(".*% RES : (.*)$")
-    for line in output.split("\n"):
-        res = search.match(line)
-        if res != None:
-            actual = res.group(1)
-            if actual != parser.expectedResult:
-                print(f"Error: expected '{parser.expectedResult}', got: '{actual}'")
-                exit(1)
-            else:
-                return
-
-    if parser.expectedExitCode != '':
-        if int(parser.expectedExitCode) != exit_code:
-            print(f"Error: expected exit code '{parser.expectedExitCode}', got: '{exit_code}'")
-            exit(1)
-        else: return
-
-    print(f"Unknown error: got\n{output}")
-    exit(1)
-
-def compareOutputs(f, parser):
-    output, err, _ = runProver(parser.getCommandLine())
-
-    if err != "":
-        print(f"Runtime error: {err}")
-        exit(1)
-
+def getRelevantOutput(output):
     relevantLines = []
     ok = -1
     for line in output.split("\n"):
@@ -100,6 +72,146 @@ def compareOutputs(f, parser):
         else:
             ok -= 1
 
+    return relevantLines
+
+def isExecutable(prog) :
+    return shutil.which(prog) is not None
+
+def makeGenericCheck(command, extension, cleanup_always, cleanup_compile_success, f, output):
+    check_lines = getRelevantOutput(output)
+    check_success = False
+    filename = os.getcwd() + "/" + os.path.basename(f)[:-2].replace("-", "_")
+
+    with open(f"{filename}.{extension}", "w") as chk_file:
+        chk_file.write("\n".join(check_lines))
+
+    result = run(f"{command} {filename}.{extension}", stdout=PIPE, stderr=PIPE, universal_newlines=True, shell=True, encoding='utf-8')
+    check_success = result.returncode == 0
+
+    for ext in cleanup_always:
+        os.remove(f"{filename}.{ext}")
+
+    if not check_success:
+        return False, result.stderr
+    else:
+        for ext in cleanup_compile_success:
+            os.remove(f"{filename}.{ext}")
+
+    return True, None
+
+def getRocqCompiler() :
+    if isExecutable("rocq"):
+        return "rocq compile"
+    elif isExecutable("coqc"):
+        return "coqc"
+    else:
+        raise Exception("No Rocq executable found on the system")
+
+def makeRocqCheck(f, output):
+    if "error" in output or not("% SZS output end" in output):
+        print("Fatal error: an unexpected error has occurred when outputting the ROCQ proof")
+        exit(1)
+
+    check_status, err = makeGenericCheck(getRocqCompiler(), "v", ["glob"], ["v", "vo", "vok", "vos"], f, output)
+
+    if not check_status:
+        print(f"ROCQ check has failed.")
+        print(f"Reason: {err}")
+        exit(1)
+
+def makeLambdapiCheck(f, output):
+    # As the lambdapi output does not manage equality nor weakening, we tolerate fails for the problems
+    # of the test suite that have equality / weakening rules / that discard a quantified variable.
+    lp_tolerated_fails = [
+        "TEST_EQ.p",
+        "TEST_EQ2.p",
+        "sankalp.p",
+        "bug_16-1.p",
+        "bug_16-2.p",
+        "bug_46-1.p",
+        "bug_46-2.p",
+        "bug_46-3.p",
+        "bug_46-4.p",
+        "bug_46-5.p",
+        "bug_70-2.p",
+    ]
+
+    if (os.path.basename(f) in lp_tolerated_fails):
+        return
+
+    if "error" in output or not("% SZS output end" in output):
+        print("Fatal error: an unexpected error has occurred when outputting the LP proof")
+        exit(1)
+
+    lp_command = "lambdapi check --lib-root .. --map-dir Logic.Goeland:../proof-certification/LambdaPi"
+    check_status, err = makeGenericCheck(lp_command, "lp", [], ["lp"], f, output)
+
+    if not check_status:
+        print(f"LAMBDAPI check has failed")
+        exit(1)
+
+def runWithExpected(f, parser, checker_args, check_fun):
+    """
+    Runs Goéland on [f] using the parsed command line, then checks if the output corresponds to the expected one.
+    This function manages:
+    - error codes (e.g., it can detect whether Goéland exits with error code i
+    - results (e.g., VALID, NOT VALID).
+
+    If Goéland runs into an unexpected error, we report it. Moreover, if the kind of expected return is a VALID
+    result, we run a checker (specified by checker_args and check_fun) to check that the proof is indeed valid
+    (except for files in the no-chk folder).
+    """
+    output, err, exit_code = runProver(f, parser.getCommandLine(""))
+
+    if err != "":
+        print(f"Runtime error: {err}")
+        exit(1)
+
+    if parser.parameters["exit"] != '':
+        if int(parser.parameters["exit"]) != exit_code:
+            print(f"Error: expected exit code '{parser.parameters["exit"]}', got: '{exit_code}'")
+            exit(1)
+        else: return
+
+    if "error" in output:
+        print(f"Fatal error: an unexpected error has occurred during proof-search")
+        exit(1)
+
+    search = re.compile(".*% RES : (.*)$")
+    for line in output.split("\n"):
+        res = search.match(line)
+        if res != None:
+            actual = res.group(1)
+            if actual != parser.parameters["result"]:
+                print(f"Error: expected '{parser.parameters['result']}', got: '{actual}'")
+                exit(1)
+            else:
+                if parser.no_check: return
+                output, err, _ = runProver(f, parser.getCommandLine(checker_args))
+                if err != "":
+                    print(f"Runtime error when outputing the proof: {err}")
+                    exit(1)
+
+                check_fun(f, output)
+                return
+
+    print(f"Unknown error: got\n{output}")
+    exit(1)
+
+def runWithRocqChk(f, parser):
+    runWithExpected(f, parser, " -context -orocq", makeRocqCheck)
+
+def runWithLpChk(f, parser):
+    runWithExpected(f, parser, " -olp", makeLambdapiCheck)
+
+def compareOutputs(f, parser):
+    output, err, exit_code = runProver(f, parser.getCommandLine(""))
+
+    if err != "" or exit_code != 0:
+        print(f"Runtime error: {err}")
+        exit(1)
+
+    relevantLines = getRelevantOutput(output)
     relevantExpectedLines = []
 
     with open(os.path.splitext(f)[0] + ".out") as f:
@@ -119,10 +231,12 @@ def compareOutputs(f, parser):
 
 if __name__ == "__main__":
     outputTest = ["-proof", "-otptp", "-osctptp"]
-    for f in glob.glob("test-suite/**/*.p"):
+    for f in sorted(glob.glob("test-suite/**/*.p")):
         parser = Parser(f)
+        print(f"{f}\t{parser.getArgsForPrinting()}")
 
-        if any(out in parser.arguments for out in outputTest) :
+        if any(out in parser.parameters["args"] for out in outputTest) :
             compareOutputs(f, parser)
         else :
-            runWithExpected(f, parser)
+            runWithRocqChk(f, parser)
+            runWithLpChk(f, parser)

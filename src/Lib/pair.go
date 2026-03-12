@@ -44,3 +44,25 @@ func MkPair[T, U any](x T, y U) Pair[T, U] {
 func (p Pair[T, U]) ToString(f Func[T, string], g Func[U, string], sep string) string {
 	return "(" + f(p.Fst) + sep + g(p.Snd) + ")"
 }
+
+// Managing lists of pairs
+func Pr1[T, U any](ls List[Pair[T, U]]) List[T] {
+	return ListMap(ls, func(p Pair[T, U]) T { return p.Fst })
+}
+
+func Pr2[T, U any](ls List[Pair[T, U]]) List[U] {
+	return ListMap(ls, func(p Pair[T, U]) U { return p.Snd })
+}
+
+func MemAssoc[T, U Comparable](x T, l List[Pair[T, U]]) bool {
+	return ListMem(x, Pr1(l))
+}
+
+func AssqOpt[T, U Comparable](x T, l List[Pair[T, U]]) Option[U] {
+	return OptBind(
+		ListIndexOf(x, Pr1(l)),
+		func(i int) Option[U] {
+			return MkSome(l.At(i).Snd)
+		},
+	)
+}
