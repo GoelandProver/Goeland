@@ -296,7 +296,7 @@ func IntFormAndTermsListToIntIntStringPairList(fl []IntFormAndTermsList) []IntIn
 		tmp_fl.Node_id = f.i
 
 		for _, f2 := range f.fl {
-			tmp_fl.Isp = append(tmp_fl.Isp, IntStringPair{f2.GetForm().GetIndex(), f2.ToString()})
+			tmp_fl.Isp = append(tmp_fl.Isp, IntStringPair{0, f2.ToString()})
 		}
 		res = append(res, tmp_fl)
 	}

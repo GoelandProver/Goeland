@@ -111,7 +111,8 @@ func (d Down) IsEquivalent(instr Instruction) bool {
 	return reflect.TypeOf(instr) == reflect.TypeOf(d)
 }
 func (c Check) IsEquivalent(instr Instruction) bool {
-	return reflect.TypeOf(instr) == reflect.TypeOf(c) && c.term.GetName() == instr.(Check).term.GetName() && c.term.GetIndex() == instr.(Check).term.GetIndex()
+	return reflect.TypeOf(instr) == reflect.TypeOf(c) &&
+		c.term.GetName() == instr.(Check).term.GetName()
 }
 func (p Push) IsEquivalent(instr Instruction) bool {
 	return reflect.DeepEqual(p, instr)
@@ -123,7 +124,8 @@ func (p Put) IsEquivalent(instr Instruction) bool {
 	return reflect.TypeOf(instr) == reflect.TypeOf(p) && p.i == instr.(Put).i
 }
 func (c Compare) IsEquivalent(instr Instruction) bool {
-	return reflect.TypeOf(instr) == reflect.TypeOf(c) && c.i == instr.(Compare).i && c.j == instr.(Compare).j
+	return reflect.TypeOf(instr) == reflect.TypeOf(c) && c.i == instr.(Compare).i &&
+		c.j == instr.(Compare).j
 }
 
 /* ToString */

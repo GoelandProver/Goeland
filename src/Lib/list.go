@@ -279,6 +279,26 @@ func (l StrictlyOrderedList[T]) Less(i, j int) bool {
 	return l.values.At(i).Less(l.values.At(j))
 }
 
+func ListLess[T StrictlyOrdered](l1, l2 List[T]) bool {
+	if l1.Len() < l2.Len() {
+		return true
+	}
+
+	if l1.Len() > l2.Len() {
+		return false
+	}
+
+	// invariant: l.Len() = another.Len()
+	for i := 0; i < l1.Len(); i++ {
+		if l1.At(i).Less(l2.At(i)) {
+			return true
+		} else if l2.At(i).Less(l1.At(i)) {
+			return false
+		}
+	}
+	return false
+}
+
 func (l StrictlyOrderedList[T]) Swap(i, j int) {
 	l.values.values[i], l.values.values[j] =
 		l.values.values[j], l.values.values[i]

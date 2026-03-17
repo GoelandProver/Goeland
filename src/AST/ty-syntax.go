@@ -39,14 +39,10 @@ package AST
 
 import (
 	"fmt"
-	"sync"
 
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
-
-var meta_mut sync.Mutex
-var count_meta int
 
 type TyGenVar interface {
 	isGenVar()
@@ -67,7 +63,7 @@ type tyVar struct {
 
 func (tyVar) isTy() {}
 func (v tyVar) ToString() string {
-	return printer.StrBound(v.repr, 0)
+	return printer.StrBound(v.repr)
 }
 func (v tyVar) Equals(oth any) bool {
 	if ov, ok := oth.(tyVar); ok {
@@ -80,14 +76,13 @@ func (v tyVar) Copy() Ty { return tyVar{v.repr} }
 func (v tyVar) SubstTy(TyGenVar, Ty) Ty { return v }
 
 type TyBound struct {
-	name  string
-	index int
+	name string
 }
 
 func (TyBound) isTy()     {}
 func (TyBound) isGenVar() {}
 func (b TyBound) ToString() string {
-	return printer.StrBound(b.name, b.index)
+	return printer.StrBound(b.name)
 }
 func (b TyBound) Equals(oth any) bool {
 	if bv, ok := oth.(TyBound); ok {
@@ -95,7 +90,7 @@ func (b TyBound) Equals(oth any) bool {
 	}
 	return false
 }
-func (b TyBound) Copy() Ty        { return TyBound{b.name, b.index} }
+func (b TyBound) Copy() Ty        { return TyBound{b.name} }
 func (b TyBound) GetName() string { return b.name }
 
 func (b TyBound) SubstTy(old TyGenVar, new Ty) Ty {
@@ -106,8 +101,8 @@ func (b TyBound) SubstTy(old TyGenVar, new Ty) Ty {
 }
 
 type TyMeta struct {
-	name    string
 	index   int
+	name    string
 	formula int // for compatibility with term metas
 }
 
@@ -118,11 +113,11 @@ func (m TyMeta) ToString() string {
 }
 func (m TyMeta) Equals(oth any) bool {
 	if om, ok := oth.(TyMeta); ok {
-		return m.name == om.name && m.index == om.index
+		return m.name == om.name && m.formula == om.formula
 	}
 	return false
 }
-func (m TyMeta) Copy() Ty { return TyMeta{m.name, m.index, m.formula} }
+func (m TyMeta) Copy() Ty { return TyMeta{m.index, m.name, m.formula} }
 
 func (m TyMeta) SubstTy(v TyGenVar, new Ty) Ty {
 	if m.Equals(v) {
@@ -131,12 +126,12 @@ func (m TyMeta) SubstTy(v TyGenVar, new Ty) Ty {
 	return m
 }
 
-func (m TyMeta) ToTermMeta() Meta { return MakeMeta(m.index, -1, m.name, m.formula, tType) }
+func (m TyMeta) ToTermMeta() Meta { return MakeMeta(m.index, 0, m.name, m.formula, tType) }
 
 func TyMetaFromMeta(m Meta) TyMeta {
 	return TyMeta{
-		m.name,
 		m.index,
+		m.name,
 		m.formula,
 	}
 }
@@ -292,15 +287,16 @@ func MkTyVar(repr string) Ty {
 	return tyVar{repr}
 }
 
-func MkTyBV(name string, index int) Ty {
-	return TyBound{name, index}
+func MkTyBV(name string) Ty {
+	return TyBound{name}
 }
 
 func MkTyMeta(name string, formula int) Ty {
-	meta_mut.Lock()
-	meta := TyMeta{name, count_meta, formula}
-	count_meta += 1
-	meta_mut.Unlock()
+	lock_term.Lock()
+	index := meta_id
+	meta_id++
+	lock_term.Unlock()
+	meta := TyMeta{index, name, formula}
 	return meta
 }
 
@@ -324,21 +320,9 @@ func MkTyPi(vars Lib.List[string], ty Ty) Ty {
 	return TyPi{vars, ty}
 }
 
-// FIXME: the Maker logic should be factorized somewhere
+// Deprecated: use MkTyBV instead
 func MakerTyBV(name string) Ty {
-	lock_term.Lock()
-	i, ok := idVar[name]
-	lock_term.Unlock()
-	if ok {
-		return MkTyBV(name, i)
-	} else {
-		lock_term.Lock()
-		idVar[name] = cpt_term
-		vr := MkTyBV(name, cpt_term)
-		cpt_term += 1
-		lock_term.Unlock()
-		return vr
-	}
+	return MkTyBV(name)
 }
 
 func InstantiateTy(ty Ty, instance Lib.List[Ty]) Ty {

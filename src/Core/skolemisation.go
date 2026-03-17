@@ -33,6 +33,8 @@ package Core
 
 import (
 	"fmt"
+	"sync"
+
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Core/Sko"
 	"github.com/GoelandProver/Goeland/Glob"
@@ -72,6 +74,8 @@ import (
  **/
 
 var selectedSkolemization Sko.Skolemization = Sko.MkOuterSkolemization()
+var ty_index = 0
+var ty_mutex sync.Mutex
 
 const (
 	isNegAll = iota
@@ -128,8 +132,10 @@ func realSkolemize(
 	var res AST.Form
 
 	if AST.IsTType(x.GetTy()) {
-		id := AST.MakerId("skoTy")
-		id = AST.MakerId(fmt.Sprintf("skoTy@%d", id.GetIndex()))
+		ty_mutex.Lock()
+		id := AST.MakerId(fmt.Sprintf("skoTy@%d", ty_index))
+		ty_index++
+		ty_mutex.Unlock()
 		res = deltaForm.SubstTy(x.ToTyBoundVar(), AST.MkTyConst(id.ToString()))
 	} else {
 		selectedSkolemization, res = selectedSkolemization.Skolemize(

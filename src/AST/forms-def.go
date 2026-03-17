@@ -87,16 +87,16 @@ type All struct {
 	quantifier
 }
 
-func MakeAllSimple(i int, vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) All {
-	return All{makeQuantifier(i, vars, forms, metas, ConnAll)}
+func MakeAllSimple(vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) All {
+	return All{makeQuantifier(vars, forms, metas, ConnAll)}
 }
 
-func MakeAll(i int, vars Lib.List[TypedVar], forms Form) All {
-	return MakeAllSimple(i, vars, forms, Lib.EmptySet[Meta]())
+func MakeAll(vars Lib.List[TypedVar], forms Form) All {
+	return MakeAllSimple(vars, forms, Lib.EmptySet[Meta]())
 }
 
 func MakerAll(vars Lib.List[TypedVar], forms Form) All {
-	return MakeAll(MakerIndexFormula(), vars, forms)
+	return MakeAll(vars, forms)
 }
 
 func (a All) Equals(other any) bool {
@@ -135,7 +135,17 @@ func (a All) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return All{a.quantifier.replaceMetaByTerm(meta, term)}
 }
 
-func (a All) Less(oth any) bool { return less(a, oth) }
+func (a All) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch f := form.(type) {
+		case All:
+			return qLess(a.varList, f.varList, a.subForm, f.subForm)
+		default:
+			return false
+		}
+	}
+	return false
+}
 
 // -----------------------------------------------------------------------------
 // Exists
@@ -144,16 +154,16 @@ type Ex struct {
 	quantifier
 }
 
-func MakeExSimple(i int, vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) Ex {
-	return Ex{makeQuantifier(i, vars, forms, metas, ConnEx)}
+func MakeExSimple(vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) Ex {
+	return Ex{makeQuantifier(vars, forms, metas, ConnEx)}
 }
 
-func MakeEx(i int, vars Lib.List[TypedVar], forms Form) Ex {
-	return MakeExSimple(i, vars, forms, Lib.EmptySet[Meta]())
+func MakeEx(vars Lib.List[TypedVar], forms Form) Ex {
+	return MakeExSimple(vars, forms, Lib.EmptySet[Meta]())
 }
 
 func MakerEx(vars Lib.List[TypedVar], forms Form) Ex {
-	return MakeEx(MakerIndexFormula(), vars, forms)
+	return MakeEx(vars, forms)
 }
 
 func (e Ex) Equals(other any) bool {
@@ -192,38 +202,45 @@ func (e Ex) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return Ex{e.quantifier.replaceMetaByTerm(meta, term)}
 }
 
-func (e Ex) Less(oth any) bool { return less(e, oth) }
+func (e Ex) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch f := form.(type) {
+		case All:
+			return true
+		case Ex:
+			return qLess(e.varList, f.varList, e.subForm, f.subForm)
+		default:
+			return false
+		}
+	}
+	return false
+}
 
 // -----------------------------------------------------------------------------
 // Or
 
 type Or struct {
-	index int
 	forms Lib.List[Form]
 	metas Lib.Cache[Lib.Set[Meta], Or]
 }
 
 /** Constructors **/
 
-func MakeOrSimple(i int, forms Lib.List[Form], metas Lib.Set[Meta]) Or {
-	return Or{i, forms, Lib.MkCache(metas, Or.forceGetMetas)}
+func MakeOrSimple(forms Lib.List[Form], metas Lib.Set[Meta]) Or {
+	return Or{forms, Lib.MkCache(metas, Or.forceGetMetas)}
 }
 
-func MakeOr(i int, forms Lib.List[Form]) Or {
-	return MakeOrSimple(i, forms, Lib.EmptySet[Meta]())
+func MakeOr(forms Lib.List[Form]) Or {
+	return MakeOrSimple(forms, Lib.EmptySet[Meta]())
 }
 
 func MakerOr(forms Lib.List[Form]) Or {
-	return MakeOr(MakerIndexFormula(), forms)
+	return MakeOr(forms)
 }
 
 /** Methods **/
 
 /** - Form interface Methods **/
-
-func (o Or) GetIndex() int {
-	return o.index
-}
 
 func (o Or) forceGetMetas() Lib.Set[Meta] {
 	return metasUnion(o.forms)
@@ -260,7 +277,6 @@ func (o Or) Equals(f any) bool {
 
 func (o Or) Copy() Form {
 	return Or{
-		o.index,
 		Lib.ListCpy(o.forms),
 		o.metas.Copy(Lib.Set[Meta].Copy),
 	}
@@ -275,7 +291,7 @@ func (o Or) ToString() string {
 
 func (o Or) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	formList, res := replaceTermInFormList(o.forms, old, new)
-	no := MakeOrSimple(o.GetIndex(), formList, o.metas.Raw())
+	no := MakeOrSimple(formList, o.metas.Raw())
 	if !res && !o.metas.NeedsUpd() {
 		no.metas.AvoidUpd()
 	}
@@ -284,16 +300,16 @@ func (o Or) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 
 func (o Or) SubstTy(old TyGenVar, new Ty) Form {
 	formList := replaceTyVarInFormList(o.forms, old, new)
-	return MakeOrSimple(o.GetIndex(), formList, o.metas.Raw())
+	return MakeOrSimple(formList, o.metas.Raw())
 }
 
 func (o Or) RenameVariables() Form {
-	return MakeOr(o.GetIndex(), renameFormList(o.forms))
+	return MakeOr(renameFormList(o.forms))
 }
 
 func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, o.forms, o.metas.Raw())
-	return MakeOrSimple(o.index, newFormList, newMetas)
+	return MakeOrSimple(newFormList, newMetas)
 }
 
 func (o Or) GetSubFormulasRecur() Lib.List[Form] {
@@ -305,58 +321,64 @@ func (o Or) GetChildFormulas() Lib.List[Form] {
 }
 
 func (o Or) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeOr(o.GetIndex(), LsSubstByTerm(o.forms, meta, term))
+	return MakeOr(LsSubstByTerm(o.forms, meta, term))
 }
 
-func (o Or) Less(oth any) bool { return less(o, oth) }
+func (o Or) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch f := form.(type) {
+		case All, Ex:
+			return true
+		case Or:
+			return bLess(o.forms, f.forms)
+		default:
+			return false
+		}
+	}
+	return false
+}
 
 // -----------------------------------------------------------------------------
 // And
 
 type And struct {
-	index int
 	forms Lib.List[Form]
 	metas Lib.Cache[Lib.Set[Meta], And]
 }
 
 /** Constructors **/
 
-func MakeAndSimple(i int, forms Lib.List[Form], metas Lib.Set[Meta]) And {
-	return And{i, forms, Lib.MkCache(metas, And.forceGetMetas)}
+func MakeAndSimple(forms Lib.List[Form], metas Lib.Set[Meta]) And {
+	return And{forms, Lib.MkCache(metas, And.forceGetMetas)}
 }
 
-func MakeAndSimpleBinary(i int, forms Lib.List[Form], metas Lib.Set[Meta]) And {
+func MakeAndSimpleBinary(forms Lib.List[Form], metas Lib.Set[Meta]) And {
 	switch forms.Len() {
 	// FIXME: case 0 and 1 should error, no?
 	case 0, 1, 2:
-		return MakeAndSimple(i, forms, metas)
+		return MakeAndSimple(forms, metas)
 	default:
 		return MakeAndSimple(
-			i,
 			Lib.MkListV[Form](forms.At(0), MakerAnd(forms.Slice(1, forms.Len()), true)),
 			metas)
 	}
 }
 
-func MakeAnd(i int, forms Lib.List[Form], binary ...bool) And {
+func MakeAnd(forms Lib.List[Form], binary ...bool) And {
 	if binary != nil {
-		return MakeAndSimpleBinary(i, forms, Lib.EmptySet[Meta]())
+		return MakeAndSimpleBinary(forms, Lib.EmptySet[Meta]())
 	} else {
-		return MakeAndSimple(i, forms, Lib.EmptySet[Meta]())
+		return MakeAndSimple(forms, Lib.EmptySet[Meta]())
 	}
 }
 
 func MakerAnd(forms Lib.List[Form], binary ...bool) And {
-	return MakeAnd(MakerIndexFormula(), forms, binary...)
+	return MakeAnd(forms, binary...)
 }
 
 /** Methods **/
 
 /** - Form interface Methods **/
-
-func (a And) GetIndex() int {
-	return a.index
-}
 
 func (a And) forceGetMetas() Lib.Set[Meta] {
 	return metasUnion(a.forms)
@@ -396,7 +418,6 @@ func (a And) Equals(other any) bool {
 
 func (a And) Copy() Form {
 	return And{
-		a.index,
 		Lib.ListCpy(a.forms),
 		a.metas.Copy(Lib.Set[Meta].Copy),
 	}
@@ -411,7 +432,7 @@ func (a And) ToString() string {
 
 func (a And) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	varList, res := replaceTermInFormList(a.forms, old, new)
-	na := MakeAndSimple(a.index, varList, a.metas.Raw())
+	na := MakeAndSimple(varList, a.metas.Raw())
 	if !res && !a.metas.NeedsUpd() {
 		na.metas.AvoidUpd()
 	}
@@ -420,16 +441,16 @@ func (a And) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 
 func (a And) SubstTy(old TyGenVar, new Ty) Form {
 	formList := replaceTyVarInFormList(a.forms, old, new)
-	return MakeAndSimple(a.GetIndex(), formList, a.metas.Raw())
+	return MakeAndSimple(formList, a.metas.Raw())
 }
 
 func (a And) RenameVariables() Form {
-	return MakeAnd(a.GetIndex(), renameFormList(a.forms))
+	return MakeAnd(renameFormList(a.forms))
 }
 
 func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, a.forms, a.metas.Raw())
-	return MakeAndSimple(a.index, newFormList, newMetas)
+	return MakeAndSimple(newFormList, newMetas)
 }
 
 func (a And) GetSubFormulasRecur() Lib.List[Form] {
@@ -441,43 +462,51 @@ func (a And) GetChildFormulas() Lib.List[Form] {
 }
 
 func (a And) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeAnd(a.GetIndex(), LsSubstByTerm(a.forms, meta, term))
+	return MakeAnd(LsSubstByTerm(a.forms, meta, term))
 }
 
-func (a And) Less(oth any) bool { return less(a, oth) }
+func (a And) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch f := form.(type) {
+		case All, Ex, Or:
+			return true
+		case And:
+			return bLess(a.forms, f.forms)
+		default:
+			return false
+		}
+	}
+	return false
+}
 
 // -----------------------------------------------------------------------------
 // Equivalence
 
 type Equ struct {
-	index  int
 	f1, f2 Form
 	metas  Lib.Cache[Lib.Set[Meta], Equ]
 }
 
-func MakeEquSimple(i int, firstForm, secondForm Form, metas Lib.Set[Meta]) Equ {
+func MakeEquSimple(firstForm, secondForm Form, metas Lib.Set[Meta]) Equ {
 	return Equ{
-		i,
 		firstForm,
 		secondForm,
 		Lib.MkCache(metas, Equ.forceGetMetas),
 	}
 }
 
-func MakeEqu(i int, firstForm, secondForm Form) Equ {
-	return MakeEquSimple(i, firstForm, secondForm, Lib.EmptySet[Meta]())
+func MakeEqu(firstForm, secondForm Form) Equ {
+	return MakeEquSimple(firstForm, secondForm, Lib.EmptySet[Meta]())
 }
 
 func MakerEqu(firstForm, secondForm Form) Equ {
-	return MakeEqu(MakerIndexFormula(), firstForm, secondForm)
+	return MakeEqu(firstForm, secondForm)
 }
 
-func (e Equ) GetIndex() int { return e.index }
-func (e Equ) GetF1() Form   { return e.f1.Copy() }
-func (e Equ) GetF2() Form   { return e.f2.Copy() }
+func (e Equ) GetF1() Form { return e.f1.Copy() }
+func (e Equ) GetF2() Form { return e.f2.Copy() }
 func (e Equ) Copy() Form {
 	return Equ{
-		e.index,
 		e.GetF1(),
 		e.GetF2(),
 		e.metas.Copy(Lib.Set[Meta].Copy),
@@ -512,7 +541,7 @@ func (e Equ) Equals(f any) bool {
 func (e Equ) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	f1, res1 := e.GetF1().ReplaceTermByTerm(old, new)
 	f2, res2 := e.GetF2().ReplaceTermByTerm(old, new)
-	ne := MakeEquSimple(e.GetIndex(), f1, f2, e.metas.Raw())
+	ne := MakeEquSimple(f1, f2, e.metas.Raw())
 
 	if !res1 && !res2 && !e.metas.NeedsUpd() {
 		e.metas.AvoidUpd()
@@ -523,7 +552,6 @@ func (e Equ) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 
 func (e Equ) SubstTy(old TyGenVar, new Ty) Form {
 	return MakeEquSimple(
-		e.GetIndex(),
 		e.f1.SubstTy(old, new),
 		e.f2.SubstTy(old, new),
 		e.metas.Raw(),
@@ -531,7 +559,7 @@ func (e Equ) SubstTy(old TyGenVar, new Ty) Form {
 }
 
 func (e Equ) RenameVariables() Form {
-	return MakeEqu(e.GetIndex(), e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
+	return MakeEqu(e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
 }
 
 func (e Equ) GetSubTerms() Lib.Set[Term] {
@@ -544,7 +572,7 @@ func (e Equ) GetSymbols() Lib.Set[Id] {
 
 func (e Equ) SubstituteVarByMeta(old Var, new Meta) Form {
 	fl, metas := substVarByMetaInFormList(old, new, Lib.MkListV(e.f1, e.f2), e.metas.Raw())
-	return MakeEquSimple(e.index, fl.At(0), fl.At(1), metas)
+	return MakeEquSimple(fl.At(0), fl.At(1), metas)
 }
 
 func (e Equ) GetSubFormulasRecur() Lib.List[Form] {
@@ -557,46 +585,53 @@ func (e Equ) GetChildFormulas() Lib.List[Form] {
 
 func (e Equ) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return MakeEqu(
-		e.GetIndex(),
 		e.f1.ReplaceMetaByTerm(meta, term),
 		e.f2.ReplaceMetaByTerm(meta, term),
 	)
 }
 
-func (e Equ) Less(oth any) bool { return less(e, oth) }
+func (e Equ) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch f := form.(type) {
+		case All, Ex, Or, And:
+			return true
+		case Equ:
+			return bLess(Lib.MkListV(e.f1, e.f2), Lib.MkListV(f.f1, f.f2))
+		default:
+			return false
+		}
+	}
+	return false
+}
 
 // -----------------------------------------------------------------------------
 // Implication
 
 type Imp struct {
-	index  int
 	f1, f2 Form
 	metas  Lib.Cache[Lib.Set[Meta], Imp]
 }
 
-func MakeImpSimple(i int, firstForm, secondForm Form, metas Lib.Set[Meta]) Imp {
+func MakeImpSimple(firstForm, secondForm Form, metas Lib.Set[Meta]) Imp {
 	return Imp{
-		i,
 		firstForm,
 		secondForm,
 		Lib.MkCache(metas, Imp.forceGetMetas),
 	}
 }
 
-func MakeImp(i int, firstForm, secondForm Form) Imp {
-	return MakeImpSimple(i, firstForm, secondForm, Lib.EmptySet[Meta]())
+func MakeImp(firstForm, secondForm Form) Imp {
+	return MakeImpSimple(firstForm, secondForm, Lib.EmptySet[Meta]())
 }
 
 func MakerImp(firstForm, secondForm Form) Imp {
-	return MakeImp(MakerIndexFormula(), firstForm, secondForm)
+	return MakeImp(firstForm, secondForm)
 }
 
-func (i Imp) GetIndex() int { return i.index }
-func (i Imp) GetF1() Form   { return i.f1.Copy() }
-func (i Imp) GetF2() Form   { return i.f2.Copy() }
+func (i Imp) GetF1() Form { return i.f1.Copy() }
+func (i Imp) GetF2() Form { return i.f2.Copy() }
 func (i Imp) Copy() Form {
 	return Imp{
-		i.index,
 		i.GetF1(),
 		i.GetF2(),
 		i.metas.Copy(Lib.Set[Meta].Copy),
@@ -634,7 +669,7 @@ func (i Imp) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	f1, res1 := i.GetF1().ReplaceTermByTerm(old, new)
 	f2, res2 := i.GetF2().ReplaceTermByTerm(old, new)
 
-	ni := MakeImpSimple(i.index, f1, f2, i.metas.Raw())
+	ni := MakeImpSimple(f1, f2, i.metas.Raw())
 
 	if !res1 && !res2 && !i.metas.NeedsUpd() {
 		ni.metas.AvoidUpd()
@@ -645,7 +680,6 @@ func (i Imp) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 
 func (i Imp) SubstTy(old TyGenVar, new Ty) Form {
 	return MakeImpSimple(
-		i.GetIndex(),
 		i.f1.SubstTy(old, new),
 		i.f2.SubstTy(old, new),
 		i.metas.Raw(),
@@ -653,7 +687,7 @@ func (i Imp) SubstTy(old TyGenVar, new Ty) Form {
 }
 
 func (i Imp) RenameVariables() Form {
-	return MakeImp(i.GetIndex(), i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
+	return MakeImp(i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
 }
 
 func (i Imp) GetSubTerms() Lib.Set[Term] {
@@ -666,7 +700,7 @@ func (i Imp) GetSymbols() Lib.Set[Id] {
 
 func (i Imp) SubstituteVarByMeta(old Var, new Meta) Form {
 	fl, metas := substVarByMetaInFormList(old, new, Lib.MkListV(i.f1, i.f2), i.metas.Raw())
-	return MakeImpSimple(i.index, fl.At(0), fl.At(1), metas)
+	return MakeImpSimple(fl.At(0), fl.At(1), metas)
 }
 
 func (i Imp) GetSubFormulasRecur() Lib.List[Form] {
@@ -679,44 +713,50 @@ func (i Imp) GetChildFormulas() Lib.List[Form] {
 
 func (i Imp) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return MakeImp(
-		i.GetIndex(),
 		i.f1.ReplaceMetaByTerm(meta, term),
 		i.f2.ReplaceMetaByTerm(meta, term),
 	)
 }
 
-func (i Imp) Less(oth any) bool { return less(i, oth) }
+func (i Imp) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch f := form.(type) {
+		case All, Ex, Or, And, Equ:
+			return true
+		case Imp:
+			return bLess(Lib.MkListV(i.f1, i.f2), Lib.MkListV(f.f1, f.f2))
+		default:
+			return false
+		}
+	}
+	return false
+}
 
 // -----------------------------------------------------------------------------
 // Not
 
 type Not struct {
-	index int
 	f     Form
 	metas Lib.Cache[Lib.Set[Meta], Not]
 }
 
 /** Constructors **/
 
-func MakeNotSimple(i int, form Form, metas Lib.Set[Meta]) Not {
-	return Not{i, form, Lib.MkCache(metas, Not.forceGetMetas)}
+func MakeNotSimple(form Form, metas Lib.Set[Meta]) Not {
+	return Not{form, Lib.MkCache(metas, Not.forceGetMetas)}
 }
 
-func MakeNot(i int, form Form) Not {
-	return MakeNotSimple(i, form, Lib.EmptySet[Meta]())
+func MakeNot(form Form) Not {
+	return MakeNotSimple(form, Lib.EmptySet[Meta]())
 }
 
 func MakerNot(form Form) Not {
-	return MakeNot(MakerIndexFormula(), form)
+	return MakeNot(form)
 }
 
 /** Methods **/
 
 /** - Form interface Methods **/
-
-func (n Not) GetIndex() int {
-	return n.index
-}
 
 func (n Not) forceGetMetas() Lib.Set[Meta] {
 	return n.GetForm().GetMetas()
@@ -743,7 +783,7 @@ func (n Not) Equals(other any) bool {
 }
 
 func (n Not) Copy() Form {
-	nn := MakeNotSimple(n.index, n.GetForm(), n.metas.Raw().Copy())
+	nn := MakeNotSimple(n.GetForm(), n.metas.Raw().Copy())
 	if !n.metas.NeedsUpd() {
 		nn.metas.AvoidUpd()
 	}
@@ -760,7 +800,7 @@ func (n Not) ToString() string {
 func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	f, res := n.f.ReplaceTermByTerm(old, new)
 
-	nn := MakeNotSimple(n.GetIndex(), f, n.metas.Raw())
+	nn := MakeNotSimple(f, n.metas.Raw())
 	if !res && !n.metas.NeedsUpd() {
 		nn.metas.AvoidUpd()
 	}
@@ -770,18 +810,17 @@ func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 
 func (n Not) SubstTy(old TyGenVar, new Ty) Form {
 	return MakeNotSimple(
-		n.GetIndex(),
 		n.f.SubstTy(old, new),
 		n.metas.Raw(),
 	)
 }
 
 func (n Not) RenameVariables() Form {
-	return MakeNot(n.GetIndex(), n.f.RenameVariables())
+	return MakeNot(n.f.RenameVariables())
 }
 
 func (n Not) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeNot(n.GetIndex(), n.f.ReplaceMetaByTerm(meta, term))
+	return MakeNot(n.f.ReplaceMetaByTerm(meta, term))
 }
 
 /** - Other Methods **/
@@ -792,7 +831,7 @@ func (n Not) GetForm() Form {
 
 func (n Not) SubstituteVarByMeta(old Var, new Meta) Form {
 	f := n.GetForm().SubstituteVarByMeta(old, new)
-	return MakeNotSimple(n.index, f, f.GetMetas().Copy())
+	return MakeNotSimple(f, f.GetMetas().Copy())
 }
 
 func (n Not) GetSubFormulasRecur() Lib.List[Form] {
@@ -830,13 +869,24 @@ func getDeepFormWithoutNot(form Form, isEven bool) (Form, bool) {
 	}
 }
 
-func (n Not) Less(oth any) bool { return less(n, oth) }
+func (n Not) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch f := form.(type) {
+		case All, Ex, Or, And, Equ, Imp:
+			return true
+		case Not:
+			return n.f.Less(f.f)
+		default:
+			return false
+		}
+	}
+	return false
+}
 
 // -----------------------------------------------------------------------------
 // Predicates
 
 type Pred struct {
-	index int
 	id    Id
 	tys   Lib.List[Ty]
 	args  Lib.List[Term]
@@ -844,14 +894,12 @@ type Pred struct {
 }
 
 func MakePredSimple(
-	index int,
 	id Id,
 	tys Lib.List[Ty],
 	terms Lib.List[Term],
 	metas Lib.Set[Meta],
 ) Pred {
 	return Pred{
-		index,
 		id,
 		tys,
 		terms,
@@ -860,13 +908,11 @@ func MakePredSimple(
 }
 
 func MakePred(
-	index int,
 	id Id,
 	tys Lib.List[Ty],
 	terms Lib.List[Term],
 ) Pred {
 	return MakePredSimple(
-		index,
 		id,
 		tys,
 		terms,
@@ -879,12 +925,11 @@ func MakerPred(
 	tys Lib.List[Ty],
 	terms Lib.List[Term],
 ) Pred {
-	return MakePred(MakerIndexFormula(), id, tys, terms)
+	return MakePred(id, tys, terms)
 }
 
 /* Pred attributes getters */
 
-func (p Pred) GetIndex() int           { return p.index }
 func (p Pred) GetID() Id               { return p.id.Copy().(Id) }
 func (p Pred) GetTyArgs() Lib.List[Ty] { return p.tys }
 func (p Pred) GetArgs() Lib.List[Term] { return p.args }
@@ -903,7 +948,6 @@ func (p Pred) ToString() string {
 
 func (p Pred) Copy() Form {
 	np := MakePredSimple(
-		p.index,
 		p.id,
 		p.GetTyArgs(),
 		p.GetArgs(),
@@ -960,7 +1004,6 @@ func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	termList, res := replaceTermInTermList(p.GetArgs(), old, new)
 
 	np := MakePredSimple(
-		p.GetIndex(),
 		p.GetID(),
 		p.GetTyArgs(),
 		termList,
@@ -984,7 +1027,6 @@ func (p Pred) SubstTy(old TyGenVar, new Ty) Form {
 		func(t Term) Term { return t.SubstTy(old, new) },
 	)
 	return MakePredSimple(
-		p.GetIndex(),
 		p.GetID(),
 		typed_args,
 		args,
@@ -1019,7 +1061,6 @@ func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
 	case Pred:
 		if res {
 			return MakePredSimple(
-				nf.index,
 				nf.id,
 				nf.tys,
 				nf.args,
@@ -1044,38 +1085,54 @@ func (p Pred) GetChildFormulas() Lib.List[Form] {
 
 func (p Pred) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return MakePred(
-		p.GetIndex(),
 		p.id,
 		p.tys,
 		Lib.ListMap(p.args, func(t Term) Term { return t.ReplaceSubTermBy(meta, term) }),
 	)
 }
 
-func (p Pred) Less(oth any) bool { return less(p, oth) }
+func (p Pred) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch f := form.(type) {
+		case All, Ex, Or, And, Equ, Imp, Not:
+			return true
+		case Pred:
+			if p.args.Len() < f.args.Len() {
+				return true
+			} else if p.args.Len() > f.args.Len() {
+				return false
+			} else {
+				return p.id.Less(f.id) ||
+					(p.id.Equals(f.id) && Lib.ListLess(p.args, f.args))
+			}
+		default:
+			return false
+		}
+	}
+	return false
+}
 
 // -----------------------------------------------------------------------------
 // True and False
 
 type Top struct {
-	index int
 }
 
-func MakeTop(i int) Top {
-	return Top{i}
+func MakeTop() Top {
+	return Top{}
 }
 
 func MakerTop() Top {
-	return MakeTop(MakerIndexFormula())
+	return MakeTop()
 }
 
 func (Top) ToString() string                              { return printer.StrConn(ConnTop) }
-func (t Top) Copy() Form                                  { return MakeTop(t.GetIndex()) }
+func (t Top) Copy() Form                                  { return MakeTop() }
 func (Top) Equals(f any) bool                             { _, isTop := f.(Top); return isTop }
 func (Top) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
-func (t Top) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeTop(t.GetIndex()), false }
+func (t Top) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeTop(), false }
 func (t Top) SubstTy(TyGenVar, Ty) Form                   { return t }
-func (t Top) RenameVariables() Form                       { return MakeTop(t.GetIndex()) }
-func (t Top) GetIndex() int                               { return t.index }
+func (t Top) RenameVariables() Form                       { return MakeTop() }
 func (t Top) GetSubTerms() Lib.Set[Term]                  { return Lib.EmptySet[Term]() }
 func (t Top) GetSymbols() Lib.Set[Id]                     { return Lib.EmptySet[Id]() }
 func (t Top) SubstituteVarByMeta(Var, Meta) Form          { return t }
@@ -1083,29 +1140,37 @@ func (t Top) GetInternalMetas() Lib.Set[Meta]             { return Lib.EmptySet[
 func (t Top) GetSubFormulasRecur() Lib.List[Form]         { return Lib.MkListV[Form](t) }
 func (t Top) GetChildFormulas() Lib.List[Form]            { return Lib.NewList[Form]() }
 func (t Top) ReplaceMetaByTerm(meta Meta, term Term) Form { return t }
-func (t Top) Less(oth any) bool                           { return less(t, oth) }
+func (t Top) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch form.(type) {
+		case All, Ex, Or, And, Equ, Imp, Not, Pred:
+			return true
+		default:
+			return false
+		}
+	}
+	return false
+}
 
 /* Bot (always false) definition */
 type Bot struct {
-	index int
 }
 
-func MakeBot(i int) Bot {
-	return Bot{i}
+func MakeBot() Bot {
+	return Bot{}
 }
 
 func MakerBot() Bot {
-	return MakeBot(MakerIndexFormula())
+	return MakeBot()
 }
 
 func (Bot) ToString() string                              { return printer.StrConn(ConnBot) }
-func (b Bot) Copy() Form                                  { return MakeBot(b.GetIndex()) }
+func (b Bot) Copy() Form                                  { return MakeBot() }
 func (Bot) Equals(f any) bool                             { _, isBot := f.(Bot); return isBot }
 func (Bot) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
-func (b Bot) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeBot(b.GetIndex()), false }
+func (b Bot) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeBot(), false }
 func (b Bot) SubstTy(TyGenVar, Ty) Form                   { return b }
-func (b Bot) RenameVariables() Form                       { return MakeBot(b.GetIndex()) }
-func (b Bot) GetIndex() int                               { return b.index }
+func (b Bot) RenameVariables() Form                       { return MakeBot() }
 func (b Bot) GetSubTerms() Lib.Set[Term]                  { return Lib.EmptySet[Term]() }
 func (b Bot) GetSymbols() Lib.Set[Id]                     { return Lib.EmptySet[Id]() }
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form          { return b }
@@ -1113,4 +1178,13 @@ func (b Bot) GetInternalMetas() Lib.Set[Meta]             { return Lib.EmptySet[
 func (b Bot) GetSubFormulasRecur() Lib.List[Form]         { return Lib.MkListV[Form](b) }
 func (b Bot) GetChildFormulas() Lib.List[Form]            { return Lib.NewList[Form]() }
 func (b Bot) ReplaceMetaByTerm(meta Meta, term Term) Form { return b }
-func (b Bot) Less(oth any) bool                           { return less(b, oth) }
+func (b Bot) Less(oth any) bool {
+	if form, is_form := oth.(Form); is_form {
+		switch form.(type) {
+		case All, Ex, Or, And, Equ, Imp, Not, Pred, Top:
+			return true
+		}
+		return false
+	}
+	return false
+}

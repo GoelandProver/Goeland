@@ -37,7 +37,10 @@
 package Unif
 
 import (
+	"fmt"
+
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -103,13 +106,13 @@ func (m *Machine) getCurrentMeta() AST.Meta {
 
 /* While term is a metavariable, replace it by its substitution in the map of substitutions (meta). */
 func (m *Machine) unwrapMeta(term AST.Term) AST.Term {
-	deja_vu := map[int]bool{}
+	deja_vu := Lib.EmptySet[AST.Term]()
 	for term.IsMeta() {
 		val, ok := m.meta.Get(term.ToMeta())
-		if (ok == -1) || deja_vu[term.GetIndex()] {
+		if (ok == -1) || deja_vu.Contains(term) {
 			break
 		}
-		deja_vu[term.GetIndex()] = true
+		deja_vu = deja_vu.Add(term)
 		term = val.Copy()
 	}
 	return term
@@ -198,7 +201,18 @@ func removePost(slice []IntPair, s int) []IntPair {
 /*** Indexes Match ***/
 /* Checks if the indexes of term1 and term2 match. */
 func (m *Machine) doIndexMatch(term1, term2 AST.Term) bool {
-	return (term1.GetIndex() == term2.GetIndex())
+	switch id1 := AST.GetSymbol(term1).(type) {
+	case Lib.Some[AST.Id]:
+		switch id2 := AST.GetSymbol(term2).(type) {
+		case Lib.Some[AST.Id]:
+			return id1.Val.Equals(id2.Val)
+		}
+	}
+	Glob.Anomaly(
+		"unif",
+		fmt.Sprintf("Expected %s and %s to be functionals", term1.ToString(), term2.ToString()),
+	)
+	return false
 }
 
 /* Checks if the indexes of t and instrTerm match. If t is a meta, it will try to unwrap t to the end, and check if the indexes of the unwrapped t and instrTerm match. */

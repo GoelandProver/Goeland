@@ -93,7 +93,8 @@ func (s Substitutions) Equals(other any) bool {
 			i := 0
 
 			for !found && i < len(typed) {
-				if subst_s1.Key().Equals(typed[i].Key()) && subst_s1.Value().Equals(typed[i].Value()) {
+				if subst_s1.Key().Equals(typed[i].Key()) &&
+					subst_s1.Value().Equals(typed[i].Value()) {
 					found = true
 				}
 
@@ -134,11 +135,9 @@ func (s *Substitutions) Set(key AST.Meta, value AST.Term) {
 }
 
 func (s Substitutions) Get(key AST.Meta) (AST.Term, int) {
-	if key.GetIndex() != -1 {
-		for i, subst := range s {
-			if subst.Key().Equals(key) {
-				return subst.Value(), i
-			}
+	for i, subst := range s {
+		if subst.Key().Equals(key) {
+			return subst.Value(), i
 		}
 	}
 	return nil, -1
@@ -290,7 +289,12 @@ func Eliminate(s *Substitutions) {
 }
 
 /* Eliminate inside : eliminate for a given couple (key, value) on a substitution */
-func eliminateInside(key AST.Meta, value AST.Term, s Substitutions, has_changed_top *bool) Substitutions {
+func eliminateInside(
+	key AST.Meta,
+	value AST.Term,
+	s Substitutions,
+	has_changed_top *bool,
+) Substitutions {
 	has_changed := true
 	for has_changed {
 		has_changed = false

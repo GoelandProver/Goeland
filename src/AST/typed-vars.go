@@ -41,19 +41,17 @@ import (
 )
 
 type TypedVar struct {
-	name  string
-	index int
-	ty    Ty
+	name string
+	ty   Ty
 }
 
 func (v TypedVar) Copy() TypedVar {
-	return TypedVar{v.name, v.index, v.ty.Copy()}
+	return TypedVar{v.name, v.ty.Copy()}
 }
 
 func (v TypedVar) Equals(oth any) bool {
 	if ov, ok := oth.(TypedVar); ok {
-		return v.name == ov.name && v.index == ov.index &&
-			v.ty.Equals(ov.ty)
+		return v.name == ov.name && v.ty.Equals(ov.ty)
 	}
 	return false
 }
@@ -66,42 +64,27 @@ func (v TypedVar) GetName() string {
 	return v.name
 }
 
-func (v TypedVar) GetIndex() int {
-	return v.index
-}
-
 func (v TypedVar) GetTy() Ty {
 	return v.ty
 }
 
 func (v TypedVar) ToBoundVar() Var {
-	return MakeVar(v.index, v.name)
+	return MakeVar(v.name)
 }
 
 func (v TypedVar) ToTyBoundVar() TyBound {
-	return MkTyBV(v.name, v.index).(TyBound)
+	return MkTyBV(v.name).(TyBound)
 }
 
 func (v TypedVar) SubstTy(old TyGenVar, new Ty) TypedVar {
-	return TypedVar{v.name, v.index, v.ty.SubstTy(old, new)}
+	return TypedVar{v.name, v.ty.SubstTy(old, new)}
 }
 
-func MkTypedVar(name string, index int, ty Ty) TypedVar {
-	return TypedVar{name, index, ty}
+func MkTypedVar(name string, ty Ty) TypedVar {
+	return TypedVar{name, ty}
 }
 
+// Deprecated: use MkTypedVar instead
 func MakerTypedVar(name string, ty Ty) TypedVar {
-	lock_term.Lock()
-	i, ok := idVar[name]
-	lock_term.Unlock()
-	if ok {
-		return MkTypedVar(name, i, ty)
-	} else {
-		lock_term.Lock()
-		idVar[name] = cpt_term
-		vr := MkTypedVar(name, cpt_term, ty)
-		cpt_term += 1
-		lock_term.Unlock()
-		return vr
-	}
+	return MkTypedVar(name, ty)
 }
