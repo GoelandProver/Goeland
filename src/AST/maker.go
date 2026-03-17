@@ -37,6 +37,7 @@
 package AST
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/GoelandProver/Goeland/Glob"
@@ -44,14 +45,9 @@ import (
 )
 
 /* Datas */
-var cpt_term int
-var cpt_formula int
-
-var idTable map[string]int = make(map[string]int)
-var idVar map[string]int = make(map[string]int)
 var occurenceMeta map[string]int = make(map[string]int)
 var lock_term sync.Mutex
-var lock_formula sync.Mutex
+var meta_id int
 
 var debug Glob.Debugger
 
@@ -74,79 +70,44 @@ func Init() {
 
 /* Reset all the maps and counters */
 func Reset() {
-	cpt_term = 0
-	cpt_formula = 0
-	idTable = map[string]int{}
-	idVar = map[string]int{}
 	ResetMeta()
 }
 
 /* Reset the metavariable table (useful when the IDDFS stop and restart) */
 func ResetMeta() {
+	meta_id = 0
 	occurenceMeta = map[string]int{}
 }
 
 /* ID maker */
+// Deprecated: use MakeId instead
 func MakerId(s string) Id {
-	lock_term.Lock()
-	i, ok := idTable[s]
-	lock_term.Unlock()
-	if ok {
-		return MakeId(i, s)
-	} else {
-		return MakerNewId(s)
-	}
-}
-
-func MakerNewId(s string) Id {
-	lock_term.Lock()
-	idTable[s] = cpt_term
-	id := MakeId(cpt_term, s)
-	cpt_term += 1
-	lock_term.Unlock()
-	return id
+	return MakeId(s)
 }
 
 /* Var maker */
+// Deprecated: use MakeVar instead
 func MakerVar(s string) Var {
-	lock_term.Lock()
-	i, ok := idVar[s]
-	lock_term.Unlock()
-	if ok {
-		return MakeVar(i, s)
-	} else {
-		return MakerNewVar(s)
-	}
-}
-
-func MakerNewVar(s string) Var {
-	lock_term.Lock()
-	idVar[s] = cpt_term
-	vr := MakeVar(cpt_term, s)
-	cpt_term += 1
-	lock_term.Unlock()
-	return vr
+	return MakeVar(s)
 }
 
 /* Meta maker */
 func MakerMeta(s string, formula int, ty Ty) Meta {
 	lock_term.Lock()
+	new_id := meta_id
+	meta_id++
 	i, ok := occurenceMeta[s]
 	lock_term.Unlock()
 	if ok {
 		lock_term.Lock()
 		occurenceMeta[s] = i + 1
-		new_index := cpt_term
-		cpt_term += 1
 		lock_term.Unlock()
-		return MakeMeta(new_index, i, s, formula, ty)
+		return MakeMeta(new_id, i, fmt.Sprintf("%s%d", s, new_id), formula, ty)
 	} else {
 		lock_term.Lock()
 		occurenceMeta[s] = 1
-		new_index := cpt_term
-		cpt_term += 1
 		lock_term.Unlock()
-		return MakeMeta(new_index, 0, s, formula, ty)
+		return MakeMeta(new_id, 0, fmt.Sprintf("%s%d", s, new_id), formula, ty)
 	}
 }
 
@@ -158,13 +119,4 @@ func MakerConst(id Id) Fun {
 /* Fun maker, with given id and args */
 func MakerFun(id Id, ty_args Lib.List[Ty], terms Lib.List[Term]) Fun {
 	return MakeFun(id, ty_args, terms, Lib.EmptySet[Meta]())
-}
-
-/* Index make for formula */
-func MakerIndexFormula() int {
-	lock_formula.Lock()
-	res := cpt_formula
-	cpt_formula++
-	lock_formula.Unlock()
-	return res
 }

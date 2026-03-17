@@ -116,17 +116,17 @@ func makeEqClass() *eqClass {
 	return &r
 }
 
-func metaTermRecord(m AST.Meta) *termRecord {
+func metaTermRecord(problem *Problem, m AST.Meta) *termRecord {
 	return &termRecord{
-		index:   m.GetIndex(),
+		index:   problem.mindex(m),
 		eqClass: makeEqClass(),
 		meta:    &m,
 	}
 }
 
-func funTermRecord(t AST.Fun, args []*eqClass) *termRecord {
+func funTermRecord(problem *Problem, t AST.Fun, args []*eqClass) *termRecord {
 	return &termRecord{
-		index:    t.GetIndex(),
+		index:    problem.findex(t),
 		eqClass:  makeEqClass(),
 		meta:     nil,
 		symbolId: t.GetID(),

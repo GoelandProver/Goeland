@@ -126,7 +126,6 @@ func retrieveEqualities(dt Unif.DataStructure) Equalities {
 
 	eq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Ty](), Lib.NewList[AST.Term]())
 	eq_pred = AST.MakePred(
-		eq_pred.GetIndex(),
 		AST.Id_eq,
 		Lib.MkListV[AST.Ty](meta_ty),
 		Lib.MkListV[AST.Term](MetaEQ1, MetaEQ2),
@@ -157,7 +156,6 @@ func retrieveInequalities(dt Unif.DataStructure) Inequalities {
 
 	neq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Ty](), Lib.NewList[AST.Term]())
 	neq_pred = AST.MakePred(
-		neq_pred.GetIndex(),
 		AST.Id_eq,
 		Lib.MkListV(meta_ty),
 		Lib.MkListV[AST.Term](MetaNEQ1, MetaNEQ2),
@@ -165,7 +163,11 @@ func retrieveInequalities(dt Unif.DataStructure) Inequalities {
 	_, neq_list := dt.Unify(neq_pred)
 
 	for _, ms := range neq_list {
-		ms_ordered := orderSubstForRetrieve(ms.MatchingSubstitutions().GetSubst(), MetaNEQ1, MetaNEQ2)
+		ms_ordered := orderSubstForRetrieve(
+			ms.MatchingSubstitutions().GetSubst(),
+			MetaNEQ1,
+			MetaNEQ2,
+		)
 		neq1_term, ok_t1 := ms_ordered.Get(MetaNEQ1)
 		if ok_t1 == -1 {
 			Glob.PrintError("RI", "Meta_eq_1 not found in map")

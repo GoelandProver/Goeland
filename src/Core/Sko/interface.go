@@ -60,9 +60,9 @@ type Skolemization interface {
 /* If every Skolem symbol is created using this function, then it will generate
  * a fresh symbol for sure. Otherwise, nothing is guaranteed.
  */
-func genFreshSymbol(existingSymbols *Lib.Set[AST.Id], x AST.TypedVar) AST.Id {
-	symbol := AST.MakerNewId(
-		fmt.Sprintf("skolem@%v@%d", x.GetName(), existingSymbols.Cardinal()),
+func genFreshSymbol(existingSymbols *Lib.Set[AST.Id]) AST.Id {
+	symbol := AST.MakerId(
+		fmt.Sprintf("skolem@%d", existingSymbols.Cardinal()),
 	)
 	*existingSymbols = existingSymbols.Add(symbol)
 

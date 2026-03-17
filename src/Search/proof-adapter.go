@@ -139,7 +139,7 @@ func (proof TableauxProof) RewrittenWith() Lib.Option[AST.Form] {
 			end_form = end_form.(AST.All).GetForm()
 		}
 		end_form = getAtomic(end_form)
-		if end_form.GetIndex() == rewrite_id {
+		if dmt.RewID(end_form) == rewrite_id {
 			form_opt = Lib.MkSome(axiom)
 		}
 	}

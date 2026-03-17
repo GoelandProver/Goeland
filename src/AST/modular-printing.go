@@ -66,7 +66,7 @@ var printer_debug Glob.Debugger
 type PrinterAction struct {
 	genericAction      func(string) string // Always executed
 	actionOnId         func(Id) string
-	actionOnBoundVar   func(string, int) string
+	actionOnBoundVar   func(string) string
 	actionOnMeta       func(string, int) string
 	actionOnType       func(string) string
 	actionOnTypedVar   func(Lib.Pair[string, Ty]) string
@@ -76,9 +76,9 @@ type PrinterAction struct {
 func (p PrinterAction) Compose(oth PrinterAction) PrinterAction {
 	return PrinterAction{
 		genericAction: func(s string) string { return oth.genericAction(p.genericAction(s)) },
-		actionOnId:    func(i Id) string { return oth.actionOnId(MakeId(i.index, p.actionOnId(i))) },
-		actionOnBoundVar: func(name string, index int) string {
-			return oth.actionOnBoundVar(p.actionOnBoundVar(name, index), index)
+		actionOnId:    func(i Id) string { return oth.actionOnId(MakeId(p.actionOnId(i))) },
+		actionOnBoundVar: func(name string) string {
+			return oth.actionOnBoundVar(p.actionOnBoundVar(name))
 		},
 		actionOnMeta: func(name string, index int) string {
 			return oth.actionOnMeta(p.actionOnMeta(name, index), index)
@@ -103,8 +103,8 @@ func (p PrinterAction) StrId(i Id) string {
 	return p.Str(p.actionOnId(i))
 }
 
-func (p PrinterAction) StrBound(name string, index int) string {
-	return p.Str(p.actionOnBoundVar(name, index))
+func (p PrinterAction) StrBound(name string) string {
+	return p.Str(p.actionOnBoundVar(name))
 }
 
 func (p PrinterAction) StrMeta(name string, index int) string {
@@ -130,7 +130,7 @@ func PrinterIdentity2[T any](s string, _ T) string            { return s }
 func MkPrinterAction(
 	genericAction func(string) string,
 	actionOnId func(Id) string,
-	actionOnBoundVar func(string, int) string,
+	actionOnBoundVar func(string) string,
 	actionOnMeta func(string, int) string,
 	actionOnType func(string) string,
 	actionOnTypedVar func(Lib.Pair[string, Ty]) string,
@@ -224,12 +224,12 @@ func (c PrinterConnective) DefaultOnFunctionalArgs(
 
 	if is_infix {
 		if args.Len() != 2 {
-			Glob.Anomaly("Printer", fmt.Sprintf(
-				"invalid number of infix arguments: expected 2, got %d (in <<%s>> for %s)",
-				args.Len(),
-				arguments,
-				id.ToString(),
-			))
+			// Glob.Anomaly("Printer", fmt.Sprintf(
+			// 	"invalid number of infix arguments: expected 2, got %d (in <<%s>> for %s)",
+			// 	args.Len(),
+			// 	arguments,
+			// 	id.ToString(),
+			// ))
 		}
 		return fmt.Sprintf("%s %s %s", args.At(0), id.ToString(), args.At(1))
 	} else {
@@ -353,15 +353,6 @@ func initPrinters() {
 		&prettyPrinterConnectives,
 	}
 
-	PrintIDAction = PrinterAction{
-		genericAction:    PrinterIdentity,
-		actionOnId:       func(i Id) string { return fmt.Sprintf("%s_%d", i.name, i.index) },
-		actionOnBoundVar: PrinterIdentity2[int],
-		actionOnMeta:     PrinterIdentity2[int],
-		actionOnType:     PrinterIdentity,
-		actionOnTypedVar: PrinterIdentityPair[Ty],
-	}
-
 	QuoteID = PrinterAction{
 		genericAction: PrinterIdentity,
 		actionOnId: func(i Id) string {
@@ -371,7 +362,7 @@ func initPrinters() {
 			}
 			return i.name
 		},
-		actionOnBoundVar: PrinterIdentity2[int],
+		actionOnBoundVar: PrinterIdentity,
 		actionOnMeta:     PrinterIdentity2[int],
 		actionOnType:     PrinterIdentity,
 		actionOnTypedVar: PrinterIdentityPair[Ty],

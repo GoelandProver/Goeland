@@ -34,6 +34,7 @@ package sateq
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 	equality "github.com/GoelandProver/Goeland/Mods/equality/bse"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
 	"github.com/GoelandProver/Goeland/Unif"
@@ -43,6 +44,8 @@ import (
 
 type Problem struct {
 	goals *Glob.List[*Glob.List[*Glob.BasicPair[*eqClass, *eqClass]]]
+	metas Lib.List[AST.Meta]
+	funs  Lib.List[AST.Fun]
 
 	functionsIndex map[int]*Glob.List[*termRecord]      // terms indexed by their function symbol
 	metasIndex     map[int]*termRecord                  // metas indexed by identifier
@@ -54,6 +57,8 @@ type Problem struct {
 func NewProblem() *Problem {
 	pb := &Problem{
 		Glob.NewList[*Glob.List[*Glob.BasicPair[*eqClass, *eqClass]]](),
+		Lib.NewList[AST.Meta](),
+		Lib.NewList[AST.Fun](),
 
 		make(map[int]*Glob.List[*termRecord]),
 		make(map[int]*termRecord),
@@ -104,13 +109,39 @@ func (problem *Problem) Metas() *Glob.List[*termRecord] {
 	return l
 }
 
+func (problem *Problem) mindex(m AST.Meta) int {
+	switch id := Lib.ListIndexOf(m, problem.metas).(type) {
+	case Lib.Some[int]:
+		return id.Val
+	case Lib.None[int]:
+		problem.metas = problem.metas.Push(m)
+		return problem.metas.Len() - 1
+	}
+
+	Glob.Anomaly("sateq", "Reached an unreachable state")
+	return -1
+}
+
+func (problem *Problem) findex(f AST.Fun) int {
+	switch id := Lib.ListIndexOf(f, problem.funs).(type) {
+	case Lib.Some[int]:
+		return id.Val
+	case Lib.None[int]:
+		problem.funs = problem.funs.Push(f)
+		return problem.funs.Len() - 1
+	}
+
+	Glob.Anomaly("sateq", "Reached an unreachable state")
+	return -1
+}
+
 func (problem *Problem) getEquivalenceClass(t AST.Term) *eqClass {
 	if t.IsMeta() {
-		if tr, found := problem.metasIndex[t.GetIndex()]; found {
+		if tr, found := problem.metasIndex[problem.mindex(t.ToMeta())]; found {
 			return tr.eqClass
 		}
 		if typed, ok := t.(AST.Meta); ok {
-			return problem.addNewTermRecord(metaTermRecord(typed))
+			return problem.addNewTermRecord(metaTermRecord(problem, typed))
 		}
 	} else {
 		if typed, ok := t.(AST.Fun); ok {
@@ -118,7 +149,7 @@ func (problem *Problem) getEquivalenceClass(t AST.Term) *eqClass {
 			for i, st := range typed.GetArgs().GetSlice() {
 				args[i] = problem.getEquivalenceClass(st)
 			}
-			tr1 := funTermRecord(typed, args)
+			tr1 := funTermRecord(problem, typed, args)
 			if idxList, found := problem.functionsIndex[tr1.index]; found {
 				for _, tr2 := range idxList.Slice() {
 					if tr1.congruent(tr2) {
@@ -167,8 +198,10 @@ func (problem *Problem) mergeEquivalenceClasses(ec1, ec2 *eqClass) {
 	}
 
 	// update indexes (see invariant above)
-	problem.partitionIndex[ecMerged].Append(problem.partitionIndex[ecDeleted].Slice()...) // the entries of partitionIndex are disjoint
-	problem.supertermIndex[ecMerged].AppendIfNotContains(problem.supertermIndex[ecDeleted].Slice()...)
+	problem.partitionIndex[ecMerged].Append(
+		problem.partitionIndex[ecDeleted].Slice()...) // the entries of partitionIndex are disjoint
+	problem.supertermIndex[ecMerged].AppendIfNotContains(
+		problem.supertermIndex[ecDeleted].Slice()...)
 	delete(problem.partitionIndex, ecDeleted)
 	delete(problem.supertermIndex, ecDeleted)
 
@@ -186,14 +219,22 @@ func (problem *Problem) mergeEquivalenceClasses(ec1, ec2 *eqClass) {
 }
 
 func (problem *Problem) AddAssumption(eq eqStruct.TermPair) {
-	problem.mergeEquivalenceClasses(problem.getEquivalenceClass(eq.GetT1()), problem.getEquivalenceClass(eq.GetT2()))
+	problem.mergeEquivalenceClasses(
+		problem.getEquivalenceClass(eq.GetT1()),
+		problem.getEquivalenceClass(eq.GetT2()),
+	)
 }
 
 func (problem *Problem) AddGoal(goal []eqStruct.TermPair) {
 	g := Glob.NewList[*Glob.BasicPair[*eqClass, *eqClass]]()
 
 	for _, eq := range goal {
-		g.AppendIfNotContains(Glob.NewBasicPair(problem.getEquivalenceClass(eq.GetT1()), problem.getEquivalenceClass(eq.GetT2())))
+		g.AppendIfNotContains(
+			Glob.NewBasicPair(
+				problem.getEquivalenceClass(eq.GetT1()),
+				problem.getEquivalenceClass(eq.GetT2()),
+			),
+		)
 	}
 
 	problem.goals.AppendIfNotContains(g)

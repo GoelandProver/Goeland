@@ -50,6 +50,7 @@ var debug Glob.Debugger
 var debug_interrupt Glob.InterruptingDebugger
 var raise_anomaly = func(msg string) { Glob.Anomaly(label, msg) }
 var desko_delta StrategyRule
+var indexes Lib.List[AST.Form]
 
 type proof_node struct {
 	proof Search.IProof
@@ -77,6 +78,7 @@ var MakeDeskolemizedProof = func(proof Search.IProof) *GS3Sequent {
 		Glob.Fatal(label, "Unsupported Skolemization")
 	}
 
+	indexes = Lib.NewList[AST.Form]()
 	root := new(GS3Sequent)
 	deskolemize_proof(root, proof, precompute_branch_checker(proof), empty_proof_info())
 	return root
@@ -120,6 +122,19 @@ func deskolemize_proof(
 	}
 }
 
+func index(f AST.Form) int {
+	switch id := Lib.ListIndexOf(f, indexes).(type) {
+	case Lib.Some[int]:
+		return id.Val
+	case Lib.None[int]:
+		indexes = indexes.Push(f)
+		return indexes.Len() - 1
+	}
+
+	Glob.Fatal(label, fmt.Sprintf("Formula %s not found in the index list", f.ToString()))
+	return -1
+}
+
 func gen_apply_rule(node *GS3Sequent, proof Search.IProof, info proof_info) []proof_info {
 	node.children = Lib.NewList[*GS3Sequent]()
 	node.appliedOn = proof.AppliedOn()
@@ -132,7 +147,7 @@ func gen_apply_rule(node *GS3Sequent, proof Search.IProof, info proof_info) []pr
 		child_info := copy_proof_info(info)
 		child_info.ctx.Append(node.formsGenerated.At(i).GetSlice()...)
 		for _, f := range node.formsGenerated.At(i).GetSlice() {
-			child_info.form_introduction[f.GetIndex()] = proof_node{proof: proof, child: i}
+			child_info.form_introduction[index(f)] = proof_node{proof: proof, child: i}
 		}
 		child := new(GS3Sequent)
 		node.children.Append(child)
@@ -237,16 +252,16 @@ func desko_inner(
 	// containing a term before weakening it.
 	term_delayed_weakening := []Lib.Option[Lib.Either[AST.Ty, AST.Term]]{}
 	for _, form := range forms_to_weaken.GetSlice() {
-		comes_from := info.form_introduction[form.GetIndex()].proof.AppliedOn()
+		comes_from := info.form_introduction[index(form)].proof.AppliedOn()
 		if is_on_branch(sko_symbol, comes_from) {
-			to_replay.Append(info.form_introduction[form.GetIndex()])
+			to_replay.Append(info.form_introduction[index(form)])
 		}
 		node = gen_weaken(node, Lib.MkNone[Lib.Either[AST.Ty, AST.Term]](), form)
-		if Search.KindOfRule(info.form_introduction[form.GetIndex()].proof.RuleApplied()) ==
+		if Search.KindOfRule(info.form_introduction[index(form)].proof.RuleApplied()) ==
 			Search.KindDelta {
 			term_delayed_weakening = append(
 				term_delayed_weakening,
-				info.form_introduction[form.GetIndex()].proof.TermGenerated(),
+				info.form_introduction[index(form)].proof.TermGenerated(),
 			)
 		}
 	}

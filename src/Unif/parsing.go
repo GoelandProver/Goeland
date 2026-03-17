@@ -38,13 +38,12 @@ import (
 )
 
 type TermForm struct {
-	index int
-	t     AST.Term
+	t AST.Term
 }
 
 func (t TermForm) ToString() string          { return t.ToString() }
 func (t TermForm) GetTerm() AST.Term         { return t.t.Copy() }
-func (t TermForm) Copy() AST.Form            { return makeTermForm(t.GetIndex(), t.GetTerm()) }
+func (t TermForm) Copy() AST.Form            { return makeTermForm(t.GetTerm()) }
 func (t TermForm) RenameVariables() AST.Form { return t }
 func (t TermForm) ReplaceTermByTerm(AST.Term, AST.Term) (AST.Form, bool) {
 	return t, false
@@ -52,7 +51,6 @@ func (t TermForm) ReplaceTermByTerm(AST.Term, AST.Term) (AST.Form, bool) {
 func (t TermForm) SubstTy(AST.TyGenVar, AST.Ty) AST.Form {
 	return t
 }
-func (t TermForm) GetIndex() int                                  { return t.index }
 func (t TermForm) SubstituteVarByMeta(AST.Var, AST.Meta) AST.Form { return t }
 func (t TermForm) GetInternalMetas() Lib.List[AST.Meta]           { return Lib.NewList[AST.Meta]() }
 func (t TermForm) SetInternalMetas(Lib.List[AST.Meta]) AST.Form   { return t }
@@ -110,11 +108,11 @@ func MakerTermForm(t AST.Term) TermForm {
 		args := getFunctionalArguments(trm.GetTyArgs(), trm.GetArgs())
 		t = AST.MakerFun(trm.GetID(), Lib.NewList[AST.Ty](), args)
 	}
-	return makeTermForm(AST.MakerIndexFormula(), t.Copy())
+	return makeTermForm(t.Copy())
 }
 
-func makeTermForm(i int, t AST.Term) TermForm {
-	return TermForm{i, t.Copy()}
+func makeTermForm(t AST.Term) TermForm {
+	return TermForm{t.Copy()}
 }
 
 /* Parses a formulae to a sequence of instructions. */

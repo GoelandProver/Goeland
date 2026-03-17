@@ -44,7 +44,6 @@ import (
 /*** Structure ***/
 
 type Form interface {
-	GetIndex() int
 	GetMetas() Lib.Set[Meta]
 	GetSubTerms() Lib.Set[Term]
 	GetSymbols() Lib.Set[Id]
@@ -63,13 +62,6 @@ type Form interface {
 	ReplaceMetaByTerm(meta Meta, term Term) Form
 }
 
-func less(form Form, oth any) bool {
-	if f, is_form := oth.(Form); is_form {
-		return form.GetIndex() < f.GetIndex()
-	}
-	return false
-}
-
 /* Replace a term by a term inside a function. */
 func replaceTermInTermList(
 	terms Lib.List[Term],
@@ -80,40 +72,28 @@ func replaceTermInTermList(
 	newTermList := Lib.MkList[Term](terms.Len())
 
 	for i, val := range terms.GetSlice() {
-		switch nf := val.(type) {
-		case Var:
-			if oldTerm.GetIndex() == nf.GetIndex() {
-				newTermList.Upd(i, newTerm)
-				res = true
-			} else {
+		if oldTerm.Equals(val) {
+			newTermList.Upd(i, newTerm)
+			res = true
+		} else {
+			switch nf := val.(type) {
+			case Var, Meta:
 				newTermList.Upd(i, val)
-			}
-		case Fun:
-			if oldTerm.GetIndex() == nf.GetIndex() {
-				newTermList.Upd(i, newTerm)
-				res = true
-			} else {
+			case Fun:
 				termList, r := replaceTermInTermList(
 					nf.GetArgs(),
 					oldTerm,
 					newTerm,
 				)
 				newTermList.Upd(i, MakerFun(
-					nf.GetP(),
+					nf.GetID(),
 					nf.GetTyArgs(),
 					termList,
 				))
 				res = res || r
+			default:
+				Glob.Anomaly("ReplaceTermInTermList", "Term is not a Var, a Fun, or a Meta")
 			}
-		case Meta:
-			if oldTerm.Equals(newTerm) {
-				newTermList.Upd(i, newTerm)
-				res = true
-			} else {
-				newTermList.Upd(i, val)
-			}
-		default:
-			Glob.Anomaly("ReplaceTermInTermList", "Term is not a Var, a Fun, or a Meta")
 		}
 	}
 
@@ -165,4 +145,16 @@ func renameFormList(forms Lib.List[Form]) Lib.List[Form] {
 	}
 
 	return newForms
+}
+
+// Comparisons
+
+func qLess(vars1, vars2 Lib.List[TypedVar], f1, f2 Form) bool {
+	return vars1.Len() < vars2.Len() ||
+		(vars1.Len() == vars2.Len() &&
+			f1.Less(f2))
+}
+
+func bLess(fs1, fs2 Lib.List[Form]) bool {
+	return Lib.ListLess(fs1, fs2)
 }

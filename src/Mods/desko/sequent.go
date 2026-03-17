@@ -67,13 +67,20 @@ func (s *GS3Sequent) TermGenerated() Lib.Option[Lib.Either[AST.Ty, AST.Term]] { 
 
 func (s *GS3Sequent) ToString() string {
 	res := Lib.ListToString(s.children, "\n", "")
+	trm_str := ""
+
+	switch tm := s.termGenerated.(type) {
+	case Lib.Some[Lib.Either[AST.Ty, AST.Term]]:
+		trm_str = "(" + Lib.EitherToString[AST.Ty, AST.Term](tm.Val, "ty", "tm") + ")"
+	}
 
 	return fmt.Sprintf(
-		"%s\ngs3(%p, %s, %s ---> %s)",
+		"%s\ngs3(%p, %s, %s%s ---> %s)",
 		res,
 		s,
 		s.appliedOn.ToString(),
 		s.rule.ToString(),
+		trm_str,
 		s.children.ToString(func(c *GS3Sequent) string { return fmt.Sprintf("%p", c) }, ",", "[]"),
 	)
 }

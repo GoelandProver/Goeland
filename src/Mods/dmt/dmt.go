@@ -60,6 +60,8 @@ var flagPresko = flag.Bool("presko", false, "Activate preskolemization on DMT")
 
 var registeredAxioms Lib.List[AST.Form]
 
+var rewriteIndexes Lib.List[AST.Form]
+
 /**
  * Base function needed to initialize any plugin of Goéland.
  * It registers the hooks to the plugin manager, and parses the given options.
@@ -84,8 +86,8 @@ func initPluginGlobalVariables() {
 	negativeRewrite = make(map[string]Lib.List[AST.Form])
 	positiveTree = Unif.NewNode()
 	negativeTree = Unif.NewNode()
-
 	registeredAxioms = Lib.NewList[AST.Form]()
+	rewriteIndexes = Lib.NewList[AST.Form]()
 }
 
 /**

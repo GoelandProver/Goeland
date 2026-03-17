@@ -37,8 +37,9 @@
 package AST
 
 import (
-	"github.com/GoelandProver/Goeland/Lib"
 	"strings"
+
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 func RemoveSuperfluousParenthesesAction(connectives PrinterConnective) PrinterAction {
@@ -55,10 +56,12 @@ func RemoveSuperfluousParenthesesAction(connectives PrinterConnective) PrinterAc
 				tentative_str := s[len(complexChildStart) : len(s)-len(complexChildEnd)]
 				is_open := 0
 				for i, char := range tentative_str {
-					if len(complexChildStart) <= i && tentative_str[i-len(complexChildStart):i] == complexChildStart {
+					if len(complexChildStart) <= i &&
+						tentative_str[i-len(complexChildStart):i] == complexChildStart {
 						is_open += 1
 					}
-					if len(complexChildEnd) <= i && tentative_str[i-len(complexChildEnd):i] == complexChildEnd {
+					if len(complexChildEnd) <= i &&
+						tentative_str[i-len(complexChildEnd):i] == complexChildEnd {
 						is_open -= 1
 					}
 					if char == ' ' && is_open == 0 {
@@ -71,7 +74,7 @@ func RemoveSuperfluousParenthesesAction(connectives PrinterConnective) PrinterAc
 			return s
 		},
 		actionOnId:       func(i Id) string { return i.name },
-		actionOnBoundVar: func(s string, index int) string { return s },
+		actionOnBoundVar: func(s string) string { return s },
 		actionOnMeta:     func(s string, index int) string { return s },
 		actionOnType:     func(s string) string { return s },
 		actionOnTypedVar: func(p Lib.Pair[string, Ty]) string { return p.Fst },
@@ -90,7 +93,7 @@ func SanitizerAction(connectives PrinterConnective, forbidden_chars []string) Pr
 			return s
 		},
 		actionOnId:       func(i Id) string { return i.name },
-		actionOnBoundVar: func(s string, index int) string { return s },
+		actionOnBoundVar: func(s string) string { return s },
 		actionOnMeta:     func(s string, index int) string { return s },
 		actionOnType:     func(s string) string { return s },
 		actionOnTypedVar: func(p Lib.Pair[string, Ty]) string { return p.Fst },

@@ -72,7 +72,7 @@ func makeTPTPProofFromIProof(proof Search.IProof) string {
 		proof.AppliedOn().GetSubTerms(),
 		func(term AST.Term) AST.Term {
 			new_term_name := fmt.Sprintf("%s%d", prefix_const, original_terms.Len())
-			new_term := AST.MakerConst(AST.MakerNewId(new_term_name))
+			new_term := AST.MakerConst(AST.MakerId(new_term_name))
 			original_terms.Append(Lib.MkRight[AST.Ty, AST.Term](term))
 			return new_term
 		},
@@ -128,6 +128,22 @@ func fofInference(
 	)
 }
 
+func axiomIndex(ax AST.Form, axioms Lib.List[AST.Form]) int {
+	switch i := Lib.ListIndexOf(ax, axioms).(type) {
+	case Lib.Some[int]:
+		return i.Val
+	}
+
+	raise_anomaly(
+		fmt.Sprintf(
+			"Axiom %s not found in [%s]",
+			ax.ToString(),
+			Lib.ListToString(axioms, ", ", ""),
+		),
+	)
+	return -1
+}
+
 func performCutAxiomStep(axioms Lib.List[AST.Form], conjecture AST.Form) string {
 	axiom_steps := []string{}
 
@@ -147,7 +163,7 @@ func performCutAxiomStep(axioms Lib.List[AST.Form], conjecture AST.Form) string 
 			"cut",
 			"0",
 			Lib.MkListV(
-				Lib.MkString(fmt.Sprintf("ax%d", ax.GetIndex())),
+				Lib.MkString(fmt.Sprintf("ax%d", axiomIndex(ax, axioms))),
 				Lib.MkString(nextStep),
 			),
 		)
@@ -670,7 +686,7 @@ func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
 	for _, ax := range axioms.GetSlice() {
 		declared_axioms = append(
 			declared_axioms,
-			fmt.Sprintf("fof(ax%d, axiom, %s).", ax.GetIndex(), ax.ToString()),
+			fmt.Sprintf("fof(ax%d, axiom, %s).", axiomIndex(ax, axioms), ax.ToString()),
 		)
 	}
 

@@ -44,14 +44,12 @@ import (
 
 type quantifier struct {
 	metas   Lib.Cache[Lib.Set[Meta], quantifier]
-	index   int
 	varList Lib.List[TypedVar]
 	subForm Form
 	symbol  Connective
 }
 
 func makeQuantifier(
-	i int,
 	vars Lib.List[TypedVar],
 	subForm Form,
 	metas Lib.Set[Meta],
@@ -59,15 +57,10 @@ func makeQuantifier(
 ) quantifier {
 	return quantifier{
 		Lib.MkCache(metas, quantifier.forceGetMetas),
-		i,
 		vars,
 		subForm,
 		symbol,
 	}
-}
-
-func (q quantifier) GetIndex() int {
-	return q.index
 }
 
 func (q quantifier) GetVarList() Lib.List[TypedVar] {
@@ -122,7 +115,6 @@ func (q quantifier) GetSymbols() Lib.Set[Id] {
 
 func (q quantifier) copy() quantifier {
 	nq := makeQuantifier(
-		q.GetIndex(),
 		Lib.ListCpy(q.varList),
 		q.GetForm(),
 		q.metas.Raw().Copy(),
@@ -139,7 +131,6 @@ func (q quantifier) copy() quantifier {
 func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 	f, res := q.GetForm().ReplaceTermByTerm(old, new)
 	return makeQuantifier(
-		q.GetIndex(),
 		q.GetVarList(),
 		f,
 		q.metas.Raw().Copy(),
@@ -150,7 +141,6 @@ func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
 func (q quantifier) replaceTyVar(old TyGenVar, new Ty) quantifier {
 	f := q.GetForm().SubstTy(old, new)
 	return makeQuantifier(
-		q.GetIndex(),
 		Lib.ListMap(
 			q.GetVarList(),
 			func(p TypedVar) TypedVar { return p.SubstTy(old, new) },
@@ -167,12 +157,11 @@ func (q quantifier) renameVariables() quantifier {
 
 	newTyBv := Lib.NewList[Lib.Pair[TyBound, Ty]]()
 	for _, v := range q.GetVarList().GetSlice() {
-		newVar := MakerNewVar(v.GetName())
-		newVar = MakerVar(fmt.Sprintf("%s%d", newVar.GetName(), newVar.GetIndex()))
-		newVarList.Append(MkTypedVar(newVar.name, newVar.index, v.ty))
+		newVar := MakerVar(v.GetName())
+		newVarList.Append(MkTypedVar(newVar.name, v.ty))
 		f, replaced := newForm.ReplaceTermByTerm(v.ToBoundVar(), newVar)
 		if !replaced {
-			newBv := MkTyBV(newVar.name, newVar.index)
+			newBv := MkTyBV(newVar.name)
 			f = f.SubstTy(v.ToTyBoundVar(), newBv)
 			newTyBv.Append(Lib.MkPair(v.ToTyBoundVar(), newBv))
 		}
@@ -180,7 +169,6 @@ func (q quantifier) renameVariables() quantifier {
 	}
 
 	return makeQuantifier(
-		q.GetIndex(),
 		Lib.ListMap(
 			newVarList,
 			func(p TypedVar) TypedVar {
@@ -197,9 +185,12 @@ func (q quantifier) renameVariables() quantifier {
 }
 
 func (q quantifier) substituteVarByMeta(old Var, new Meta) quantifier {
+	if Lib.ListMem(old, Lib.ListMap(q.varList, func(x TypedVar) Var { return x.ToBoundVar() })) {
+		return q
+	}
+
 	newForm := q.GetForm().SubstituteVarByMeta(old, new)
 	return makeQuantifier(
-		q.GetIndex(),
 		q.GetVarList(),
 		newForm,
 		newForm.GetMetas().Copy(),
@@ -210,7 +201,6 @@ func (q quantifier) substituteVarByMeta(old Var, new Meta) quantifier {
 func (q quantifier) replaceMetaByTerm(meta Meta, term Term) quantifier {
 	newForm := q.GetForm().ReplaceMetaByTerm(meta, term)
 	return makeQuantifier(
-		q.GetIndex(),
 		q.GetVarList(),
 		newForm,
 		newForm.GetMetas().Copy(),

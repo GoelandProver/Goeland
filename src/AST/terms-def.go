@@ -39,7 +39,6 @@ package AST
 import (
 	"strings"
 
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -47,15 +46,13 @@ import (
 // Predicates / functions symbols
 
 type Id struct {
-	index int
-	name  string
+	name string
 }
 
-func (i Id) GetIndex() int             { return i.index }
 func (i Id) GetName() string           { return i.name }
 func (i Id) IsMeta() bool              { return false }
 func (i Id) IsFun() bool               { return false }
-func (i Id) Copy() Term                { return MakeId(i.GetIndex(), i.GetName()) }
+func (i Id) Copy() Term                { return MakeId(i.GetName()) }
 func (Id) ToMeta() Meta                { return MakeEmptyMeta() }
 func (Id) GetMetas() Lib.Set[Meta]     { return Lib.EmptySet[Meta]() }
 func (Id) GetMetaList() Lib.List[Meta] { return Lib.NewList[Meta]() }
@@ -85,28 +82,18 @@ func (i Id) GetSymbols() Lib.Set[Id] {
 	return Lib.Singleton(i)
 }
 
-// id < other : -1; id = other : 0; id > other : 1
 func (i Id) CompareWith(other Id) int {
-	if i.name == other.name {
-		switch {
-		case i.index < other.index:
-			return -1
-		case i.index == other.index:
-			return 0
-		default:
-			return 1
-		}
-	}
-
 	return strings.Compare(i.name, other.name)
 }
 
 func (i Id) Less(u any) bool {
-	switch t := u.(type) {
-	case Term:
-		return i.GetIndex() < t.GetIndex()
-	default:
-		Glob.Anomaly("Strict term comparison", "Not comparing two terms")
+	if t, is_term := u.(Term); is_term {
+		switch trm := t.(type) {
+		case Id:
+			return i.name < trm.name
+		default:
+			return false
+		}
 	}
 	return false
 }
@@ -136,7 +123,6 @@ func (f Fun) GetArgs() Lib.List[Term] { return f.args }
 
 func (f *Fun) SetArgs(tl Lib.List[Term]) { f.args = tl }
 
-func (f Fun) GetIndex() int   { return f.GetID().GetIndex() }
 func (f Fun) GetName() string { return f.GetID().GetName() }
 func (f Fun) IsMeta() bool    { return false }
 func (f Fun) IsFun() bool     { return true }
@@ -259,11 +245,16 @@ func (f Fun) GetSymbols() Lib.Set[Id] {
 }
 
 func (f Fun) Less(u any) bool {
-	switch t := u.(type) {
-	case Term:
-		return f.GetIndex() < t.GetIndex()
-	default:
-		Glob.Anomaly("Strict term comparison", "Not comparing two terms")
+	if t, is_term := u.(Term); is_term {
+		switch trm := t.(type) {
+		case Id:
+			return true
+		case Fun:
+			return f.p.Less(trm.p) ||
+				(f.p.Equals(trm.p) && Lib.ListLess(f.args, trm.args))
+		default:
+			return false
+		}
 	}
 	return false
 }
@@ -272,23 +263,21 @@ func (f Fun) Less(u any) bool {
 // Bound variables
 
 type Var struct {
-	index int
-	name  string
+	name string
 }
 
-func (v Var) ToString() string          { return printer.StrBound(v.name, v.index) }
-func (v Var) GetIndex() int             { return v.index }
+func (v Var) ToString() string          { return printer.StrBound(v.name) }
 func (v Var) GetName() string           { return v.name }
 func (v Var) IsMeta() bool              { return false }
 func (v Var) IsFun() bool               { return false }
-func (v Var) Copy() Term                { return MakeVar(v.GetIndex(), v.GetName()) }
+func (v Var) Copy() Term                { return MakeVar(v.GetName()) }
 func (Var) ToMeta() Meta                { return MakeEmptyMeta() }
 func (Var) GetMetas() Lib.Set[Meta]     { return Lib.EmptySet[Meta]() }
 func (Var) GetMetaList() Lib.List[Meta] { return Lib.NewList[Meta]() }
 
 func (v Var) Equals(t any) bool {
 	if typed, ok := t.(Var); ok {
-		return v.GetIndex() == typed.GetIndex()
+		return v.name == typed.name
 	}
 	return false
 }
@@ -311,11 +300,15 @@ func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
 func (v Var) SubstTy(TyGenVar, Ty) Term { return v }
 
 func (v Var) Less(u any) bool {
-	switch t := u.(type) {
-	case Term:
-		return v.GetIndex() < t.GetIndex()
-	default:
-		Glob.Anomaly("Strict term comparison", "Not comparing two terms")
+	if t, is_term := u.(Term); is_term {
+		switch trm := t.(type) {
+		case Id, Fun:
+			return true
+		case Var:
+			return v.name < trm.name
+		default:
+			return false
+		}
 	}
 	return false
 }
@@ -335,8 +328,8 @@ func (m Meta) ToString() string { return printer.StrMeta(m.name, m.index) }
 func (m Meta) GetFormula() int  { return m.formula }
 
 func (m Meta) GetName() string             { return m.name }
-func (m Meta) GetIndex() int               { return m.index }
 func (m Meta) GetOccurence() int           { return m.occurence }
+func (m Meta) GetIndex() int               { return m.index }
 func (m Meta) IsMeta() bool                { return true }
 func (m Meta) IsFun() bool                 { return false }
 func (m Meta) ToMeta() Meta                { return m }
@@ -346,13 +339,16 @@ func (m Meta) GetTy() Ty                   { return m.ty }
 
 func (m Meta) Equals(t any) bool {
 	if typed, ok := t.(Meta); ok {
-		return typed.GetIndex() == m.GetIndex()
+		return m.index == typed.index &&
+			m.occurence == typed.occurence &&
+			m.name == typed.name &&
+			m.formula == typed.formula
 	}
 	return false
 }
 
 func (m Meta) Copy() Term {
-	return MakeMeta(m.GetIndex(), m.GetOccurence(), m.GetName(), m.GetFormula(), m.GetTy())
+	return MakeMeta(m.index, m.GetOccurence(), m.GetName(), m.GetFormula(), m.GetTy())
 }
 
 func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
@@ -373,11 +369,17 @@ func (m Meta) GetSymbols() Lib.Set[Id] {
 }
 
 func (m Meta) Less(u any) bool {
-	switch t := u.(type) {
-	case Term:
-		return m.GetIndex() < t.GetIndex()
-	default:
-		Glob.Anomaly("Strict term comparison", "Not comparing two terms")
+	if t, is_term := u.(Term); is_term {
+		switch trm := t.(type) {
+		case Id, Fun, Var:
+			return true
+		case Meta:
+			return m.occurence < trm.occurence ||
+				(m.occurence == trm.occurence && m.name < trm.name) ||
+				(m.occurence == trm.occurence && m.name == trm.name && m.formula < trm.formula)
+		default:
+			return false
+		}
 	}
 	return false
 }

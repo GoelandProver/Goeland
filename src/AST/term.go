@@ -46,7 +46,6 @@ type Term interface {
 	Lib.Comparable
 	Lib.Stringable
 	Lib.Copyable[Term]
-	GetIndex() int
 	GetName() string
 	IsMeta() bool
 	IsFun() bool
@@ -61,16 +60,16 @@ type Term interface {
 }
 
 /*** Makers ***/
-func MakeId(i int, s string) Id {
-	return Id{i, s}
+func MakeId(s string) Id {
+	return Id{s}
 }
 
-func MakeQuotedId(i int, s string) Id {
-	return Id{i, "" + s + "'"}
+func MakeQuotedId(s string) Id {
+	return Id{"" + s + "'"}
 }
 
-func MakeVar(i int, s string) Var {
-	return Var{i, s}
+func MakeVar(s string) Var {
+	return Var{s}
 }
 
 func MakeMeta(index, occurence int, s string, f int, ty Ty) Meta {
@@ -94,7 +93,7 @@ func GetSymbol(tm Term) Lib.Option[Id] {
 	case Fun:
 		return Lib.MkSome(t.GetID())
 	case Id:
-		return Lib.MkSome(tm)
+		return Lib.MkSome(t)
 	}
 
 	debug(Lib.MkLazy(func() string {
