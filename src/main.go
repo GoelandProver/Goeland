@@ -219,7 +219,7 @@ func StatementListToFormula(statements []Core.Statement, old_bound int, problemD
 			debug(Lib.MkLazy(func() string { return fmt.Sprintf("File to parse : %s\n", realname) }))
 
 			if err != nil {
-				Glob.PrintError(main_label, err.Error())
+				Glob.Fatal(main_label, err.Error())
 				return nil, -1, false
 			}
 

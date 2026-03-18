@@ -75,7 +75,7 @@ var LambdapiOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeLambd
 
 func MakeLambdapiOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
-		Glob.PrintError("LambdaPi", "Nothing to output")
+		Glob.Fatal("LambdaPi", "Nothing to output")
 		return ""
 	}
 

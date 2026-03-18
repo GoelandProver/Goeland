@@ -61,7 +61,7 @@ var RocqOutputProofStruct = &Search.OutputProofStruct{ProofOutput: MakeRocqOutpu
 
 func MakeRocqOutput(prf []Search.ProofStruct, meta Lib.List[AST.Meta]) string {
 	if len(prf) == 0 {
-		Glob.PrintError("Rocq", "Nothing to output")
+		Glob.Fatal("Rocq", "Nothing to output")
 		return ""
 	}
 
