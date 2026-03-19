@@ -64,6 +64,8 @@ git rebase remote/master
 
 where `remote` is the name of the remote fetching `git@github.com:GoelandProver/Goeland.git` (which can be found using `git remote -v`)
 
+If you want to open a pull request, you should roughly follow these steps:
+
 1. Check that the branch with your new features/bug fixes is up-to-date.
 2. Open a pull request [here](https://github.com/GoelandProver/Goeland/compare) targeting `master`.
 3. Give an explicit name to your pull request, e.g., `Fix nil pointer exception when skolemizing` or `Add a library of maps`.
