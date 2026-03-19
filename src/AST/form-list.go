@@ -31,39 +31,42 @@
 **/
 
 /**
-* This file implements some useful functions for the plugin.
+* This file contains utility functions for list of formulas
 **/
 
-package dmt
+package AST
 
 import (
-	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-func isEquality(pred AST.Pred) bool {
-	return pred.GetID().Equals(AST.Id_eq)
-}
-
-func predFromNegatedAtom(f AST.Form) AST.Pred {
-	return f.(AST.Not).GetForm().(AST.Pred)
-}
-
-func selectFromPolarity[T any](polarity bool, positive, negative T) T {
-	if polarity {
-		return positive
+// ex-name: ReplaceMetaByTerm
+func LsSubstByTerm(formulas Lib.List[Form], meta Meta, term Term) Lib.List[Form] {
+	for i, f := range formulas.GetSlice() {
+		formulas.Upd(i, f.ReplaceMetaByTerm(meta, term))
 	}
-	return negative
+	return formulas
 }
 
-func rewriteMapInsertion(polarity bool, key string, val AST.Form) {
-	rewriteMap := selectFromPolarity(polarity, positiveRewrite, negativeRewrite)
+// ex-name: ToMappableStringSlice
+func LsToMappableStringSlice(formulas Lib.List[Form]) []MappableString {
+	forms := []MappableString{}
+	for _, form := range formulas.GetSlice() {
+		forms = append(forms, form.(MappableString))
+	}
+	return forms
+}
 
-	if _, ok := rewriteMap[key]; !ok {
-		rewriteMap[key] = Lib.NewList[AST.Form]()
+func FlattenAnd(formulas Lib.List[Form]) Lib.List[Form] {
+	result := Lib.NewList[Form]()
+
+	for _, form := range formulas.GetSlice() {
+		if typed, ok := form.(And); ok {
+			result.Append(FlattenAnd(typed.GetChildFormulas()).GetSlice()...)
+		} else {
+			result.Append(form)
+		}
 	}
 
-	ls := rewriteMap[key]
-	ls.Append(val)
-	rewriteMap[key] = ls
+	return result
 }

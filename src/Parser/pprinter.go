@@ -45,7 +45,7 @@ func (t PVar) ToString() string {
 
 func (f PFun) ToString() string {
 	args := Lib.MkListV(f.arguments...)
-	return fmt.Sprintf("Fun{%s, %s}", f.symbol, args.ToString(PTerm.ToString, ", ", "[]"))
+	return fmt.Sprintf("Fun{%s, %s}", f.symbol, args.ToString(PTerm.ToString))
 }
 
 func (c PConst) ToString() string {
@@ -60,7 +60,7 @@ func (c PConst) ToString() string {
 
 func (p PPred) ToString() string {
 	args := Lib.MkListV(p.arguments...)
-	return fmt.Sprintf("Pred{%s, %s}", p.symbol, args.ToString(PTerm.ToString, ", ", "[]"))
+	return fmt.Sprintf("Pred{%s, %s}", p.symbol, args.ToString(PTerm.ToString))
 }
 
 func (u PUnary) ToString() string {
@@ -99,7 +99,7 @@ func (q PQuant) ToString() string {
 	pairStr := func(p Lib.Pair[string, PAtomicType]) string {
 		return "(" + p.Fst + ": " + p.Snd.(PType).ToString() + ")"
 	}
-	return fmt.Sprintf("%s{%s, %s}", prefix, vars.ToString(pairStr, ", ", ""), q.PForm.ToString())
+	return fmt.Sprintf("%s{%s, %s}", prefix, vars.ToString(pairStr, Lib.WithEmpty("")), q.PForm.ToString())
 }
 
 func (v PTypeVar) ToString() string {
@@ -115,7 +115,7 @@ func (f PTypeFun) ToString() string {
 	return fmt.Sprintf(
 		"%s(%s)",
 		f.symbol,
-		vars.ToString(PType.ToString, ", ", ""),
+		vars.ToString(PType.ToString, Lib.WithEmpty("")),
 	)
 }
 
@@ -140,7 +140,7 @@ func (q PTypeQuant) ToString() string {
 	pairStr := func(p Lib.Pair[string, PAtomicType]) string {
 		return "(" + p.Fst + ": " + p.Snd.(PType).ToString() + ")"
 	}
-	return fmt.Sprintf("%s[%s]: (%s)", prefix, vars.ToString(pairStr, ", ", ""), q.t.ToString())
+	return fmt.Sprintf("%s[%s]: (%s)", prefix, vars.ToString(pairStr, Lib.WithEmpty("")), q.t.ToString())
 }
 
 func (stmt PStatement) ToString() string {

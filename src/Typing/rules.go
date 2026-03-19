@@ -135,21 +135,21 @@ func reconstructForm(reconstruction Reconstruct, baseForm AST.Form) Reconstruct 
 	var f AST.Form
 	switch form := baseForm.(type) {
 	case AST.All:
-		f = AST.MakeAll(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
+		f = AST.MakeAll(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.At(1), form))
 	case AST.AllType:
-		f = AST.MakeAllType(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
+		f = AST.MakeAllType(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.At(1), form))
 	case AST.Ex:
-		f = AST.MakeEx(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.Get(1), form))
+		f = AST.MakeEx(form.GetIndex(), form.GetVarList(), unquantify(reconstruction.forms.At(1), form))
 	case AST.And:
 		f = AST.MakeAnd(form.GetIndex(), reconstruction.forms)
 	case AST.Or:
 		f = AST.MakeOr(form.GetIndex(), reconstruction.forms)
 	case AST.Imp:
-		f = AST.MakeImp(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
+		f = AST.MakeImp(form.GetIndex(), reconstruction.forms.At(0), reconstruction.forms.At(1))
 	case AST.Equ:
-		f = AST.MakeEqu(form.GetIndex(), reconstruction.forms.Get(0), reconstruction.forms.Get(1))
+		f = AST.MakeEqu(form.GetIndex(), reconstruction.forms.At(0), reconstruction.forms.At(1))
 	case AST.Not:
-		f = AST.MakeNot(form.GetIndex(), reconstruction.forms.Get(0))
+		f = AST.MakeNot(form.GetIndex(), reconstruction.forms.At(0))
 	case AST.Pred:
 		// The len(form.GetTypeVars()) first children launched are children for typevars.
 		// So the len(form.GetTypeVars()) first children will return <nil>
@@ -178,7 +178,7 @@ func reconstructForm(reconstruction Reconstruct, baseForm AST.Form) Reconstruct 
 		f = baseForm
 	}
 
-	return Reconstruct{result: true, forms: AST.NewFormList(f), err: nil}
+	return Reconstruct{result: true, forms: Lib.MkListV(f), err: nil}
 }
 
 /* Reconstructs a Term depending on what the children has returned */

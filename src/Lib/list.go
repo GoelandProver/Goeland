@@ -88,6 +88,10 @@ func (l List[T]) At(i int) T {
 	return l.values[i]
 }
 
+func (l List[T]) Slice(st, ed int) List[T] {
+	return List[T]{values: l.values[st:ed]}
+}
+
 func ListEquals[T Comparable](ls0, ls1 List[T]) bool {
 	if ls0.Len() != ls1.Len() {
 		return false
@@ -102,26 +106,58 @@ func ListEquals[T Comparable](ls0, ls1 List[T]) bool {
 	return true
 }
 
+type IterToStringOpts struct {
+	sep   string
+	empty string
+}
+
+func WithSep(sep string) NamedParamsWithDefault[IterToStringOpts] {
+	return func(opts IterToStringOpts) IterToStringOpts {
+		return IterToStringOpts{sep: sep, empty: opts.empty}
+	}
+}
+
+func WithEmpty(empty string) NamedParamsWithDefault[IterToStringOpts] {
+	return func(opts IterToStringOpts) IterToStringOpts {
+		return IterToStringOpts{sep: opts.sep, empty: empty}
+	}
+}
+
 func (l List[T]) ToString(
 	strFunc Func[T, string],
-	sep, emptyValue string,
+	opts ...NamedParamsWithDefault[IterToStringOpts],
 ) string {
+	default_opts := IterToStringOpts{
+		sep:   ", ",
+		empty: "[]",
+	}
+	options := GetParams(default_opts, opts...)
+
 	strArr := []string{}
 
 	for _, element := range l.values {
 		strArr = append(strArr, strFunc(element))
 	}
 
-	if len(strArr) == 0 && emptyValue != "" {
-		strArr = append(strArr, emptyValue)
+	if len(strArr) == 0 && options.empty != "" {
+		strArr = append(strArr, options.empty)
 	}
 
-	return strings.Join(strArr, sep)
+	return strings.Join(strArr, options.sep)
 }
 
-func ListToString[T Stringable](l List[T], sep, emptyValue string) string {
+// Transforms a list into a string. This function has two optional named arguments:
+//   - the separator between the elements (can be specified using the WithSep function),
+//   - the string it should return when it is empty (can be specified using the WithEmpty function).
+//
+// If no separator/empty string is specified, defaults the separator to ", " and the empty
+// string to "[]".
+//
+// A call with no explicit arguments will therefore be: `ListToString(ls)`.
+// If you want to specify the separator or the empty string: `ListToString(ls, WithSep("\n"))`.
+func ListToString[T Stringable](l List[T], opts ...NamedParamsWithDefault[IterToStringOpts]) string {
 	strFunc := func(x T) string { return x.ToString() }
-	return l.ToString(strFunc, sep, emptyValue)
+	return l.ToString(strFunc, opts...)
 }
 
 func (l List[T]) Copy(cpyFunc Func[T, T]) List[T] {
@@ -182,6 +218,30 @@ func (l List[T]) Find(pred Func[T, bool], def T) (T, bool) {
 
 func (l List[T]) Empty() bool {
 	return l.Len() == 0
+}
+
+func (l List[T]) IndexOf(x T, cmp Func2[T, T, bool]) Option[int] {
+	for i, el := range l.values {
+		if cmp(x, el) {
+			return MkSome(i)
+		}
+	}
+	return MkNone[int]()
+}
+
+func ListIndexOf[T Comparable](x T, l List[T]) Option[int] {
+	cmp := func(x, y T) bool { return x.Equals(y) }
+	return l.IndexOf(x, cmp)
+}
+
+func (l List[T]) RemoveAt(index int) List[T] {
+	new_list := NewList[T]()
+	for i, el := range l.values {
+		if i != index {
+			new_list.Append(el)
+		}
+	}
+	return new_list
 }
 
 func ToStrictlyOrderedList[T StrictlyOrdered](l List[T]) StrictlyOrderedList[T] {

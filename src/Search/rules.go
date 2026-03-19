@@ -289,8 +289,10 @@ func applyAlphaNotOrRule(
 ) Core.FormAndTermsList {
 	setStateRules(state, "ALPHA", "NOT", "OR")
 
-	for i := range formWithoutNot.FormList.Slice() {
-		result = result.AppendIfNotContains(Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.FormList.Get(i)), terms))
+	for i := range formWithoutNot.GetChildFormulas().GetSlice() {
+		result = result.AppendIfNotContains(
+			Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetChildFormulas().At(i)), terms),
+		)
 	}
 
 	return result
@@ -318,8 +320,10 @@ func applyAlphaAndRule(
 ) Core.FormAndTermsList {
 	setStateRules(state, "ALPHA", "AND")
 
-	for i := range formTyped.FormList.Slice() {
-		result = result.AppendIfNotContains(Core.MakeFormAndTerm(formTyped.FormList.Get(i), terms))
+	for i := range formTyped.GetChildFormulas().GetSlice() {
+		result = result.AppendIfNotContains(
+			Core.MakeFormAndTerm(formTyped.GetChildFormulas().At(i), terms),
+		)
 	}
 
 	return result
@@ -377,8 +381,11 @@ func applyBetaNotAndRule(
 ) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "NOT", "AND")
 
-	for i := range formWithoutNot.FormList.Slice() {
-		result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.FormList.Get(i)), terms)))
+	for i := range formWithoutNot.GetChildFormulas().GetSlice() {
+		result = append(
+			result,
+			Core.MakeSingleElementFormAndTermList(
+				Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetChildFormulas().At(i)), terms)))
 	}
 
 	return result
@@ -412,8 +419,9 @@ func applyBetaOrRule(
 ) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "OR")
 
-	for i := range formTyped.FormList.Slice() {
-		result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(formTyped.FormList.Get(i), terms)))
+	for i := range formTyped.GetChildFormulas().GetSlice() {
+		result = append(result, Core.MakeSingleElementFormAndTermList(
+			Core.MakeFormAndTerm(formTyped.GetChildFormulas().At(i), terms)))
 	}
 
 	return result

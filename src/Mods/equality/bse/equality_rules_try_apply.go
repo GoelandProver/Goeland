@@ -111,7 +111,7 @@ func tryApplyRuleCompute(s, t AST.Term, ep EqualityProblem, type_rule int) ruleS
 		return fmt.Sprintf(
 			"len subterms found : %v - %v",
 			subterms_of_s.Len(),
-			subterms_of_s.ToString(AST.Term.ToString, ",", "[]"),
+			subterms_of_s.ToString(AST.Term.ToString),
 		)
 	}))
 	debug(
@@ -179,7 +179,7 @@ func searchUnifBewteenListAndEq(tl Lib.List[AST.Term], tree Unif.DataStructure) 
 	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf(
 			"Searching unfication between %v and the eq tree",
-			tl.ToString(AST.Term.ToString, ",", "[]"),
+			tl.ToString(AST.Term.ToString),
 		)
 	}))
 	term_pair_list := []eqStruct.TermPair{}
