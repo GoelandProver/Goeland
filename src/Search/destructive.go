@@ -334,13 +334,6 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 			Lib.MkLazy(func() string { return fmt.Sprintf("Atomics non-dmt : %v", atomics_non_dmt.ToString()) }),
 		)
 
-		// Equality
-		if EagerEq || (len(st.GetAlpha()) == 0 && len(st.GetDelta()) == 0 && len(st.GetBeta()) == 0) {
-			if TryEquality(atomics_dmt, st, step_atomics, father_id, cha, node_id, original_node_id) {
-				return
-			}
-		}
-
 		// Retrieve new formulas to insert into the trees
 		atomicsPlus := atomics_non_dmt.FilterLitPolarity(Core.Pos)
 		atomicsMinus := atomics_non_dmt.FilterLitPolarity(Core.Neg)
@@ -363,6 +356,13 @@ func (ds *destructiveSearch) ProofSearch(father_id uint64, st State, cha Communi
 		}
 		for _, f := range atomicsMinus {
 			if ds.searchContradiction(f.GetForm().Copy(), father_id, st, cha, node_id, original_node_id) {
+				return
+			}
+		}
+
+		// Equality
+		if EagerEq || (len(st.GetAlpha()) == 0 && len(st.GetDelta()) == 0 && len(st.GetBeta()) == 0) {
+			if TryEquality(atomics_dmt, st, step_atomics, father_id, cha, node_id, original_node_id) {
 				return
 			}
 		}
