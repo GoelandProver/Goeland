@@ -41,10 +41,9 @@ type TermForm struct {
 	t AST.Term
 }
 
-func (t TermForm) ToString() string          { return t.ToString() }
-func (t TermForm) GetTerm() AST.Term         { return t.t.Copy() }
-func (t TermForm) Copy() AST.Form            { return makeTermForm(t.GetTerm()) }
-func (t TermForm) RenameVariables() AST.Form { return t }
+func (t TermForm) ToString() string  { return t.ToString() }
+func (t TermForm) GetTerm() AST.Term { return t.t.Copy() }
+func (t TermForm) Copy() AST.Form    { return makeTermForm(t.GetTerm()) }
 func (t TermForm) ReplaceTermByTerm(AST.Term, AST.Term) (AST.Form, bool) {
 	return t, false
 }

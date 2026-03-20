@@ -106,10 +106,6 @@ func (a All) Copy() Form {
 	return All{a.quantifier.copy()}
 }
 
-func (a All) RenameVariables() Form {
-	return All{a.quantifier.renameVariables()}
-}
-
 func (a All) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 	quant, isReplaced := a.quantifier.replaceTermByTerm(old, new)
 	return All{quant}, isReplaced
@@ -163,10 +159,6 @@ func (e Ex) GetSubFormulasRecur() Lib.List[Form] {
 
 func (e Ex) Copy() Form {
 	return Ex{e.quantifier.copy()}
-}
-
-func (e Ex) RenameVariables() Form {
-	return Ex{e.quantifier.renameVariables()}
 }
 
 func (e Ex) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
@@ -277,10 +269,6 @@ func (o Or) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
 func (o Or) SubstTy(old TyGenVar, new Ty) Form {
 	formList := replaceTyVarInFormList(o.forms, old, new)
 	return MakeOrSimple(formList, o.metas.Raw())
-}
-
-func (o Or) RenameVariables() Form {
-	return MakeOr(renameFormList(o.forms))
 }
 
 func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
@@ -408,10 +396,6 @@ func (a And) SubstTy(old TyGenVar, new Ty) Form {
 	return MakeAndSimple(formList, a.metas.Raw())
 }
 
-func (a And) RenameVariables() Form {
-	return MakeAnd(renameFormList(a.forms))
-}
-
 func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
 	newFormList, newMetas := substVarByMetaInFormList(old, new, a.forms, a.metas.Raw())
 	return MakeAndSimple(newFormList, newMetas)
@@ -512,10 +496,6 @@ func (e Equ) SubstTy(old TyGenVar, new Ty) Form {
 		e.f2.SubstTy(old, new),
 		e.metas.Raw(),
 	)
-}
-
-func (e Equ) RenameVariables() Form {
-	return MakeEqu(e.GetF1().RenameVariables(), e.GetF2().RenameVariables())
 }
 
 func (e Equ) GetSubTerms() Lib.Set[Term] {
@@ -632,10 +612,6 @@ func (i Imp) SubstTy(old TyGenVar, new Ty) Form {
 		i.f2.SubstTy(old, new),
 		i.metas.Raw(),
 	)
-}
-
-func (i Imp) RenameVariables() Form {
-	return MakeImp(i.GetF1().RenameVariables(), i.GetF2().RenameVariables())
 }
 
 func (i Imp) GetSubTerms() Lib.Set[Term] {
@@ -755,10 +731,6 @@ func (n Not) SubstTy(old TyGenVar, new Ty) Form {
 	)
 }
 
-func (n Not) RenameVariables() Form {
-	return MakeNot(n.f.RenameVariables())
-}
-
 func (n Not) ReplaceMetaByTerm(meta Meta, term Term) Form {
 	return MakeNot(n.f.ReplaceMetaByTerm(meta, term))
 }
@@ -854,8 +826,6 @@ func (p Pred) GetTyArgs() Lib.List[Ty] { return p.tys }
 func (p Pred) GetArgs() Lib.List[Term] { return p.args }
 
 /* Formula methods */
-
-func (p Pred) RenameVariables() Form { return p }
 
 func (p Pred) ToString() string {
 	return printer.StrFunctional(
@@ -1043,7 +1013,6 @@ func (Top) Equals(f any) bool                             { _, isTop := f.(Top);
 func (Top) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
 func (t Top) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeTop(), false }
 func (t Top) SubstTy(TyGenVar, Ty) Form                   { return t }
-func (t Top) RenameVariables() Form                       { return MakeTop() }
 func (t Top) GetSubTerms() Lib.Set[Term]                  { return Lib.EmptySet[Term]() }
 func (t Top) GetSymbols() Lib.Set[Id]                     { return Lib.EmptySet[Id]() }
 func (t Top) SubstituteVarByMeta(Var, Meta) Form          { return t }
@@ -1073,7 +1042,6 @@ func (Bot) Equals(f any) bool                             { _, isBot := f.(Bot);
 func (Bot) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
 func (b Bot) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeBot(), false }
 func (b Bot) SubstTy(TyGenVar, Ty) Form                   { return b }
-func (b Bot) RenameVariables() Form                       { return MakeBot() }
 func (b Bot) GetSubTerms() Lib.Set[Term]                  { return Lib.EmptySet[Term]() }
 func (b Bot) GetSymbols() Lib.Set[Id]                     { return Lib.EmptySet[Id]() }
 func (b Bot) SubstituteVarByMeta(Var, Meta) Form          { return b }

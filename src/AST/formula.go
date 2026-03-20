@@ -57,7 +57,6 @@ type Form interface {
 
 	ReplaceTermByTerm(old Term, new Term) (Form, bool)
 	SubstTy(old TyGenVar, new Ty) Form
-	RenameVariables() Form
 	SubstituteVarByMeta(old Var, new Meta) Form
 	ReplaceMetaByTerm(meta Meta, term Term) Form
 }
@@ -135,16 +134,6 @@ func replaceTyVarInFormList(oldForms Lib.List[Form], old TyGenVar, new Ty) Lib.L
 		oldForms,
 		func(f Form) Form { return f.SubstTy(old, new) },
 	)
-}
-
-func renameFormList(forms Lib.List[Form]) Lib.List[Form] {
-	newForms := Lib.MkList[Form](forms.Len())
-
-	for i, form := range forms.GetSlice() {
-		newForms.Upd(i, form.RenameVariables())
-	}
-
-	return newForms
 }
 
 // Comparisons
