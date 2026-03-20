@@ -57,7 +57,7 @@ func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 	if Glob.IsLoaded("dmt") {
 		registeredAxioms := dmt.GetRegisteredAxioms()
 		registeredAxioms.Append(root)
-		root = AST.MakerAnd(registeredAxioms)
+		root = AST.MakeAnd(registeredAxioms)
 	}
 
 	// if AST.EmptyGlobalContext() {

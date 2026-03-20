@@ -68,7 +68,7 @@ func GetTargetFormIndex(applied_on AST.Form, hypotheses Lib.List[AST.Form]) int 
 	case Lib.Some[int]:
 		return t.Val
 	case Lib.None[int]:
-		if !IsPredEqual(applied_on) && !applied_on.Equals(AST.MakerTop()) {
+		if !IsPredEqual(applied_on) && !applied_on.Equals(AST.MakeTop()) {
 			Glob.Anomaly(
 				"certif-utils",
 				fmt.Sprintf("index of %s not found in { %s }", applied_on.ToString(), Lib.ListToString(hypotheses, " ;; ", "")),

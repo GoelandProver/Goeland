@@ -220,10 +220,10 @@ func buildEqualityProblemMultiListFromPredList(pred AST.Pred, tn Unif.DataStruct
 	}
 
 	for i, arg := range pred.GetArgs().GetSlice() {
-		metas = Lib.ListAdd(metas, AST.MakerMeta("METAEQ_"+arg.ToString(), -1, tys.At(i)))
+		metas = Lib.ListAdd(metas, AST.MakeMeta("METAEQ_"+arg.ToString(), -1, tys.At(i)))
 	}
 
-	newTerm := AST.MakerPred(
+	newTerm := AST.MakePred(
 		predId.Copy().(AST.Id),
 		pred.GetTyArgs(),
 		AST.MetaListToTermList(metas),

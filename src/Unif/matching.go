@@ -74,7 +74,7 @@ func (m *Machine) unify(node Node, formula AST.Form) []MatchingSubstitutions {
 	switch formula_type := formula.(type) {
 	case AST.Pred:
 		// Transform the predicate to a function to make the tool work properly
-		m.terms = Lib.MkListV[AST.Term](AST.MakerFun(
+		m.terms = Lib.MkListV[AST.Term](AST.MakeFun(
 			formula_type.GetID(),
 			Lib.NewList[AST.Ty](),
 			getFunctionalArguments(formula_type.GetTyArgs(), formula_type.GetArgs()),

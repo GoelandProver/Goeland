@@ -71,7 +71,7 @@ func (sko PreInnerSkolemization) Skolemize(
 	sko.mu.Lock()
 	if val, ok := sko.linkedSymbols.Find(
 		func(p Glob.Pair[AST.Form, AST.Id]) bool { return p.Fst.Equals(realDelta) },
-		Glob.MakePair(Glob.To[AST.Form](AST.MakerBot()), AST.MakeId("")),
+		Glob.MakePair(Glob.To[AST.Form](AST.MakeBot()), AST.MakeId("")),
 	); ok {
 		symbol = val.Snd
 	} else {
@@ -82,7 +82,7 @@ func (sko PreInnerSkolemization) Skolemize(
 
 	internalMetas := form.GetMetas().Elements()
 
-	skolemFunc := AST.MakerFun(
+	skolemFunc := AST.MakeFun(
 		symbol,
 		Lib.NewList[AST.Ty](),
 		Lib.ListMap(internalMetas, Glob.To[AST.Term]),
@@ -193,7 +193,7 @@ func alphaConvertTerm(t AST.Term, substitution map[string]AST.Var) AST.Term {
 			func(trm AST.Term) AST.Term {
 				return alphaConvertTerm(trm, substitution)
 			})
-		return AST.MakerFun(
+		return AST.MakeFun(
 			nt.GetID(),
 			nt.GetTyArgs(),
 			mappedTerms,

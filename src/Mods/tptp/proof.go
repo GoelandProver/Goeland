@@ -56,7 +56,7 @@ var original_terms = Lib.NewList[Lib.Either[AST.Ty, AST.Term]]()
 var prefix_step = "f"
 var prefix_axiom_cut = "ac"
 var prefix_const = "sko_"
-var dummyTerm = AST.MakerConst(AST.MakerId("Goeland_I"))
+var dummyTerm = AST.MakeConst(AST.MakeId("Goeland_I"))
 var dummyType = AST.MkTyConst("Goeland_T")
 var epsilon CertifUtils.Epsilon
 var current_id = 0
@@ -64,7 +64,7 @@ var current_id = 0
 func makeTPTPProofFromIProof(proof Search.IProof) string {
 	axioms, conjecture := CertifUtils.ProcessMainFormula(proof.AppliedOn())
 	resultingString := makeTheorem(axioms, conjecture)
-	hypotheses := Lib.ListCpy(axioms).Push(AST.MakerNot(conjecture))
+	hypotheses := Lib.ListCpy(axioms).Push(AST.MakeNot(conjecture))
 	cut_hypotheses := performCutAxiomStep(axioms, conjecture)
 	first_steps, next_id := performFirstStep(axioms, conjecture)
 
@@ -72,7 +72,7 @@ func makeTPTPProofFromIProof(proof Search.IProof) string {
 		proof.AppliedOn().GetSubTerms(),
 		func(term AST.Term) AST.Term {
 			new_term_name := fmt.Sprintf("%s%d", prefix_const, original_terms.Len())
-			new_term := AST.MakerConst(AST.MakerId(new_term_name))
+			new_term := AST.MakeConst(AST.MakeId(new_term_name))
 			original_terms.Append(Lib.MkRight[AST.Ty, AST.Term](term))
 			return new_term
 		},
@@ -507,10 +507,10 @@ func equStep(
 	case AST.Equ:
 		A = form.GetF1()
 		B = form.GetF2()
-		notA = AST.MakerNot(A)
-		notB = AST.MakerNot(B)
-		A_imp_B = AST.MakerImp(A, B)
-		B_imp_A = AST.MakerImp(B, A)
+		notA = AST.MakeNot(A)
+		notB = AST.MakeNot(B)
+		A_imp_B = AST.MakeImp(A, B)
+		B_imp_A = AST.MakeImp(B, A)
 
 	default:
 		raise_anomaly(fmt.Sprintf("Expected %s to be an equivalence.", form.ToString()))
@@ -620,8 +620,8 @@ func notEquStep(
 		case AST.Equ:
 			A = f.GetF1()
 			B = f.GetF2()
-			not_A_imp_B = AST.MakerNot(AST.MakerImp(A, B))
-			not_B_imp_A = AST.MakerNot(AST.MakerImp(B, A))
+			not_A_imp_B = AST.MakeNot(AST.MakeImp(A, B))
+			not_B_imp_A = AST.MakeNot(AST.MakeImp(B, A))
 
 		default:
 			raise_anomaly(fmt.Sprintf("Expected formula %s to be an equivalence", f.ToString()))
@@ -726,7 +726,7 @@ func performFirstStep(
 		fmt.Sprintf("%s%d", prefix_step, cut_form_not_id),
 		"plain",
 		axioms,
-		Lib.MkListV[AST.Form](conjecture, AST.MakerNot(conjecture)),
+		Lib.MkListV[AST.Form](conjecture, AST.MakeNot(conjecture)),
 		"rightNot",
 		"1",
 		Lib.MkListV(

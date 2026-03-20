@@ -126,7 +126,7 @@ func (m TyMeta) SubstTy(v TyGenVar, new Ty) Ty {
 	return m
 }
 
-func (m TyMeta) ToTermMeta() Meta { return MakeMeta(m.index, 0, m.name, m.formula, tType) }
+func (m TyMeta) ToTermMeta() Meta { return Meta{m.index, 0, m.name, m.formula, tType} }
 
 func TyMetaFromMeta(m Meta) TyMeta {
 	return TyMeta{
@@ -453,8 +453,8 @@ func TyToTerm(ty Ty) Term {
 	case TyMeta:
 		return nty.ToTermMeta()
 	case TyConstr:
-		return MakerFun(
-			MakerId(nty.symbol),
+		return MakeFun(
+			MakeId(nty.symbol),
 			Lib.NewList[Ty](),
 			Lib.ListMap(nty.args, TyToTerm),
 		)

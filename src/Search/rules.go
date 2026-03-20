@@ -293,7 +293,7 @@ func applyAlphaNotOrRule(
 
 	for i := range formWithoutNot.GetChildFormulas().GetSlice() {
 		result = result.AppendIfNotContains(
-			Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetChildFormulas().At(i)), terms),
+			Core.MakeFormAndTerm(AST.MakeNot(formWithoutNot.GetChildFormulas().At(i)), terms),
 		)
 	}
 
@@ -309,7 +309,7 @@ func applyAlphaNotImpRule(
 	setStateRules(state, "ALPHA", "NOT", "IMPLY")
 
 	result = result.AppendIfNotContains(Core.MakeFormAndTerm(formWithoutNot.GetF1(), terms))
-	result = result.AppendIfNotContains(Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetF2()), terms))
+	result = result.AppendIfNotContains(Core.MakeFormAndTerm(AST.MakeNot(formWithoutNot.GetF2()), terms))
 
 	return result
 }
@@ -387,7 +387,7 @@ func applyBetaNotAndRule(
 		result = append(
 			result,
 			Core.MakeSingleElementFormAndTermList(
-				Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetChildFormulas().At(i)), terms)))
+				Core.MakeFormAndTerm(AST.MakeNot(formWithoutNot.GetChildFormulas().At(i)), terms)))
 	}
 
 	return result
@@ -403,12 +403,12 @@ func applyBetaNotEquRule(
 
 	result = append(result,
 		Core.FormAndTermsList{
-			Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetF1()), terms),
+			Core.MakeFormAndTerm(AST.MakeNot(formWithoutNot.GetF1()), terms),
 			Core.MakeFormAndTerm(formWithoutNot.GetF2(), terms)})
 	result = append(result,
 		Core.FormAndTermsList{
 			Core.MakeFormAndTerm(formWithoutNot.GetF1(), terms),
-			Core.MakeFormAndTerm(AST.MakerNot(formWithoutNot.GetF2()), terms)})
+			Core.MakeFormAndTerm(AST.MakeNot(formWithoutNot.GetF2()), terms)})
 
 	return result
 }
@@ -437,7 +437,7 @@ func applyBetaImpRule(
 ) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "IMPLY")
 
-	result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(AST.MakerNot(formTyped.GetF1()), terms)))
+	result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(AST.MakeNot(formTyped.GetF1()), terms)))
 	result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(formTyped.GetF2(), terms)))
 
 	return result
@@ -453,8 +453,8 @@ func applyBetaEquRule(
 
 	result = append(result,
 		Core.FormAndTermsList{
-			Core.MakeFormAndTerm(AST.MakerNot(formTyped.GetF1()), terms),
-			Core.MakeFormAndTerm(AST.MakerNot(formTyped.GetF2()), terms)})
+			Core.MakeFormAndTerm(AST.MakeNot(formTyped.GetF1()), terms),
+			Core.MakeFormAndTerm(AST.MakeNot(formTyped.GetF2()), terms)})
 	result = append(result,
 		Core.FormAndTermsList{
 			Core.MakeFormAndTerm(formTyped.GetF1(), terms),

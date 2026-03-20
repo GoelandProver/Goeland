@@ -261,7 +261,7 @@ func getTermAtOcc(form AST.Form, occurrence Lib.List[Lib.Int]) Lib.Either[AST.Ty
 func getCleanForm(form AST.Form) AST.Form {
 	switch f := form.(type) {
 	case AST.Not:
-		return AST.MakerNot(getCleanForm_rec(f.GetForm()))
+		return AST.MakeNot(getCleanForm_rec(f.GetForm()))
 	}
 	return getCleanForm_rec(form)
 }

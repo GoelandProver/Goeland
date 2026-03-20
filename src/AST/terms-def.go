@@ -144,11 +144,11 @@ func (f Fun) Equals(t any) bool {
 }
 
 func (f Fun) Copy() Term {
-	return MakeFun(f.GetP(), Lib.ListCpy(f.GetTyArgs()), Lib.ListCpy(f.GetArgs()), f.metas.Raw())
+	return MakeFunSimple(f.GetP(), Lib.ListCpy(f.GetTyArgs()), Lib.ListCpy(f.GetArgs()), f.metas.Raw())
 }
 
 func (f Fun) PointerCopy() *Fun {
-	nf := MakeFun(f.GetP(), f.GetTyArgs(), f.GetArgs(), f.metas.Raw())
+	nf := MakeFunSimple(f.GetP(), f.GetTyArgs(), f.GetArgs(), f.metas.Raw())
 	return &nf
 }
 
@@ -186,7 +186,7 @@ func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
 		return newTerm.Copy()
 	} else {
 		tl, res := replaceFirstOccurrenceTermList(f.GetArgs(), oldTerm, newTerm)
-		nf := MakeFun(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
+		nf := MakeFunSimple(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
 		if !res && !f.metas.NeedsUpd() {
 			nf.metas.AvoidUpd()
 		}
@@ -203,7 +203,7 @@ func (f Fun) SubstTy(old TyGenVar, new Ty) Term {
 		f.args,
 		func(t Term) Term { return t.SubstTy(old, new) },
 	)
-	return MakeFun(
+	return MakeFunSimple(
 		f.GetID(),
 		typed_args,
 		args,
@@ -216,7 +216,7 @@ func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
 		return newTerm.Copy()
 	} else {
 		tl, res := ReplaceOccurrence(f.GetArgs(), oldTerm, newTerm)
-		nf := MakeFun(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
+		nf := MakeFunSimple(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
 		if !res && !f.metas.NeedsUpd() {
 			nf.metas.AvoidUpd()
 		}
@@ -348,7 +348,7 @@ func (m Meta) Equals(t any) bool {
 }
 
 func (m Meta) Copy() Term {
-	return MakeMeta(m.index, m.GetOccurence(), m.GetName(), m.GetFormula(), m.GetTy())
+	return Meta{m.index, m.GetOccurence(), m.GetName(), m.GetFormula(), m.GetTy()}
 }
 
 func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
@@ -385,7 +385,7 @@ func (m Meta) Less(u any) bool {
 }
 
 func MakeEmptyMeta() Meta {
-	return MakeMeta(-1, -1, "-1", -1, TIndividual())
+	return Meta{-1, -1, "-1", -1, TIndividual()}
 }
 
 func MetaEquals(x, y Meta) bool {

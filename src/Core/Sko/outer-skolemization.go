@@ -68,7 +68,7 @@ func (sko OuterSkolemization) Skolemize(
 
 	metas := fvs.Elements()
 
-	skolemFunc := AST.MakerFun(
+	skolemFunc := AST.MakeFun(
 		symbol,
 		Lib.NewList[AST.Ty](),
 		Lib.ListMap(metas, Glob.To[AST.Term]),

@@ -240,7 +240,7 @@ func ApplySubstitutionOnTerm(old_symbol AST.Meta, new_symbol, t AST.Term) AST.Te
 			res = new_symbol.Copy()
 		}
 	case AST.Fun:
-		res = AST.MakerFun(
+		res = AST.MakeFun(
 			nf.GetP(),
 			nf.GetTyArgs(),
 			ApplySubstitutionOnTermList(old_symbol, new_symbol, nf.GetArgs()),

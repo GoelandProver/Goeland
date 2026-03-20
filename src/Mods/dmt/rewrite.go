@@ -223,7 +223,7 @@ func insert(
 	list Lib.List[AST.Form],
 	unif Unif.MatchingSubstitutions,
 ) []Unif.MatchingSubstitutions {
-	if Lib.ListMem(AST.MakerTop().Copy(), list) || Lib.ListMem(AST.MakerBot().Copy(), list) {
+	if Lib.ListMem(AST.MakeTop().Copy(), list) || Lib.ListMem(AST.MakeBot().Copy(), list) {
 		sortedUnifs = insertFirst(sortedUnifs, unif)
 	} else {
 		sortedUnifs = append(sortedUnifs, unif)

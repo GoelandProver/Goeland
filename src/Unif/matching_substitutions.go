@@ -116,7 +116,7 @@ func translateTermRec(term AST.Term) AST.Term {
 		args := trm.GetArgs()
 		args = trm.GetArgs().Slice(ty_args.Len(), trm.GetArgs().Len())
 
-		return AST.MakerFun(
+		return AST.MakeFun(
 			trm.GetID(),
 			ty_args,
 			Lib.ListMap(args, translateTermRec),
