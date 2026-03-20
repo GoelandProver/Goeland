@@ -30,38 +30,57 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-package Typing
-
 /**
- * This file defines the WF rules.
+ * This file provides a generic interface to launch goroutines on functions,
+ * collect their result and compute a final value.
+ * The computation of the final value is done incrementally at the answer of each child,
+ * consequently, the function taking care of reconciliating the output of two children
+ * should be associative, commutative, and have a neutral.
  **/
 
-/* WF1 rule first empties the variables, and then the types. */
-func applyWF2(state Sequent, root *ProofTree, fatherChan chan Reconstruct) Reconstruct {
-	root.appliedRule = "WF_2"
+package Lib
 
-	// Try to empty vars first
-	if len(state.localContext.vars) > 0 {
-		// Launch child on the type of the first var
-		var_, newLocalContext := state.localContext.popVar()
-		child := []Sequent{
-			{
-				localContext:  newLocalContext,
-				globalContext: state.globalContext,
-				consequence:   Consequence{a: var_.GetTypeApp()},
-			},
+import (
+	"fmt"
+	"reflect"
+)
+
+func GenericParallel[T any](
+	calls []func(chan T),
+	reconciliation func(T, T) T,
+	neutral T,
+) (T, error) {
+	channels := make([](chan T), len(calls))
+	for i, call := range calls {
+		call_chan := make(chan T)
+		channels[i] = call_chan
+		go call(call_chan)
+	}
+	return genericSelect(channels, reconciliation, neutral)
+}
+
+func genericSelect[T any](
+	channels [](chan T),
+	reconciliation func(T, T) T,
+	neutral T,
+) (T, error) {
+	remaining := len(channels)
+	res := neutral
+	cases := make([]reflect.SelectCase, len(channels))
+	for i, channel := range channels {
+		cases[i] = reflect.SelectCase{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(channel)}
+	}
+
+	for remaining > 0 {
+		_, value, _ := reflect.Select(cases)
+		remaining--
+
+		if v, ok := value.Interface().(T); ok {
+			res = reconciliation(res, v)
+		} else {
+			return neutral, fmt.Errorf("Error in Lib.Par: channel has not answered a value of the right type.")
 		}
-		return launchChildren(child, root, fatherChan)
 	}
 
-	// Then, if vars is not empty, empty the types
-	_, newLocalContext := state.localContext.popTypeVar()
-	child := []Sequent{
-		{
-			localContext:  newLocalContext,
-			globalContext: state.globalContext,
-			consequence:   Consequence{a: metaType},
-		},
-	}
-	return launchChildren(child, root, fatherChan)
+	return res, nil
 }

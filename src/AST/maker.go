@@ -66,15 +66,10 @@ var EmptyPredEq Pred
 /* Initialization */
 func Init() {
 	Reset()
-	initTypes()
 	Id_eq = MakerId("=")
-	EmptyPredEq = MakerPred(Id_eq, Lib.NewList[Term](), make([]TypeApp, 0))
-
-	// Eq/Neq types
-	tv := MkTypeVar("α")
-	scheme := MkQuantifiedType([]TypeVar{tv}, MkTypeArrow(MkTypeCross(tv, tv), tv))
-	SavePolymorphScheme(Id_eq.GetName(), scheme)
+	EmptyPredEq = MakerPred(Id_eq, Lib.NewList[Ty](), Lib.NewList[Term]())
 	initDefaultMap()
+	initTPTPNativeTypes()
 }
 
 /* Reset all the maps and counters */
@@ -113,28 +108,28 @@ func MakerNewId(s string) Id {
 }
 
 /* Var maker */
-func MakerVar(s string, t ...TypeApp) Var {
+func MakerVar(s string) Var {
 	lock_term.Lock()
 	i, ok := idVar[s]
 	lock_term.Unlock()
 	if ok {
-		return MakeVar(i, s, getType(t))
+		return MakeVar(i, s)
 	} else {
-		return MakerNewVar(s, getType(t))
+		return MakerNewVar(s)
 	}
 }
 
-func MakerNewVar(s string, t ...TypeApp) Var {
+func MakerNewVar(s string) Var {
 	lock_term.Lock()
 	idVar[s] = cpt_term
-	vr := MakeVar(cpt_term, s, getType(t))
+	vr := MakeVar(cpt_term, s)
 	cpt_term += 1
 	lock_term.Unlock()
 	return vr
 }
 
 /* Meta maker */
-func MakerMeta(s string, formula int, t ...TypeApp) Meta {
+func MakerMeta(s string, formula int, ty Ty) Meta {
 	lock_term.Lock()
 	i, ok := occurenceMeta[s]
 	lock_term.Unlock()
@@ -144,39 +139,25 @@ func MakerMeta(s string, formula int, t ...TypeApp) Meta {
 		new_index := cpt_term
 		cpt_term += 1
 		lock_term.Unlock()
-		return MakeMeta(new_index, i, s, formula, getType(t))
+		return MakeMeta(new_index, i, s, formula, ty)
 	} else {
 		lock_term.Lock()
 		occurenceMeta[s] = 1
 		new_index := cpt_term
 		cpt_term += 1
 		lock_term.Unlock()
-		return MakeMeta(new_index, 0, s, formula, getType(t))
+		return MakeMeta(new_index, 0, s, formula, ty)
 	}
 }
 
 /* Const maker (given a id, create a fun without args) */
-func MakerConst(id Id, t ...TypeApp) Fun {
-	return MakeFun(id, Lib.NewList[Term](), []TypeApp{}, getType(t).(TypeScheme), Lib.EmptySet[Meta]())
+func MakerConst(id Id) Fun {
+	return MakeFun(id, Lib.NewList[Ty](), Lib.NewList[Term](), Lib.EmptySet[Meta]())
 }
 
 /* Fun maker, with given id and args */
-func MakerFun(id Id, terms Lib.List[Term], typeVars []TypeApp, t ...TypeScheme) Fun {
-	var ts TypeScheme
-	if len(t) == 1 {
-		ts = t[0]
-	} else {
-		ts = DefaultFunType(terms.Len())
-	}
-	return MakeFun(id, terms, typeVars, ts, Lib.EmptySet[Meta]())
-}
-
-func getType(t []TypeApp) TypeApp {
-	if len(t) == 1 {
-		return t[0]
-	} else {
-		return DefaultType()
-	}
+func MakerFun(id Id, ty_args Lib.List[Ty], terms Lib.List[Term]) Fun {
+	return MakeFun(id, ty_args, terms, Lib.EmptySet[Meta]())
 }
 
 /* Index make for formula */

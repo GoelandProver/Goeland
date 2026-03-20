@@ -46,6 +46,7 @@ import (
 
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Typing"
 	"github.com/GoelandProver/Goeland/Unif"
 )
 
@@ -208,15 +209,24 @@ func buildEqualityProblemMultiListFromPredList(pred AST.Pred, tn Unif.DataStruct
 	predId := pred.GetID()
 	metas := Lib.NewList[AST.Meta]()
 
-	for _, arg := range pred.GetArgs().GetSlice() {
-		metas = Lib.ListAdd(metas, AST.MakerMeta("METAEQ_"+arg.ToString(), -1))
+	tys := Lib.NewList[AST.Ty]()
+	switch rty := Typing.QueryEnvInstance(predId.GetName(), pred.GetTyArgs()).(type) {
+	case Lib.Some[AST.Ty]:
+		tys = AST.GetArgsTy(rty.Val)
+	case Lib.None[AST.Ty]:
+		for range pred.GetArgs().GetSlice() {
+			tys.Append(AST.TIndividual())
+		}
+	}
+
+	for i, arg := range pred.GetArgs().GetSlice() {
+		metas = Lib.ListAdd(metas, AST.MakerMeta("METAEQ_"+arg.ToString(), -1, tys.At(i)))
 	}
 
 	newTerm := AST.MakerPred(
 		predId.Copy().(AST.Id),
+		pred.GetTyArgs(),
 		AST.MetaListToTermList(metas),
-		pred.GetTypeVars(),
-		pred.GetType(),
 	)
 	found, complementaryPredList := tn.Unify(newTerm)
 

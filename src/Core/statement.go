@@ -50,7 +50,7 @@ func InitDebugger() {
 
 type TFFAtomTyping struct {
 	Literal AST.Id
-	Ts      AST.TypeScheme
+	Ty      AST.Ty
 }
 
 // TPTP inputs are a list of statements
@@ -137,7 +137,7 @@ func (statement Statement) ToString() string {
 		str := statement.role.ToString() + " " + statement.name + " "
 		switch ty := statement.atomTyping.(type) {
 		case Lib.Some[TFFAtomTyping]:
-			return str + ty.Val.Literal.GetName() + ": " + ty.Val.Ts.ToString()
+			return str + ty.Val.Literal.GetName() + ": " + ty.Val.Ty.ToString()
 		case Lib.None[TFFAtomTyping]:
 			return str + "[None]"
 		}
