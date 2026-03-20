@@ -81,6 +81,7 @@ var version = fmt.Sprintf("1.2-dev.r%s", commit)
 var printVersion = false
 var allowFlattening = false
 var type_check = true
+var list_dbgs = false
 
 var IncrEq = false
 
@@ -282,6 +283,10 @@ func NoTypeCheck() bool {
 	return !type_check
 }
 
+func ListDebuggers() bool {
+	return list_dbgs
+}
+
 /* Setters */
 func SetDebug(debug_list string) {
 	if debug_list == "none" {
@@ -432,4 +437,8 @@ func SetFlatteningAllowed() {
 
 func SetNoTypeCheck() {
 	type_check = false
+}
+
+func SetListDebuggers() {
+	list_dbgs = true
 }

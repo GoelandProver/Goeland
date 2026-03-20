@@ -194,3 +194,7 @@ func CreateDebugger(name string) Debugger {
 	}
 	return debug
 }
+
+func RegisteredDebuggers() string {
+	return Lib.ListToString(registered_debuggers.Elements(), Lib.WithSep("\n- "), Lib.WithEmpty("no registered debuggers"))
+}
