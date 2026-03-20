@@ -1,0 +1,12 @@
+% Simple problem that will reintroduce formulas multiple times
+% result: VALID
+
+fof(desko,conjecture,
+    ~( ! [X,Y] : (
+        (~p(Y) & ? [Z] : p(Z))        
+        | 
+        (~q(X) & ? [Z2] : q(Z2))
+        )
+    )
+).
+        
