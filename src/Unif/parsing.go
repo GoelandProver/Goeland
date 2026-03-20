@@ -106,7 +106,7 @@ func MakerTermForm(t AST.Term) TermForm {
 	switch trm := t.(type) {
 	case AST.Fun:
 		args := getFunctionalArguments(trm.GetTyArgs(), trm.GetArgs())
-		t = AST.MakerFun(trm.GetID(), Lib.NewList[AST.Ty](), args)
+		t = AST.MakeFun(trm.GetID(), Lib.NewList[AST.Ty](), args)
 	}
 	return makeTermForm(t.Copy())
 }
@@ -161,7 +161,7 @@ func getFunctionalArguments(
 		case AST.Meta:
 			args.Append(arg)
 		case AST.Fun:
-			args.Append(AST.MakerFun(
+			args.Append(AST.MakeFun(
 				term.GetID(),
 				Lib.NewList[AST.Ty](),
 				getFunctionalArguments(term.GetTyArgs(), term.GetArgs()),

@@ -296,13 +296,13 @@ func StatementListToFormula(
 	case and_list.Empty() && not_form == nil:
 		return nil, bound, containsEquality, is_typed_problem
 	case and_list.Empty():
-		return AST.MakerNot(not_form), bound, containsEquality, is_typed_problem
+		return AST.MakeNot(not_form), bound, containsEquality, is_typed_problem
 	case not_form == nil:
-		return AST.MakerAnd(and_list), bound, containsEquality, is_typed_problem
+		return AST.MakeAnd(and_list), bound, containsEquality, is_typed_problem
 	default:
 		flattened := AST.LsFlatten(and_list)
-		flattened.Append(AST.MakerNot(not_form))
-		return AST.MakerAnd(flattened), bound, containsEquality, is_typed_problem
+		flattened.Append(AST.MakeNot(not_form))
+		return AST.MakeAnd(flattened), bound, containsEquality, is_typed_problem
 	}
 }
 

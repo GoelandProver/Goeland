@@ -86,7 +86,7 @@ func RealInstantiate(
 		subForm = subForm.SubstTy(v.ToTyBoundVar(), meta)
 		m = Lib.MkNone[AST.Meta]()
 	} else {
-		meta := AST.MakerMeta(strings.ToUpper(v.GetName()), index, v.GetTy())
+		meta := AST.MakeMeta(strings.ToUpper(v.GetName()), index, v.GetTy())
 		subForm = subForm.SubstituteVarByMeta(v.ToBoundVar(), meta)
 		terms = terms.Copy(AST.Term.Copy)
 		terms.Add(
@@ -98,14 +98,14 @@ func RealInstantiate(
 
 	if varList.Len() > 1 {
 		if status == is_exists {
-			ex := AST.MakerEx(varList.Slice(1, varList.Len()), subForm)
-			subForm = AST.MakerNot(ex)
+			ex := AST.MakeEx(varList.Slice(1, varList.Len()), subForm)
+			subForm = AST.MakeNot(ex)
 		} else {
-			subForm = AST.MakerAll(varList.Slice(1, varList.Len()), subForm)
+			subForm = AST.MakeAll(varList.Slice(1, varList.Len()), subForm)
 		}
 	} else {
 		if status == is_exists {
-			subForm = AST.MakerNot(subForm)
+			subForm = AST.MakeNot(subForm)
 		}
 	}
 

@@ -68,7 +68,7 @@ func (sko InnerSkolemization) Skolemize(
 
 	internalMetas := form.GetMetas().Elements()
 
-	skolemFunc := AST.MakerFun(
+	skolemFunc := AST.MakeFun(
 		symbol,
 		Lib.NewList[AST.Ty](),
 		Lib.ListMap(internalMetas, Glob.To[AST.Term]),

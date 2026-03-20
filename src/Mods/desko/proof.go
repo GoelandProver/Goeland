@@ -266,7 +266,7 @@ func desko_inner(
 		}
 	}
 	for _, delayed := range term_delayed_weakening {
-		node = gen_weaken(node, delayed, AST.MakerTop())
+		node = gen_weaken(node, delayed, AST.MakeTop())
 	}
 
 	debug(

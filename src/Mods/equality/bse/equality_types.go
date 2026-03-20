@@ -121,10 +121,10 @@ func (equs Equalities) removeHalf() Equalities {
 func retrieveEqualities(dt Unif.DataStructure) Equalities {
 	res := Equalities{}
 	meta_ty := AST.MkTyMeta("META_TY_EQ", -1)
-	MetaEQ1 := AST.MakerMeta("METAEQ1", -1, meta_ty)
-	MetaEQ2 := AST.MakerMeta("METAEQ2", -1, meta_ty)
+	MetaEQ1 := AST.MakeMeta("METAEQ1", -1, meta_ty)
+	MetaEQ2 := AST.MakeMeta("METAEQ2", -1, meta_ty)
 
-	eq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Ty](), Lib.NewList[AST.Term]())
+	eq_pred := AST.MakePred(AST.Id_eq, Lib.NewList[AST.Ty](), Lib.NewList[AST.Term]())
 	eq_pred = AST.MakePred(
 		AST.Id_eq,
 		Lib.MkListV[AST.Ty](meta_ty),
@@ -151,10 +151,10 @@ func retrieveEqualities(dt Unif.DataStructure) Equalities {
 func retrieveInequalities(dt Unif.DataStructure) Inequalities {
 	res := Inequalities{}
 	meta_ty := AST.MkTyMeta("META_TY_NEQ", -1)
-	MetaNEQ1 := AST.MakerMeta("META_NEQ_1", -1, meta_ty)
-	MetaNEQ2 := AST.MakerMeta("META_NEQ_2", -1, meta_ty)
+	MetaNEQ1 := AST.MakeMeta("META_NEQ_1", -1, meta_ty)
+	MetaNEQ2 := AST.MakeMeta("META_NEQ_2", -1, meta_ty)
 
-	neq_pred := AST.MakerPred(AST.Id_eq, Lib.NewList[AST.Ty](), Lib.NewList[AST.Term]())
+	neq_pred := AST.MakePred(AST.Id_eq, Lib.NewList[AST.Ty](), Lib.NewList[AST.Term]())
 	neq_pred = AST.MakePred(
 		AST.Id_eq,
 		Lib.MkListV(meta_ty),

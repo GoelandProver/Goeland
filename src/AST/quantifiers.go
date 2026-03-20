@@ -157,7 +157,7 @@ func (q quantifier) renameVariables() quantifier {
 
 	newTyBv := Lib.NewList[Lib.Pair[TyBound, Ty]]()
 	for _, v := range q.GetVarList().GetSlice() {
-		newVar := MakerVar(v.GetName())
+		newVar := MakeVar(v.GetName())
 		newVarList.Append(MkTypedVar(newVar.name, v.ty))
 		f, replaced := newForm.ReplaceTermByTerm(v.ToBoundVar(), newVar)
 		if !replaced {

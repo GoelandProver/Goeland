@@ -74,7 +74,7 @@ func makeRocqProofFromIProof(proof Search.IProof) string {
 			proof = proof.Children().At(0)
 		}
 	}
-	index, hypotheses := introduce(AST.MakerNot(conjecture), hypotheses)
+	index, hypotheses := introduce(AST.MakeNot(conjecture), hypotheses)
 	resultingString += "intro " + introName(index) + ". "
 
 	debug(
@@ -91,7 +91,7 @@ func makeRocqProofFromIProof(proof Search.IProof) string {
 		func(t AST.Term) AST.Term {
 			switch id := AST.GetSymbol(t).(type) {
 			case Lib.Some[AST.Id]:
-				return AST.MakerConst(id.Val)
+				return AST.MakeConst(id.Val)
 			}
 			raise_anomaly(fmt.Sprintf("Expected %s to be a Skolem term", t.ToString()))
 			return nil
@@ -387,7 +387,7 @@ func rewriteStep(
 func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
 	problemName := CertifUtils.SanitizedTheoremName()
 	axiomsWithConj := Lib.ListCpy(axioms)
-	axiomsWithConj.Append(AST.MakerNot(AST.MakerNot(conjecture)))
+	axiomsWithConj.Append(AST.MakeNot(AST.MakeNot(conjecture)))
 	formattedProblem := makeImpChain(axiomsWithConj)
 	return "Theorem goeland_proof_of_" + problemName + " : " + formattedProblem.ToString() + ".\n"
 }
@@ -397,7 +397,7 @@ func makeImpChain(forms Lib.List[AST.Form]) AST.Form {
 	last := forms.Len() - 1
 	form := forms.At(last)
 	for i := last - 1; i >= 0; i-- {
-		form = AST.MakerImp(forms.At(i), form)
+		form = AST.MakeImp(forms.At(i), form)
 	}
 	return form
 }
@@ -466,7 +466,7 @@ func cleanHypotheses(hypotheses Lib.List[AST.Form], form AST.Form) (string, []Li
 		))
 	}
 
-	hypotheses.Upd(actualIndex, AST.MakerTop())
+	hypotheses.Upd(actualIndex, AST.MakeTop())
 	result = fmt.Sprintf("clear %s. ", introName(actualIndex))
 	return result, []Lib.List[AST.Form]{hypotheses}
 }

@@ -91,14 +91,6 @@ func MakeAllSimple(vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) All
 	return All{makeQuantifier(vars, forms, metas, ConnAll)}
 }
 
-func MakeAll(vars Lib.List[TypedVar], forms Form) All {
-	return MakeAllSimple(vars, forms, Lib.EmptySet[Meta]())
-}
-
-func MakerAll(vars Lib.List[TypedVar], forms Form) All {
-	return MakeAll(vars, forms)
-}
-
 func (a All) Equals(other any) bool {
 	if typed, ok := other.(All); ok {
 		return a.quantifier.Equals(typed.quantifier)
@@ -156,14 +148,6 @@ type Ex struct {
 
 func MakeExSimple(vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) Ex {
 	return Ex{makeQuantifier(vars, forms, metas, ConnEx)}
-}
-
-func MakeEx(vars Lib.List[TypedVar], forms Form) Ex {
-	return MakeExSimple(vars, forms, Lib.EmptySet[Meta]())
-}
-
-func MakerEx(vars Lib.List[TypedVar], forms Form) Ex {
-	return MakeEx(vars, forms)
 }
 
 func (e Ex) Equals(other any) bool {
@@ -228,14 +212,6 @@ type Or struct {
 
 func MakeOrSimple(forms Lib.List[Form], metas Lib.Set[Meta]) Or {
 	return Or{forms, Lib.MkCache(metas, Or.forceGetMetas)}
-}
-
-func MakeOr(forms Lib.List[Form]) Or {
-	return MakeOrSimple(forms, Lib.EmptySet[Meta]())
-}
-
-func MakerOr(forms Lib.List[Form]) Or {
-	return MakeOr(forms)
 }
 
 /** Methods **/
@@ -359,21 +335,9 @@ func MakeAndSimpleBinary(forms Lib.List[Form], metas Lib.Set[Meta]) And {
 		return MakeAndSimple(forms, metas)
 	default:
 		return MakeAndSimple(
-			Lib.MkListV[Form](forms.At(0), MakerAnd(forms.Slice(1, forms.Len()), true)),
+			Lib.MkListV[Form](forms.At(0), MakeAnd(forms.Slice(1, forms.Len()), true)),
 			metas)
 	}
-}
-
-func MakeAnd(forms Lib.List[Form], binary ...bool) And {
-	if binary != nil {
-		return MakeAndSimpleBinary(forms, Lib.EmptySet[Meta]())
-	} else {
-		return MakeAndSimple(forms, Lib.EmptySet[Meta]())
-	}
-}
-
-func MakerAnd(forms Lib.List[Form], binary ...bool) And {
-	return MakeAnd(forms, binary...)
 }
 
 /** Methods **/
@@ -495,14 +459,6 @@ func MakeEquSimple(firstForm, secondForm Form, metas Lib.Set[Meta]) Equ {
 	}
 }
 
-func MakeEqu(firstForm, secondForm Form) Equ {
-	return MakeEquSimple(firstForm, secondForm, Lib.EmptySet[Meta]())
-}
-
-func MakerEqu(firstForm, secondForm Form) Equ {
-	return MakeEqu(firstForm, secondForm)
-}
-
 func (e Equ) GetF1() Form { return e.f1.Copy() }
 func (e Equ) GetF2() Form { return e.f2.Copy() }
 func (e Equ) Copy() Form {
@@ -618,14 +574,6 @@ func MakeImpSimple(firstForm, secondForm Form, metas Lib.Set[Meta]) Imp {
 		secondForm,
 		Lib.MkCache(metas, Imp.forceGetMetas),
 	}
-}
-
-func MakeImp(firstForm, secondForm Form) Imp {
-	return MakeImpSimple(firstForm, secondForm, Lib.EmptySet[Meta]())
-}
-
-func MakerImp(firstForm, secondForm Form) Imp {
-	return MakeImp(firstForm, secondForm)
 }
 
 func (i Imp) GetF1() Form { return i.f1.Copy() }
@@ -746,14 +694,6 @@ func MakeNotSimple(form Form, metas Lib.Set[Meta]) Not {
 	return Not{form, Lib.MkCache(metas, Not.forceGetMetas)}
 }
 
-func MakeNot(form Form) Not {
-	return MakeNotSimple(form, Lib.EmptySet[Meta]())
-}
-
-func MakerNot(form Form) Not {
-	return MakeNot(form)
-}
-
 /** Methods **/
 
 /** - Form interface Methods **/
@@ -855,7 +795,7 @@ func SimplifyNegations(form Form) Form {
 	form, isEven := getDeepFormWithoutNot(form, true)
 
 	if !isEven {
-		form = MakerNot(form)
+		form = MakeNot(form)
 	}
 
 	return form
@@ -905,27 +845,6 @@ func MakePredSimple(
 		terms,
 		Lib.MkCache(metas, Pred.forceGetMetas),
 	}
-}
-
-func MakePred(
-	id Id,
-	tys Lib.List[Ty],
-	terms Lib.List[Term],
-) Pred {
-	return MakePredSimple(
-		id,
-		tys,
-		terms,
-		Lib.EmptySet[Meta](),
-	)
-}
-
-func MakerPred(
-	id Id,
-	tys Lib.List[Ty],
-	terms Lib.List[Term],
-) Pred {
-	return MakePred(id, tys, terms)
 }
 
 /* Pred attributes getters */
@@ -1117,14 +1036,6 @@ func (p Pred) Less(oth any) bool {
 type Top struct {
 }
 
-func MakeTop() Top {
-	return Top{}
-}
-
-func MakerTop() Top {
-	return MakeTop()
-}
-
 func (Top) ToString() string                              { return printer.StrConn(ConnTop) }
 func (t Top) Copy() Form                                  { return MakeTop() }
 func (Top) Equals(f any) bool                             { _, isTop := f.(Top); return isTop }
@@ -1153,14 +1064,6 @@ func (t Top) Less(oth any) bool {
 
 /* Bot (always false) definition */
 type Bot struct {
-}
-
-func MakeBot() Bot {
-	return Bot{}
-}
-
-func MakerBot() Bot {
-	return MakeBot()
 }
 
 func (Bot) ToString() string                              { return printer.StrConn(ConnBot) }

@@ -143,7 +143,7 @@ func getPosAndNeg(target AST.Form) (pos, neg AST.Form) {
 	if neg, ok := target.(AST.Not); ok {
 		return neg.GetForm(), neg
 	}
-	return target, AST.MakerNot(target)
+	return target, AST.MakeNot(target)
 }
 
 func refineGenericRule(
@@ -311,14 +311,14 @@ func getFormattedChild(form AST.Form) string {
 		case AST.All:
 			return format(nf.GetVarList(), nf.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
 				if !vl.Empty() {
-					f = AST.MakerAll(vl, f)
+					f = AST.MakeAll(vl, f)
 				}
 				return f
 			})
 		case AST.Ex:
 			return format(nf.GetVarList(), nf.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
 				if !vl.Empty() {
-					f = AST.MakerEx(vl, f)
+					f = AST.MakeEx(vl, f)
 				}
 				return f
 			})
@@ -326,14 +326,14 @@ func getFormattedChild(form AST.Form) string {
 	case AST.All:
 		return format(f.GetVarList(), f.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
 			if !vl.Empty() {
-				f = AST.MakerAll(vl, f)
+				f = AST.MakeAll(vl, f)
 			}
 			return f
 		})
 	case AST.Ex:
 		return format(f.GetVarList(), f.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
 			if !vl.Empty() {
-				f = AST.MakerEx(vl, f)
+				f = AST.MakeEx(vl, f)
 			}
 			return f
 		})
@@ -421,7 +421,7 @@ func processMainFormula(form AST.Form) (Lib.List[AST.Form], AST.Form) {
 func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) (string, Lib.List[AST.Form]) {
 	problemName := CertifUtils.SanitizedTheoremName()
 	axioms = Lib.ListCpy(axioms)
-	axioms.Append(AST.MakerNot(conjecture))
+	axioms.Append(AST.MakeNot(conjecture))
 	formattedProblem := makeImpChain(axioms)
 	return "symbol goeland_" + problemName + " : \n" + formattedProblem + " → ϵ ⊥ ≔ \n", axioms
 }

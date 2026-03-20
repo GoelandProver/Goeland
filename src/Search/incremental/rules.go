@@ -243,7 +243,7 @@ func (ano *AlphaNotOr) apply() []RuleList {
 		switch subForm := form.GetForm().(type) {
 		case AST.Or:
 			for _, subForm := range subForm.GetChildFormulas().GetSlice() {
-				resultRules = append(resultRules, makeCorrectRule(AST.MakerNot(subForm), ano.GetTerms()))
+				resultRules = append(resultRules, makeCorrectRule(AST.MakeNot(subForm), ano.GetTerms()))
 			}
 		}
 	}
@@ -264,7 +264,7 @@ func (ani *AlphaNotImp) apply() []RuleList {
 		switch subForm := form.GetForm().(type) {
 		case AST.Imp:
 			resultRules = append(resultRules, makeCorrectRule(subForm.GetF1(), ani.GetTerms()))
-			resultRules = append(resultRules, makeCorrectRule(AST.MakerNot(subForm.GetF2()), ani.GetTerms()))
+			resultRules = append(resultRules, makeCorrectRule(AST.MakeNot(subForm.GetF2()), ani.GetTerms()))
 		}
 	}
 
@@ -284,7 +284,7 @@ func (bna *BetaNotAnd) apply() []RuleList {
 		switch subForm := form.GetForm().(type) {
 		case AST.And:
 			for _, andForm := range subForm.GetChildFormulas().GetSlice() {
-				resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(AST.MakerNot(andForm), bna.GetTerms())})
+				resultRulesBeta = append(resultRulesBeta, RuleList{makeCorrectRule(AST.MakeNot(andForm), bna.GetTerms())})
 			}
 		}
 	}
@@ -305,11 +305,11 @@ func (bne *BetaNotEqu) apply() []RuleList {
 	case AST.Not:
 		switch subForm := form.GetForm().(type) {
 		case AST.Equ:
-			resultRules1 = append(resultRules1, makeCorrectRule(AST.MakerNot(subForm.GetF1()), bne.GetTerms()))
+			resultRules1 = append(resultRules1, makeCorrectRule(AST.MakeNot(subForm.GetF1()), bne.GetTerms()))
 			resultRules1 = append(resultRules1, makeCorrectRule(subForm.GetF2(), bne.GetTerms()))
 
 			resultRules2 = append(resultRules2, makeCorrectRule(subForm.GetF1(), bne.GetTerms()))
-			resultRules2 = append(resultRules2, makeCorrectRule(AST.MakerNot(subForm.GetF2()), bne.GetTerms()))
+			resultRules2 = append(resultRules2, makeCorrectRule(AST.MakeNot(subForm.GetF2()), bne.GetTerms()))
 		}
 	}
 
@@ -345,7 +345,7 @@ func (bi *BetaImp) apply() []RuleList {
 
 	switch subForm := bi.GetForm().(type) {
 	case AST.Imp:
-		resultRules1 = append(resultRules1, makeCorrectRule(AST.MakerNot(subForm.GetF1()), bi.GetTerms()))
+		resultRules1 = append(resultRules1, makeCorrectRule(AST.MakeNot(subForm.GetF1()), bi.GetTerms()))
 		resultRules2 = append(resultRules2, makeCorrectRule(subForm.GetF2(), bi.GetTerms()))
 	}
 
@@ -366,8 +366,8 @@ func (be *BetaEqu) apply() []RuleList {
 		resultRules1 = append(resultRules1, makeCorrectRule(form.GetF1(), be.GetTerms()))
 		resultRules1 = append(resultRules1, makeCorrectRule(form.GetF2(), be.GetTerms()))
 
-		resultRules2 = append(resultRules2, makeCorrectRule(AST.MakerNot(form.GetF1()), be.GetTerms()))
-		resultRules2 = append(resultRules2, makeCorrectRule(AST.MakerNot(form.GetF2()), be.GetTerms()))
+		resultRules2 = append(resultRules2, makeCorrectRule(AST.MakeNot(form.GetF1()), be.GetTerms()))
+		resultRules2 = append(resultRules2, makeCorrectRule(AST.MakeNot(form.GetF2()), be.GetTerms()))
 	}
 
 	return []RuleList{resultRules2, resultRules1}

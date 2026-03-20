@@ -85,7 +85,7 @@ func replaceTermInTermList(
 					oldTerm,
 					newTerm,
 				)
-				newTermList.Upd(i, MakerFun(
+				newTermList.Upd(i, MakeFun(
 					nf.GetID(),
 					nf.GetTyArgs(),
 					termList,

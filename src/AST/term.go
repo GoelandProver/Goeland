@@ -59,27 +59,6 @@ type Term interface {
 	Less(any) bool
 }
 
-/*** Makers ***/
-func MakeId(s string) Id {
-	return Id{s}
-}
-
-func MakeQuotedId(s string) Id {
-	return Id{"" + s + "'"}
-}
-
-func MakeVar(s string) Var {
-	return Var{s}
-}
-
-func MakeMeta(index, occurence int, s string, f int, ty Ty) Meta {
-	return Meta{index, occurence, s, f, ty}
-}
-
-func MakeFun(p Id, ty_args Lib.List[Ty], args Lib.List[Term], metas Lib.Set[Meta]) Fun {
-	return Fun{p, ty_args, args, Lib.MkCache(metas, Fun.forceGetMetas)}
-}
-
 /*** Functions **/
 
 func TermEquals(x, y Term) bool {

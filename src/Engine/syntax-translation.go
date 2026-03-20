@@ -161,9 +161,9 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 	case Parser.PConst:
 		switch pform.PConstant {
 		case Parser.PTop:
-			return con, AST.MakerTop(), false
+			return con, AST.MakeTop(), false
 		case Parser.PBot:
-			return con, AST.MakerBot(), false
+			return con, AST.MakeBot(), false
 		}
 
 	case Parser.PPred:
@@ -188,8 +188,8 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 			is_typed = !typed_args.Empty()
 		}
 
-		return con, AST.MakerPred(
-			AST.MakerId(pform.Symbol()),
+		return con, AST.MakePred(
+			AST.MakeId(pform.Symbol()),
 			Lib.ListMap(
 				typed_args,
 				func(pty Parser.PType) AST.Ty {
@@ -202,7 +202,7 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 		switch pform.PUnaryOp {
 		case Parser.PUnaryNeg:
 			new_con, nf, b := elaborateForm(con, pform.PForm, source_form)
-			return new_con, AST.MakerNot(nf), b
+			return new_con, AST.MakeNot(nf), b
 		}
 
 	case Parser.PBin:
@@ -214,11 +214,11 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 		case Parser.PBinaryImp:
 			con1, lft, b1 := elaborateForm(con, pform.Left(), source_form)
 			new_con, rgt, b2 := elaborateForm(con1, pform.Right(), source_form)
-			return new_con, AST.MakerImp(lft, rgt), b1 || b2
+			return new_con, AST.MakeImp(lft, rgt), b1 || b2
 		case Parser.PBinaryEqu:
 			con1, lft, b1 := elaborateForm(con, pform.Left(), source_form)
 			new_con, rgt, b2 := elaborateForm(con1, pform.Right(), source_form)
-			return new_con, AST.MakerEqu(lft, rgt), b1 || b2
+			return new_con, AST.MakeEqu(lft, rgt), b1 || b2
 		}
 
 	case Parser.PQuant:
@@ -233,7 +233,7 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 			)
 			new_con, form, b := elaborateForm(append(con, actualVars.GetSlice()...), pform.PForm, source_form)
 			if !vars.Empty() {
-				form = AST.MakerAll(vars, form)
+				form = AST.MakeAll(vars, form)
 			}
 			return new_con, form, b
 
@@ -252,7 +252,7 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 			)
 			new_con, form, b := elaborateForm(append(con, actualVars.GetSlice()...), pform.PForm, source_form)
 			if !vars.Empty() {
-				form = AST.MakerEx(vars, form)
+				form = AST.MakeEx(vars, form)
 			}
 			return new_con, form, b
 		}
@@ -267,7 +267,7 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 func maybeFlattenOr(con Context, f Parser.PBin, source_form Parser.PForm) (Context, AST.Form, bool) {
 	return maybeFlattenBin(
 		con, f, source_form,
-		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakerOr(ls) },
+		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakeOr(ls) },
 		Parser.PBinaryOr,
 	)
 }
@@ -275,7 +275,7 @@ func maybeFlattenOr(con Context, f Parser.PBin, source_form Parser.PForm) (Conte
 func maybeFlattenAnd(con Context, f Parser.PBin, source_form Parser.PForm) (Context, AST.Form, bool) {
 	return maybeFlattenBin(
 		con, f, source_form,
-		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakerAnd(ls) },
+		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakeAnd(ls) },
 		Parser.PBinaryAnd,
 	)
 }
@@ -329,7 +329,7 @@ func elaborateTerm(con Context, t, source_term Parser.PTerm) (Context, AST.Term,
 
 	switch pterm := t.(type) {
 	case Parser.PVar:
-		return con, AST.MakerVar(pterm.Name()), false
+		return con, AST.MakeVar(pterm.Name()), false
 
 	case Parser.PFun:
 		typed_arguments := pretype(con, pterm.Args())
@@ -353,8 +353,8 @@ func elaborateTerm(con Context, t, source_term Parser.PTerm) (Context, AST.Term,
 			is_typed = !typed_args.Empty()
 		}
 
-		fun := AST.MakerFun(
-			AST.MakerId(pterm.Symbol()),
+		fun := AST.MakeFun(
+			AST.MakeId(pterm.Symbol()),
 			Lib.ListMap(
 				typed_args,
 				func(pty Parser.PType) AST.Ty {
@@ -384,7 +384,7 @@ func elaborateTerm(con Context, t, source_term Parser.PTerm) (Context, AST.Term,
 
 func elaborateParsingType(pty Lib.Pair[string, Parser.PType]) Core.TFFAtomTyping {
 	return Core.TFFAtomTyping{
-		Literal: AST.MakerId(pty.Fst),
+		Literal: AST.MakeId(pty.Fst),
 		Ty:      elaborateType(pty.Snd, pty.Snd, true),
 	}
 }

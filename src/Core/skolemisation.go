@@ -133,7 +133,7 @@ func realSkolemize(
 
 	if AST.IsTType(x.GetTy()) {
 		ty_mutex.Lock()
-		id := AST.MakerId(fmt.Sprintf("skoTy@%d", ty_index))
+		id := AST.MakeId(fmt.Sprintf("skoTy@%d", ty_index))
 		ty_index++
 		ty_mutex.Unlock()
 		res = deltaForm.SubstTy(x.ToTyBoundVar(), AST.MkTyConst(id.ToString()))
@@ -149,12 +149,12 @@ func realSkolemize(
 	switch typ {
 	case isNegAll:
 		if allVars.Len() > 1 {
-			res = AST.MakerAll(allVars.Slice(1, allVars.Len()), res)
+			res = AST.MakeAll(allVars.Slice(1, allVars.Len()), res)
 		}
-		res = AST.MakerNot(res)
+		res = AST.MakeNot(res)
 	case isExists:
 		if allVars.Len() > 1 {
-			res = AST.MakerEx(allVars.Slice(1, allVars.Len()), res)
+			res = AST.MakeEx(allVars.Slice(1, allVars.Len()), res)
 		}
 	default:
 		Glob.Anomaly("Skolemization", "impossible reconstruction case")

@@ -258,7 +258,7 @@ func (p *ProofStruct) SetResultFormulasProof(fl []IntFormAndTermsList) {
 
 func MakeEmptyProofStruct() ProofStruct {
 	return ProofStruct{
-		Core.MakeFormAndTerm(AST.MakerBot(), Lib.NewList[AST.Term]()),
+		Core.MakeFormAndTerm(AST.MakeBot(), Lib.NewList[AST.Term]()),
 		-1, -1, "", "", []IntFormAndTermsList{}, [][]ProofStruct{},
 	}
 }
