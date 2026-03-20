@@ -51,6 +51,7 @@ type PAtomicType interface {
 type PType interface {
 	isPType()
 	ToString() string
+	Equals(any) bool
 }
 
 type PTypeVar struct {
@@ -59,6 +60,12 @@ type PTypeVar struct {
 
 func MkPTypeVar(name string) PType { return PTypeVar{name} }
 func (v PTypeVar) Name() string    { return v.name }
+func (v PTypeVar) Equals(other any) bool {
+	if oth, ok := other.(PTypeVar); ok {
+		return oth.name == v.name
+	}
+	return false
+}
 
 type PTypeFun struct {
 	symbol    string
@@ -69,7 +76,20 @@ func MkPTypeFun(symbol string, args []PAtomicType) PType { return PTypeFun{symbo
 
 func (f PTypeFun) Symbol() string      { return f.symbol }
 func (f PTypeFun) Args() []PAtomicType { return f.arguments }
-
+func (f PTypeFun) Equals(other any) bool {
+	if oth, ok := other.(PTypeFun); ok {
+		if len(f.arguments) != len(oth.arguments) {
+			return false
+		}
+		for i := range f.arguments {
+			if !f.arguments[i].(PType).Equals(oth.arguments[i]) {
+				return false
+			}
+		}
+		return oth.symbol == f.symbol
+	}
+	return false
+}
 func (PTypeVar) isPAtomicType() {}
 func (PTypeVar) isPType()       {}
 func (PTypeFun) isPAtomicType() {}
@@ -100,6 +120,12 @@ type PTypeBin struct {
 func (b PTypeBin) Operator() PTypeBinOp { return b.op }
 func (b PTypeBin) Left() PType          { return b.left }
 func (b PTypeBin) Right() PType         { return b.right }
+func (b PTypeBin) Equals(other any) bool {
+	if oth, ok := other.(PTypeBin); ok {
+		return oth.op == b.op && oth.left.Equals(b.left) && oth.right.Equals(b.right)
+	}
+	return false
+}
 
 type PTypeQuantifier int
 
@@ -116,7 +142,21 @@ type PTypeQuant struct {
 func (q PTypeQuant) Quant() PTypeQuantifier                { return q.quant }
 func (q PTypeQuant) Vars() []Lib.Pair[string, PAtomicType] { return q.vars }
 func (q PTypeQuant) Ty() PType                             { return q.t }
-
+func (q PTypeQuant) Equals(other any) bool {
+	if oth, ok := other.(PTypeQuant); ok {
+		if len(oth.vars) != len(q.vars) {
+			return false
+		}
+		for i := range q.vars {
+			if q.vars[i].Fst != oth.vars[i].Fst ||
+				!q.vars[i].Snd.(PType).Equals(oth.vars[i].Snd) {
+				return false
+			}
+		}
+		return oth.quant == q.quant && oth.t.Equals(q.t)
+	}
+	return false
+}
 func (PTypeBin) isPType()   {}
 func (PTypeQuant) isPType() {}
 
@@ -155,6 +195,10 @@ type PVar struct {
 }
 
 func (v PVar) Name() string { return v.name }
+
+func MkVar(name string) PTerm {
+	return PVar{name}
+}
 
 func (PFun) isPTerm() {}
 func (PVar) isPTerm() {}

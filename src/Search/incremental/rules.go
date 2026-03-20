@@ -412,13 +412,13 @@ func (gne *GammaNotExists) getGeneratedMetas() Lib.List[AST.Meta] {
 	return gne.generatedMetas
 }
 
-func (gne *GammaNotExists) getVarList() []AST.Var {
+func (gne *GammaNotExists) getVarList() Lib.List[AST.TypedVar] {
 	if not, isNot := gne.formula.(AST.Not); isNot {
 		if exists, isExists := not.GetForm().(AST.Ex); isExists {
 			return exists.GetVarList()
 		}
 	}
-	return []AST.Var{}
+	return Lib.NewList[AST.TypedVar]()
 }
 
 type GammaForall struct {
@@ -453,11 +453,11 @@ func (gf *GammaForall) getGeneratedMetas() Lib.List[AST.Meta] {
 	return gf.generatedMetas
 }
 
-func (gf *GammaForall) getVarList() []AST.Var {
+func (gf *GammaForall) getVarList() Lib.List[AST.TypedVar] {
 	if forall, isForall := gf.formula.(AST.All); isForall {
 		return forall.GetVarList()
 	}
-	return []AST.Var{}
+	return Lib.NewList[AST.TypedVar]()
 }
 
 type DeltaNotForall struct {

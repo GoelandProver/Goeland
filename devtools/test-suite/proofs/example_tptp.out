@@ -1,29 +1,29 @@
-fof(c_example_tptp_p, conjecture, ((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))).
+fof(c_example_tptp_p, conjecture, (! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))).
 
-fof(f8, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), ~((! [X4] : (p(X4)))), ~((? [Y6] : (~(p(Y6))))), ~((~((? [Y6] : (~(p(Y6))))) => (! [X4] : (p(X4))))), ~(p(sko_0)), ~(~(p(sko_0))), p(sko_0)] --> [], inference(leftHyp, [status(thm), 6], [])).
+fof(f8, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ~(! [X4]: p(X4)), ~(? [Y6]: ~p(Y6)), ~(~(? [Y6]: ~p(Y6)) => (! [X4]: p(X4))), ~p(sko_0), ~~p(sko_0), p(sko_0)] --> [], inference(leftHyp, [status(thm), 6], [])).
 
-fof(f7, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), ~((! [X4] : (p(X4)))), ~((? [Y6] : (~(p(Y6))))), ~((~((? [Y6] : (~(p(Y6))))) => (! [X4] : (p(X4))))), ~(p(sko_0)), ~(~(p(sko_0)))] --> [], inference(leftNotNot, [status(thm), 5], [f8])).
+fof(f7, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ~(! [X4]: p(X4)), ~(? [Y6]: ~p(Y6)), ~(~(? [Y6]: ~p(Y6)) => (! [X4]: p(X4))), ~p(sko_0), ~~p(sko_0)] --> [], inference(leftNotNot, [status(thm), 5], [f8])).
 
-fof(f6, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), ~((! [X4] : (p(X4)))), ~((? [Y6] : (~(p(Y6))))), ~((~((? [Y6] : (~(p(Y6))))) => (! [X4] : (p(X4))))), ~(p(sko_0))] --> [], inference(leftNotEx, [status(thm), 2, $fot(sko_0)], [f7])).
+fof(f6, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ~(! [X4]: p(X4)), ~(? [Y6]: ~p(Y6)), ~(~(? [Y6]: ~p(Y6)) => (! [X4]: p(X4))), ~p(sko_0)] --> [], inference(leftNotEx, [status(thm), 2, $fot(sko_0)], [f7])).
 
-fof(f4, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), ~((! [X4] : (p(X4)))), ~((? [Y6] : (~(p(Y6))))), ~((~((? [Y6] : (~(p(Y6))))) => (! [X4] : (p(X4)))))] --> [], inference(leftNotAll, [status(thm), 1, 'sko_0'], [f6])).
+fof(f4, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ~(! [X4]: p(X4)), ~(? [Y6]: ~p(Y6)), ~(~(? [Y6]: ~p(Y6)) => (! [X4]: p(X4)))] --> [], inference(leftNotAll, [status(thm), 1, 'sko_0'], [f6])).
 
-fof(f11, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), (! [X4] : (p(X4))), ~(~((? [Y6] : (~(p(Y6)))))), ~(((! [X4] : (p(X4))) => ~((? [Y6] : (~(p(Y6))))))), (? [Y6] : (~(p(Y6)))), ~(p(sko_1)), p(sko_1)] --> [], inference(leftHyp, [status(thm), 6], [])).
+fof(f11, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ! [X4]: p(X4), ~~(? [Y6]: ~p(Y6)), ~((! [X4]: p(X4)) => ~(? [Y6]: ~p(Y6))), ? [Y6]: ~p(Y6), ~p(sko_1), p(sko_1)] --> [], inference(leftHyp, [status(thm), 6], [])).
 
-fof(f10, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), (! [X4] : (p(X4))), ~(~((? [Y6] : (~(p(Y6)))))), ~(((! [X4] : (p(X4))) => ~((? [Y6] : (~(p(Y6))))))), (? [Y6] : (~(p(Y6)))), ~(p(sko_1))] --> [], inference(leftForall, [status(thm), 1, $fot(sko_1)], [f11])).
+fof(f10, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ! [X4]: p(X4), ~~(? [Y6]: ~p(Y6)), ~((! [X4]: p(X4)) => ~(? [Y6]: ~p(Y6))), ? [Y6]: ~p(Y6), ~p(sko_1)] --> [], inference(leftForall, [status(thm), 1, $fot(sko_1)], [f11])).
 
-fof(f9, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), (! [X4] : (p(X4))), ~(~((? [Y6] : (~(p(Y6)))))), ~(((! [X4] : (p(X4))) => ~((? [Y6] : (~(p(Y6))))))), (? [Y6] : (~(p(Y6))))] --> [], inference(leftExists, [status(thm), 4, 'sko_1'], [f10])).
+fof(f9, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ! [X4]: p(X4), ~~(? [Y6]: ~p(Y6)), ~((! [X4]: p(X4)) => ~(? [Y6]: ~p(Y6))), ? [Y6]: ~p(Y6)] --> [], inference(leftExists, [status(thm), 4, 'sko_1'], [f10])).
 
-fof(f5, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), (! [X4] : (p(X4))), ~(~((? [Y6] : (~(p(Y6)))))), ~(((! [X4] : (p(X4))) => ~((? [Y6] : (~(p(Y6)))))))] --> [], inference(leftNotNot, [status(thm), 2], [f9])).
+fof(f5, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ! [X4]: p(X4), ~~(? [Y6]: ~p(Y6)), ~((! [X4]: p(X4)) => ~(? [Y6]: ~p(Y6)))] --> [], inference(leftNotNot, [status(thm), 2], [f9])).
 
-fof(f3ext2, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), ~((~((? [Y6] : (~(p(Y6))))) => (! [X4] : (p(X4)))))] --> [], inference(leftNotImplies, [status(thm), 1], [f4])).
+fof(f3ext2, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ~(~(? [Y6]: ~p(Y6)) => (! [X4]: p(X4)))] --> [], inference(leftNotImplies, [status(thm), 1], [f4])).
 
-fof(f3ext1, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))), ~(((! [X4] : (p(X4))) => ~((? [Y6] : (~(p(Y6)))))))] --> [], inference(leftNotImplies, [status(thm), 1], [f5])).
+fof(f3ext1, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))), ~((! [X4]: p(X4)) => ~(? [Y6]: ~p(Y6)))] --> [], inference(leftNotImplies, [status(thm), 1], [f5])).
 
-fof(f3, plain, [~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6)))))))] --> [], inference(leftNotIff, [status(thm), 0], [f3ext1, f3ext2])).
+fof(f3, plain, [~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6)))] --> [], inference(leftNotIff, [status(thm), 0], [f3ext1, f3ext2])).
 
-fof(f2, plain, [((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))] --> [((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))], inference(hyp, [status(thm), 0], [])).
+fof(f2, plain, [(! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))] --> [(! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))], inference(hyp, [status(thm), 0], [])).
 
-fof(f1, plain, [] --> [((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6)))))), ~(((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6)))))))], inference(rightNot, [status(thm), 1], [f2])).
+fof(f1, plain, [] --> [(! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6)), ~((! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6)))], inference(rightNot, [status(thm), 1], [f2])).
 
-fof(f0, plain, [] --> [((! [X4] : (p(X4))) <=> ~((? [Y6] : (~(p(Y6))))))], inference(cut, [status(thm), 1], [f1, f3])).
+fof(f0, plain, [] --> [(! [X4]: p(X4)) <=> ~(? [Y6]: ~p(Y6))], inference(cut, [status(thm), 1], [f1, f3])).

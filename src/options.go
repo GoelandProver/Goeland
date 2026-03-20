@@ -206,7 +206,7 @@ func buildOptions() {
 		"pretty",
 		false,
 		"Should only be used with the -proof parameter. Enables UTF-8 characters in prints for a pretty proof",
-		func(bool) { Glob.DisplayPretty() },
+		func(bool) { AST.SetPrinter(AST.PrettyPrinter) },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"dmt",
@@ -390,16 +390,16 @@ func buildOptions() {
 		},
 		func(bool) {})
 	(&option[bool]{}).init(
-		"no_id",
+		"print-id",
 		false,
-		"Disables the id in the ToString",
-		func(bool) { AST.ToStringId = AST.NoIdToString },
+		"Enables id printing",
+		func(bool) { AST.ComposePrinter(AST.PrintIDAction) },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"quoted_pred",
 		false,
 		"Print predicates between quotes if they start by a capital letter (TPTP compliance)",
-		func(bool) { AST.ToStringId = AST.QuotedToString },
+		func(bool) { AST.ComposePrinter(AST.QuoteID) },
 		func(bool) {})
 	(&option[bool]{}).init(
 		"quiet",
