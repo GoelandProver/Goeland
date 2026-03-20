@@ -58,3 +58,5 @@ func (s String) Less(oth any) bool {
 func MkString(s string) String {
 	return String{s}
 }
+
+func (s String) ToString() string { return s.value }

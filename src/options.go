@@ -419,6 +419,12 @@ func buildOptions() {
 		"Avoids type-checking a typed problem (this is unsound)",
 		func(bool) { Glob.SetNoTypeCheck() },
 		func(bool) {})
+	(&option[bool]{}).init(
+		"list-debuggers",
+		false,
+		"Lists the available debuggers and exit",
+		func(bool) { Glob.SetListDebuggers() },
+		func(bool) {})
 }
 
 func chronoInit() {

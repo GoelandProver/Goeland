@@ -76,6 +76,10 @@ func main() {
 		fmt.Printf("You are running Goeland v.%v\n", Glob.GetVersion())
 		return
 	}
+	if Glob.ListDebuggers() {
+		Glob.PrintInfo(main_label, fmt.Sprintf("Available debuggers:\n- %s", Glob.RegisteredDebuggers()))
+		return
+	}
 
 	form, bound := presearchLoader()
 
