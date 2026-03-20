@@ -151,39 +151,6 @@ func (q quantifier) replaceTyVar(old TyGenVar, new Ty) quantifier {
 	)
 }
 
-func (q quantifier) renameVariables() quantifier {
-	newVarList := Lib.NewList[TypedVar]()
-	newForm := q.GetForm().RenameVariables()
-
-	newTyBv := Lib.NewList[Lib.Pair[TyBound, Ty]]()
-	for _, v := range q.GetVarList().GetSlice() {
-		newVar := MakeVar(v.GetName())
-		newVarList.Append(MkTypedVar(newVar.name, v.ty))
-		f, replaced := newForm.ReplaceTermByTerm(v.ToBoundVar(), newVar)
-		if !replaced {
-			newBv := MkTyBV(newVar.name)
-			f = f.SubstTy(v.ToTyBoundVar(), newBv)
-			newTyBv.Append(Lib.MkPair(v.ToTyBoundVar(), newBv))
-		}
-		newForm = f
-	}
-
-	return makeQuantifier(
-		Lib.ListMap(
-			newVarList,
-			func(p TypedVar) TypedVar {
-				for _, pair := range newTyBv.GetSlice() {
-					p = p.SubstTy(pair.Fst, pair.Snd)
-				}
-				return p
-			},
-		),
-		newForm,
-		q.metas.Raw().Copy(),
-		q.symbol,
-	)
-}
-
 func (q quantifier) substituteVarByMeta(old Var, new Meta) quantifier {
 	if Lib.ListMem(old, Lib.ListMap(q.varList, func(x TypedVar) Var { return x.ToBoundVar() })) {
 		return q

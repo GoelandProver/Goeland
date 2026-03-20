@@ -307,21 +307,17 @@ func StatementListToFormula(
 }
 
 func doAxiomStatement(andList Lib.List[AST.Form], f AST.Form) Lib.List[AST.Form] {
-	newForm := f.RenameVariables()
-
 	// FIXME: dmt should be a plugin and therefore not checked here.
 	// Ideally, we want to be able to define a hook here and let the plugins do
 	// whatever they want, returning only whether they consumed the axiom or
 	// not. It would also avoid duplicated code.
 	if !Glob.IsLoaded("dmt") {
-		andList.Append(newForm)
-		return andList
+		return andList.Push(f)
 	}
 
-	consumed := dmt.RegisterAxiom(newForm.Copy())
+	consumed := dmt.RegisterAxiom(f.Copy())
 	if !consumed {
-		andList.Append(newForm)
-		return andList
+		return andList.Push(f)
 	}
 
 	return andList
@@ -329,7 +325,7 @@ func doAxiomStatement(andList Lib.List[AST.Form], f AST.Form) Lib.List[AST.Form]
 
 func doConjectureStatement(f AST.Form) AST.Form {
 	Glob.SetConjecture(true)
-	return f.RenameVariables()
+	return f
 }
 
 func doTypeStatement(atomTyping Core.TFFAtomTyping) {
