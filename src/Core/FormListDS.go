@@ -90,3 +90,7 @@ func (fl FormListDS) Unify(f AST.Form) (bool, []Unif.MixedSubstitutions) {
 	}
 	return false, []Unif.MixedSubstitutions{}
 }
+
+func (fl FormListDS) UnifyTerm(t AST.Term) (bool, []Unif.MixedTermSubstitutions) {
+	return false, []Unif.MixedTermSubstitutions{}
+}

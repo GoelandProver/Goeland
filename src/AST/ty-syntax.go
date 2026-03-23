@@ -46,7 +46,6 @@ import (
 )
 
 var meta_mut sync.Mutex
-var count_meta int
 
 type TyGenVar interface {
 	isGenVar()
@@ -286,6 +285,10 @@ func (p TyPi) VarsLen() int {
 	return p.vars.Len()
 }
 
+func (p TyPi) Ty() Ty {
+	return p.ty
+}
+
 // Makers
 
 func MkTyVar(repr string) Ty {
@@ -298,8 +301,8 @@ func MkTyBV(name string, index int) Ty {
 
 func MkTyMeta(name string, formula int) Ty {
 	meta_mut.Lock()
-	meta := TyMeta{name, count_meta, formula}
-	count_meta += 1
+	meta := TyMeta{name, cpt_term, formula}
+	cpt_term += 1
 	meta_mut.Unlock()
 	return meta
 }

@@ -58,11 +58,11 @@ func (c CodeBlock) Copy() CodeBlock {
 type Node struct {
 	value    CodeBlock
 	children []*Node
-	formulas Lib.List[AST.Form]
+	leafFor  Lib.List[Lib.Either[AST.Term, AST.Form]]
 }
 
 func NewNode() *Node {
-	return &Node{CodeBlock{}, []*Node{}, Lib.NewList[AST.Form]()}
+	return &Node{CodeBlock{}, []*Node{}, Lib.NewList[Lib.Either[AST.Term, AST.Form]]()}
 }
 
 func (n Node) getValue() CodeBlock {
@@ -71,38 +71,48 @@ func (n Node) getValue() CodeBlock {
 func (n Node) getChildren() []*Node {
 	return CopyNodeList(n.children)
 }
-func (n Node) getFormulas() Lib.List[AST.Form] {
-	return Lib.ListCpy(n.formulas)
-}
 
 /* Check if a node is empty */
 func (n Node) IsEmpty() bool {
 	return (len(n.value) == 0)
 }
 
-/* Make data struct */
+func MakeUnifProblem(l Lib.List[AST.Form], is_pos bool) DataStructure {
+	return NewNode().MakeDataStruct(l, is_pos)
+}
+
+func MakeTermUnifProblem(l Lib.List[AST.Term]) DataStructure {
+	root := makeNode(nil)
+
+	for _, t := range l.GetSlice() {
+		root.insert(ParseTerm(transformTerm(t)))
+	}
+
+	return root
+}
+
 func (n Node) MakeDataStruct(fl Lib.List[AST.Form], is_pos bool) DataStructure {
 	return makeCodeTreeFromAtomic(fl, is_pos)
 }
 
 /* Copy a datastruct */
 func (n Node) Copy() DataStructure {
-	return Node{n.getValue(), n.getChildren(), n.getFormulas()}
+	return Node{n.getValue(), n.getChildren(), n.leafFor.Copy(Lib.EitherCpy[AST.Term, AST.Form])}
 }
 
 /********************/
 /* Helper functions */
 /********************/
 
-/* The Node is a leaf when it contains at least one formulae. */
+/* The Node is a leaf whenever one formula or term ends here. */
 func (n Node) isLeaf() bool {
-	return n.getFormulas().Len() > 0
+	return n.leafFor.Len() > 0
 }
 
-/* Make two code trees (tree_pos and tree_neg) from st.atomic */
 func makeCodeTreeFromAtomic(lf Lib.List[AST.Form], is_pos bool) *Node {
 	form := Lib.NewList[AST.Form]()
 
+	// fixme: why are we doing this here?
 	for _, f := range lf.GetSlice() {
 		switch nf := f.(type) {
 		case AST.Pred:
@@ -116,9 +126,6 @@ func makeCodeTreeFromAtomic(lf Lib.List[AST.Form], is_pos bool) *Node {
 					form.Append(nf.GetForm())
 				}
 			}
-		case TermForm:
-			// EQUALITY - To build a tree of terms
-			form.Append(nf.Copy())
 		}
 	}
 
@@ -152,7 +159,7 @@ func makeNode(block CodeBlock) *Node {
 	n := new(Node)
 	n.value = block.Copy()
 	n.children = []*Node{}
-	n.formulas = Lib.NewList[AST.Form]()
+	n.leafFor = Lib.NewList[Lib.Either[AST.Term, AST.Form]]()
 	return n
 }
 
@@ -198,8 +205,17 @@ func (n Node) printAux(tab int) {
 	}
 
 	if n.isLeaf() {
-		for _, form := range n.formulas.GetSlice() {
-			debug(Lib.MkLazy(func() string { return strings.Repeat("\t", tab+1) + form.ToString() }))
+		for _, tof := range n.leafFor.GetSlice() {
+			debug(
+				Lib.MkLazy(
+					func() string {
+						return strings.Repeat(
+							"\t",
+							tab+1,
+						) + tofToString(tof)
+					},
+				),
+			)
 		}
 	}
 	debug(Lib.MkLazy(func() string { return "\n" }))
@@ -214,17 +230,17 @@ func (n Node) printAux(tab int) {
 func (n *Node) insert(sequence Sequence) {
 	if len(n.value) == 0 {
 		n.value = sequence.GetInstructions()
-		n.formulas = Lib.MkListV(sequence.GetFormula())
+		n.leafFor = Lib.MkListV(sequence.GetBase())
 	} else {
-		n.followInstructions(sequence.GetInstructions(), sequence.GetFormula())
+		n.followInstructions(sequence.GetInstructions(), sequence.GetBase())
 	}
 }
 
 /* Auxiliary function to follow the sequence of instructions to insert in the Node. */
-func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
+func (n *Node) followInstructions(instructions []Instruction, tof Lib.Either[AST.Term, AST.Form]) {
 	// Initialization of the node we will be working on and of a counter.
 	current := n
-	oui := 0
+	cnt := 0
 
 	// For each instruction, there are 2 cases:
 	//    * The current instruction is equivalent to the instruction stored in the CodeBlock of the current node at the index of the counter.
@@ -234,11 +250,12 @@ func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
 		// If it's equivalent, there are 2 cases:
 		//    * It's the end of the sequence & the end of the CodeBlock. In this case, it's a full match, just add the formulae to the leaf.
 		//    * It's the end of the CodeBlock, but not of the sequence. In this case, check if the following instruction matches with any child.
-		if instr.IsEquivalent(current.value[oui]) {
-			oui += 1
-			if i == len(instructions)-1 && oui == len(current.value) && !Lib.ListMem(form, current.formulas) {
-				current.formulas.Append(form)
-			} else if i < len(instructions)-1 && oui == len(current.value) {
+		if instr.IsEquivalent(current.value[cnt]) {
+			cnt += 1
+			if i == len(instructions)-1 && cnt == len(current.value) &&
+				!current.leafFor.Contains(tof, tofCmp) {
+				current.leafFor.Append(tof)
+			} else if i < len(instructions)-1 && cnt == len(current.value) {
 
 				// If the instruction matches, then continue the algorithm with the child as the current node.
 				// If it doesn't, we have a new leaf with the following instructions of the sequence.
@@ -246,13 +263,13 @@ func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
 				for _, child := range current.children {
 					if instructions[i+1].IsEquivalent(child.value[0]) {
 						current = child
-						oui = 0
+						cnt = 0
 						found = true
 					}
 				}
 				if !found {
 					newNode := makeNode(instructions[i+1:])
-					newNode.formulas = Lib.MkListV(form)
+					newNode.leafFor = Lib.MkListV(tof)
 					current.children = append(current.children, newNode)
 					break
 				}
@@ -261,15 +278,15 @@ func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
 			// Split the current CodeBlock in 2 parts:
 			//    * The first one will contain the remaining instructions of the current CodeBlock, and it will inherit the current's children and formulaes.
 			//    * The second one contains the remaining instructions of the sequence plus the formulae.
-			child1 := makeNode(current.value[oui:])
+			child1 := makeNode(current.value[cnt:])
 			child2 := makeNode(instructions[i:])
-			child2.formulas = Lib.MkListV(form)
+			child2.leafFor = Lib.MkListV(tof)
 
 			child1.children = current.children
-			child1.formulas = current.formulas
+			child1.leafFor = current.leafFor
 
-			current.value = current.value[:oui]
-			current.formulas = Lib.NewList[AST.Form]()
+			current.value = current.value[:cnt]
+			current.leafFor = Lib.NewList[Lib.Either[AST.Term, AST.Form]]()
 			current.children = []*Node{child1, child2}
 
 			break
@@ -279,12 +296,12 @@ func (n *Node) followInstructions(instructions []Instruction, form AST.Form) {
 	// It's the end of the sequence, but there are still instructions in the CodeBlock.
 	// In this case, we have to split the CodeBlock in 2 parts. The first one will be a leaf containing the current sequence's formulae.
 	// The second will be the rest of the CodeBlock's instructions, with the current's children and formulaes.
-	if oui < len(current.value)-1 {
-		child1 := makeNode(current.value[oui:])
+	if cnt < len(current.value)-1 {
+		child1 := makeNode(current.value[cnt:])
 		child1.children = current.children
-		current.value = current.value[:oui]
+		current.value = current.value[:cnt]
 		current.children = []*Node{child1}
-		current.formulas = Lib.MkListV(form.Copy())
+		current.leafFor = Lib.MkListV(tofCopy(tof))
 	}
 }
 

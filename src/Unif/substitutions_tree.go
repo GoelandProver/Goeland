@@ -49,7 +49,11 @@ import (
 * MetaToSubs : (meta, term) : meta in formula, term in tree
 * Merge both of them
 **/
-func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.Form) Substitutions {
+func computeSubstitutions(
+	subs []SubstPair,
+	metasToSubs Substitutions,
+	metaList Lib.List[AST.Meta],
+) Substitutions {
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
@@ -57,56 +61,47 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 				SubstPairListToString(subs), metasToSubs.ToString())
 		}),
 	)
-	metasFromTreeForm := Lib.NewList[AST.Meta]()
 	treeSubs := Substitutions{}
-
-	// Retrieve all the meta of from the tree formula
-	switch typedForm := form.(type) {
-	case AST.Pred:
-		trms := getFunctionalArguments(typedForm.GetTyArgs(), typedForm.GetArgs())
-		for _, trm := range trms.GetSlice() {
-			metasFromTreeForm.Append(trm.GetMetaList().GetSlice()...)
-		}
-	case TermForm:
-		metasFromTreeForm.Append(typedForm.GetTerm().GetMetaList().GetSlice()...)
-	default:
-		return Failure()
-	}
 
 	//  Transform subst tree into a real substitution
 	for _, value := range subs {
-		currentMeta := metasFromTreeForm.At(value.GetIndex())
-		currentValue := value.GetTerm()
-		debug(
-			Lib.MkLazy(func() string {
-				return fmt.Sprintf(
-					"Iterate on subst : %v and  %v",
-					currentMeta.ToString(),
-					currentValue.ToString())
-			}),
-		)
+		if value.GetIndex() < metaList.Len() {
+			currentMeta := metaList.At(value.GetIndex())
+			currentValue := value.GetTerm()
+			debug(
+				Lib.MkLazy(func() string {
+					return fmt.Sprintf(
+						"Iterate on subst : %v and  %v",
+						currentMeta.ToString(),
+						currentValue.ToString())
+				}),
+			)
 
-		if !currentMeta.Equals(currentValue) {
-			// Si current_meta a déjà une association dans metas
-			metaGet, index := metasToSubs.Get(currentMeta)
-			if HasSubst(metasToSubs, currentMeta) && (index != -1) && !currentValue.Equals(metaGet) {
-				// On cherche a unifier les deux valeurs
-				treeSubs.Set(currentMeta, currentValue)
-				new_unif := AddUnification(currentValue.Copy(), metaGet.Copy(), treeSubs.Copy())
-				if new_unif.Equals(Failure()) {
-					return Failure()
-				} else {
-					treeSubs = new_unif
-					metasToSubs.Remove(index) // Remove from meta
+			if !currentMeta.Equals(currentValue) {
+				// Si current_meta a déjà une association dans metas
+				metaGet, index := metasToSubs.Get(currentMeta)
+				if HasSubst(metasToSubs, currentMeta) && (index != -1) &&
+					!currentValue.Equals(metaGet) {
+					// On cherche a unifier les deux valeurs
+					treeSubs.Set(currentMeta, currentValue)
+					new_unif := AddUnification(currentValue.Copy(), metaGet.Copy(), treeSubs.Copy())
+					if new_unif.Equals(Failure()) {
+						return Failure()
+					} else {
+						treeSubs = new_unif
+						metasToSubs.Remove(index) // Remove from meta
+					}
+				} else { // Ne pas ajouter la susbtitution égalité
+					treeSubs.Set(currentMeta, currentValue)
 				}
-			} else { // Ne pas ajouter la susbtitution égalité
-				treeSubs.Set(currentMeta, currentValue)
 			}
 		}
 	}
 
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("before meta : %v", metasToSubs.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("before meta : %v", metasToSubs.ToString()) },
+		),
 	)
 	// Metas_subst eliminate
 	EliminateMeta(&metasToSubs)
@@ -114,10 +109,14 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 	if metasToSubs.Equals(Failure()) {
 		return Failure()
 	}
-	debug(Lib.MkLazy(func() string { return fmt.Sprintf("After meta : %v", metasToSubs.ToString()) }))
+	debug(
+		Lib.MkLazy(func() string { return fmt.Sprintf("After meta : %v", metasToSubs.ToString()) }),
+	)
 
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("before tree_subst : %v", treeSubs.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("before tree_subst : %v", treeSubs.ToString()) },
+		),
 	)
 	// Tree subst elminate
 	EliminateMeta(&treeSubs)
@@ -126,7 +125,9 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 		return Failure()
 	}
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("after tree_subst : %v", treeSubs.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("after tree_subst : %v", treeSubs.ToString()) },
+		),
 	)
 
 	// Fusion
@@ -152,7 +153,9 @@ func computeSubstitutions(subs []SubstPair, metasToSubs Substitutions, form AST.
 /* Call addUnification and returns a status - modify m.meta */
 func (m *Machine) trySubstituteMeta(i AST.Term, j AST.Term) Status {
 	debug(
-		Lib.MkLazy(func() string { return fmt.Sprintf("Try substitute : %v and %v", i.ToString(), j.ToString()) }),
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Try substitute : %v and %v", i.ToString(), j.ToString()) },
+		),
 	)
 	new_meta := AddUnification(i, j, m.meta.Copy())
 	if new_meta.Equals(Failure()) {
@@ -172,6 +175,9 @@ func AddUnification(term1, term2 AST.Term, subst Substitutions) Substitutions {
 				subst.ToString())
 		}),
 	)
+	term1 = transformTerm(term1)
+	term2 = transformTerm(term2)
+
 	// unify with ct only if the term already has an unification or if there is 2 fun. Just add it and eliminate otherwise.
 	t1v, _ := subst.Get(term1.ToMeta())
 	t2v, _ := subst.Get(term2.ToMeta())
@@ -213,12 +219,16 @@ func (m *Machine) addUnifications(term1, term2 AST.Term) Status {
 				term2.ToString())
 		}),
 	)
-	meta := tryUnification(term1.Copy(), term2.Copy(), m.meta.Copy()) // Return empty or an array of 1 matching substitution, which is m.meta improved wit (term1, term2)
+	meta := tryUnification(
+		term1.Copy(),
+		term2.Copy(),
+		m.meta.Copy(),
+	) // Return empty or an array of 1 matching substitution, which is m.meta improved wit (term1, term2)
 
 	if len(meta) == 0 {
 		return Status(ERROR)
 	} else {
-		m.meta = meta[0].GetSubst()
+		m.meta = meta[0].subst
 		EliminateMeta(&m.meta)
 		Eliminate(&m.meta)
 	}
@@ -227,7 +237,7 @@ func (m *Machine) addUnifications(term1, term2 AST.Term) Status {
 }
 
 /* Tries to unify term1 with term2, depending on the substitutions already found by the parent unification process. */
-func tryUnification(term1, term2 AST.Term, meta Substitutions) []MatchingSubstitutions {
+func tryUnification(term1, term2 AST.Term, meta Substitutions) []MixMatchSubstitutions {
 	debug(
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(

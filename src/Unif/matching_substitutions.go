@@ -106,11 +106,12 @@ func translateTermRec(term AST.Term) AST.Term {
 		opt_ty := Typing.QueryGlobalEnv(trm.GetName())
 		switch ty := opt_ty.(type) {
 		case Lib.Some[AST.Ty]:
-			switch t := ty.Val.(type) {
-			case AST.TyPi:
-				for i := 0; i < t.VarsLen(); i++ {
-					ty_args.Append(AST.TermToTy(trm.GetArgs().At(i)))
-				}
+			t := ty.Val
+			i := 0
+			for Glob.Is[AST.TyPi](t) {
+				ty_args.Append(AST.TermToTy(trm.GetArgs().At(i)))
+				t = t.(AST.TyPi).Ty()
+				i += 1
 			}
 		}
 		args := trm.GetArgs()
@@ -268,6 +269,56 @@ func (m MixedSubstitutions) MatchingSubstitutions() MatchingSubstitutions {
 	return MakeMatchingSubstitutions(m.form, m.GetTrmSubsts())
 }
 
+type MixMatchSubstitutions struct {
+	tof   Lib.Either[AST.Term, AST.Form]
+	subst Substitutions
+}
+
+// Pre-requisite: only formulas in the tof
+func (s MixMatchSubstitutions) toMatching() MatchingSubstitutions {
+	switch tof := s.tof.(type) {
+	case Lib.Left[AST.Term, AST.Form]:
+		Glob.Anomaly("unification", "expected unification between formulas, got unification between terms")
+	case Lib.Right[AST.Term, AST.Form]:
+		return MakeMatchingSubstitutions(tof.Val, s.subst)
+	}
+
+	Glob.Anomaly("unification", "reached an unreachable case")
+	return MakeMatchingSubstitutions(AST.MakerTop(), MakeEmptySubstitution())
+}
+
+func (s MixMatchSubstitutions) toMixed() MixedSubstitutions {
+	return s.toMatching().toMixed()
+}
+
+type MixedTermSubstitutions struct {
+	term   AST.Term
+	substs []MixedSubstitution
+}
+
+func (s MixedTermSubstitutions) Term() AST.Term { return s.term }
+
+func (s MixedTermSubstitutions) ToString() string {
+	substs_list := Lib.MkListV(s.substs...)
+	return s.term.ToString() + " {" + Lib.ListToString(substs_list, Lib.WithEmpty("")) + "}"
+}
+
+func (s MixMatchSubstitutions) toMixedTerm() MixedTermSubstitutions {
+	switch tof := s.tof.(type) {
+	case Lib.Left[AST.Term, AST.Form]:
+		substs := []MixedSubstitution{}
+		for _, subst := range s.subst {
+			substs = append(substs, translateFromSubst(subst))
+		}
+		return MixedTermSubstitutions{tof.Val, substs}
+	case Lib.Right[AST.Term, AST.Form]:
+		Glob.Anomaly("unification", "expected unification between terms, got unification between formulas")
+	}
+
+	Glob.Anomaly("unification", "reached an unreachable case")
+	return MixedTermSubstitutions{nil, []MixedSubstitution{}}
+}
+
 func translateToSubst(subst MixedSubstitution) Substitution {
 	switch s := subst.s.(type) {
 	case Lib.Left[TySubstitution, Substitution]:
@@ -283,7 +334,9 @@ func translateToSubst(subst MixedSubstitution) Substitution {
 	return MakeSubstitution(AST.MakeEmptyMeta(), nil)
 }
 
-func MergeMixedSubstitutions(substs1, substs2 Lib.List[MixedSubstitution]) (Lib.List[MixedSubstitution], bool) {
+func MergeMixedSubstitutions(
+	substs1, substs2 Lib.List[MixedSubstitution],
+) (Lib.List[MixedSubstitution], bool) {
 	translated_substs1 := Lib.ListMap(substs1, translateToSubst).GetSlice()
 	translated_substs2 := Lib.ListMap(substs2, translateToSubst).GetSlice()
 
