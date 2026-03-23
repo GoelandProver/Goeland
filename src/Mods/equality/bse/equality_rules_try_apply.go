@@ -267,7 +267,7 @@ func checkUnifInTree(t AST.Term, tree Unif.DataStructure) (bool, Lib.List[AST.Te
 				return fmt.Sprintf("Unif found with: %s", subst.ToString())
 			}),
 		)
-		result_list.Append(subst.GetForm().(Unif.TermForm).GetTerm())
+		result_list.Append(subst.Term())
 	}
 
 	return result_list.Len() > 0, result_list

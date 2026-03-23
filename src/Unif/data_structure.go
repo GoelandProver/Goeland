@@ -47,6 +47,18 @@ type DataStructure interface {
 	IsEmpty() bool
 	MakeDataStruct(Lib.List[AST.Form], bool) DataStructure
 	InsertFormulaListToDataStructure(Lib.List[AST.Form]) DataStructure
+
 	Unify(AST.Form) (bool, []MixedSubstitutions)
+	UnifyTerm(AST.Term) (bool, []MixedTermSubstitutions)
+	// FIXME:
+	// When the unification gets reworked, think a bit more about the exposed interface.
+	// We want to index on _terms_ while keeping the ability to unify _predicates_.
+	// (we can easily coerce a predicate to a function)
+	// We probably want to expose two functions --- one to unify predicates, and the other
+	// one to unify terms. But maybe we should say that unifying predicates is the "weird"
+	// case instead of the other way around.
+	//
+	// We should also find a more explicit name over `DataStructure`...
+
 	Copy() DataStructure
 }

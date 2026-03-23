@@ -68,7 +68,7 @@ type Machine struct {
 	subst         []SubstPair
 	terms         Lib.List[AST.Term]
 	meta          Substitutions
-	failure       []MatchingSubstitutions
+	failure       []MixMatchSubstitutions
 	topLevelTot   int
 	topLevelCount int
 }
@@ -85,7 +85,7 @@ func makeMachine() Machine {
 		subst:         []SubstPair{},
 		terms:         Lib.NewList[AST.Term](),
 		meta:          Substitutions{},
-		failure:       []MatchingSubstitutions{},
+		failure:       []MixMatchSubstitutions{},
 		topLevelTot:   0,
 		topLevelCount: 0,
 	}

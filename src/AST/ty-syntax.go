@@ -281,6 +281,10 @@ func (p TyPi) VarsLen() int {
 	return p.vars.Len()
 }
 
+func (p TyPi) Ty() Ty {
+	return p.ty
+}
+
 // Makers
 
 func MkTyVar(repr string) Ty {

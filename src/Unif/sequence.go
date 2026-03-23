@@ -40,13 +40,42 @@ import (
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
 /*** Sequence ***/
 
+func tofToString(tof Lib.Either[AST.Term, AST.Form]) string {
+	return Lib.EitherToString[AST.Term, AST.Form](tof, "Trm", "Form")
+}
+
+func tofCopy(tof Lib.Either[AST.Term, AST.Form]) Lib.Either[AST.Term, AST.Form] {
+	return Lib.EitherCpy[AST.Term, AST.Form](tof)
+}
+
+func tofCmp(tof1, tof2 Lib.Either[AST.Term, AST.Form]) bool {
+	return Lib.EitherEquals[AST.Term, AST.Form](tof1, tof2)
+}
+
+func tofMetaList(tof Lib.Either[AST.Term, AST.Form]) Lib.List[AST.Meta] {
+	switch tof := tof.(type) {
+	case Lib.Left[AST.Term, AST.Form]:
+		return transformTerm(tof.Val).GetMetaList()
+	case Lib.Right[AST.Term, AST.Form]:
+		switch f := tof.Val.(type) {
+		case AST.Pred:
+			return transformPred(f).GetMetaList()
+		}
+	}
+
+	Glob.Anomaly("unification", "Unification has not been launched on terms or on a predicate")
+	return Lib.NewList[AST.Meta]()
+}
+
 type Sequence struct {
 	instructions []Instruction
-	formula      AST.Form
+	base         Lib.Either[AST.Term, AST.Form]
 }
 
 /*** Sequence's methods ***/
@@ -55,22 +84,22 @@ func (s *Sequence) GetInstructions() []Instruction {
 	return CopyInstructionList(s.instructions)
 }
 
-func (s *Sequence) GetFormula() AST.Form {
-	return s.formula.Copy()
+func (s *Sequence) GetBase() Lib.Either[AST.Term, AST.Form] {
+	return s.base
 }
 
 func (s *Sequence) add(instr Instruction) {
 	s.instructions = append(s.instructions, instr)
 }
 
-// ILL TODO: Should not print directly, should return a string that is then printed
+// FIXME: Should not print directly, should return a string that is then printed
 func (s Sequence) Print() {
 	for _, instr := range s.instructions {
 		fmt.Printf("%v", instr)
 	}
-	fmt.Printf(" - " + s.formula.ToString())
+	fmt.Printf(" - " + tofToString(s.base))
 }
 
 func (s Sequence) Copy() Sequence {
-	return Sequence{s.GetInstructions(), s.GetFormula()}
+	return Sequence{s.GetInstructions(), tofCopy(s.base)}
 }
