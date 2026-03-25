@@ -57,4 +57,4 @@ func MkString(s string) String {
 	return String(s)
 }
 
-func (s String) ToString() string { return s.value }
+func (s String) ToString() string { return string(s) }
