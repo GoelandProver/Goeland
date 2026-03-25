@@ -30,29 +30,74 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-/**
- * This file offers [String], a wrapper around [string] that allows for writing
- * methods over strings.
- **/
-
 package Lib
 
-type String string
+import (
+	"fmt"
+)
 
-func (s String) Equals(oth any) bool {
-	if str, ok := oth.(String); ok {
-		return s == str
+/* This file implements the Either type (sum type). */
+
+type Either[A, B any] interface {
+	isEither()
+}
+
+type Left[A, B any] struct {
+	Val A
+}
+
+type Right[A, B any] struct {
+	Val B
+}
+
+func (Left[A, B]) isEither()  {}
+func (Right[A, B]) isEither() {}
+
+func MkLeft[A, B any](x A) Either[A, B] {
+	return Left[A, B]{Val: x}
+}
+
+func MkRight[A, B any](y B) Either[A, B] {
+	return Right[A, B]{Val: y}
+}
+
+func EitherToString[A, B Stringable](u Either[A, B], left, right string) string {
+	switch x := u.(type) {
+	case Left[A, B]:
+		return fmt.Sprintf("%s(%s)", left, x.Val.ToString())
+	case Right[A, B]:
+		return fmt.Sprintf("%s(%s)", right, x.Val.ToString())
 	}
+	return ""
+}
+
+func EitherEquals[A, B Comparable](u, v Either[A, B]) bool {
+	switch x := u.(type) {
+	case Left[A, B]:
+		switch y := v.(type) {
+		case Left[A, B]:
+			return x.Val.Equals(y.Val)
+		case Right[A, B]:
+			return false
+		}
+	case Right[A, B]:
+		switch y := v.(type) {
+		case Left[A, B]:
+			return false
+		case Right[A, B]:
+			return x.Val.Equals(y.Val)
+		}
+	}
+
 	return false
 }
 
-func (s String) Less(oth any) bool {
-	if str, ok := oth.(String); ok {
-		return s < str
+func EitherCpy[A Copyable[A], B Copyable[B]](u Either[A, B]) Either[A, B] {
+	switch x := u.(type) {
+	case Left[A, B]:
+		return MkLeft[A, B](x.Val.Copy())
+	case Right[A, B]:
+		return MkRight[A, B](x.Val.Copy())
 	}
-	return false
-}
-
-func MkString(s string) String {
-	return String(s)
+	return u
 }

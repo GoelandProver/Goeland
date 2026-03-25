@@ -68,12 +68,22 @@ func TryEquality(atomics_for_dmt Core.FormAndTermsList, st Search.State, new_ato
 			debug(Lib.MkLazy(func() string { return "EQ is applicable !" }))
 			atomics_plus_dmt := append(st.GetAtomic(), atomics_for_dmt...)
 			res_eq, subst_eq := EqualityReasoning(st.GetEqStruct(), st.GetTreePos(), st.GetTreeNeg(), atomics_plus_dmt.ExtractForms(), original_node_id)
+
+			send_to_proof_search := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
+			for _, substs := range subst_eq {
+				local_list := Lib.NewList[Unif.MixedSubstitution]()
+				for _, subst := range substs {
+					local_list.Append(Unif.MkMixedFromSubst(subst))
+				}
+				send_to_proof_search.Append(local_list)
+			}
+
 			if res_eq {
 				Search.UsedSearch.ManageClosureRule(
 					father_id,
 					&st,
 					cha,
-					subst_eq,
+					send_to_proof_search,
 					Core.MakeFormAndTerm(
 						AST.EmptyPredEq,
 						Lib.NewList[AST.Term](),
