@@ -44,6 +44,8 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
+	"github.com/GoelandProver/Goeland/Typing"
+	"slices"
 )
 
 func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
@@ -117,8 +119,16 @@ func getContextFromFormula(root AST.Form) []string {
 		result = clean(result, getContextFromFormula(nf.GetForm()))
 	case AST.Pred:
 		if !nf.GetID().Equals(AST.Id_eq) {
-			result = append(result, mapDefault(
-				fmt.Sprintf("Parameter %s.", nf.GetID().ToMappedString(rocqMapConnectors(), false))))
+			oty := Typing.QueryGlobalEnv(nf.GetID().GetName())
+			var ty AST.Ty
+			switch rty := oty.(type) {
+			case Lib.Some[AST.Ty]:
+				ty = rty.Val
+			case Lib.None[AST.Ty]:
+				ty = AST.MkDefaultPredType(nf.GetArgs().Len())
+			}
+
+			result = append(result, fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToString(), ty.ToString()))
 		}
 		for _, term := range nf.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
@@ -130,9 +140,17 @@ func getContextFromFormula(root AST.Form) []string {
 func getContextFromTerm(trm AST.Term) []string {
 	result := []string{}
 	if fun, isFun := trm.(AST.Fun); isFun {
+		oty := Typing.QueryGlobalEnv(fun.GetName())
+		var ty AST.Ty
+		switch rty := oty.(type) {
+		case Lib.Some[AST.Ty]:
+			ty = rty.Val
+		case Lib.None[AST.Ty]:
+			ty = AST.MkDefaultFunctionType(fun.GetArgs().Len())
+		}
+
 		result = append(result,
-			mapDefault(fmt.Sprintf(
-				"Parameter %s.", fun.GetID().ToMappedString(rocqMapConnectors(), false))))
+			fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToString(), ty.ToString()))
 		for _, term := range fun.GetArgs().GetSlice() {
 			result = append(result, clean(result, getContextFromTerm(term))...)
 		}
@@ -144,13 +162,7 @@ func getContextFromTerm(trm AST.Term) []string {
 func clean(set, add []string) []string {
 	result := []string{}
 	for _, str := range add {
-		found := false
-		for _, s := range set {
-			if s == str {
-				found = true
-				break
-			}
-		}
+		found := slices.Contains(set, str)
 		if !found {
 			result = append(result, str)
 		}
@@ -161,12 +173,12 @@ func clean(set, add []string) []string {
 func contextualizeMetas(metaList Lib.List[AST.Meta]) string {
 	result := []string{}
 	for _, meta := range metaList.GetSlice() {
-		result = append(result, meta.ToMappedString(rocqMapConnectors(), false))
+		result = append(result, meta.ToString())
 	}
 	return "Parameters " + strings.Join(result, " ") + " : goeland_U."
 }
 
-var lemmas = `Require Export Classical.
+var lemmas = `From Stdlib Require Import Classical.
 
 Lemma goeland_notnot : forall P : Prop,
   P -> (~ P -> False).
