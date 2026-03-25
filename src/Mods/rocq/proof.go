@@ -43,6 +43,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Mods/CertifUtils"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
 	"github.com/GoelandProver/Goeland/Mods/gs3"
 )
@@ -111,7 +112,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], constantsCre
 		// If the target formula is an equality, it _does not_ target any formula of the context,
 		// it simply tells us to close by congruence. Hence, we don't raise an anomaly if the
 		// target form is an equality.
-		if !isPredEqual(proof.GetTargetForm()) {
+		if !CertifUtils.IsPredEqual(proof.GetTargetForm()) {
 			Glob.Anomaly("rocq", fmt.Sprintf(
 				"Index of %s not found in { %s }",
 				proof.GetTargetForm().ToString(),
@@ -123,7 +124,7 @@ func makeStep(proof *gs3.GS3Sequent, hypotheses Lib.List[AST.Form], constantsCre
 	switch proof.Rule() {
 	// Closure.
 	case gs3.AX:
-		if isPredEqual(proof.GetTargetForm()) {
+		if CertifUtils.IsPredEqual(proof.GetTargetForm()) {
 			resultingString = "congruence."
 		} else {
 			resultingString = "auto."
@@ -253,10 +254,7 @@ func processMainFormula(form AST.Form) (Lib.List[AST.Form], AST.Form) {
 
 // Prints the theorem's name & properly formats the first formula.
 func makeTheorem(axioms Lib.List[AST.Form], conjecture AST.Form) string {
-	problemName := Glob.GetProblemName()
-	for _, s := range []string{".", "=", "+", "-"} {
-		problemName = strings.ReplaceAll(problemName, s, "_")
-	}
+	problemName := CertifUtils.SanitizedTheoremName()
 	axiomsWithConj := Lib.ListCpy(axioms)
 	axiomsWithConj.Append(AST.MakerNot(AST.MakerNot(conjecture)))
 	formattedProblem := makeImpChain(axiomsWithConj)
@@ -301,16 +299,6 @@ func introNames(il []int, sep ...string) string {
 		s = sep[0]
 	}
 	return strings.Join(Glob.MapTo(il, func(_ int, f int) string { return introName(f) }), s)
-}
-
-func isPredEqual(f AST.Form) bool {
-	if not, isNot := f.(AST.Not); isNot {
-		f = not.GetForm()
-	}
-	if p, isPred := f.(AST.Pred); isPred {
-		return p.GetID().Equals(AST.Id_eq)
-	}
-	return false
 }
 
 func addTermGenerated(constantsCreated []AST.Term, term AST.Term) ([]AST.Term, string) {

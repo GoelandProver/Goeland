@@ -43,9 +43,8 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Mods/CertifUtils"
 	"github.com/GoelandProver/Goeland/Mods/dmt"
-	"github.com/GoelandProver/Goeland/Typing"
-	"slices"
 )
 
 func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
@@ -62,7 +61,10 @@ func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
 	}
 
 	// if AST.EmptyGlobalContext() {
-	resultingString += strings.Join(getContextFromFormula(root), "\n") + "\n"
+	contextual_symbols := CertifUtils.GetContextFromFormula(root)
+	for _, p := range contextual_symbols.GetSlice() {
+		resultingString += fmt.Sprintf("Parameter %s : %s.\n", p.Fst.ToString(), p.Snd.ToString())
+	}
 
 	if metaList.Len() > 0 {
 		resultingString += contextualizeMetas(metaList)
@@ -92,82 +94,6 @@ func contextPreamble() string {
 	str += "Parameter goeland_U : Set. (* goeland's universe *)\n"
 	str += "Parameter goeland_I : goeland_U. (* an individual in the universe. *)\n\n"
 	return str
-}
-
-func getContextFromFormula(root AST.Form) []string {
-	result := []string{}
-	switch nf := root.(type) {
-	case AST.All:
-		result = getContextFromFormula(nf.GetForm())
-	case AST.Ex:
-		result = getContextFromFormula(nf.GetForm())
-	case AST.And:
-		for _, f := range nf.GetChildFormulas().GetSlice() {
-			result = append(result, clean(result, getContextFromFormula(f))...)
-		}
-	case AST.Or:
-		for _, f := range nf.GetChildFormulas().GetSlice() {
-			result = append(result, clean(result, getContextFromFormula(f))...)
-		}
-	case AST.Imp:
-		result = clean(result, getContextFromFormula(nf.GetF1()))
-		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case AST.Equ:
-		result = clean(result, getContextFromFormula(nf.GetF1()))
-		result = append(result, clean(result, getContextFromFormula(nf.GetF2()))...)
-	case AST.Not:
-		result = clean(result, getContextFromFormula(nf.GetForm()))
-	case AST.Pred:
-		if !nf.GetID().Equals(AST.Id_eq) {
-			oty := Typing.QueryGlobalEnv(nf.GetID().GetName())
-			var ty AST.Ty
-			switch rty := oty.(type) {
-			case Lib.Some[AST.Ty]:
-				ty = rty.Val
-			case Lib.None[AST.Ty]:
-				ty = AST.MkDefaultPredType(nf.GetArgs().Len())
-			}
-
-			result = append(result, fmt.Sprintf("Parameter %s : %s.", nf.GetID().ToString(), ty.ToString()))
-		}
-		for _, term := range nf.GetArgs().GetSlice() {
-			result = append(result, clean(result, getContextFromTerm(term))...)
-		}
-	}
-	return result
-}
-
-func getContextFromTerm(trm AST.Term) []string {
-	result := []string{}
-	if fun, isFun := trm.(AST.Fun); isFun {
-		oty := Typing.QueryGlobalEnv(fun.GetName())
-		var ty AST.Ty
-		switch rty := oty.(type) {
-		case Lib.Some[AST.Ty]:
-			ty = rty.Val
-		case Lib.None[AST.Ty]:
-			ty = AST.MkDefaultFunctionType(fun.GetArgs().Len())
-		}
-
-		result = append(result,
-			fmt.Sprintf("Parameter %s : %s.", fun.GetID().ToString(), ty.ToString()))
-		for _, term := range fun.GetArgs().GetSlice() {
-			result = append(result, clean(result, getContextFromTerm(term))...)
-		}
-	}
-	return result
-}
-
-// Returns everything in add not in set
-func clean(set, add []string) []string {
-	result := []string{}
-	for _, str := range add {
-		found := slices.Contains(set, str)
-		if !found {
-			result = append(result, str)
-		}
-	}
-	return result
 }
 
 func contextualizeMetas(metaList Lib.List[AST.Meta]) string {

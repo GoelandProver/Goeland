@@ -29,56 +29,22 @@
 * The fact that you are presently reading this means that you have had
 * knowledge of the CeCILL license and that you accept its terms.
 **/
-package lambdapi
+package CertifUtils
+
+/**
+ * This file provides utility functions for proof certification
+ **/
 
 import (
-	"fmt"
-
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
-	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Mods/CertifUtils"
-	"github.com/GoelandProver/Goeland/Mods/dmt"
 )
 
-func makeContextIfNeeded(root AST.Form, metaList Lib.List[AST.Meta]) string {
-	resultString := contextPreamble() + "\n\n"
-
-	if Glob.IsLoaded("dmt") {
-		registeredAxioms := dmt.GetRegisteredAxioms()
-		registeredAxioms.Append(root)
-		root = AST.MakerAnd(registeredAxioms)
+func IsPredEqual(f AST.Form) bool {
+	if not, isNot := f.(AST.Not); isNot {
+		f = not.GetForm()
 	}
-
-	// if AST.EmptyGlobalContext() {
-	contextual_symbols := CertifUtils.GetContextFromFormula(root)
-	for _, p := range contextual_symbols.GetSlice() {
-		addToGlobalEnv(Lib.MkPair(p.Fst.ToString(), p.Snd))
-		resultString += fmt.Sprintf("symbol %s : %s;\n", p.Fst.ToString(), p.Snd.ToString())
+	if p, isPred := f.(AST.Pred); isPred {
+		return p.GetID().Equals(AST.Id_eq)
 	}
-
-	if metaList.Len() > 0 {
-		resultString += contextualizeMetas(metaList)
-	}
-	// } else {
-	// 	resultString += getContextAsString(root)
-
-	// 	if metaList.Len() > 0 {
-	// 		resultString += contextualizeMetas(metaList)
-	// 	}
-	// }
-	return resultString
-}
-
-func contextPreamble() string {
-	return "require open Logic.Goeland.FOL Logic.Goeland.LL Logic.Goeland.ND Logic.Goeland.ND_eps Logic.Goeland.ND_eps_full Logic.Goeland.ND_eps_aux Logic.Goeland.LL_ND Logic.Goeland.GS3;"
-}
-
-func contextualizeMetas(metaList Lib.List[AST.Meta]) string {
-	result := ""
-	for _, meta := range metaList.GetSlice() {
-		addToGlobalEnv(Lib.MkPair(meta.ToString(), meta.GetTy()))
-		result += fmt.Sprintf("symbol %s : %s;\n", meta.ToString(), meta.GetTy().ToString())
-	}
-	return result
+	return false
 }

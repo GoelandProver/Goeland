@@ -278,7 +278,8 @@ func proofStructRuleToGS3Rule(rule string) Rule {
 	}
 	return mapping[rule]
 }
-func ruleToTableauxString(rule Rule) string {
+
+func (rule Rule) ToString() string {
 	mapping := map[Rule]string{
 		NNOT:    "ALPHA_NOT_NOT",
 		NOR:     "ALPHA_NOT_OR",
