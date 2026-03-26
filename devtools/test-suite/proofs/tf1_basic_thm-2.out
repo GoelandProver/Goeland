@@ -1,28 +1,28 @@
-[0] ALPHA_AND : (! [A]: head(A ; nil(A ; )) = none(A ; )) & (! [A, X, XS]: head(A ; cons(A ; X, XS)) = some(A ; X)) & ~(! [A, X, Y, Z]: head(A ; cons(A ; X, cons(A ; Y, cons(A ; Z, nil(A ; ))))) = some(A ; X))
-	-> [1] ! [A]: head(A ; nil(A ; )) = none(A ; ), ! [A, X, XS]: head(A ; cons(A ; X, XS)) = some(A ; X), ~(! [A, X, Y, Z]: head(A ; cons(A ; X, cons(A ; Y, cons(A ; Z, nil(A ; ))))) = some(A ; X))
+[0] ALPHA_AND : (! [T0]: head(T0 ; nil(T0 ; )) = none(T0 ; )) & (! [T0, X1, X2]: head(T0 ; cons(T0 ; X1, X2)) = some(T0 ; X1)) & ~(! [T0, X1, X2, X3]: head(T0 ; cons(T0 ; X1, cons(T0 ; X2, cons(T0 ; X3, nil(T0 ; ))))) = some(T0 ; X1))
+	-> [1] ! [T0]: head(T0 ; nil(T0 ; )) = none(T0 ; ), ! [T0, X1, X2]: head(T0 ; cons(T0 ; X1, X2)) = some(T0 ; X1), ~(! [T0, X1, X2, X3]: head(T0 ; cons(T0 ; X1, cons(T0 ; X2, cons(T0 ; X3, nil(T0 ; ))))) = some(T0 ; X1))
 
-[1] DELTA_NOT_FORALL : ~(! [A, X, Y, Z]: head(A ; cons(A ; X, cons(A ; Y, cons(A ; Z, nil(A ; ))))) = some(A ; X))
-	-> [2] ~(! [X, Y, Z]: head(skoTy@0 ; cons(skoTy@0 ; X, cons(skoTy@0 ; Y, cons(skoTy@0 ; Z, nil(skoTy@0 ; ))))) = some(skoTy@0 ; X))
+[1] DELTA_NOT_FORALL : ~(! [T0, X1, X2, X3]: head(T0 ; cons(T0 ; X1, cons(T0 ; X2, cons(T0 ; X3, nil(T0 ; ))))) = some(T0 ; X1))
+	-> [2] ~(! [X0, X1, X2]: head(skoTy@0 ; cons(skoTy@0 ; X0, cons(skoTy@0 ; X1, cons(skoTy@0 ; X2, nil(skoTy@0 ; ))))) = some(skoTy@0 ; X0))
 
-[2] DELTA_NOT_FORALL : ~(! [X, Y, Z]: head(skoTy@0 ; cons(skoTy@0 ; X, cons(skoTy@0 ; Y, cons(skoTy@0 ; Z, nil(skoTy@0 ; ))))) = some(skoTy@0 ; X))
-	-> [3] ~(! [Y, Z]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; Y, cons(skoTy@0 ; Z, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0))
+[2] DELTA_NOT_FORALL : ~(! [X0, X1, X2]: head(skoTy@0 ; cons(skoTy@0 ; X0, cons(skoTy@0 ; X1, cons(skoTy@0 ; X2, nil(skoTy@0 ; ))))) = some(skoTy@0 ; X0))
+	-> [3] ~(! [X0, X1]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; X0, cons(skoTy@0 ; X1, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0))
 
-[3] DELTA_NOT_FORALL : ~(! [Y, Z]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; Y, cons(skoTy@0 ; Z, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0))
-	-> [4] ~(! [Z]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; skolem@1, cons(skoTy@0 ; Z, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0))
+[3] DELTA_NOT_FORALL : ~(! [X0, X1]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; X0, cons(skoTy@0 ; X1, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0))
+	-> [4] ~(! [X0]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; skolem@1, cons(skoTy@0 ; X0, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0))
 
-[4] DELTA_NOT_FORALL : ~(! [Z]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; skolem@1, cons(skoTy@0 ; Z, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0))
+[4] DELTA_NOT_FORALL : ~(! [X0]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; skolem@1, cons(skoTy@0 ; X0, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0))
 	-> [5] ~(head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; skolem@1, cons(skoTy@0 ; skolem@2, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0))
 
-[5] GAMMA_FORALL : ! [A]: head(A ; nil(A ; )) = none(A ; )
-	-> [6] head(A ; nil(A ; )) = none(A ; )
+[5] GAMMA_FORALL : ! [T0]: head(T0 ; nil(T0 ; )) = none(T0 ; )
+	-> [6] head(MT3 ; nil(MT3 ; )) = none(MT3 ; )
 
-[6] GAMMA_FORALL : ! [A, X, XS]: head(A ; cons(A ; X, XS)) = some(A ; X)
-	-> [7] ! [X, XS]: head(skoTy@0 ; cons(skoTy@0 ; X, XS)) = some(skoTy@0 ; X)
+[6] GAMMA_FORALL : ! [T0, X1, X2]: head(T0 ; cons(T0 ; X1, X2)) = some(T0 ; X1)
+	-> [7] ! [X0, X1]: head(skoTy@0 ; cons(skoTy@0 ; X0, X1)) = some(skoTy@0 ; X0)
 
-[7] GAMMA_FORALL : ! [X, XS]: head(skoTy@0 ; cons(skoTy@0 ; X, XS)) = some(skoTy@0 ; X)
-	-> [8] ! [XS]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, XS)) = some(skoTy@0 ; skolem@0)
+[7] GAMMA_FORALL : ! [X0, X1]: head(skoTy@0 ; cons(skoTy@0 ; X0, X1)) = some(skoTy@0 ; X0)
+	-> [8] ! [X0]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, X0)) = some(skoTy@0 ; skolem@0)
 
-[8] GAMMA_FORALL : ! [XS]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, XS)) = some(skoTy@0 ; skolem@0)
+[8] GAMMA_FORALL : ! [X0]: head(skoTy@0 ; cons(skoTy@0 ; skolem@0, X0)) = some(skoTy@0 ; skolem@0)
 	-> [9] head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; skolem@1, cons(skoTy@0 ; skolem@2, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0)
 
 [9] CLOSURE : head(skoTy@0 ; cons(skoTy@0 ; skolem@0, cons(skoTy@0 ; skolem@1, cons(skoTy@0 ; skolem@2, nil(skoTy@0 ; ))))) = some(skoTy@0 ; skolem@0)

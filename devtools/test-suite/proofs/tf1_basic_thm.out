@@ -1,16 +1,16 @@
-[0] ALPHA_AND : (! [A]: head(A ; nil(A ; )) = none(A ; )) & (! [A, X, XS]: head(A ; cons(A ; X, XS)) = some(A ; X)) & ~(head($int ; cons($int ; 1, cons($int ; 2, cons($int ; 3, nil($int ; ))))) = some($int ; 1))
-	-> [1] ! [A]: head(A ; nil(A ; )) = none(A ; ), ! [A, X, XS]: head(A ; cons(A ; X, XS)) = some(A ; X), ~(head($int ; cons($int ; 1, cons($int ; 2, cons($int ; 3, nil($int ; ))))) = some($int ; 1))
+[0] ALPHA_AND : (! [T0]: head(T0 ; nil(T0 ; )) = none(T0 ; )) & (! [T0, X1, X2]: head(T0 ; cons(T0 ; X1, X2)) = some(T0 ; X1)) & ~(head($int ; cons($int ; 1, cons($int ; 2, cons($int ; 3, nil($int ; ))))) = some($int ; 1))
+	-> [1] ! [T0]: head(T0 ; nil(T0 ; )) = none(T0 ; ), ! [T0, X1, X2]: head(T0 ; cons(T0 ; X1, X2)) = some(T0 ; X1), ~(head($int ; cons($int ; 1, cons($int ; 2, cons($int ; 3, nil($int ; ))))) = some($int ; 1))
 
-[1] GAMMA_FORALL : ! [A]: head(A ; nil(A ; )) = none(A ; )
-	-> [2] head(A ; nil(A ; )) = none(A ; )
+[1] GAMMA_FORALL : ! [T0]: head(T0 ; nil(T0 ; )) = none(T0 ; )
+	-> [2] head(MT3 ; nil(MT3 ; )) = none(MT3 ; )
 
-[2] GAMMA_FORALL : ! [A, X, XS]: head(A ; cons(A ; X, XS)) = some(A ; X)
-	-> [3] ! [X, XS]: head($int ; cons($int ; X, XS)) = some($int ; X)
+[2] GAMMA_FORALL : ! [T0, X1, X2]: head(T0 ; cons(T0 ; X1, X2)) = some(T0 ; X1)
+	-> [3] ! [X0, X1]: head($int ; cons($int ; X0, X1)) = some($int ; X0)
 
-[3] GAMMA_FORALL : ! [X, XS]: head($int ; cons($int ; X, XS)) = some($int ; X)
-	-> [4] ! [XS]: head($int ; cons($int ; 1, XS)) = some($int ; 1)
+[3] GAMMA_FORALL : ! [X0, X1]: head($int ; cons($int ; X0, X1)) = some($int ; X0)
+	-> [4] ! [X0]: head($int ; cons($int ; 1, X0)) = some($int ; 1)
 
-[4] GAMMA_FORALL : ! [XS]: head($int ; cons($int ; 1, XS)) = some($int ; 1)
+[4] GAMMA_FORALL : ! [X0]: head($int ; cons($int ; 1, X0)) = some($int ; 1)
 	-> [5] head($int ; cons($int ; 1, cons($int ; 2, cons($int ; 3, nil($int ; ))))) = some($int ; 1)
 
 [5] CLOSURE : head($int ; cons($int ; 1, cons($int ; 2, cons($int ; 3, nil($int ; ))))) = some($int ; 1)
