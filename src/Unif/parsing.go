@@ -34,79 +34,30 @@ package Unif
 
 import (
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-type TermForm struct {
-	index int
-	t     AST.Term
+func transformPred(p AST.Pred) AST.Term {
+	return transformTerm(AST.MakerFun(p.GetID(), p.GetTyArgs(), p.GetArgs()))
 }
 
-func (t TermForm) ToString() string          { return t.ToString() }
-func (t TermForm) GetTerm() AST.Term         { return t.t.Copy() }
-func (t TermForm) Copy() AST.Form            { return makeTermForm(t.GetIndex(), t.GetTerm()) }
-func (t TermForm) RenameVariables() AST.Form { return t }
-func (t TermForm) ReplaceTermByTerm(AST.Term, AST.Term) (AST.Form, bool) {
-	return t, false
-}
-func (t TermForm) SubstTy(AST.TyGenVar, AST.Ty) AST.Form {
-	return t
-}
-func (t TermForm) GetIndex() int                                  { return t.index }
-func (t TermForm) SubstituteVarByMeta(AST.Var, AST.Meta) AST.Form { return t }
-func (t TermForm) GetInternalMetas() Lib.List[AST.Meta]           { return Lib.NewList[AST.Meta]() }
-func (t TermForm) SetInternalMetas(Lib.List[AST.Meta]) AST.Form   { return t }
-func (t TermForm) GetSubFormulasRecur() Lib.List[AST.Form]        { return Lib.NewList[AST.Form]() }
-func (t TermForm) GetChildFormulas() Lib.List[AST.Form]           { return Lib.NewList[AST.Form]() }
-
-func (t TermForm) Equals(t2 any) bool {
-	switch nt := t2.(type) {
-	case TermForm:
-		return t.GetTerm().Equals(nt.GetTerm())
-	default:
-		return false
-	}
-}
-
-func (t TermForm) GetMetas() Lib.Set[AST.Meta] {
-	switch nt := t.GetTerm().(type) {
-	case AST.Meta:
-		return Lib.Singleton(nt)
+func transformTerm(t AST.Term) AST.Term {
+	switch term := t.(type) {
+	case AST.Id, AST.Meta, AST.Var:
+		return t
 	case AST.Fun:
-		res := Lib.EmptySet[AST.Meta]()
-
-		for _, m := range nt.GetArgs().GetSlice() {
-			switch mt := m.(type) {
-			case AST.Meta:
-				res = res.Add(mt)
-			}
-		}
-
-		return res
-	default:
-		return Lib.EmptySet[AST.Meta]()
+		args := Lib.ListMap(term.GetTyArgs(), AST.TyToTerm)
+		args.Append(Lib.ListMap(term.GetArgs(), transformTerm).GetSlice()...)
+		return AST.MakerFun(
+			term.GetID(),
+			Lib.NewList[AST.Ty](),
+			args,
+		)
 	}
-}
 
-func (t TermForm) GetSubTerms() Lib.List[AST.Term] {
-	return t.GetTerm().GetSubTerms()
-}
-
-func (t TermForm) ReplaceMetaByTerm(meta AST.Meta, term AST.Term) AST.Form {
-	return t
-}
-
-func MakerTermForm(t AST.Term) TermForm {
-	switch trm := t.(type) {
-	case AST.Fun:
-		args := getFunctionalArguments(trm.GetTyArgs(), trm.GetArgs())
-		t = AST.MakerFun(trm.GetID(), Lib.NewList[AST.Ty](), args)
-	}
-	return makeTermForm(AST.MakerIndexFormula(), t.Copy())
-}
-
-func makeTermForm(i int, t AST.Term) TermForm {
-	return TermForm{i, t.Copy()}
+	Glob.Anomaly("unif parsing", "Unknown term")
+	return nil
 }
 
 /* Parses a formulae to a sequence of instructions. */
@@ -115,26 +66,17 @@ func ParseFormula(formula AST.Form) Sequence {
 	// The formula has to be a predicate
 	switch formula_type := formula.(type) {
 	case AST.Pred:
-		instructions := Sequence{formula: formula_type}
+		instructions := Sequence{base: Lib.MkRight[AST.Term, AST.Form](formula)}
 
-		instructions.add(Begin{})
-		parsePred(formula_type, &instructions)
-		instructions.add(End{})
+		switch term := transformPred(formula_type).(type) {
+		case AST.Fun:
+			instructions.add(Begin{})
+			parsePred(formula_type.GetID(), term.GetArgs(), &instructions)
+			instructions.add(End{})
 
-		return instructions
-	case TermForm:
-		instructions := Sequence{formula: formula}
-		varCount := 0
-		postCount := 0
-		instructions.add(Begin{})
-		parseTerms(
-			Lib.MkListV(formula_type.GetTerm().Copy()),
-			&instructions,
-			Lib.NewList[AST.Meta](),
-			&varCount,
-			&postCount,
-		)
-		instructions.add(End{})
+		default:
+			Glob.Anomaly("unification", "error when translating in internal representation")
+		}
 
 		return instructions
 
@@ -143,35 +85,15 @@ func ParseFormula(formula AST.Form) Sequence {
 	}
 }
 
-/* Parses a predicate to machine instructions */
-func getFunctionalArguments(ty_args Lib.List[AST.Ty], trm_args Lib.List[AST.Term]) Lib.List[AST.Term] {
-	args := Lib.ListMap(ty_args, AST.TyToTerm)
-
-	for _, arg := range trm_args.GetSlice() {
-		switch term := arg.(type) {
-		case AST.Meta:
-			args.Append(arg)
-		case AST.Fun:
-			args.Append(AST.MakerFun(
-				term.GetID(),
-				Lib.NewList[AST.Ty](),
-				getFunctionalArguments(term.GetTyArgs(), term.GetArgs()),
-			))
-		}
-	}
-
-	return args
-}
-
-func parsePred(p AST.Pred, instructions *Sequence) {
-	instructions.add(makeCheck(p.GetID()))
-	if !p.GetTyArgs().Empty() || !p.GetArgs().Empty() {
+func parsePred(i AST.Id, args Lib.List[AST.Term], instructions *Sequence) {
+	instructions.add(makeCheck(i))
+	if !args.Empty() {
 		instructions.add(Begin{})
 		instructions.add(Down{})
 		varCount := 0
 		postCount := 0
 		parseTerms(
-			getFunctionalArguments(p.GetTyArgs(), p.GetArgs()),
+			args,
 			instructions,
 			Lib.NewList[AST.Meta](),
 			&varCount,
@@ -216,7 +138,7 @@ func parseTerms(
 				instructions.add(Right{})
 			}
 		case AST.Fun:
-			instructions.add(Begin{}) // TEST 33
+			instructions.add(Begin{})
 			instructions.add(makeCheck(t.GetID()))
 
 			if downDefined(t.GetArgs()) {
@@ -225,18 +147,20 @@ func parseTerms(
 					*postCount++
 				}
 				instructions.add(Down{})
-				subTerms := getFunctionalArguments(t.GetTyArgs(), t.GetArgs())
-				subst = parseTerms(subTerms, instructions, subst, varCount, postCount)
+				if !t.GetTyArgs().Empty() {
+					Glob.Anomaly("unif parsing", "found type arguments at an unexpected place")
+				}
+				subst = parseTerms(t.GetArgs(), instructions, subst, varCount, postCount)
 				if rightDefined(terms, i) {
 					*postCount--
 					instructions.add(Pop{*postCount})
 				}
 				instructions.add(makeEnd(t))
 			} else if rightDefined(terms, i) {
-				instructions.add(makeEnd(t)) // TEST33
+				instructions.add(makeEnd(t))
 				instructions.add(Right{})
 			} else {
-				instructions.add(makeEnd(t)) // TEST33
+				instructions.add(makeEnd(t))
 			}
 		}
 	}
@@ -254,6 +178,6 @@ func ParseTerm(term AST.Term) Sequence {
 		&varCount,
 		&postCount,
 	)
-	instructions.formula = MakerTermForm(term)
+	instructions.base = Lib.MkLeft[AST.Term, AST.Form](term)
 	return instructions
 }

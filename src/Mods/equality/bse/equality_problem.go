@@ -136,11 +136,12 @@ func makeEqualityProblem(E Equalities, s AST.Term, t AST.Term, c ConstraintStruc
 
 /* Take a list of equalities and build the corresponding code tree */
 func makeDataStructFromEqualities(eq Equalities) Unif.DataStructure {
-	formList := Lib.NewList[AST.Form]()
+	formList := Lib.NewList[AST.Term]()
 	for _, e := range eq {
-		formList.Append(Unif.MakerTermForm(e.GetT1()), Unif.MakerTermForm(e.GetT2()))
+		formList.Append(e.GetT1(), e.GetT2())
 	}
-	return Unif.NewNode().MakeDataStruct(Lib.ListCpy(formList), true)
+
+	return Unif.MakeTermUnifProblem(Lib.ListCpy(formList))
 }
 
 /* Take a list of equalities and build the corresponding assocative map */
