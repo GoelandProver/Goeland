@@ -276,7 +276,7 @@ func ApplySubstitutionsOnTerm(substs Lib.List[Unif.MixedSubstitution], t AST.Ter
 			t = t.SubstTy(meta, ty)
 		case Lib.Right[Unif.TySubstitution, Unif.Substitution]:
 			meta, term := s.Val.Get()
-			t = t.ReplaceSubTermBy(meta, term)
+			t = t.Subst(meta, term)
 		}
 	}
 
@@ -312,7 +312,7 @@ func ApplySubstitutionsOnFormula(s Lib.List[Unif.MixedSubstitution], f AST.Form)
 			f = f.SubstTy(meta, ty)
 		case Lib.Right[Unif.TySubstitution, Unif.Substitution]:
 			meta, term := s.Val.Get()
-			f = f.ReplaceMetaByTerm(meta, term)
+			f = f.Subst(meta, term)
 		}
 	}
 
@@ -320,7 +320,10 @@ func ApplySubstitutionsOnFormula(s Lib.List[Unif.MixedSubstitution], f AST.Form)
 }
 
 /* For each element of the substitution, apply it on the entire formula list */
-func ApplySubstitutionsOnFormulaList(s Lib.List[Unif.MixedSubstitution], lf Lib.List[AST.Form]) Lib.List[AST.Form] {
+func ApplySubstitutionsOnFormulaList(
+	s Lib.List[Unif.MixedSubstitution],
+	lf Lib.List[AST.Form],
+) Lib.List[AST.Form] {
 	lf_res := Lib.NewList[AST.Form]()
 	for _, f := range lf.GetSlice() {
 		new_form := ApplySubstitutionsOnFormula(s, f)
@@ -331,12 +334,18 @@ func ApplySubstitutionsOnFormulaList(s Lib.List[Unif.MixedSubstitution], lf Lib.
 }
 
 /* Apply substitutions on FormAndTerm */
-func ApplySubstitutionsOnFormAndTerms(s Lib.List[Unif.MixedSubstitution], fat FormAndTerms) FormAndTerms {
+func ApplySubstitutionsOnFormAndTerms(
+	s Lib.List[Unif.MixedSubstitution],
+	fat FormAndTerms,
+) FormAndTerms {
 	return MakeFormAndTerm(ApplySubstitutionsOnFormula(s, fat.GetForm()), fat.GetTerms())
 }
 
 /* For each element of the substitution, apply it on the entire formAndTerms list */
-func ApplySubstitutionsOnFormAndTermsList(s Lib.List[Unif.MixedSubstitution], lf FormAndTermsList) FormAndTermsList {
+func ApplySubstitutionsOnFormAndTermsList(
+	s Lib.List[Unif.MixedSubstitution],
+	lf FormAndTermsList,
+) FormAndTermsList {
 	lf_res := MakeEmptyFormAndTermsList()
 	for _, f := range lf {
 		new_form := ApplySubstitutionsOnFormAndTerms(s, f)
@@ -412,7 +421,8 @@ func AreEqualsModuloaLaphaConversion(s1, s2 Unif.Substitutions) bool {
 	i := 0
 	for i < len(s1) && cpt == i {
 		for _, s2_element := range s2 {
-			if (s1[i].Key().GetName() == s2_element.Key().GetName()) && (s1[i].Value().Equals(s2_element.Value())) {
+			if (s1[i].Key().GetName() == s2_element.Key().GetName()) &&
+				(s1[i].Value().Equals(s2_element.Value())) {
 				cpt++
 			}
 		}

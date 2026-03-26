@@ -389,7 +389,10 @@ func (gne *GammaNotExists) apply() []RuleList {
 	resultRules := RuleList{}
 	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(gne.FullString) }))
 
-	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gne.GetForm(), gne.GetTerms()), 42)
+	instanciatedForm, metas := Core.Instantiate(
+		Core.MakeFormAndTerm(gne.GetForm(), gne.GetTerms()),
+		42,
+	)
 	newTerms := gne.GetTerms().Copy(AST.Term.Copy)
 	newTerms.Add(AST.TermEquals, AST.MetaListToTermList(metas.Elements()).GetSlice()...)
 	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
@@ -412,15 +415,6 @@ func (gne *GammaNotExists) getGeneratedMetas() Lib.List[AST.Meta] {
 	return gne.generatedMetas
 }
 
-func (gne *GammaNotExists) getVarList() Lib.List[AST.TypedVar] {
-	if not, isNot := gne.formula.(AST.Not); isNot {
-		if exists, isExists := not.GetForm().(AST.Ex); isExists {
-			return exists.GetVarList()
-		}
-	}
-	return Lib.NewList[AST.TypedVar]()
-}
-
 type GammaForall struct {
 	AnyRule
 	generatedMetas Lib.List[AST.Meta]
@@ -430,7 +424,10 @@ func (gf *GammaForall) apply() []RuleList {
 	resultRules := RuleList{}
 	debug(Lib.MkLazy(func() string { return "Applying " + fmt.Sprint(gf.FullString) }))
 
-	instanciatedForm, metas := Core.Instantiate(Core.MakeFormAndTerm(gf.GetForm(), gf.GetTerms()), 42)
+	instanciatedForm, metas := Core.Instantiate(
+		Core.MakeFormAndTerm(gf.GetForm(), gf.GetTerms()),
+		42,
+	)
 	newTerms := gf.GetTerms().Copy(AST.Term.Copy)
 	newTerms.Add(AST.TermEquals, AST.MetaListToTermList(metas.Elements()).GetSlice()...)
 	resultRules = append(resultRules, makeCorrectRule(instanciatedForm.GetForm(), newTerms))
@@ -451,13 +448,6 @@ func (gf *GammaForall) Copy() GammaRule {
 
 func (gf *GammaForall) getGeneratedMetas() Lib.List[AST.Meta] {
 	return gf.generatedMetas
-}
-
-func (gf *GammaForall) getVarList() Lib.List[AST.TypedVar] {
-	if forall, isForall := gf.formula.(AST.All); isForall {
-		return forall.GetVarList()
-	}
-	return Lib.NewList[AST.TypedVar]()
 }
 
 type DeltaNotForall struct {

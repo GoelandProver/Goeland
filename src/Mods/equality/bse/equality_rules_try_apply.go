@@ -255,7 +255,7 @@ func searchUnifBewteenListAndEq(
 /* Take a (sub)-term t, and retrieve all the term t' unifiable with t */
 func checkUnifInTree(t AST.Term, tree Unif.DataStructure) (bool, Lib.List[AST.Term]) {
 	result_list := Lib.NewList[AST.Term]()
-	res, ms := tree.Unify(Unif.MakerTermForm(t.Copy()))
+	res, ms := tree.UnifyTerm(t.Copy())
 
 	if !res {
 		return false, result_list

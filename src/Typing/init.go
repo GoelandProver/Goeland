@@ -45,13 +45,11 @@ import (
 )
 
 var global_env Env
-var ari_var string
 var debug Glob.Debugger
 var debug_low_level Glob.Debugger
 
 func Init() {
 	global_env = Env{make(map[string]AST.Ty), sync.Mutex{}}
-	ari_var = "number"
 
 	initTPTPNativeTypes()
 }
@@ -69,8 +67,7 @@ func initTPTPNativeTypes() {
 	AddToGlobalEnv(
 		AST.Id_eq.GetName(),
 		AST.MkTyPi(
-			Lib.MkListV("α"),
-			AST.MkTyFunc(AST.MkTyProd(Lib.MkListV(AST.MkTyVar("α"), AST.MkTyVar("α"))), AST.TProp()),
+			AST.MkTyFunc(AST.MkTyProd(Lib.MkListV(AST.MkTyBV(0), AST.MkTyBV(0))), AST.TProp()),
 		),
 	)
 
@@ -93,12 +90,11 @@ func initTPTPNativeTypes() {
 
 	// 3 - $quotient
 	AddToGlobalEnv("$quotient",
-		AST.MkTyPi(
-			Lib.MkListV(ari_var, "rat_or_real"),
+		AST.MkTyPi(AST.MkTyPi(
 			AST.MkTyFunc(
-				AST.MkTyProd(Lib.MkListV(AST.MkTyVar(ari_var), AST.MkTyVar(ari_var))),
-				AST.MkTyVar("rat_or_real")),
-		))
+				AST.MkTyProd(Lib.MkListV(AST.MkTyBV(0), AST.MkTyBV(0))),
+				AST.MkTyBV(1)),
+		)))
 
 	// 4 - Unary input arguments
 	recordUnaryInArgs("$uminus")
@@ -124,8 +120,10 @@ func recordBinaryProp(name string) {
 	AddToGlobalEnv(
 		name,
 		AST.MkTyPi(
-			Lib.MkListV(ari_var),
-			AST.MkTyFunc(AST.MkTyProd(Lib.MkListV(AST.MkTyVar(ari_var), AST.MkTyVar(ari_var))), AST.TProp()),
+			AST.MkTyFunc(
+				AST.MkTyProd(Lib.MkListV(AST.MkTyBV(0), AST.MkTyBV(0))),
+				AST.TProp(),
+			),
 		),
 	)
 }
@@ -134,8 +132,10 @@ func recordBinaryInArgs(name string) {
 	AddToGlobalEnv(
 		name,
 		AST.MkTyPi(
-			Lib.MkListV(ari_var),
-			AST.MkTyFunc(AST.MkTyProd(Lib.MkListV(AST.MkTyVar(ari_var), AST.MkTyVar(ari_var))), AST.MkTyVar(ari_var)),
+			AST.MkTyFunc(
+				AST.MkTyProd(Lib.MkListV(AST.MkTyBV(0), AST.MkTyBV(0))),
+				AST.MkTyBV(0),
+			),
 		),
 	)
 }
@@ -144,8 +144,7 @@ func recordUnaryInArgs(name string) {
 	AddToGlobalEnv(
 		name,
 		AST.MkTyPi(
-			Lib.MkListV(ari_var),
-			AST.MkTyFunc(AST.MkTyVar(ari_var), AST.MkTyVar(ari_var)),
+			AST.MkTyFunc(AST.MkTyBV(0), AST.MkTyBV(0)),
 		),
 	)
 }
@@ -154,8 +153,7 @@ func recordUnaryProp(name string) {
 	AddToGlobalEnv(
 		name,
 		AST.MkTyPi(
-			Lib.MkListV(ari_var),
-			AST.MkTyFunc(AST.MkTyVar(ari_var), AST.TProp()),
+			AST.MkTyFunc(AST.MkTyBV(0), AST.TProp()),
 		),
 	)
 }
@@ -164,8 +162,7 @@ func recordConversion(name string, out AST.Ty) {
 	AddToGlobalEnv(
 		name,
 		AST.MkTyPi(
-			Lib.MkListV(ari_var),
-			AST.MkTyFunc(AST.MkTyVar(ari_var), out),
+			AST.MkTyFunc(AST.MkTyBV(0), out),
 		),
 	)
 }

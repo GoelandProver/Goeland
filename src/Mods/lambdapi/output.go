@@ -156,11 +156,10 @@ func LambdapiPrinterAction() AST.PrinterAction {
 			return result_string
 		},
 		func(i AST.Id) string { return i.GetName() },
-		AST.PrinterIdentity,
-		func(metaName string, metaIndex int) string { return fmt.Sprintf("%s_%d", metaName, metaIndex) },
+		func(metaName string, metaIndex int) string { return metaName },
 		sanitize_type,
-		func(typed_var Lib.Pair[string, AST.Ty]) string {
-			return fmt.Sprintf("(%s : %s)", typed_var.Fst, sanitize_type(typed_var.Snd.ToString()))
+		func(typed_var Lib.Pair[string, string]) string {
+			return fmt.Sprintf("(%s : %s)", typed_var.Fst, sanitize_type(typed_var.Snd))
 		},
 		func(id AST.Id, tys Lib.List[string], args Lib.List[string]) string {
 			if strings.Contains(id.GetName(), "sko") {

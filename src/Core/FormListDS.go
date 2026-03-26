@@ -31,6 +31,10 @@
 **/
 package Core
 
+// FIXME: what's the point of this file? It is misleading as it is simply a set and it
+// checks the membership of a formula inside this set.
+// This file implements the DataStructure interface for a list of formulas
+
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -44,8 +48,6 @@ type FormListDS struct {
 func (f FormListDS) GetFL() Lib.List[AST.Form] {
 	return Lib.ListCpy(f.fl)
 }
-
-/* Data struct */
 
 /* Take a list of formula and return a FormList (Datastructure type) */
 func (f FormListDS) MakeDataStruct(lf Lib.List[AST.Form], is_pos bool) Unif.DataStructure {
@@ -93,4 +95,8 @@ func (fl FormListDS) Unify(f AST.Form) (bool, []Unif.MixedSubstitutions) {
 		}
 	}
 	return false, []Unif.MixedSubstitutions{}
+}
+
+func (fl FormListDS) UnifyTerm(AST.Term) (bool, []Unif.MixedTermSubstitutions) {
+	return false, []Unif.MixedTermSubstitutions{}
 }

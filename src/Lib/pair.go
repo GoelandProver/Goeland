@@ -45,6 +45,10 @@ func (p Pair[T, U]) ToString(f Func[T, string], g Func[U, string], sep string) s
 	return "(" + f(p.Fst) + sep + g(p.Snd) + ")"
 }
 
+func PairToString[T, U Stringable](p Pair[T, U], sep string) string {
+	return p.ToString(T.ToString, U.ToString, sep)
+}
+
 // Managing lists of pairs
 func Pr1[T, U any](ls List[Pair[T, U]]) List[T] {
 	return ListMap(ls, func(p Pair[T, U]) T { return p.Fst })

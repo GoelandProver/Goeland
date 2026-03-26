@@ -58,7 +58,9 @@ func InitDebugger() {
 	debug_low_level = Glob.CreateDebugger("elab-low")
 }
 
-func ToInternalSyntax(parser_statements []Parser.PStatement) (statements []Core.Statement, is_typed bool) {
+func ToInternalSyntax(
+	parser_statements []Parser.PStatement,
+) (statements []Core.Statement, is_typed bool) {
 	is_typed = false
 	con := initialContext()
 	for _, statement := range parser_statements {
@@ -147,13 +149,13 @@ func elaborateRole(parsing_role Parser.PFormulaRole, stmt Parser.PStatement) Cor
 }
 
 func elaborateParsingForm(con Context, f Parser.PForm) (Context, AST.Form, bool) {
-	return elaborateForm(con, f, f)
+	return elaborateForm([]Lib.Pair[string, Parser.PType]{}, con, f, f)
 }
 
 // The [source_form] argument is here for error printing purposes.
-func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form, bool) {
-	aux := func(con Context, t Parser.PTerm) (Context, AST.Term, bool) {
-		return elaborateParsingTerm(con, t)
+func elaborateForm(loc_ctx, con Context, f, source_form Parser.PForm) (Context, AST.Form, bool) {
+	aux := func(loc_ctx, con Context, t Parser.PTerm) (Context, AST.Term, bool) {
+		return elaborateParsingTerm(loc_ctx, con, t)
 	}
 
 	switch pform := f.(type) {
@@ -173,7 +175,7 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 
 		args := Lib.MkList[AST.Term](term_args.Len())
 		for i, trm := range term_args.GetSlice() {
-			new_con, arg, b := aux(con, trm)
+			new_con, arg, b := aux(loc_ctx, con, trm)
 			con = new_con
 			is_typed = is_typed || b
 			args.Upd(i, arg)
@@ -183,7 +185,7 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 		if isDefined(pform.Symbol()) {
 			tys := Lib.ListMap(Lib.MkListV(typed_arguments[typed_args.Len():]...),
 				func(p Lib.Pair[Parser.PTerm, Parser.PType]) Parser.PType { return p.Snd })
-			typed_args = elaborateDefinedFunctionals(con, pform.Symbol(), tys, args)
+			typed_args = elaborateDefinedFunctionals(loc_ctx, con, pform.Symbol(), tys, args)
 		} else {
 			is_typed = !typed_args.Empty()
 		}
@@ -193,7 +195,7 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 			Lib.ListMap(
 				typed_args,
 				func(pty Parser.PType) AST.Ty {
-					return elaborateType(pty, pty, false)
+					return elaborateType(loc_ctx, pty, pty)
 				}),
 			args,
 		), is_typed
@@ -201,28 +203,28 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 	case Parser.PUnary:
 		switch pform.PUnaryOp {
 		case Parser.PUnaryNeg:
-			new_con, nf, b := elaborateForm(con, pform.PForm, source_form)
+			new_con, nf, b := elaborateForm(loc_ctx, con, pform.PForm, source_form)
 			return new_con, AST.MakeNot(nf), b
 		}
 
 	case Parser.PBin:
 		switch pform.Operator() {
 		case Parser.PBinaryOr:
-			return maybeFlattenOr(con, pform, source_form)
+			return maybeFlattenOr(loc_ctx, con, pform, source_form)
 		case Parser.PBinaryAnd:
-			return maybeFlattenAnd(con, pform, source_form)
+			return maybeFlattenAnd(loc_ctx, con, pform, source_form)
 		case Parser.PBinaryImp:
-			con1, lft, b1 := elaborateForm(con, pform.Left(), source_form)
-			new_con, rgt, b2 := elaborateForm(con1, pform.Right(), source_form)
+			con1, lft, b1 := elaborateForm(loc_ctx, con, pform.Left(), source_form)
+			new_con, rgt, b2 := elaborateForm(loc_ctx, con1, pform.Right(), source_form)
 			return new_con, AST.MakeImp(lft, rgt), b1 || b2
 		case Parser.PBinaryEqu:
-			con1, lft, b1 := elaborateForm(con, pform.Left(), source_form)
-			new_con, rgt, b2 := elaborateForm(con1, pform.Right(), source_form)
+			con1, lft, b1 := elaborateForm(loc_ctx, con, pform.Left(), source_form)
+			new_con, rgt, b2 := elaborateForm(loc_ctx, con1, pform.Right(), source_form)
 			return new_con, AST.MakeEqu(lft, rgt), b1 || b2
 		}
 
 	case Parser.PQuant:
-		vars := pretypeVars(pform.Vars())
+		vars := pretypeVars(loc_ctx, pform.Vars())
 		switch pform.PQuantifier {
 		case Parser.PQuantAll:
 			actualVars := Lib.ListMap(
@@ -231,14 +233,20 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 					return Lib.MkPair(p.Fst, p.Snd.(Parser.PType))
 				},
 			)
-			new_con, form, b := elaborateForm(append(con, actualVars.GetSlice()...), pform.PForm, source_form)
+			new_con, form, b := elaborateForm(
+				append(loc_ctx, actualVars.GetSlice()...),
+				append(con, actualVars.GetSlice()...),
+				pform.PForm, source_form,
+			)
 			if !vars.Empty() {
-				form = AST.MakeAll(vars, form)
+				for i := vars.Len() - 1; i >= 0; i-- {
+					form = AST.MakeAll(vars.At(i), form)
+				}
 			}
 			return new_con, form, b
 
 		case Parser.PQuantEx:
-			if vars.Any(func(v AST.TypedVar) bool { return AST.IsTType(v.GetTy()) }) {
+			if vars.Any(func(v AST.Ty) bool { return AST.IsTType(v) }) {
 				Glob.Anomaly(
 					elab_label,
 					"Found existentially quantified types when parsing "+source_form.ToString(),
@@ -250,9 +258,12 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 					return Lib.MkPair(p.Fst, p.Snd.(Parser.PType))
 				},
 			)
-			new_con, form, b := elaborateForm(append(con, actualVars.GetSlice()...), pform.PForm, source_form)
+			new_con, form, b := elaborateForm(append(loc_ctx, actualVars.GetSlice()...),
+				append(con, actualVars.GetSlice()...), pform.PForm, source_form)
 			if !vars.Empty() {
-				form = AST.MakeEx(vars, form)
+				for i := vars.Len() - 1; i >= 0; i-- {
+					form = AST.MakeEx(vars.At(i), form)
+				}
 			}
 			return new_con, form, b
 		}
@@ -264,32 +275,40 @@ func elaborateForm(con Context, f, source_form Parser.PForm) (Context, AST.Form,
 	return con, nil, false
 }
 
-func maybeFlattenOr(con Context, f Parser.PBin, source_form Parser.PForm) (Context, AST.Form, bool) {
+func maybeFlattenOr(
+	loc_ctx, con Context,
+	f Parser.PBin,
+	source_form Parser.PForm,
+) (Context, AST.Form, bool) {
 	return maybeFlattenBin(
-		con, f, source_form,
+		loc_ctx, con, f, source_form,
 		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakeOr(ls) },
 		Parser.PBinaryOr,
 	)
 }
 
-func maybeFlattenAnd(con Context, f Parser.PBin, source_form Parser.PForm) (Context, AST.Form, bool) {
+func maybeFlattenAnd(
+	loc_ctx, con Context,
+	f Parser.PBin,
+	source_form Parser.PForm,
+) (Context, AST.Form, bool) {
 	return maybeFlattenBin(
-		con, f, source_form,
+		loc_ctx, con, f, source_form,
 		func(ls Lib.List[AST.Form]) AST.Form { return AST.MakeAnd(ls) },
 		Parser.PBinaryAnd,
 	)
 }
 
 func maybeFlattenBin(
-	con Context,
+	loc_ctx, con Context,
 	f Parser.PBin,
 	source_form Parser.PForm,
 	maker Lib.Func[Lib.List[AST.Form], AST.Form],
 	op Parser.PBinOp,
 ) (Context, AST.Form, bool) {
 	if !Glob.Flatten() {
-		con1, lft, b1 := elaborateForm(con, f.Left(), source_form)
-		new_con, rgt, b2 := elaborateForm(con1, f.Right(), source_form)
+		con1, lft, b1 := elaborateForm(loc_ctx, con, f.Left(), source_form)
+		new_con, rgt, b2 := elaborateForm(loc_ctx, con1, f.Right(), source_form)
 		return new_con, maker(Lib.MkListV(lft, rgt)), b1 || b2
 	}
 
@@ -297,7 +316,7 @@ func maybeFlattenBin(
 	is_typed := false
 	real_subforms := Lib.MkList[AST.Form](subforms.Len())
 	for i, subform := range subforms.GetSlice() {
-		new_con, real_subform, b := elaborateForm(con, subform, source_form)
+		new_con, real_subform, b := elaborateForm(loc_ctx, con, subform, source_form)
 		con = new_con
 		real_subforms.Upd(i, real_subform)
 		is_typed = is_typed || b
@@ -317,19 +336,37 @@ func flatten(f Parser.PForm, op Parser.PBinOp) Lib.List[Parser.PForm] {
 	return Lib.MkListV(f)
 }
 
-func elaborateParsingTerm(con Context, t Parser.PTerm) (Context, AST.Term, bool) {
-	return elaborateTerm(con, t, t)
+func elaborateParsingTerm(loc_ctx, con Context, t Parser.PTerm) (Context, AST.Term, bool) {
+	return elaborateTerm(loc_ctx, con, t, t)
+}
+
+func getFromLocalCtx(loc_ctx Context, name string) int {
+	i := -1
+	for j, v := range loc_ctx {
+		if name == v.Fst {
+			i = j
+		}
+	}
+
+	if i == -1 {
+		Glob.Fatal(
+			parsing_label,
+			fmt.Sprintf("Expected a closed formula but %s is a free variable", name),
+		)
+	}
+
+	return len(loc_ctx) - (i + 1)
 }
 
 // The argument [source_term] is here for error printing purposes.
-func elaborateTerm(con Context, t, source_term Parser.PTerm) (Context, AST.Term, bool) {
-	aux := func(con Context, t Parser.PTerm) (Context, AST.Term, bool) {
-		return elaborateTerm(con, t, source_term)
+func elaborateTerm(loc_ctx, con Context, t, source_term Parser.PTerm) (Context, AST.Term, bool) {
+	aux := func(loc_ctx, con Context, t Parser.PTerm) (Context, AST.Term, bool) {
+		return elaborateTerm(loc_ctx, con, t, source_term)
 	}
 
 	switch pterm := t.(type) {
 	case Parser.PVar:
-		return con, AST.MakeVar(pterm.Name()), false
+		return con, AST.MakeVar(getFromLocalCtx(loc_ctx, pterm.Name())), false
 
 	case Parser.PFun:
 		typed_arguments := pretype(con, pterm.Args())
@@ -338,7 +375,7 @@ func elaborateTerm(con Context, t, source_term Parser.PTerm) (Context, AST.Term,
 
 		args := Lib.MkList[AST.Term](term_args.Len())
 		for i, trm := range term_args.GetSlice() {
-			new_con, arg, b := aux(con, trm)
+			new_con, arg, b := aux(loc_ctx, con, trm)
 			con = new_con
 			is_typed = is_typed || b
 			args.Upd(i, arg)
@@ -348,7 +385,7 @@ func elaborateTerm(con Context, t, source_term Parser.PTerm) (Context, AST.Term,
 		if isDefined(pterm.Symbol()) {
 			tys := Lib.ListMap(Lib.MkListV(typed_arguments[typed_args.Len():]...),
 				func(p Lib.Pair[Parser.PTerm, Parser.PType]) Parser.PType { return p.Snd })
-			typed_args = elaborateDefinedFunctionals(con, pterm.Symbol(), tys, args)
+			typed_args = elaborateDefinedFunctionals(loc_ctx, con, pterm.Symbol(), tys, args)
 		} else {
 			is_typed = !typed_args.Empty()
 		}
@@ -358,7 +395,7 @@ func elaborateTerm(con Context, t, source_term Parser.PTerm) (Context, AST.Term,
 			Lib.ListMap(
 				typed_args,
 				func(pty Parser.PType) AST.Ty {
-					return elaborateType(pty, pty, false)
+					return elaborateType(loc_ctx, pty, pty)
 				}),
 			args,
 		)
@@ -369,7 +406,7 @@ func elaborateTerm(con Context, t, source_term Parser.PTerm) (Context, AST.Term,
 				return fmt.Sprintf("%s has defined type %s", pterm.Symbol(), oty.Val.ToString())
 			}))
 			con = append(con, Lib.MkPair(pterm.Symbol(), Parser.PType(oty.Val)))
-			ty := elaborateType(oty.Val, oty.Val, false)
+			ty := elaborateType(loc_ctx, oty.Val, oty.Val)
 			Typing.AddToGlobalEnv(pterm.Symbol(), ty)
 		}
 		return con, fun, is_typed || !typed_args.Empty()
@@ -385,22 +422,22 @@ func elaborateTerm(con Context, t, source_term Parser.PTerm) (Context, AST.Term,
 func elaborateParsingType(pty Lib.Pair[string, Parser.PType]) Core.TFFAtomTyping {
 	return Core.TFFAtomTyping{
 		Literal: AST.MakeId(pty.Fst),
-		Ty:      elaborateType(pty.Snd, pty.Snd, true),
+		Ty:      elaborateType(Context{}, pty.Snd, pty.Snd),
 	}
 }
 
 // The [source_type] argument is here for error printing.
-func elaborateType(pty, source_type Parser.PType, from_top_level bool) AST.Ty {
+func elaborateType(loc_ctx Context, pty, source_type Parser.PType) AST.Ty {
+	debug(Lib.MkLazy(func() string {
+		return fmt.Sprintf("Elaborating type: %s", pty.ToString())
+	}))
+
 	aux := func(pty Parser.PType) AST.Ty {
-		return elaborateType(pty, source_type, from_top_level)
+		return elaborateType(loc_ctx, pty, source_type)
 	}
 	switch ty := pty.(type) {
 	case Parser.PTypeVar:
-		if from_top_level {
-			return AST.MkTyVar(ty.Name())
-		} else {
-			return AST.MakerTyBV(ty.Name())
-		}
+		return AST.MkTyBV(getFromLocalCtx(loc_ctx, ty.Name()))
 	case Parser.PTypeFun:
 		args := Lib.MkListV(ty.Args()...)
 		actualArgs := Lib.ListMap(
@@ -436,8 +473,8 @@ func elaborateType(pty, source_type Parser.PType, from_top_level bool) AST.Ty {
 		fail_if_forbidden(ty.Left())
 		fail_if_forbidden(ty.Right())
 
-		new_left := elaborateType(ty.Left(), source_type, from_top_level)
-		new_right := elaborateType(ty.Right(), source_type, from_top_level)
+		new_left := elaborateType(loc_ctx, ty.Left(), source_type)
+		new_right := elaborateType(loc_ctx, ty.Right(), source_type)
 
 		switch ty.Operator() {
 		case Parser.PTypeProd:
@@ -445,21 +482,17 @@ func elaborateType(pty, source_type Parser.PType, from_top_level bool) AST.Ty {
 			right_list := flattenProd(new_right)
 			return AST.MkTyProd(Lib.MkListV(append(left_list, right_list...)...))
 		case Parser.PTypeMap:
-			return AST.MkTyFunc(
-				elaborateType(ty.Left(), source_type, from_top_level),
-				elaborateType(ty.Right(), source_type, from_top_level),
-			)
+			return AST.MkTyFunc(new_left, new_right)
 		}
 
 	case Parser.PTypeQuant:
 		switch ty.Quant() {
 		case Parser.PTypeAll:
-			var_names := Lib.MkList[string](len(ty.Vars()))
-			for i, v := range ty.Vars() {
-				var_names.Upd(i, v.Fst)
+			for _, v := range ty.Vars() {
+				loc_ctx = append(loc_ctx, Lib.MkPair[string, Parser.PType](v.Fst, Parser.MkTypeConst("$tType").(Parser.PType)))
 			}
 
-			underlying_type := elaborateType(ty.Ty(), source_type, from_top_level)
+			underlying_type := elaborateType(loc_ctx, ty.Ty(), source_type)
 
 			if Glob.Is[AST.TyPi](underlying_type) {
 				Glob.Anomaly(
@@ -468,7 +501,11 @@ func elaborateType(pty, source_type Parser.PType, from_top_level bool) AST.Ty {
 				)
 			}
 
-			return AST.MkTyPi(var_names, underlying_type)
+			res := underlying_type
+			for i := 0; i < len(ty.Vars()); i += 1 {
+				res = AST.MkTyPi(res)
+			}
+			return res
 		}
 	}
 
@@ -492,20 +529,29 @@ func flattenProd(ty AST.Ty) []AST.Ty {
 }
 
 func elaborateDefinedFunctionals(
-	con Context,
+	loc_ctx, con Context,
 	name string,
 	ty_arguments Lib.List[Parser.PType],
 	arguments Lib.List[AST.Term],
 ) Lib.List[Parser.PType] {
 	debug(Lib.MkLazy(func() string {
-		return fmt.Sprintf("Elaborating defined functional %s(%s)", name, Lib.ListToString(arguments, ", ", ""))
+		return fmt.Sprintf(
+			"Elaborating defined functional %s(%s)",
+			name,
+			Lib.ListToString(arguments, ", ", ""),
+		)
 	}))
 
 	// Invariant: call from isDefined, defined_length should be defined as well
 	if arguments.Len() != defined_length[name] {
 		Glob.Fatal(
 			elab_label,
-			fmt.Sprintf("%s expects %d arguments, got %d", name, defined_length[name], arguments.Len()),
+			fmt.Sprintf(
+				"%s expects %d arguments, got %d",
+				name,
+				defined_length[name],
+				arguments.Len(),
+			),
 		)
 	}
 
@@ -514,28 +560,31 @@ func elaborateDefinedFunctionals(
 	for i, arg := range arguments.GetSlice() {
 		var ty Lib.Option[Parser.PType]
 		ty_args := Lib.NewList[Parser.PTerm]()
+		name := ""
 		switch term := arg.(type) {
 		case AST.Fun:
+			name = term.GetName()
 			ty = lookupInContext(con, term.GetName())
 			for _, ty := range term.GetTyArgs().GetSlice() {
 				switch t := ty.(type) {
 				case AST.TyConstr:
 					ty_args.Append(Parser.MkFunConst(t.Symbol()))
 				case AST.TyBound:
-					ty_args.Append(Parser.MkVar(t.GetName()))
+					ty_args.Append(Parser.MkVar(loc_ctx[len(loc_ctx)-(t.Index()+1)].Fst))
 				default:
 					Glob.Anomaly(elab_label, "Found non-constant type parameter in defined type")
 				}
 			}
 		case AST.Var:
-			ty = lookupInContext(con, term.GetName())
+			name = loc_ctx[len(loc_ctx)-(term.Index()+1)].Fst
+			ty = Lib.MkSome(loc_ctx[len(loc_ctx)-(term.Index()+1)].Snd)
 		default:
 			Glob.Anomaly(elab_label, "Parsed argument is neither a function nor a variable")
 		}
 
 		switch rty := ty.(type) {
 		case Lib.Some[Parser.PType]:
-			tys.Append(instantiateType(rty.Val, arg.GetName(), ty_args.GetSlice()))
+			tys.Append(instantiateType(rty.Val, name, ty_args.GetSlice()))
 		case Lib.None[Parser.PType]:
 			// This is not a defined, let's use the inferred type
 			tys.Append(ty_arguments.At(i))

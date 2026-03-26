@@ -40,67 +40,51 @@ package Typing
 import (
 	"sync"
 
-	"fmt"
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-// We define an ordered type of pairs of (string, Ty) in order to use sets.
-type definedType struct {
-	name string
-	ty   AST.Ty
+// A context is a list of types, where the nth type is the type of the nth bound variable
+// (where n is the number of quantifiers to cross to find back the quantifier that binds
+// the variable --- à la De Bruijn)
+type Ctx struct {
+	Lib.List[AST.Ty]
 }
 
-func (dty definedType) Less(oth any) bool {
-	if other, ok := oth.(definedType); ok {
-		return dty.name < other.name
+func emptyCtx() Ctx {
+	return Ctx{Lib.NewList[AST.Ty]()}
+}
+
+func (ctx Ctx) Copy() Ctx {
+	return Ctx{ctx.Clone()}
+}
+
+func reindexTy(ty AST.Ty) AST.Ty {
+	switch ty := ty.(type) {
+	case AST.TyBound:
+		return ty.Increase()
+	case AST.TyConstr:
+		return AST.MkTyConstr(
+			ty.Symbol(),
+			Lib.ListMap(ty.Args(), reindexTy),
+		)
+	default:
+		return ty
 	}
-	return false
 }
 
-func (dty definedType) Equals(oth any) bool {
-	if other, ok := oth.(definedType); ok {
-		return dty.name == other.name && dty.ty.Equals(other.ty)
-	}
-	return false
+func (ctx Ctx) reindex() Ctx {
+	return Ctx{Lib.ListMap(ctx.List, reindexTy)}
 }
 
-// A context is a set of defined types
-type Con struct {
-	defs Lib.Set[definedType]
+func (ctx Ctx) add(ty AST.Ty) Ctx {
+	return Ctx{ctx.reindex().Cons(reindexTy(ty))}
 }
 
-func emptyCon() Con {
-	return Con{Lib.EmptySet[definedType]()}
+func (ctx Ctx) toString() string {
+	return Lib.ListToString(ctx.List, ", ", "{}")
 }
 
-func (con Con) Copy() Con {
-	return Con{con.defs.Copy()}
-}
-
-func (con Con) add(name string, ty AST.Ty) Con {
-	return Con{con.defs.Add(definedType{name, ty})}
-}
-
-func (con Con) contains(name string, ty AST.Ty) bool {
-	return con.defs.Contains(definedType{name, ty})
-}
-
-func (con Con) addTypedVars(typed_vars Lib.List[AST.TypedVar]) Con {
-	for _, tv := range typed_vars.GetSlice() {
-		con = con.add(tv.GetName(), tv.GetTy())
-	}
-	return con
-}
-
-func (con Con) toString() string {
-	to_string := func(def definedType) string {
-		return fmt.Sprintf("%s: %s", def.name, def.ty.ToString())
-	}
-	return con.defs.Elements().ToString(to_string, ", ", "{}")
-}
-
-// We could use [Con] to do environments, but as we need to query by name it's faster to use a map.
 type Env struct {
 	con map[string]AST.Ty
 	mut sync.Mutex
@@ -108,7 +92,7 @@ type Env struct {
 
 func (env *Env) toString() string {
 	env.mut.Lock()
-	result := "Environment:"
+	result := "Typing environment:"
 	for k, v := range env.con {
 		result += "\n- " + k + ": " + v.ToString()
 	}
@@ -153,7 +137,7 @@ func QueryEnvInstance(name string, instance Lib.List[AST.Ty]) Lib.Option[AST.Ty]
 			return Lib.OptBind(
 				unsafeQuery(name),
 				func(ty AST.Ty) Lib.Option[AST.Ty] {
-					return Lib.MkSome(AST.InstantiateTy(ty, instance))
+					return AST.InstantiateTy(ty, instance)
 				},
 			)
 		},

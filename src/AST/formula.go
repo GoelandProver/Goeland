@@ -37,6 +37,8 @@
 package AST
 
 import (
+	"fmt"
+
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
@@ -55,93 +57,52 @@ type Form interface {
 	Lib.Comparable
 	Lib.Ordered
 
-	ReplaceTermByTerm(old Term, new Term) (Form, bool)
-	SubstTy(old TyGenVar, new Ty) Form
-	SubstituteVarByMeta(old Var, new Meta) Form
-	ReplaceMetaByTerm(meta Meta, term Term) Form
+	SubstTy(old TyMeta, new Ty) Form
+	InstantiateTy(old TyBound, new Ty) Form
+	Instantiate(x Var, t Term) Form
+	Subst(x Meta, t Term) Form
+	ReplaceTerm(Term, Term) Form
+
+	toString(int) string
 }
 
-/* Replace a term by a term inside a function. */
-func replaceTermInTermList(
-	terms Lib.List[Term],
-	oldTerm Term,
-	newTerm Term,
-) (Lib.List[Term], bool) {
-	res := false
-	newTermList := Lib.MkList[Term](terms.Len())
-
-	for i, val := range terms.GetSlice() {
-		if oldTerm.Equals(val) {
-			newTermList.Upd(i, newTerm)
-			res = true
-		} else {
-			switch nf := val.(type) {
-			case Var, Meta:
-				newTermList.Upd(i, val)
-			case Fun:
-				termList, r := replaceTermInTermList(
-					nf.GetArgs(),
-					oldTerm,
-					newTerm,
-				)
-				newTermList.Upd(i, MakeFun(
-					nf.GetID(),
-					nf.GetTyArgs(),
-					termList,
-				))
-				res = res || r
-			default:
-				Glob.Anomaly("ReplaceTermInTermList", "Term is not a Var, a Fun, or a Meta")
-			}
-		}
+// Instantiates the _quantified_ formula [f] with the given term.
+// Throws an anomaly if [f] is _not_ quantified.
+func Instantiate(f Form, t Term) Form {
+	switch f := f.(type) {
+	case All:
+		return f.subForm.Instantiate(0, t)
+	case Ex:
+		return f.subForm.Instantiate(0, t)
 	}
 
-	return newTermList, res
+	Glob.Anomaly(
+		"formula.Instantiate",
+		fmt.Sprintf("Tried to instantiate the non-quantified formula %s", f.ToString()),
+	)
+	return nil
+}
+
+func FormToStringOffset(f Form) string {
+	return f.Instantiate(0, Meta{-1, 0, printer.StrBound(0), TIndividual()}).toString(1)
 }
 
 /* Utils */
 
-func metasUnion(forms Lib.List[Form]) Lib.Set[Meta] {
-	res := Lib.EmptySet[Meta]()
+func listUnion[T any, U Lib.Ordered](ls Lib.List[T], f func(T) Lib.Set[U]) Lib.Set[U] {
+	res := Lib.EmptySet[U]()
 
-	for _, form := range forms.GetSlice() {
-		res = res.Union(form.GetMetas())
+	for _, x := range ls.GetSlice() {
+		res = res.Union(f(x))
 	}
 
 	return res
 }
 
-// Returns whether the term has been replaced in a subformula or not
-func replaceTermInFormList(
-	oldForms Lib.List[Form],
-	oldTerm Term,
-	newTerm Term,
-) (Lib.List[Form], bool) {
-	newForms := Lib.MkList[Form](oldForms.Len())
-	res := false
-
-	for i, form := range oldForms.GetSlice() {
-		newForm, r := form.ReplaceTermByTerm(oldTerm, newTerm)
-		res = res || r
-		newForms.Upd(i, newForm)
-	}
-
-	return newForms, res
-}
-
-func replaceTyVarInFormList(oldForms Lib.List[Form], old TyGenVar, new Ty) Lib.List[Form] {
-	return Lib.ListMap(
-		oldForms,
-		func(f Form) Form { return f.SubstTy(old, new) },
-	)
-}
-
 // Comparisons
 
-func qLess(vars1, vars2 Lib.List[TypedVar], f1, f2 Form) bool {
-	return vars1.Len() < vars2.Len() ||
-		(vars1.Len() == vars2.Len() &&
-			f1.Less(f2))
+func qLess(ty1, ty2 Ty, f1, f2 Form) bool {
+	return ty1.Less(ty2) || (ty1.Equals(ty2) && f1.Less(f2))
 }
 
 func bLess(fs1, fs2 Lib.List[Form]) bool {

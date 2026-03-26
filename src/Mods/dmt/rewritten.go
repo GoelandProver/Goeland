@@ -47,7 +47,7 @@ import (
 func substitute(form AST.Form, subst Unif.Substitutions) AST.Form {
 	for _, s := range subst {
 		old_symbol, new_symbol := s.Get()
-		form = form.ReplaceMetaByTerm(old_symbol, new_symbol)
+		form = form.Subst(old_symbol, new_symbol)
 	}
 	return form
 }

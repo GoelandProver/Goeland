@@ -181,9 +181,9 @@ func (e Epsilon) Substitute(dummy_tm AST.Term, form AST.Form) AST.Form {
 		if !(e.ground.Contains(tm)) {
 			switch repl := Lib.AssqOpt(tm, e.tms).(type) {
 			case Lib.Some[AST.Term]:
-				form, _ = form.ReplaceTermByTerm(tm, repl.Val)
+				form = form.ReplaceTerm(tm, repl.Val)
 			case Lib.None[AST.Term]:
-				form, _ = form.ReplaceTermByTerm(tm, dummy_tm)
+				form = form.ReplaceTerm(tm, dummy_tm)
 			}
 		}
 	}

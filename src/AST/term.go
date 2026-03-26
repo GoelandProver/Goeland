@@ -44,19 +44,29 @@ import (
 /* Term */
 type Term interface {
 	Lib.Comparable
-	Lib.Stringable
+	Less(any) bool
+
 	Lib.Copyable[Term]
+
+	Lib.Stringable
+	toString(int) string
+
 	GetName() string
 	IsMeta() bool
 	IsFun() bool
 	ToMeta() Meta
+
 	GetMetas() Lib.Set[Meta]
 	GetMetaList() Lib.List[Meta] // Metas appearing in the term ORDERED
 	GetSubTerms() Lib.Set[Term]
 	GetSymbols() Lib.Set[Id]
-	ReplaceSubTermBy(original_term, new_term Term) Term
-	SubstTy(old TyGenVar, new Ty) Term
-	Less(any) bool
+
+	Instantiate(x Var, t Term) Term
+	Subst(x Meta, t Term) Term
+	InstantiateTy(old TyBound, new Ty) Term
+	SubstTy(old TyMeta, new Ty) Term
+
+	ReplaceTerm(Term, Term) Term
 }
 
 /*** Functions **/

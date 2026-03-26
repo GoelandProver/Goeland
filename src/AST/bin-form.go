@@ -31,60 +31,70 @@
 **/
 
 /**
-* This file implements an interface for bound variables.
-**/
+ * This file implements binary formulas (imp, equ)
+ **/
 
 package AST
 
 import (
+	"fmt"
+
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-type TypedVar struct {
-	name string
-	ty   Ty
+type bin_form struct {
+	left  Form
+	right Form
 }
 
-func (v TypedVar) Copy() TypedVar {
-	return TypedVar{v.name, v.ty.Copy()}
+func makeBinForm(left, right Form) bin_form {
+	return bin_form{left, right}
 }
 
-func (v TypedVar) Equals(oth any) bool {
-	if ov, ok := oth.(TypedVar); ok {
-		return v.name == ov.name && v.ty.Equals(ov.ty)
-	}
-	return false
+func (b bin_form) GetF1() Form {
+	return b.left
 }
 
-func (v TypedVar) ToString() string {
-	return printer.StrTyVar(Lib.MkPair(v.name, v.ty))
+func (b bin_form) GetF2() Form {
+	return b.right
 }
 
-func (v TypedVar) GetName() string {
-	return v.name
+func (b bin_form) copy() bin_form {
+	return makeBinForm(b.left.Copy(), b.right.Copy())
 }
 
-func (v TypedVar) GetTy() Ty {
-	return v.ty
+func (b bin_form) GetChildFormulas() Lib.List[Form] {
+	return Lib.MkListV(b.left, b.right)
 }
 
-func (v TypedVar) ToBoundVar() Var {
-	return MakeVar(v.name)
+func (b bin_form) GetMetas() Lib.Set[Meta] {
+	return listUnion(b.GetChildFormulas(), Form.GetMetas)
 }
 
-func (v TypedVar) ToTyBoundVar() TyBound {
-	return MkTyBV(v.name).(TyBound)
+func (b bin_form) toString(n int, conn Connective) string {
+	return printer.Str(fmt.Sprintf("%s %s %s",
+		printer.Str(printer.SurroundChild(b.left.toString(n))),
+		printer.StrConn(conn),
+		printer.Str(printer.SurroundChild(b.right.toString(n))),
+	))
 }
 
-func (v TypedVar) SubstTy(old TyGenVar, new Ty) TypedVar {
-	return TypedVar{v.name, v.ty.SubstTy(old, new)}
+func (b bin_form) equals(oth bin_form) bool {
+	return b.left.Equals(oth.left) && b.right.Equals(oth.right)
 }
 
-func MkTypedVar(name string, ty Ty) TypedVar {
-	return TypedVar{name, ty}
+func (b bin_form) applyOnArgs(f func(Form) Form) bin_form {
+	return makeBinForm(f(b.left), f(b.right))
 }
 
-// Deprecated: use MkTypedVar instead
-func MakerTypedVar(name string, ty Ty) TypedVar {
-	return MkTypedVar(name, ty)
+func (b bin_form) GetSubTerms() Lib.Set[Term] {
+	return listUnion(b.GetChildFormulas(), Form.GetSubTerms)
+}
+
+func (b bin_form) GetSymbols() Lib.Set[Id] {
+	return listUnion(b.GetChildFormulas(), Form.GetSymbols)
+}
+
+func (b bin_form) less(oth bin_form) bool {
+	return b.left.Less(oth.left) || (b.left.Equals(oth.left) && b.right.Less(oth.right))
 }

@@ -98,8 +98,7 @@ func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 			return realSkolemize(
 				form,
 				f.GetForm(),
-				f.GetVarList().At(0),
-				f.GetVarList(),
+				f.Ty(),
 				branchMetas,
 				isNegAll,
 			)
@@ -110,8 +109,7 @@ func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 		return realSkolemize(
 			form,
 			nf.GetForm(),
-			nf.GetVarList().At(0),
-			nf.GetVarList(),
+			nf.Ty(),
 			branchMetas,
 			isExists,
 		)
@@ -124,40 +122,29 @@ func Skolemize(form AST.Form, branchMetas Lib.Set[AST.Meta]) AST.Form {
 
 func realSkolemize(
 	initialForm, deltaForm AST.Form,
-	x AST.TypedVar,
-	allVars Lib.List[AST.TypedVar],
+	ty AST.Ty,
 	metas Lib.Set[AST.Meta],
 	typ int,
 ) AST.Form {
 	var res AST.Form
 
-	if AST.IsTType(x.GetTy()) {
+	if AST.IsTType(ty) {
 		ty_mutex.Lock()
 		id := AST.MakeId(fmt.Sprintf("skoTy@%d", ty_index))
 		ty_index++
 		ty_mutex.Unlock()
-		res = deltaForm.SubstTy(x.ToTyBoundVar(), AST.MkTyConst(id.ToString()))
+		res = deltaForm.InstantiateTy(0, AST.MkTyConst(id.ToString()))
 	} else {
 		selectedSkolemization, res = selectedSkolemization.Skolemize(
 			initialForm,
 			deltaForm,
-			x,
 			metas,
 		)
 	}
 
-	switch typ {
-	case isNegAll:
-		if allVars.Len() > 1 {
-			res = AST.MakeAll(allVars.Slice(1, allVars.Len()), res)
-		}
+	if typ == isNegAll {
 		res = AST.MakeNot(res)
-	case isExists:
-		if allVars.Len() > 1 {
-			res = AST.MakeEx(allVars.Slice(1, allVars.Len()), res)
-		}
-	default:
-		Glob.Anomaly("Skolemization", "impossible reconstruction case")
 	}
+
 	return res
 }

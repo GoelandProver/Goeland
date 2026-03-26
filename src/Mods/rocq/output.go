@@ -121,11 +121,10 @@ func RocqPrinterAction() AST.PrinterAction {
 	rocq_action := AST.MkPrinterAction(
 		AST.PrinterIdentity,
 		func(i AST.Id) string { return i.GetName() },
-		AST.PrinterIdentity,
-		func(metaName string, metaIndex int) string { return fmt.Sprintf("%s_%d", metaName, metaIndex) },
+		func(metaName string, metaIndex int) string { return metaName },
 		sanitize_type,
-		func(typed_var Lib.Pair[string, AST.Ty]) string {
-			return fmt.Sprintf("(%s : %s)", typed_var.Fst, sanitize_type(typed_var.Snd.ToString()))
+		func(typed_var Lib.Pair[string, string]) string {
+			return fmt.Sprintf("(%s : %s)", typed_var.Fst, sanitize_type(typed_var.Snd))
 		},
 		connectives.DefaultOnFunctionalArgs,
 	)

@@ -38,11 +38,19 @@ package Engine
 
 import (
 	"fmt"
+
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Parser"
 )
 
 type Context []Lib.Pair[string, Parser.PType]
+
+func ctxToString(ctx Context) string {
+	out := Lib.MkListV(ctx...)
+	return out.ToString(func(p Lib.Pair[string, Parser.PType]) string {
+		return p.ToString(func(s string) string { return s }, Parser.PType.ToString, " , ")
+	}, " ; ", "")
+}
 
 var defined Lib.Set[Lib.String]
 var defined_length map[string]int
@@ -78,7 +86,9 @@ func initialContext() Context {
 	tNumber := Parser.MkPTypeVar("number")
 	binPoly := func(out Parser.PType) Parser.PType {
 		return Parser.MkTypeAll(
-			[]Lib.Pair[string, Parser.PAtomicType]{Lib.MkPair("number", tType.(Parser.PAtomicType))},
+			[]Lib.Pair[string, Parser.PAtomicType]{
+				Lib.MkPair("number", tType.(Parser.PAtomicType)),
+			},
 			Parser.MkTypeMap(
 				Parser.MkTypeProd(tNumber, tNumber),
 				out,
@@ -87,7 +97,9 @@ func initialContext() Context {
 	}
 	unPoly := func(out Parser.PType) Parser.PType {
 		return Parser.MkTypeAll(
-			[]Lib.Pair[string, Parser.PAtomicType]{Lib.MkPair("number", tType.(Parser.PAtomicType))},
+			[]Lib.Pair[string, Parser.PAtomicType]{
+				Lib.MkPair("number", tType.(Parser.PAtomicType)),
+			},
 			Parser.MkTypeMap(tNumber, out),
 		)
 	}

@@ -59,7 +59,10 @@ var strToPrintMap map[string]string = map[string]string{
 	"EXISTS": "∃",
 }
 
-func ApplyClosureRules(form AST.Form, state *State) (bool, Lib.List[Lib.List[Unif.MixedSubstitution]]) {
+func ApplyClosureRules(
+	form AST.Form,
+	state *State,
+) (bool, Lib.List[Lib.List[Unif.MixedSubstitution]]) {
 	result := false
 	substitutions := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
 	debug(Lib.MkLazy(func() string { return "Start ACR" }))
@@ -175,15 +178,21 @@ func searchInequalities(form AST.Form) (bool, Unif.Substitutions) {
 				arg_2 := predNeq.GetArgs().At(1)
 
 				debug(
-					Lib.MkLazy(func() string { return fmt.Sprintf("Arg 1 : %v", arg_1.ToString()) }),
+					Lib.MkLazy(
+						func() string { return fmt.Sprintf("Arg 1 : %v", arg_1.ToString()) },
+					),
 				)
 				debug(
-					Lib.MkLazy(func() string { return fmt.Sprintf("Arg 2 : %v", arg_2.ToString()) }),
+					Lib.MkLazy(
+						func() string { return fmt.Sprintf("Arg 2 : %v", arg_2.ToString()) },
+					),
 				)
 
 				subst = Unif.AddUnification(arg_1, arg_2, subst)
 				debug(
-					Lib.MkLazy(func() string { return fmt.Sprintf("Subst : %v", subst.ToString()) }),
+					Lib.MkLazy(
+						func() string { return fmt.Sprintf("Subst : %v", subst.ToString()) },
+					),
 				)
 
 				if !subst.Equals(Unif.Failure()) {
@@ -309,7 +318,9 @@ func applyAlphaNotImpRule(
 	setStateRules(state, "ALPHA", "NOT", "IMPLY")
 
 	result = result.AppendIfNotContains(Core.MakeFormAndTerm(formWithoutNot.GetF1(), terms))
-	result = result.AppendIfNotContains(Core.MakeFormAndTerm(AST.MakeNot(formWithoutNot.GetF2()), terms))
+	result = result.AppendIfNotContains(
+		Core.MakeFormAndTerm(AST.MakeNot(formWithoutNot.GetF2()), terms),
+	)
 
 	return result
 }
@@ -437,8 +448,16 @@ func applyBetaImpRule(
 ) []Core.FormAndTermsList {
 	setStateRules(state, "BETA", "IMPLY")
 
-	result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(AST.MakeNot(formTyped.GetF1()), terms)))
-	result = append(result, Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(formTyped.GetF2(), terms)))
+	result = append(
+		result,
+		Core.MakeSingleElementFormAndTermList(
+			Core.MakeFormAndTerm(AST.MakeNot(formTyped.GetF1()), terms),
+		),
+	)
+	result = append(
+		result,
+		Core.MakeSingleElementFormAndTermList(Core.MakeFormAndTerm(formTyped.GetF2(), terms)),
+	)
 
 	return result
 }
@@ -498,7 +517,11 @@ func ApplyDeltaRules(fnt Core.FormAndTerms, state *State) Core.FormAndTermsList 
 *	a formula
 *	the new metavariables
 **/
-func ApplyGammaRules(fnt Core.FormAndTerms, index int, state *State) (Core.FormAndTermsList, Lib.Set[AST.Meta]) {
+func ApplyGammaRules(
+	fnt Core.FormAndTerms,
+	index int,
+	state *State,
+) (Core.FormAndTermsList, Lib.Set[AST.Meta]) {
 	switch fnt.GetForm().(type) {
 	case AST.Not:
 		setStateRules(state, "GAMMA", "NOT", "EXISTS")

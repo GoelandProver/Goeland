@@ -59,7 +59,6 @@ func MkOuterSkolemization() OuterSkolemization {
 
 func (sko OuterSkolemization) Skolemize(
 	_, form AST.Form,
-	x AST.TypedVar,
 	fvs Lib.Set[AST.Meta],
 ) (Skolemization, AST.Form) {
 	sko.mu.Lock()
@@ -74,10 +73,7 @@ func (sko OuterSkolemization) Skolemize(
 		Lib.ListMap(metas, Glob.To[AST.Term]),
 	)
 
-	skolemizedForm, _ := form.ReplaceTermByTerm(
-		x.ToBoundVar(),
-		Glob.To[AST.Term](skolemFunc),
-	)
+	skolemizedForm := form.Instantiate(0, skolemFunc)
 
 	return sko, skolemizedForm
 }

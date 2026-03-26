@@ -45,7 +45,6 @@ import (
 )
 
 /* Datas */
-var occurenceMeta map[string]int = make(map[string]int)
 var lock_term sync.Mutex
 var meta_id int
 
@@ -76,41 +75,51 @@ func Reset() {
 /* Reset the metavariable table (useful when the IDDFS stop and restart) */
 func ResetMeta() {
 	meta_id = 0
-	occurenceMeta = map[string]int{}
 }
 
 // Formulas makers
 
-func MakeAll(vars Lib.List[TypedVar], forms Form) All {
-	return MakeAllSimple(vars, forms, Lib.EmptySet[Meta]())
+func MakeAll(ty Ty, forms Form) All {
+	return All{makeQuantifier(ty, forms, ConnAll)}
 }
 
-func MakeEx(vars Lib.List[TypedVar], forms Form) Ex {
-	return MakeExSimple(vars, forms, Lib.EmptySet[Meta]())
+func MakeEx(ty Ty, forms Form) Ex {
+	return Ex{makeQuantifier(ty, forms, ConnEx)}
 }
 
 func MakeOr(forms Lib.List[Form]) Or {
-	return MakeOrSimple(forms, Lib.EmptySet[Meta]())
+	return Or{makeNAriForm(forms)}
 }
 
 func MakeAnd(forms Lib.List[Form], binary ...bool) And {
 	if binary != nil {
-		return MakeAndSimpleBinary(forms, Lib.EmptySet[Meta]())
+		return MakeBinaryAnd(forms, Lib.EmptySet[Meta]())
 	} else {
-		return MakeAndSimple(forms, Lib.EmptySet[Meta]())
+		return And{makeNAriForm(forms)}
+	}
+}
+
+func MakeBinaryAnd(forms Lib.List[Form], metas Lib.Set[Meta]) And {
+	switch forms.Len() {
+	case 0, 1, 2:
+		return MakeAnd(forms)
+	default:
+		return MakeAnd(
+			Lib.MkListV[Form](forms.At(0), MakeAnd(forms.Slice(1, forms.Len()), true)),
+		)
 	}
 }
 
 func MakeEqu(firstForm, secondForm Form) Equ {
-	return MakeEquSimple(firstForm, secondForm, Lib.EmptySet[Meta]())
+	return Equ{makeBinForm(firstForm, secondForm)}
 }
 
 func MakeImp(firstForm, secondForm Form) Imp {
-	return MakeImpSimple(firstForm, secondForm, Lib.EmptySet[Meta]())
+	return Imp{makeBinForm(firstForm, secondForm)}
 }
 
 func MakeNot(form Form) Not {
-	return MakeNotSimple(form, Lib.EmptySet[Meta]())
+	return Not{form}
 }
 
 func MakePred(
@@ -118,12 +127,11 @@ func MakePred(
 	tys Lib.List[Ty],
 	terms Lib.List[Term],
 ) Pred {
-	return MakePredSimple(
+	return Pred{
 		id,
 		tys,
 		terms,
-		Lib.EmptySet[Meta](),
-	)
+	}
 }
 
 func MakeTop() Top {
@@ -137,42 +145,27 @@ func MakeBot() Bot {
 // Terms makers
 
 func MakeId(s string) Id {
-	return Id{s}
+	return Id(s)
 }
 
 func MakeQuotedId(s string) Id {
-	return Id{"" + s + "'"}
+	return Id("'" + s + "'")
 }
 
-func MakeVar(s string) Var {
-	return Var{s}
+func MakeVar(i int) Var {
+	return Var(i)
 }
 
-func MakeMeta(s string, f int, ty Ty) Meta {
+func MakeMeta(formula int, ty Ty) Meta {
 	lock_term.Lock()
 	new_id := meta_id
 	meta_id++
-	i, ok := occurenceMeta[s]
 	lock_term.Unlock()
-	if ok {
-		lock_term.Lock()
-		occurenceMeta[s] = i + 1
-		lock_term.Unlock()
-		return Meta{new_id, i, fmt.Sprintf("%s%d", s, new_id), f, ty}
-	} else {
-		lock_term.Lock()
-		occurenceMeta[s] = 1
-		lock_term.Unlock()
-		return Meta{new_id, 0, fmt.Sprintf("%s%d", s, new_id), f, ty}
-	}
-}
-
-func MakeFunSimple(p Id, ty_args Lib.List[Ty], args Lib.List[Term], metas Lib.Set[Meta]) Fun {
-	return Fun{p, ty_args, args, Lib.MkCache(metas, Fun.forceGetMetas)}
+	return Meta{formula, new_id, fmt.Sprintf("M%d", new_id), ty}
 }
 
 func MakeFun(p Id, ty_args Lib.List[Ty], args Lib.List[Term]) Fun {
-	return MakeFunSimple(p, ty_args, args, Lib.EmptySet[Meta]())
+	return Fun{p, ty_args, args}
 }
 
 /* Const maker (given a id, create a fun without args) */

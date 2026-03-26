@@ -39,20 +39,20 @@ package AST
 import (
 	"strings"
 
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
 // -----------------------------------------------------------------------------
 // Predicates / functions symbols
 
-type Id struct {
-	name string
-}
+type Id string
 
-func (i Id) GetName() string           { return i.name }
+func (i Id) GetName() string           { return string(i) }
+func (i Id) toString(int) string       { return i.GetName() }
 func (i Id) IsMeta() bool              { return false }
 func (i Id) IsFun() bool               { return false }
-func (i Id) Copy() Term                { return MakeId(i.GetName()) }
+func (i Id) Copy() Term                { return Id(strings.Clone(string(i))) }
 func (Id) ToMeta() Meta                { return MakeEmptyMeta() }
 func (Id) GetMetas() Lib.Set[Meta]     { return Lib.EmptySet[Meta]() }
 func (Id) GetMetaList() Lib.List[Meta] { return Lib.NewList[Meta]() }
@@ -60,19 +60,16 @@ func (i Id) ToString() string          { return printer.StrId(i) }
 
 func (i Id) Equals(t any) bool {
 	if typed, ok := t.(Id); ok {
-		return typed.name == i.name
+		return typed == i
 	}
 	return false
 }
 
-func (i Id) ReplaceSubTermBy(original_term, new_term Term) Term {
-	if i.Equals(original_term) {
-		return new_term.Copy()
-	}
-	return i
-}
+func (i Id) Instantiate(Var, Term) Term { return i }
+func (i Id) Subst(Meta, Term) Term      { return i }
 
-func (i Id) SubstTy(TyGenVar, Ty) Term { return i }
+func (i Id) InstantiateTy(TyBound, Ty) Term { return i }
+func (i Id) SubstTy(TyMeta, Ty) Term        { return i }
 
 func (i Id) GetSubTerms() Lib.Set[Term] {
 	return Lib.Singleton[Term](i)
@@ -82,15 +79,22 @@ func (i Id) GetSymbols() Lib.Set[Id] {
 	return Lib.Singleton(i)
 }
 
+func (i Id) ReplaceTerm(t, u Term) Term {
+	if i.Equals(t) {
+		return u
+	}
+	return i
+}
+
 func (i Id) CompareWith(other Id) int {
-	return strings.Compare(i.name, other.name)
+	return strings.Compare(string(i), string(other))
 }
 
 func (i Id) Less(u any) bool {
 	if t, is_term := u.(Term); is_term {
 		switch trm := t.(type) {
 		case Id:
-			return i.name < trm.name
+			return i < trm
 		default:
 			return false
 		}
@@ -102,18 +106,21 @@ func (i Id) Less(u any) bool {
 // n-ary functions
 
 type Fun struct {
-	p     Id
-	tys   Lib.List[Ty]
-	args  Lib.List[Term]
-	metas Lib.Cache[Lib.Set[Meta], Fun]
+	p    Id
+	tys  Lib.List[Ty]
+	args Lib.List[Term]
+}
+
+func (f Fun) toString(i int) string {
+	return printer.StrFunctional(
+		f.p,
+		Lib.ListMap(f.tys, func(t Ty) string { return t.toString(i) }),
+		Lib.ListMap(f.args, func(t Term) string { return t.toString(i) }),
+	)
 }
 
 func (f Fun) ToString() string {
-	return printer.StrFunctional(
-		f.p,
-		Lib.ListMap(f.tys, Ty.ToString),
-		Lib.ListMap(f.args, Term.ToString),
-	)
+	return f.toString(0)
 }
 
 func (f Fun) GetID() Id               { return f.p.Copy().(Id) }
@@ -144,26 +151,20 @@ func (f Fun) Equals(t any) bool {
 }
 
 func (f Fun) Copy() Term {
-	return MakeFunSimple(f.GetP(), Lib.ListCpy(f.GetTyArgs()), Lib.ListCpy(f.GetArgs()), f.metas.Raw())
+	return MakeFun(
+		f.GetP(),
+		Lib.ListCpy(f.GetTyArgs()),
+		Lib.ListCpy(f.GetArgs()),
+	)
 }
 
 func (f Fun) PointerCopy() *Fun {
-	nf := MakeFunSimple(f.GetP(), f.GetTyArgs(), f.GetArgs(), f.metas.Raw())
+	nf := MakeFun(f.GetP(), f.GetTyArgs(), f.GetArgs())
 	return &nf
 }
 
-func (f Fun) forceGetMetas() Lib.Set[Meta] {
-	metas := Lib.EmptySet[Meta]()
-
-	for _, arg := range f.GetArgs().GetSlice() {
-		metas = metas.Union(arg.GetMetas())
-	}
-
-	return metas
-}
-
 func (f Fun) GetMetas() Lib.Set[Meta] {
-	return f.metas.Get(f)
+	return listUnion(f.args, Term.GetMetas)
 }
 
 func (f Fun) GetMetaList() Lib.List[Meta] {
@@ -181,20 +182,36 @@ func (f Fun) GetMetaList() Lib.List[Meta] {
 	return metas
 }
 
-func (f Fun) ReplaceSubTermBy(oldTerm, newTerm Term) Term {
-	if f.Equals(oldTerm) {
-		return newTerm.Copy()
-	} else {
-		tl, res := replaceFirstOccurrenceTermList(f.GetArgs(), oldTerm, newTerm)
-		nf := MakeFunSimple(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
-		if !res && !f.metas.NeedsUpd() {
-			nf.metas.AvoidUpd()
-		}
-		return nf
-	}
+func (f Fun) applyOnArgs(g func(Term) Term) Fun {
+	return MakeFun(
+		f.p,
+		f.tys,
+		Lib.ListMap(f.args, g),
+	)
 }
 
-func (f Fun) SubstTy(old TyGenVar, new Ty) Term {
+func (f Fun) applyOnTyArgs(g func(Ty) Ty) Fun {
+	return MakeFun(
+		f.p,
+		Lib.ListMap(f.tys, g),
+		f.args,
+	)
+}
+
+func (f Fun) Subst(x Meta, t Term) Term {
+	return f.applyOnArgs(func(u Term) Term { return u.Subst(x, t) })
+}
+
+func (f Fun) Instantiate(x Var, t Term) Term {
+	return f.applyOnArgs(func(u Term) Term { return u.Instantiate(x, t) })
+}
+
+func (f Fun) InstantiateTy(old TyBound, new Ty) Term {
+	return f.applyOnArgs(func(u Term) Term { return u.InstantiateTy(old, new) }).
+		applyOnTyArgs(func(t Ty) Ty { return t.Instantiate(old, new) })
+}
+
+func (f Fun) SubstTy(old TyMeta, new Ty) Term {
 	typed_args := Lib.ListMap(
 		f.tys,
 		func(t Ty) Ty { return t.SubstTy(old, new) },
@@ -203,45 +220,26 @@ func (f Fun) SubstTy(old TyGenVar, new Ty) Term {
 		f.args,
 		func(t Term) Term { return t.SubstTy(old, new) },
 	)
-	return MakeFunSimple(
+	return MakeFun(
 		f.GetID(),
 		typed_args,
 		args,
-		f.metas.Raw(),
 	)
 }
 
-func (f Fun) ReplaceAllSubTerm(oldTerm, newTerm Term) Term {
-	if f.Equals(oldTerm) {
-		return newTerm.Copy()
-	} else {
-		tl, res := ReplaceOccurrence(f.GetArgs(), oldTerm, newTerm)
-		nf := MakeFunSimple(f.GetID(), f.GetTyArgs(), tl, f.metas.Raw())
-		if !res && !f.metas.NeedsUpd() {
-			nf.metas.AvoidUpd()
-		}
-		return nf
+func (f Fun) ReplaceTerm(t, u Term) Term {
+	if f.Equals(t) {
+		return u
 	}
+	return f.applyOnArgs(func(v Term) Term { return v.ReplaceTerm(t, u) })
 }
 
 func (f Fun) GetSubTerms() Lib.Set[Term] {
-	res := Lib.Singleton(Term(f))
-
-	for _, arg := range f.GetArgs().GetSlice() {
-		res = res.Union(arg.GetSubTerms())
-	}
-
-	return res
+	return listUnion(f.args, Term.GetSubTerms).Add(Term(f))
 }
 
 func (f Fun) GetSymbols() Lib.Set[Id] {
-	res := Lib.Singleton(f.GetID())
-
-	for _, arg := range f.GetArgs().GetSlice() {
-		res = res.Union(arg.GetSymbols())
-	}
-
-	return res
+	return listUnion(f.args, Term.GetSymbols).Add(f.p)
 }
 
 func (f Fun) Less(u any) bool {
@@ -262,22 +260,29 @@ func (f Fun) Less(u any) bool {
 // -----------------------------------------------------------------------------
 // Bound variables
 
-type Var struct {
-	name string
+type Var int
+
+func (v Var) increase() Var         { return Var(int(v) + 1) }
+func (v Var) toString(n int) string { return printer.StrBound(n - int(v) - 1) }
+func (v Var) ToString() string      { return v.toString(0) }
+
+func (v Var) Index() int { return int(v) }
+
+func (v Var) GetName() string {
+	Glob.Anomaly("term.GetName()", "A bound variable is nameless")
+	return ""
 }
 
-func (v Var) ToString() string          { return printer.StrBound(v.name) }
-func (v Var) GetName() string           { return v.name }
 func (v Var) IsMeta() bool              { return false }
 func (v Var) IsFun() bool               { return false }
-func (v Var) Copy() Term                { return MakeVar(v.GetName()) }
+func (v Var) Copy() Term                { return v }
 func (Var) ToMeta() Meta                { return MakeEmptyMeta() }
 func (Var) GetMetas() Lib.Set[Meta]     { return Lib.EmptySet[Meta]() }
 func (Var) GetMetaList() Lib.List[Meta] { return Lib.NewList[Meta]() }
 
 func (v Var) Equals(t any) bool {
 	if typed, ok := t.(Var); ok {
-		return v.name == typed.name
+		return v == typed
 	}
 	return false
 }
@@ -290,14 +295,24 @@ func (v Var) GetSymbols() Lib.Set[Id] {
 	return Lib.EmptySet[Id]()
 }
 
-func (v Var) ReplaceSubTermBy(original_term, new_term Term) Term {
-	if v.Equals(original_term) {
-		return new_term.Copy()
+func (v Var) Instantiate(x Var, t Term) Term {
+	if v.Equals(x) {
+		return t
 	}
 	return v
 }
 
-func (v Var) SubstTy(TyGenVar, Ty) Term { return v }
+func (v Var) Subst(Meta, Term) Term { return v }
+
+func (v Var) InstantiateTy(TyBound, Ty) Term { return v }
+func (v Var) SubstTy(TyMeta, Ty) Term        { return v }
+
+func (v Var) ReplaceTerm(t, u Term) Term {
+	if v.Equals(t) {
+		return u
+	}
+	return v
+}
 
 func (v Var) Less(u any) bool {
 	if t, is_term := u.(Term); is_term {
@@ -305,7 +320,7 @@ func (v Var) Less(u any) bool {
 		case Id, Fun:
 			return true
 		case Var:
-			return v.name < trm.name
+			return v < trm
 		default:
 			return false
 		}
@@ -317,18 +332,17 @@ func (v Var) Less(u any) bool {
 // Meta/Free variables
 
 type Meta struct {
-	index     int
-	occurence int
-	name      string
-	formula   int
-	ty        Ty
+	formula int
+	index   int
+	name    string
+	ty      Ty
 }
 
-func (m Meta) ToString() string { return printer.StrMeta(m.name, m.index) }
-func (m Meta) GetFormula() int  { return m.formula }
+func (m Meta) GetFormula() int     { return m.formula }
+func (m Meta) toString(int) string { return printer.StrMeta(m.name, m.index) }
+func (m Meta) ToString() string    { return m.toString(0) }
 
 func (m Meta) GetName() string             { return m.name }
-func (m Meta) GetOccurence() int           { return m.occurence }
 func (m Meta) GetIndex() int               { return m.index }
 func (m Meta) IsMeta() bool                { return true }
 func (m Meta) IsFun() bool                 { return false }
@@ -340,7 +354,6 @@ func (m Meta) GetTy() Ty                   { return m.ty }
 func (m Meta) Equals(t any) bool {
 	if typed, ok := t.(Meta); ok {
 		return m.index == typed.index &&
-			m.occurence == typed.occurence &&
 			m.name == typed.name &&
 			m.formula == typed.formula
 	}
@@ -348,17 +361,20 @@ func (m Meta) Equals(t any) bool {
 }
 
 func (m Meta) Copy() Term {
-	return Meta{m.index, m.GetOccurence(), m.GetName(), m.GetFormula(), m.GetTy()}
+	return Meta{m.formula, m.index, m.GetName(), m.GetTy()}
 }
 
-func (m Meta) ReplaceSubTermBy(original_term, new_term Term) Term {
-	if m.Equals(original_term) {
-		return new_term.Copy()
+func (m Meta) Subst(x Meta, t Term) Term {
+	if m.Equals(x) {
+		return t
 	}
 	return m
 }
 
-func (m Meta) SubstTy(TyGenVar, Ty) Term { return m }
+func (m Meta) Instantiate(Var, Term) Term { return m }
+
+func (m Meta) InstantiateTy(TyBound, Ty) Term { return m }
+func (m Meta) SubstTy(TyMeta, Ty) Term        { return m }
 
 func (m Meta) GetSubTerms() Lib.Set[Term] {
 	return Lib.Singleton[Term](m)
@@ -368,15 +384,22 @@ func (m Meta) GetSymbols() Lib.Set[Id] {
 	return Lib.EmptySet[Id]()
 }
 
+func (m Meta) ReplaceTerm(t, u Term) Term {
+	if m.Equals(t) {
+		return u
+	}
+	return m
+}
+
 func (m Meta) Less(u any) bool {
 	if t, is_term := u.(Term); is_term {
 		switch trm := t.(type) {
 		case Id, Fun, Var:
 			return true
 		case Meta:
-			return m.occurence < trm.occurence ||
-				(m.occurence == trm.occurence && m.name < trm.name) ||
-				(m.occurence == trm.occurence && m.name == trm.name && m.formula < trm.formula)
+			return m.name < trm.name ||
+				(m.name == trm.name && m.index < trm.index) ||
+				(m.name == trm.name && m.index == trm.index && m.formula < trm.formula)
 		default:
 			return false
 		}
@@ -385,7 +408,7 @@ func (m Meta) Less(u any) bool {
 }
 
 func MakeEmptyMeta() Meta {
-	return Meta{-1, -1, "-1", -1, TIndividual()}
+	return Meta{-1, -1, "M-1", TIndividual()}
 }
 
 func MetaEquals(x, y Meta) bool {

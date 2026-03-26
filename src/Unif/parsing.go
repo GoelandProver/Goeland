@@ -39,7 +39,7 @@ import (
 )
 
 func transformPred(p AST.Pred) AST.Term {
-	return transformTerm(AST.MakerFun(p.GetID(), p.GetTyArgs(), p.GetArgs()))
+	return transformTerm(AST.MakeFun(p.GetID(), p.GetTyArgs(), p.GetArgs()))
 }
 
 func transformTerm(t AST.Term) AST.Term {
@@ -49,7 +49,7 @@ func transformTerm(t AST.Term) AST.Term {
 	case AST.Fun:
 		args := Lib.ListMap(term.GetTyArgs(), AST.TyToTerm)
 		args.Append(Lib.ListMap(term.GetArgs(), transformTerm).GetSlice()...)
-		return AST.MakerFun(
+		return AST.MakeFun(
 			term.GetID(),
 			Lib.NewList[AST.Ty](),
 			args,

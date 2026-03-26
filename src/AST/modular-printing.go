@@ -66,10 +66,9 @@ var printer_debug Glob.Debugger
 type PrinterAction struct {
 	genericAction      func(string) string // Always executed
 	actionOnId         func(Id) string
-	actionOnBoundVar   func(string) string
 	actionOnMeta       func(string, int) string
 	actionOnType       func(string) string
-	actionOnTypedVar   func(Lib.Pair[string, Ty]) string
+	actionOnTypedVar   func(Lib.Pair[string, string]) string
 	actionOnFunctional func(id Id, tys Lib.List[string], args Lib.List[string]) string
 }
 
@@ -77,16 +76,13 @@ func (p PrinterAction) Compose(oth PrinterAction) PrinterAction {
 	return PrinterAction{
 		genericAction: func(s string) string { return oth.genericAction(p.genericAction(s)) },
 		actionOnId:    func(i Id) string { return oth.actionOnId(MakeId(p.actionOnId(i))) },
-		actionOnBoundVar: func(name string) string {
-			return oth.actionOnBoundVar(p.actionOnBoundVar(name))
-		},
 		actionOnMeta: func(name string, index int) string {
 			return oth.actionOnMeta(p.actionOnMeta(name, index), index)
 		},
 		actionOnType: func(name string) string {
 			return oth.actionOnType(p.actionOnType(name))
 		},
-		actionOnTypedVar: func(pair Lib.Pair[string, Ty]) string {
+		actionOnTypedVar: func(pair Lib.Pair[string, string]) string {
 			return oth.actionOnTypedVar(Lib.MkPair(p.actionOnTypedVar(pair), pair.Snd))
 		},
 		actionOnFunctional: func(id Id, tys Lib.List[string], args Lib.List[string]) string {
@@ -103,8 +99,12 @@ func (p PrinterAction) StrId(i Id) string {
 	return p.Str(p.actionOnId(i))
 }
 
-func (p PrinterAction) StrBound(name string) string {
-	return p.Str(p.actionOnBoundVar(name))
+func (p PrinterAction) StrBoundTy(index int) string {
+	return p.Str(fmt.Sprintf("T%d", index))
+}
+
+func (p PrinterAction) StrBound(index int) string {
+	return p.Str(fmt.Sprintf("X%d", index))
 }
 
 func (p PrinterAction) StrMeta(name string, index int) string {
@@ -115,7 +115,7 @@ func (p PrinterAction) StrTy(name string) string {
 	return p.Str(p.actionOnType(name))
 }
 
-func (p PrinterAction) StrTyVar(pair Lib.Pair[string, Ty]) string {
+func (p PrinterAction) StrTyVar(pair Lib.Pair[string, string]) string {
 	return p.Str(p.actionOnTypedVar(pair))
 }
 
@@ -130,16 +130,14 @@ func PrinterIdentity2[T any](s string, _ T) string            { return s }
 func MkPrinterAction(
 	genericAction func(string) string,
 	actionOnId func(Id) string,
-	actionOnBoundVar func(string) string,
 	actionOnMeta func(string, int) string,
 	actionOnType func(string) string,
-	actionOnTypedVar func(Lib.Pair[string, Ty]) string,
+	actionOnTypedVar func(Lib.Pair[string, string]) string,
 	actionOnFunctional func(id Id, tys Lib.List[string], args Lib.List[string]) string,
 ) PrinterAction {
 	return PrinterAction{
 		genericAction,
 		actionOnId,
-		actionOnBoundVar,
 		actionOnMeta,
 		actionOnType,
 		actionOnTypedVar,
@@ -223,15 +221,10 @@ func (c PrinterConnective) DefaultOnFunctionalArgs(
 	arguments := strings.Join(args.GetSlice(), c.StrConn(SepArgs))
 
 	if is_infix {
-		if args.Len() != 2 {
-			// Glob.Anomaly("Printer", fmt.Sprintf(
-			// 	"invalid number of infix arguments: expected 2, got %d (in <<%s>> for %s)",
-			// 	args.Len(),
-			// 	arguments,
-			// 	id.ToString(),
-			// ))
+		if args.Len() == 2 {
+			return fmt.Sprintf("%s %s %s", args.At(0), id.ToString(), args.At(1))
 		}
-		return fmt.Sprintf("%s %s %s", args.At(0), id.ToString(), args.At(1))
+		return id.ToString()
 	} else {
 		if tys.Len() > 0 {
 			arguments = types + c.StrConn(SepArgsTyArgs) + arguments
@@ -323,6 +316,10 @@ var (
 	QuoteID PrinterAction
 )
 
+func bvPrinter(i int) string {
+	return fmt.Sprintf("X%d", i)
+}
+
 func initPrinters() {
 	printer_debug = Glob.CreateDebugger("printer")
 
@@ -356,16 +353,15 @@ func initPrinters() {
 	QuoteID = PrinterAction{
 		genericAction: PrinterIdentity,
 		actionOnId: func(i Id) string {
-			r, _ := utf8.DecodeRuneInString(i.name)
+			r, _ := utf8.DecodeRuneInString(i.GetName())
 			if unicode.IsUpper(r) {
-				return fmt.Sprintf("'%s'", i.name)
+				return fmt.Sprintf("'%s'", i.GetName())
 			}
-			return i.name
+			return i.GetName()
 		},
-		actionOnBoundVar: PrinterIdentity,
 		actionOnMeta:     PrinterIdentity2[int],
 		actionOnType:     PrinterIdentity,
-		actionOnTypedVar: PrinterIdentityPair[Ty],
+		actionOnTypedVar: func(p Lib.Pair[string, string]) string { return p.Fst },
 	}
 }
 

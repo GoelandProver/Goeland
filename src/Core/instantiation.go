@@ -32,8 +32,6 @@
 package Core
 
 import (
-	"strings"
-
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -55,10 +53,10 @@ func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.Set[AST.Meta]) 
 	switch f := fnt.GetForm().(type) {
 	case AST.Not:
 		if ex, isEx := f.GetForm().(AST.Ex); isEx {
-			fnt, meta = RealInstantiate(ex.GetVarList(), index, is_exists, ex.GetForm(), terms)
+			fnt, meta = RealInstantiate(ex.Ty(), index, is_exists, ex.GetForm(), terms)
 		}
 	case AST.All:
-		fnt, meta = RealInstantiate(f.GetVarList(), index, is_all, f.GetForm(), terms)
+		fnt, meta = RealInstantiate(f.Ty(), index, is_all, f.GetForm(), terms)
 	}
 
 	switch m := meta.(type) {
@@ -73,21 +71,20 @@ func Instantiate(fnt FormAndTerms, index int) (FormAndTerms, Lib.Set[AST.Meta]) 
 }
 
 func RealInstantiate(
-	varList Lib.List[AST.TypedVar],
+	ty AST.Ty,
 	index, status int,
 	subForm AST.Form,
 	terms Lib.List[AST.Term],
 ) (FormAndTerms, Lib.Option[AST.Meta]) {
-	v := varList.At(0)
 	var m Lib.Option[AST.Meta]
 
-	if AST.IsTType(v.GetTy()) {
-		meta := AST.MkTyMeta(strings.ToUpper(v.GetName()), index)
-		subForm = subForm.SubstTy(v.ToTyBoundVar(), meta)
+	if AST.IsTType(ty) {
+		meta := AST.MkTyMeta(index)
+		subForm = subForm.InstantiateTy(0, meta)
 		m = Lib.MkNone[AST.Meta]()
 	} else {
-		meta := AST.MakeMeta(strings.ToUpper(v.GetName()), index, v.GetTy())
-		subForm = subForm.SubstituteVarByMeta(v.ToBoundVar(), meta)
+		meta := AST.MakeMeta(index, ty)
+		subForm = subForm.Instantiate(0, meta)
 		terms = terms.Copy(AST.Term.Copy)
 		terms.Add(
 			AST.TermEquals,
@@ -96,17 +93,8 @@ func RealInstantiate(
 		m = Lib.MkSome(meta)
 	}
 
-	if varList.Len() > 1 {
-		if status == is_exists {
-			ex := AST.MakeEx(varList.Slice(1, varList.Len()), subForm)
-			subForm = AST.MakeNot(ex)
-		} else {
-			subForm = AST.MakeAll(varList.Slice(1, varList.Len()), subForm)
-		}
-	} else {
-		if status == is_exists {
-			subForm = AST.MakeNot(subForm)
-		}
+	if status == is_exists {
+		subForm = AST.MakeNot(subForm)
 	}
 
 	return MakeFormAndTerm(subForm, terms), m

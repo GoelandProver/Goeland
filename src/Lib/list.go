@@ -78,6 +78,11 @@ func (l List[T]) Push(values ...T) List[T] {
 	return l
 }
 
+func (l List[T]) Cons(x T) List[T] {
+	l.values = append([]T{x}, l.values...)
+	return l
+}
+
 func (l *List[T]) Upd(i int, v T) {
 	l.values[i] = v
 }

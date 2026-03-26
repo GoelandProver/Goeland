@@ -39,7 +39,6 @@ package AST
 import (
 	"fmt"
 
-	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
@@ -54,32 +53,6 @@ func getAllSubFormulasAppended(f Form) Lib.List[Form] {
 	return subforms
 }
 
-func substVarByMetaInFormList(
-	old Var,
-	new Meta,
-	formList Lib.List[Form],
-	metas Lib.Set[Meta],
-) (replacedFormList Lib.List[Form], newMetas Lib.Set[Meta]) {
-	replacedFormList = Lib.NewList[Form]()
-	newMetas = metas.Copy()
-	found := false
-
-	for _, form := range formList.GetSlice() {
-		replacedForm := form.SubstituteVarByMeta(old, new)
-		replacedFormList.Append(replacedForm)
-
-		if replacedForm.GetMetas().Contains(new) {
-			found = true
-		}
-	}
-
-	if found {
-		newMetas.Add(new)
-	}
-
-	return replacedFormList, newMetas
-}
-
 // -----------------------------------------------------------------------------
 // Forall
 
@@ -87,8 +60,8 @@ type All struct {
 	quantifier
 }
 
-func MakeAllSimple(vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) All {
-	return All{makeQuantifier(vars, forms, metas, ConnAll)}
+func MakeAllSimple(ty Ty, forms Form) All {
+	return All{makeQuantifier(ty, forms, ConnAll)}
 }
 
 func (a All) Equals(other any) bool {
@@ -103,31 +76,40 @@ func (a All) GetSubFormulasRecur() Lib.List[Form] {
 }
 
 func (a All) Copy() Form {
-	return All{a.quantifier.copy()}
+	return All{a.copy()}
 }
 
-func (a All) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
-	quant, isReplaced := a.quantifier.replaceTermByTerm(old, new)
-	return All{quant}, isReplaced
+func (a All) Subst(x Meta, t Term) Form {
+	return All{a.applyOnSubForm(func(f Form) Form { return f.Subst(x, t) })}
 }
 
-func (a All) SubstTy(old TyGenVar, new Ty) Form {
-	return All{a.quantifier.replaceTyVar(old, new)}
+func (a All) Instantiate(x Var, t Term) Form {
+	return All{a.applyOnSubForm(func(f Form) Form { return f.Instantiate(x.increase(), t) })}
 }
 
-func (a All) SubstituteVarByMeta(old Var, new Meta) Form {
-	return All{a.quantifier.substituteVarByMeta(old, new)}
+func (a All) SubstTy(old TyMeta, new Ty) Form {
+	return All{
+		a.applyOnSubForm(func(f Form) Form { return f.SubstTy(old, new) }).
+			applyOnTy(func(t Ty) Ty { return t.SubstTy(old, new) }),
+	}
 }
 
-func (a All) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return All{a.quantifier.replaceMetaByTerm(meta, term)}
+func (a All) InstantiateTy(old TyBound, new Ty) Form {
+	return All{
+		a.applyOnSubForm(func(f Form) Form { return f.InstantiateTy(old.Increase(), new) }).
+			applyOnTy(func(t Ty) Ty { return t.Instantiate(old.Increase(), new) }),
+	}
+}
+
+func (a All) ReplaceTerm(t, u Term) Form {
+	return All{a.applyOnSubForm(func(f Form) Form { return f.ReplaceTerm(t, u) })}
 }
 
 func (a All) Less(oth any) bool {
 	if form, is_form := oth.(Form); is_form {
 		switch f := form.(type) {
 		case All:
-			return qLess(a.varList, f.varList, a.subForm, f.subForm)
+			return qLess(a.ty, f.ty, a.subForm, f.subForm)
 		default:
 			return false
 		}
@@ -142,10 +124,6 @@ type Ex struct {
 	quantifier
 }
 
-func MakeExSimple(vars Lib.List[TypedVar], forms Form, metas Lib.Set[Meta]) Ex {
-	return Ex{makeQuantifier(vars, forms, metas, ConnEx)}
-}
-
 func (e Ex) Equals(other any) bool {
 	if typed, ok := other.(Ex); ok {
 		return e.quantifier.Equals(typed.quantifier)
@@ -158,24 +136,33 @@ func (e Ex) GetSubFormulasRecur() Lib.List[Form] {
 }
 
 func (e Ex) Copy() Form {
-	return Ex{e.quantifier.copy()}
+	return Ex{e.copy()}
 }
 
-func (e Ex) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
-	quant, isReplaced := e.quantifier.replaceTermByTerm(old, new)
-	return Ex{quant}, isReplaced
+func (e Ex) Instantiate(x Var, t Term) Form {
+	return Ex{e.applyOnSubForm(func(f Form) Form { return f.Instantiate(x.increase(), t) })}
 }
 
-func (e Ex) SubstTy(old TyGenVar, new Ty) Form {
-	return Ex{e.quantifier.replaceTyVar(old, new)}
+func (e Ex) Subst(x Meta, t Term) Form {
+	return Ex{e.applyOnSubForm(func(f Form) Form { return f.Subst(x, t) })}
 }
 
-func (e Ex) SubstituteVarByMeta(old Var, new Meta) Form {
-	return Ex{e.quantifier.substituteVarByMeta(old, new)}
+func (e Ex) ReplaceTerm(t, u Term) Form {
+	return Ex{e.applyOnSubForm(func(f Form) Form { return f.ReplaceTerm(t, u) })}
 }
 
-func (e Ex) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return Ex{e.quantifier.replaceMetaByTerm(meta, term)}
+func (e Ex) SubstTy(old TyMeta, new Ty) Form {
+	return Ex{
+		e.applyOnSubForm(func(f Form) Form { return f.SubstTy(old, new) }).
+			applyOnTy(func(t Ty) Ty { return t.SubstTy(old, new) }),
+	}
+}
+
+func (e Ex) InstantiateTy(old TyBound, new Ty) Form {
+	return Ex{
+		e.applyOnSubForm(func(f Form) Form { return f.InstantiateTy(old.Increase(), new) }).
+			applyOnTy(func(t Ty) Ty { return t.Instantiate(old.Increase(), new) }),
+	}
 }
 
 func (e Ex) Less(oth any) bool {
@@ -184,7 +171,7 @@ func (e Ex) Less(oth any) bool {
 		case All:
 			return true
 		case Ex:
-			return qLess(e.varList, f.varList, e.subForm, f.subForm)
+			return qLess(e.ty, f.ty, e.subForm, f.subForm)
 		default:
 			return false
 		}
@@ -196,96 +183,48 @@ func (e Ex) Less(oth any) bool {
 // Or
 
 type Or struct {
-	forms Lib.List[Form]
-	metas Lib.Cache[Lib.Set[Meta], Or]
-}
-
-/** Constructors **/
-
-func MakeOrSimple(forms Lib.List[Form], metas Lib.Set[Meta]) Or {
-	return Or{forms, Lib.MkCache(metas, Or.forceGetMetas)}
-}
-
-/** Methods **/
-
-/** - Form interface Methods **/
-
-func (o Or) forceGetMetas() Lib.Set[Meta] {
-	return metasUnion(o.forms)
-}
-
-func (o Or) GetMetas() Lib.Set[Meta] {
-	return o.metas.Get(o)
-}
-
-func (o Or) GetSubTerms() Lib.Set[Term] {
-	res := Lib.EmptySet[Term]()
-
-	for _, tl := range o.forms.GetSlice() {
-		res = res.Union(tl.GetSubTerms())
-	}
-
-	return res
-}
-
-func (o Or) GetSymbols() Lib.Set[Id] {
-	res := Lib.EmptySet[Id]()
-
-	for _, tl := range o.forms.GetSlice() {
-		res = res.Union(tl.GetSymbols())
-	}
-
-	return res
+	nari_form
 }
 
 func (o Or) Equals(f any) bool {
 	oth, isOr := f.(Or)
-	return isOr && Lib.ListEquals(oth.forms, o.forms)
+	return isOr && o.equals(oth.nari_form)
 }
 
 func (o Or) Copy() Form {
-	return Or{
-		Lib.ListCpy(o.forms),
-		o.metas.Copy(Lib.Set[Meta].Copy),
-	}
+	return Or{o.copy()}
+}
+
+func (o Or) toString(n int) string {
+	return o.nari_form.toString(n, ConnOr)
 }
 
 func (o Or) ToString() string {
-	return o.forms.ToString(
-		func(f Form) string { return printer.Str(printer.SurroundChild(f.ToString())) },
-		printer.StrConn(ConnOr), "",
-	)
+	return o.toString(0)
 }
 
-func (o Or) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
-	formList, res := replaceTermInFormList(o.forms, old, new)
-	no := MakeOrSimple(formList, o.metas.Raw())
-	if !res && !o.metas.NeedsUpd() {
-		no.metas.AvoidUpd()
-	}
-	return no, res
+func (o Or) Subst(x Meta, t Term) Form {
+	return Or{o.applyOnArgs(func(f Form) Form { return f.Subst(x, t) })}
 }
 
-func (o Or) SubstTy(old TyGenVar, new Ty) Form {
-	formList := replaceTyVarInFormList(o.forms, old, new)
-	return MakeOrSimple(formList, o.metas.Raw())
+func (o Or) Instantiate(x Var, t Term) Form {
+	return Or{o.applyOnArgs(func(f Form) Form { return f.Instantiate(x, t) })}
 }
 
-func (o Or) SubstituteVarByMeta(old Var, new Meta) Form {
-	newFormList, newMetas := substVarByMetaInFormList(old, new, o.forms, o.metas.Raw())
-	return MakeOrSimple(newFormList, newMetas)
+func (o Or) SubstTy(old TyMeta, new Ty) Form {
+	return Or{o.applyOnArgs(func(f Form) Form { return f.SubstTy(old, new) })}
+}
+
+func (o Or) InstantiateTy(old TyBound, new Ty) Form {
+	return Or{o.applyOnArgs(func(f Form) Form { return f.InstantiateTy(old, new) })}
+}
+
+func (o Or) ReplaceTerm(t, u Term) Form {
+	return Or{o.applyOnArgs(func(f Form) Form { return f.ReplaceTerm(t, u) })}
 }
 
 func (o Or) GetSubFormulasRecur() Lib.List[Form] {
 	return getAllSubFormulasAppended(o)
-}
-
-func (o Or) GetChildFormulas() Lib.List[Form] {
-	return o.forms
-}
-
-func (o Or) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeOr(LsSubstByTerm(o.forms, meta, term))
 }
 
 func (o Or) Less(oth any) bool {
@@ -294,7 +233,7 @@ func (o Or) Less(oth any) bool {
 		case All, Ex:
 			return true
 		case Or:
-			return bLess(o.forms, f.forms)
+			return o.less(f.nari_form)
 		default:
 			return false
 		}
@@ -306,111 +245,48 @@ func (o Or) Less(oth any) bool {
 // And
 
 type And struct {
-	forms Lib.List[Form]
-	metas Lib.Cache[Lib.Set[Meta], And]
+	nari_form
 }
 
-/** Constructors **/
-
-func MakeAndSimple(forms Lib.List[Form], metas Lib.Set[Meta]) And {
-	return And{forms, Lib.MkCache(metas, And.forceGetMetas)}
-}
-
-func MakeAndSimpleBinary(forms Lib.List[Form], metas Lib.Set[Meta]) And {
-	switch forms.Len() {
-	// FIXME: case 0 and 1 should error, no?
-	case 0, 1, 2:
-		return MakeAndSimple(forms, metas)
-	default:
-		return MakeAndSimple(
-			Lib.MkListV[Form](forms.At(0), MakeAnd(forms.Slice(1, forms.Len()), true)),
-			metas)
-	}
-}
-
-/** Methods **/
-
-/** - Form interface Methods **/
-
-func (a And) forceGetMetas() Lib.Set[Meta] {
-	return metasUnion(a.forms)
-}
-
-func (a And) GetMetas() Lib.Set[Meta] {
-	return a.metas.Get(a)
-}
-
-func (a And) GetSubTerms() Lib.Set[Term] {
-	res := Lib.EmptySet[Term]()
-
-	for _, tl := range a.forms.GetSlice() {
-		res = res.Union(tl.GetSubTerms())
-	}
-
-	return res
-}
-
-func (a And) GetSymbols() Lib.Set[Id] {
-	res := Lib.EmptySet[Id]()
-
-	for _, tl := range a.forms.GetSlice() {
-		res = res.Union(tl.GetSymbols())
-	}
-
-	return res
-}
-
-func (a And) Equals(other any) bool {
-	if typed, ok := other.(And); ok {
-		return Lib.ListEquals(typed.forms, a.forms)
-	}
-
-	return false
+func (a And) Equals(f any) bool {
+	oth, isAnd := f.(And)
+	return isAnd && a.equals(oth.nari_form)
 }
 
 func (a And) Copy() Form {
-	return And{
-		Lib.ListCpy(a.forms),
-		a.metas.Copy(Lib.Set[Meta].Copy),
-	}
+	return And{a.copy()}
+}
+
+func (a And) toString(n int) string {
+	return a.nari_form.toString(n, ConnAnd)
 }
 
 func (a And) ToString() string {
-	return a.forms.ToString(
-		func(f Form) string { return printer.Str(printer.SurroundChild(f.ToString())) },
-		printer.StrConn(ConnAnd), "",
-	)
+	return a.toString(0)
 }
 
-func (a And) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
-	varList, res := replaceTermInFormList(a.forms, old, new)
-	na := MakeAndSimple(varList, a.metas.Raw())
-	if !res && !a.metas.NeedsUpd() {
-		na.metas.AvoidUpd()
-	}
-	return na, res
+func (a And) Subst(x Meta, t Term) Form {
+	return And{a.applyOnArgs(func(f Form) Form { return f.Subst(x, t) })}
 }
 
-func (a And) SubstTy(old TyGenVar, new Ty) Form {
-	formList := replaceTyVarInFormList(a.forms, old, new)
-	return MakeAndSimple(formList, a.metas.Raw())
+func (a And) Instantiate(x Var, t Term) Form {
+	return And{a.applyOnArgs(func(f Form) Form { return f.Instantiate(x, t) })}
 }
 
-func (a And) SubstituteVarByMeta(old Var, new Meta) Form {
-	newFormList, newMetas := substVarByMetaInFormList(old, new, a.forms, a.metas.Raw())
-	return MakeAndSimple(newFormList, newMetas)
+func (a And) SubstTy(old TyMeta, new Ty) Form {
+	return And{a.applyOnArgs(func(f Form) Form { return f.SubstTy(old, new) })}
+}
+
+func (a And) InstantiateTy(old TyBound, new Ty) Form {
+	return And{a.applyOnArgs(func(f Form) Form { return f.InstantiateTy(old, new) })}
+}
+
+func (a And) ReplaceTerm(t, u Term) Form {
+	return And{a.applyOnArgs(func(f Form) Form { return f.ReplaceTerm(t, u) })}
 }
 
 func (a And) GetSubFormulasRecur() Lib.List[Form] {
 	return getAllSubFormulasAppended(a)
-}
-
-func (a And) GetChildFormulas() Lib.List[Form] {
-	return a.forms
-}
-
-func (a And) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeAnd(LsSubstByTerm(a.forms, meta, term))
 }
 
 func (a And) Less(oth any) bool {
@@ -419,7 +295,7 @@ func (a And) Less(oth any) bool {
 		case All, Ex, Or:
 			return true
 		case And:
-			return bLess(a.forms, f.forms)
+			return a.less(f.nari_form)
 		default:
 			return false
 		}
@@ -431,99 +307,48 @@ func (a And) Less(oth any) bool {
 // Equivalence
 
 type Equ struct {
-	f1, f2 Form
-	metas  Lib.Cache[Lib.Set[Meta], Equ]
+	bin_form
 }
 
-func MakeEquSimple(firstForm, secondForm Form, metas Lib.Set[Meta]) Equ {
-	return Equ{
-		firstForm,
-		secondForm,
-		Lib.MkCache(metas, Equ.forceGetMetas),
-	}
-}
-
-func (e Equ) GetF1() Form { return e.f1.Copy() }
-func (e Equ) GetF2() Form { return e.f2.Copy() }
 func (e Equ) Copy() Form {
-	return Equ{
-		e.GetF1(),
-		e.GetF2(),
-		e.metas.Copy(Lib.Set[Meta].Copy),
-	}
+	return Equ{e.copy()}
 }
 
-func (e Equ) forceGetMetas() Lib.Set[Meta] {
-	allMetas := e.f1.GetMetas().Copy()
-	allMetas = allMetas.Union(e.f2.GetMetas())
-
-	return allMetas
-}
-
-func (e Equ) GetMetas() Lib.Set[Meta] {
-	return e.metas.Get(e)
+func (e Equ) toString(n int) string {
+	return e.bin_form.toString(n, ConnEqu)
 }
 
 func (e Equ) ToString() string {
-	return printer.Str(fmt.Sprintf("%s %s %s",
-		printer.Str(printer.SurroundChild(e.f1.ToString())),
-		printer.StrConn(ConnEqu),
-		printer.Str(printer.SurroundChild(e.f2.ToString())),
-	))
+	return e.toString(0)
 }
 
 func (e Equ) Equals(f any) bool {
 	oth, isEqu := f.(Equ)
-	return isEqu &&
-		e.f1.Equals(oth.f1) && e.f2.Equals(oth.f2)
+	return isEqu && e.equals(oth.bin_form)
 }
 
-func (e Equ) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
-	f1, res1 := e.GetF1().ReplaceTermByTerm(old, new)
-	f2, res2 := e.GetF2().ReplaceTermByTerm(old, new)
-	ne := MakeEquSimple(f1, f2, e.metas.Raw())
-
-	if !res1 && !res2 && !e.metas.NeedsUpd() {
-		e.metas.AvoidUpd()
-	}
-
-	return ne, res1 || res2
+func (e Equ) Instantiate(x Var, t Term) Form {
+	return Equ{e.applyOnArgs(func(f Form) Form { return f.Instantiate(x, t) })}
 }
 
-func (e Equ) SubstTy(old TyGenVar, new Ty) Form {
-	return MakeEquSimple(
-		e.f1.SubstTy(old, new),
-		e.f2.SubstTy(old, new),
-		e.metas.Raw(),
-	)
+func (e Equ) Subst(x Meta, t Term) Form {
+	return Equ{e.applyOnArgs(func(f Form) Form { return f.Subst(x, t) })}
 }
 
-func (e Equ) GetSubTerms() Lib.Set[Term] {
-	return e.GetF1().GetSubTerms().Union(e.GetF2().GetSubTerms())
+func (e Equ) SubstTy(old TyMeta, new Ty) Form {
+	return Equ{e.applyOnArgs(func(f Form) Form { return f.SubstTy(old, new) })}
 }
 
-func (e Equ) GetSymbols() Lib.Set[Id] {
-	return e.GetF1().GetSymbols().Union(e.GetF2().GetSymbols())
+func (e Equ) InstantiateTy(old TyBound, new Ty) Form {
+	return Equ{e.applyOnArgs(func(f Form) Form { return f.InstantiateTy(old, new) })}
 }
 
-func (e Equ) SubstituteVarByMeta(old Var, new Meta) Form {
-	fl, metas := substVarByMetaInFormList(old, new, Lib.MkListV(e.f1, e.f2), e.metas.Raw())
-	return MakeEquSimple(fl.At(0), fl.At(1), metas)
+func (e Equ) ReplaceTerm(t, u Term) Form {
+	return Equ{e.applyOnArgs(func(f Form) Form { return f.ReplaceTerm(t, u) })}
 }
 
 func (e Equ) GetSubFormulasRecur() Lib.List[Form] {
 	return getAllSubFormulasAppended(e)
-}
-
-func (e Equ) GetChildFormulas() Lib.List[Form] {
-	return Lib.MkListV(e.f1, e.f2)
-}
-
-func (e Equ) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeEqu(
-		e.f1.ReplaceMetaByTerm(meta, term),
-		e.f2.ReplaceMetaByTerm(meta, term),
-	)
 }
 
 func (e Equ) Less(oth any) bool {
@@ -532,7 +357,7 @@ func (e Equ) Less(oth any) bool {
 		case All, Ex, Or, And:
 			return true
 		case Equ:
-			return bLess(Lib.MkListV(e.f1, e.f2), Lib.MkListV(f.f1, f.f2))
+			return e.less(f.bin_form)
 		default:
 			return false
 		}
@@ -544,102 +369,48 @@ func (e Equ) Less(oth any) bool {
 // Implication
 
 type Imp struct {
-	f1, f2 Form
-	metas  Lib.Cache[Lib.Set[Meta], Imp]
+	bin_form
 }
 
-func MakeImpSimple(firstForm, secondForm Form, metas Lib.Set[Meta]) Imp {
-	return Imp{
-		firstForm,
-		secondForm,
-		Lib.MkCache(metas, Imp.forceGetMetas),
-	}
-}
-
-func (i Imp) GetF1() Form { return i.f1.Copy() }
-func (i Imp) GetF2() Form { return i.f2.Copy() }
 func (i Imp) Copy() Form {
-	return Imp{
-		i.GetF1(),
-		i.GetF2(),
-		i.metas.Copy(Lib.Set[Meta].Copy),
-	}
+	return Imp{i.copy()}
 }
 
-func (i Imp) forceGetMetas() Lib.Set[Meta] {
-	allMetas := i.f1.GetMetas().Copy()
-	allMetas = allMetas.Union(i.f2.GetMetas())
-
-	return allMetas
-}
-
-func (i Imp) GetMetas() Lib.Set[Meta] {
-	return i.metas.Get(i)
+func (i Imp) toString(n int) string {
+	return i.bin_form.toString(n, ConnImp)
 }
 
 func (i Imp) ToString() string {
-	return printer.Str(fmt.Sprintf("%s %s %s",
-		printer.Str(printer.SurroundChild(i.f1.ToString())),
-		printer.StrConn(ConnImp),
-		printer.Str(printer.SurroundChild(i.f2.ToString())),
-	))
+	return i.toString(0)
 }
 
-func (i Imp) Equals(other any) bool {
-	if typed, ok := other.(Imp); ok {
-		return i.f1.Equals(typed.f1) && i.f2.Equals(typed.f2)
-	}
-
-	return false
+func (i Imp) Equals(f any) bool {
+	oth, isImp := f.(Imp)
+	return isImp && i.equals(oth.bin_form)
 }
 
-func (i Imp) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
-	f1, res1 := i.GetF1().ReplaceTermByTerm(old, new)
-	f2, res2 := i.GetF2().ReplaceTermByTerm(old, new)
-
-	ni := MakeImpSimple(f1, f2, i.metas.Raw())
-
-	if !res1 && !res2 && !i.metas.NeedsUpd() {
-		ni.metas.AvoidUpd()
-	}
-
-	return ni, res1 || res2
+func (i Imp) Instantiate(x Var, t Term) Form {
+	return Imp{i.applyOnArgs(func(f Form) Form { return f.Instantiate(x, t) })}
 }
 
-func (i Imp) SubstTy(old TyGenVar, new Ty) Form {
-	return MakeImpSimple(
-		i.f1.SubstTy(old, new),
-		i.f2.SubstTy(old, new),
-		i.metas.Raw(),
-	)
+func (i Imp) Subst(x Meta, t Term) Form {
+	return Imp{i.applyOnArgs(func(f Form) Form { return f.Subst(x, t) })}
 }
 
-func (i Imp) GetSubTerms() Lib.Set[Term] {
-	return i.GetF1().GetSubTerms().Union(i.GetF2().GetSubTerms())
+func (i Imp) SubstTy(old TyMeta, new Ty) Form {
+	return Imp{i.applyOnArgs(func(f Form) Form { return f.SubstTy(old, new) })}
 }
 
-func (i Imp) GetSymbols() Lib.Set[Id] {
-	return i.GetF1().GetSymbols().Union(i.GetF2().GetSymbols())
+func (i Imp) InstantiateTy(old TyBound, new Ty) Form {
+	return Imp{i.applyOnArgs(func(f Form) Form { return f.InstantiateTy(old, new) })}
 }
 
-func (i Imp) SubstituteVarByMeta(old Var, new Meta) Form {
-	fl, metas := substVarByMetaInFormList(old, new, Lib.MkListV(i.f1, i.f2), i.metas.Raw())
-	return MakeImpSimple(fl.At(0), fl.At(1), metas)
+func (i Imp) ReplaceTerm(t, u Term) Form {
+	return Imp{i.applyOnArgs(func(f Form) Form { return f.ReplaceTerm(t, u) })}
 }
 
 func (i Imp) GetSubFormulasRecur() Lib.List[Form] {
 	return getAllSubFormulasAppended(i)
-}
-
-func (i Imp) GetChildFormulas() Lib.List[Form] {
-	return Lib.MkListV(i.f1, i.f2)
-}
-
-func (i Imp) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeImp(
-		i.f1.ReplaceMetaByTerm(meta, term),
-		i.f2.ReplaceMetaByTerm(meta, term),
-	)
 }
 
 func (i Imp) Less(oth any) bool {
@@ -648,7 +419,7 @@ func (i Imp) Less(oth any) bool {
 		case All, Ex, Or, And, Equ:
 			return true
 		case Imp:
-			return bLess(Lib.MkListV(i.f1, i.f2), Lib.MkListV(f.f1, f.f2))
+			return i.less(f.bin_form)
 		default:
 			return false
 		}
@@ -660,34 +431,23 @@ func (i Imp) Less(oth any) bool {
 // Not
 
 type Not struct {
-	f     Form
-	metas Lib.Cache[Lib.Set[Meta], Not]
-}
-
-/** Constructors **/
-
-func MakeNotSimple(form Form, metas Lib.Set[Meta]) Not {
-	return Not{form, Lib.MkCache(metas, Not.forceGetMetas)}
+	f Form
 }
 
 /** Methods **/
 
 /** - Form interface Methods **/
 
-func (n Not) forceGetMetas() Lib.Set[Meta] {
-	return n.GetForm().GetMetas()
-}
-
 func (n Not) GetMetas() Lib.Set[Meta] {
-	return n.metas.Get(n)
+	return n.f.GetMetas()
 }
 
 func (n Not) GetSubTerms() Lib.Set[Term] {
-	return n.GetForm().GetSubTerms()
+	return n.f.GetSubTerms()
 }
 
 func (n Not) GetSymbols() Lib.Set[Id] {
-	return n.GetForm().GetSymbols()
+	return n.f.GetSymbols()
 }
 
 func (n Not) Equals(other any) bool {
@@ -699,51 +459,44 @@ func (n Not) Equals(other any) bool {
 }
 
 func (n Not) Copy() Form {
-	nn := MakeNotSimple(n.GetForm(), n.metas.Raw().Copy())
-	if !n.metas.NeedsUpd() {
-		nn.metas.AvoidUpd()
-	}
-	return nn
+	return Not{n.f.Copy()}
 }
 
-func (n Not) ToString() string {
+func (n Not) toString(i int) string {
 	return printer.Str(fmt.Sprintf("%s%s",
 		printer.StrConn(ConnNot),
-		printer.Str(printer.SurroundChild(n.f.ToString())),
+		printer.Str(printer.SurroundChild(n.f.toString(i))),
 	))
 }
 
-func (n Not) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
-	f, res := n.f.ReplaceTermByTerm(old, new)
-
-	nn := MakeNotSimple(f, n.metas.Raw())
-	if !res && !n.metas.NeedsUpd() {
-		nn.metas.AvoidUpd()
-	}
-
-	return nn, res
+func (n Not) ToString() string {
+	return n.toString(0)
 }
 
-func (n Not) SubstTy(old TyGenVar, new Ty) Form {
-	return MakeNotSimple(
-		n.f.SubstTy(old, new),
-		n.metas.Raw(),
-	)
+func (n Not) Instantiate(x Var, t Term) Form {
+	return MakeNot(n.f.Instantiate(x, t))
 }
 
-func (n Not) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakeNot(n.f.ReplaceMetaByTerm(meta, term))
+func (n Not) Subst(x Meta, t Term) Form {
+	return MakeNot(n.f.Subst(x, t))
+}
+
+func (n Not) SubstTy(old TyMeta, new Ty) Form {
+	return MakeNot(n.f.SubstTy(old, new))
+}
+
+func (n Not) InstantiateTy(old TyBound, new Ty) Form {
+	return MakeNot(n.f.InstantiateTy(old, new))
+}
+
+func (n Not) ReplaceTerm(t, u Term) Form {
+	return MakeNot(n.f.ReplaceTerm(t, u))
 }
 
 /** - Other Methods **/
 
 func (n Not) GetForm() Form {
 	return n.f.Copy()
-}
-
-func (n Not) SubstituteVarByMeta(old Var, new Meta) Form {
-	f := n.GetForm().SubstituteVarByMeta(old, new)
-	return MakeNotSimple(f, f.GetMetas().Copy())
 }
 
 func (n Not) GetSubFormulasRecur() Lib.List[Form] {
@@ -756,7 +509,7 @@ func (n Not) GetChildFormulas() Lib.List[Form] {
 
 /** Utils **/
 
-/* Gives a new Form that isn't a Not */
+/* Recursively removes negations until getting the base formula */
 func RemoveNeg(form Form) Form {
 	form, _ = getDeepFormWithoutNot(form, true)
 	return form
@@ -773,6 +526,7 @@ func SimplifyNegations(form Form) Form {
 	return form
 }
 
+// FIXME: this function does two things and is thus not named properly
 func getDeepFormWithoutNot(form Form, isEven bool) (Form, bool) {
 	if not, isNot := form.(Not); isNot {
 		return getDeepFormWithoutNot(not.GetForm(), !isEven)
@@ -799,24 +553,9 @@ func (n Not) Less(oth any) bool {
 // Predicates
 
 type Pred struct {
-	id    Id
-	tys   Lib.List[Ty]
-	args  Lib.List[Term]
-	metas Lib.Cache[Lib.Set[Meta], Pred]
-}
-
-func MakePredSimple(
-	id Id,
-	tys Lib.List[Ty],
-	terms Lib.List[Term],
-	metas Lib.Set[Meta],
-) Pred {
-	return Pred{
-		id,
-		tys,
-		terms,
-		Lib.MkCache(metas, Pred.forceGetMetas),
-	}
+	id   Id
+	tys  Lib.List[Ty]
+	args Lib.List[Term]
 }
 
 /* Pred attributes getters */
@@ -827,27 +566,20 @@ func (p Pred) GetArgs() Lib.List[Term] { return p.args }
 
 /* Formula methods */
 
-func (p Pred) ToString() string {
+func (p Pred) toString(n int) string {
 	return printer.StrFunctional(
 		p.id,
-		Lib.ListMap(p.tys, Ty.ToString),
-		Lib.ListMap(p.args, Term.ToString),
+		Lib.ListMap(p.tys, func(t Ty) string { return t.toString(n) }),
+		Lib.ListMap(p.args, func(t Term) string { return t.toString(n) }),
 	)
 }
 
+func (p Pred) ToString() string {
+	return p.toString(0)
+}
+
 func (p Pred) Copy() Form {
-	np := MakePredSimple(
-		p.id,
-		p.GetTyArgs(),
-		p.GetArgs(),
-		p.metas.Raw().Copy(),
-	)
-
-	if !p.metas.NeedsUpd() {
-		np.metas.AvoidUpd()
-	}
-
-	return p
+	return MakePred(p.id, Lib.ListCpy(p.tys), Lib.ListCpy(p.args))
 }
 
 func (p Pred) Equals(other any) bool {
@@ -860,18 +592,8 @@ func (p Pred) Equals(other any) bool {
 	return false
 }
 
-func (p Pred) forceGetMetas() Lib.Set[Meta] {
-	res := Lib.EmptySet[Meta]()
-
-	for _, m := range p.GetArgs().GetSlice() {
-		res = res.Union(m.GetMetas())
-	}
-
-	return res
-}
-
 func (p Pred) GetMetas() Lib.Set[Meta] {
-	return p.metas.Get(p)
+	return listUnion(p.args, Term.GetMetas)
 }
 
 func (p Pred) GetMetaList() Lib.List[Meta] {
@@ -889,79 +611,42 @@ func (p Pred) GetMetaList() Lib.List[Meta] {
 	return metas
 }
 
-func (p Pred) ReplaceTermByTerm(old Term, new Term) (Form, bool) {
-	termList, res := replaceTermInTermList(p.GetArgs(), old, new)
-
-	np := MakePredSimple(
-		p.GetID(),
-		p.GetTyArgs(),
-		termList,
-		p.metas.Raw(),
-	)
-
-	if !res && !p.metas.NeedsUpd() {
-		np.metas.AvoidUpd()
-	}
-
-	return np, res
+func (p Pred) applyOnTerms(f func(Term) Term) Pred {
+	return MakePred(p.id, p.tys, Lib.ListMap(p.args, f))
 }
 
-func (p Pred) SubstTy(old TyGenVar, new Ty) Form {
-	typed_args := Lib.ListMap(
-		p.tys,
-		func(t Ty) Ty { return t.SubstTy(old, new) },
-	)
-	args := Lib.ListMap(
-		p.args,
-		func(t Term) Term { return t.SubstTy(old, new) },
-	)
-	return MakePredSimple(
-		p.GetID(),
-		typed_args,
-		args,
-		p.metas.Raw(),
-	)
+func (p Pred) applyOnTys(f func(Ty) Ty) Pred {
+	return MakePred(p.id, Lib.ListMap(p.tys, f), p.args)
+}
+
+func (p Pred) Instantiate(x Var, t Term) Form {
+	return p.applyOnTerms(func(u Term) Term { return u.Instantiate(x, t) })
+}
+
+func (p Pred) Subst(x Meta, t Term) Form {
+	return p.applyOnTerms(func(u Term) Term { return u.Subst(x, t) })
+}
+
+func (p Pred) SubstTy(old TyMeta, new Ty) Form {
+	return p.applyOnTerms(func(t Term) Term { return t.SubstTy(old, new) }).
+		applyOnTys(func(t Ty) Ty { return t.SubstTy(old, new) })
+}
+
+func (p Pred) InstantiateTy(old TyBound, new Ty) Form {
+	return p.applyOnTerms(func(t Term) Term { return t.InstantiateTy(old, new) }).
+		applyOnTys(func(t Ty) Ty { return t.Instantiate(old, new) })
+}
+
+func (p Pred) ReplaceTerm(t, u Term) Form {
+	return p.applyOnTerms(func(v Term) Term { return v.ReplaceTerm(t, u) })
 }
 
 func (p Pred) GetSubTerms() Lib.Set[Term] {
-	res := Lib.EmptySet[Term]()
-
-	for _, t := range p.GetArgs().GetSlice() {
-		res = res.Add(t).Union(t.GetSubTerms())
-	}
-
-	return res
+	return listUnion(p.args, Term.GetSubTerms)
 }
 
 func (p Pred) GetSymbols() Lib.Set[Id] {
-	res := Lib.EmptySet[Id]()
-
-	for _, t := range p.GetArgs().GetSlice() {
-		res = res.Union(t.GetSymbols())
-	}
-
-	return res
-}
-
-func (p Pred) SubstituteVarByMeta(old Var, new Meta) Form {
-	f, res := p.ReplaceTermByTerm(old, new)
-
-	switch nf := f.(type) {
-	case Pred:
-		if res {
-			return MakePredSimple(
-				nf.id,
-				nf.tys,
-				nf.args,
-				nf.metas.Raw(),
-			)
-		}
-		return nf
-	default:
-		Glob.Anomaly("Substitution", "should return a Pred")
-	}
-
-	return f
+	return listUnion(p.args, Term.GetSymbols)
 }
 
 func (p Pred) GetSubFormulasRecur() Lib.List[Form] {
@@ -970,14 +655,6 @@ func (p Pred) GetSubFormulasRecur() Lib.List[Form] {
 
 func (p Pred) GetChildFormulas() Lib.List[Form] {
 	return Lib.NewList[Form]()
-}
-
-func (p Pred) ReplaceMetaByTerm(meta Meta, term Term) Form {
-	return MakePred(
-		p.id,
-		p.tys,
-		Lib.ListMap(p.args, func(t Term) Term { return t.ReplaceSubTermBy(meta, term) }),
-	)
 }
 
 func (p Pred) Less(oth any) bool {
@@ -1003,22 +680,22 @@ func (p Pred) Less(oth any) bool {
 // -----------------------------------------------------------------------------
 // True and False
 
-type Top struct {
-}
+type Top struct{}
 
-func (Top) ToString() string                              { return printer.StrConn(ConnTop) }
-func (t Top) Copy() Form                                  { return MakeTop() }
-func (Top) Equals(f any) bool                             { _, isTop := f.(Top); return isTop }
-func (Top) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
-func (t Top) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeTop(), false }
-func (t Top) SubstTy(TyGenVar, Ty) Form                   { return t }
-func (t Top) GetSubTerms() Lib.Set[Term]                  { return Lib.EmptySet[Term]() }
-func (t Top) GetSymbols() Lib.Set[Id]                     { return Lib.EmptySet[Id]() }
-func (t Top) SubstituteVarByMeta(Var, Meta) Form          { return t }
-func (t Top) GetInternalMetas() Lib.Set[Meta]             { return Lib.EmptySet[Meta]() }
-func (t Top) GetSubFormulasRecur() Lib.List[Form]         { return Lib.MkListV[Form](t) }
-func (t Top) GetChildFormulas() Lib.List[Form]            { return Lib.NewList[Form]() }
-func (t Top) ReplaceMetaByTerm(meta Meta, term Term) Form { return t }
+func (Top) toString(int) string                   { return printer.StrConn(ConnTop) }
+func (t Top) ToString() string                    { return t.toString(0) }
+func (t Top) Copy() Form                          { return MakeTop() }
+func (Top) Equals(f any) bool                     { _, isTop := f.(Top); return isTop }
+func (Top) GetMetas() Lib.Set[Meta]               { return Lib.EmptySet[Meta]() }
+func (Top) Instantiate(Var, Term) Form            { return MakeTop() }
+func (Top) Subst(Meta, Term) Form                 { return MakeTop() }
+func (Top) ReplaceTerm(Term, Term) Form           { return MakeTop() }
+func (t Top) SubstTy(TyMeta, Ty) Form             { return t }
+func (t Top) InstantiateTy(TyBound, Ty) Form      { return t }
+func (t Top) GetSubTerms() Lib.Set[Term]          { return Lib.EmptySet[Term]() }
+func (t Top) GetSymbols() Lib.Set[Id]             { return Lib.EmptySet[Id]() }
+func (t Top) GetSubFormulasRecur() Lib.List[Form] { return Lib.MkListV[Form](t) }
+func (t Top) GetChildFormulas() Lib.List[Form]    { return Lib.NewList[Form]() }
 func (t Top) Less(oth any) bool {
 	if form, is_form := oth.(Form); is_form {
 		switch form.(type) {
@@ -1032,22 +709,22 @@ func (t Top) Less(oth any) bool {
 }
 
 /* Bot (always false) definition */
-type Bot struct {
-}
+type Bot struct{}
 
-func (Bot) ToString() string                              { return printer.StrConn(ConnBot) }
-func (b Bot) Copy() Form                                  { return MakeBot() }
-func (Bot) Equals(f any) bool                             { _, isBot := f.(Bot); return isBot }
-func (Bot) GetMetas() Lib.Set[Meta]                       { return Lib.EmptySet[Meta]() }
-func (b Bot) ReplaceTermByTerm(Term, Term) (Form, bool)   { return MakeBot(), false }
-func (b Bot) SubstTy(TyGenVar, Ty) Form                   { return b }
-func (b Bot) GetSubTerms() Lib.Set[Term]                  { return Lib.EmptySet[Term]() }
-func (b Bot) GetSymbols() Lib.Set[Id]                     { return Lib.EmptySet[Id]() }
-func (b Bot) SubstituteVarByMeta(Var, Meta) Form          { return b }
-func (b Bot) GetInternalMetas() Lib.Set[Meta]             { return Lib.EmptySet[Meta]() }
-func (b Bot) GetSubFormulasRecur() Lib.List[Form]         { return Lib.MkListV[Form](b) }
-func (b Bot) GetChildFormulas() Lib.List[Form]            { return Lib.NewList[Form]() }
-func (b Bot) ReplaceMetaByTerm(meta Meta, term Term) Form { return b }
+func (Bot) toString(int) string                   { return printer.StrConn(ConnBot) }
+func (b Bot) ToString() string                    { return b.toString(0) }
+func (b Bot) Copy() Form                          { return MakeBot() }
+func (Bot) Equals(f any) bool                     { _, isBot := f.(Bot); return isBot }
+func (Bot) GetMetas() Lib.Set[Meta]               { return Lib.EmptySet[Meta]() }
+func (Bot) Instantiate(Var, Term) Form            { return MakeBot() }
+func (Bot) Subst(Meta, Term) Form                 { return MakeBot() }
+func (Bot) ReplaceTerm(Term, Term) Form           { return MakeBot() }
+func (b Bot) SubstTy(TyMeta, Ty) Form             { return b }
+func (b Bot) InstantiateTy(TyBound, Ty) Form      { return b }
+func (b Bot) GetSubTerms() Lib.Set[Term]          { return Lib.EmptySet[Term]() }
+func (b Bot) GetSymbols() Lib.Set[Id]             { return Lib.EmptySet[Id]() }
+func (b Bot) GetSubFormulasRecur() Lib.List[Form] { return Lib.MkListV[Form](b) }
+func (b Bot) GetChildFormulas() Lib.List[Form]    { return Lib.NewList[Form]() }
 func (b Bot) Less(oth any) bool {
 	if form, is_form := oth.(Form); is_form {
 		switch form.(type) {

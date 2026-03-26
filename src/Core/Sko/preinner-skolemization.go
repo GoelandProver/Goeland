@@ -33,7 +33,6 @@
 package Sko
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/GoelandProver/Goeland/AST"
@@ -48,7 +47,7 @@ import (
 
 type PreInnerSkolemization struct {
 	existingSymbols Lib.Set[AST.Id]
-	linkedSymbols   Lib.List[Glob.Pair[AST.Form, AST.Id]]
+	linkedSymbols   Lib.List[Glob.Pair[AST.Form, AST.Id]] // FIXME: use a map once a formula is hashable
 	mu              *sync.Mutex
 }
 
@@ -62,21 +61,18 @@ func MkPreInnerSkolemization() PreInnerSkolemization {
 
 func (sko PreInnerSkolemization) Skolemize(
 	delta, form AST.Form,
-	x AST.TypedVar,
 	_ Lib.Set[AST.Meta],
 ) (Skolemization, AST.Form) {
-	realDelta := alphaConvert(delta, 0, make(map[string]AST.Var))
-
 	var symbol AST.Id
 	sko.mu.Lock()
 	if val, ok := sko.linkedSymbols.Find(
-		func(p Glob.Pair[AST.Form, AST.Id]) bool { return p.Fst.Equals(realDelta) },
+		func(p Glob.Pair[AST.Form, AST.Id]) bool { return p.Fst.Equals(delta) },
 		Glob.MakePair(Glob.To[AST.Form](AST.MakeBot()), AST.MakeId("")),
 	); ok {
 		symbol = val.Snd
 	} else {
 		symbol = genFreshSymbol(&sko.existingSymbols)
-		sko.linkedSymbols.Append(Glob.MakePair(realDelta, symbol))
+		sko.linkedSymbols.Append(Glob.MakePair(delta, symbol))
 	}
 	sko.mu.Unlock()
 
@@ -88,116 +84,7 @@ func (sko PreInnerSkolemization) Skolemize(
 		Lib.ListMap(internalMetas, Glob.To[AST.Term]),
 	)
 
-	skolemizedForm, _ := form.ReplaceTermByTerm(
-		x.ToBoundVar(),
-		Glob.To[AST.Term](skolemFunc),
-	)
+	skolemizedForm := form.Instantiate(0, skolemFunc)
 
 	return sko, skolemizedForm
-}
-
-func fresh(k int) string {
-	return fmt.Sprintf("x@%d", k)
-}
-
-func alphaConvert(
-	form AST.Form,
-	k int,
-	substitution map[string]AST.Var,
-) AST.Form {
-	switch f := form.(type) {
-	case AST.Top, AST.Bot:
-		return form
-	case AST.Pred:
-		mappedTerms := Lib.ListMap(f.GetArgs(),
-			func(t AST.Term) AST.Term {
-				return alphaConvertTerm(t, substitution)
-			})
-		return AST.MakePred(
-			f.GetID(),
-			f.GetTyArgs(),
-			mappedTerms,
-		)
-	case AST.Not:
-		return AST.MakeNot(
-			alphaConvert(f.GetForm(), k, substitution),
-		)
-	case AST.Imp:
-		return AST.MakeImp(
-			alphaConvert(f.GetF1(), k, substitution),
-			alphaConvert(f.GetF2(), k, substitution),
-		)
-	case AST.Equ:
-		return AST.MakeEqu(
-			alphaConvert(f.GetF1(), k, substitution),
-			alphaConvert(f.GetF2(), k, substitution),
-		)
-	case AST.And:
-		return AST.MakeAnd(
-			Lib.MkListV(
-				Glob.MapTo(
-					f.GetChildFormulas().GetSlice(),
-					func(_ int, f AST.Form) AST.Form {
-						return alphaConvert(f, k, substitution)
-					})...),
-		)
-	case AST.Or:
-		return AST.MakeOr(
-			Lib.MkListV(Glob.MapTo(
-				f.GetChildFormulas().GetSlice(),
-				func(_ int, f AST.Form) AST.Form {
-					return alphaConvert(f, k, substitution)
-				})...),
-		)
-	case AST.All:
-		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
-		return AST.MakeAll(vl, alphaConvert(f.GetForm(), k, substitution))
-	case AST.Ex:
-		k, substitution, vl := makeConvertedVarList(k, substitution, f.GetVarList())
-		return AST.MakeEx(vl, alphaConvert(f.GetForm(), k, substitution))
-	}
-	Glob.Anomaly(
-		"preinner",
-		fmt.Sprintf(
-			"On alpha-conversion of %s: form does not correspond to any known ones",
-			form.ToString(),
-		),
-	)
-	return form
-}
-
-func makeConvertedVarList(
-	k int,
-	substitution map[string]AST.Var,
-	vl Lib.List[AST.TypedVar],
-) (int, map[string]AST.Var, Lib.List[AST.TypedVar]) {
-	newVarList := Lib.MkList[AST.TypedVar](vl.Len())
-	for i, v := range vl.GetSlice() {
-		nv := AST.MkTypedVar(fresh(k+i), v.GetTy())
-		newVarList.Upd(i, nv)
-		substitution[v.GetName()] = nv.ToBoundVar()
-	}
-	return k + vl.Len(), substitution, newVarList
-}
-
-func alphaConvertTerm(t AST.Term, substitution map[string]AST.Var) AST.Term {
-	switch nt := t.(type) {
-	case AST.Var:
-		if val, ok := substitution[nt.GetName()]; ok {
-			return val
-		} else {
-			return nt
-		}
-	case AST.Fun:
-		mappedTerms := Lib.ListMap(nt.GetArgs(),
-			func(trm AST.Term) AST.Term {
-				return alphaConvertTerm(trm, substitution)
-			})
-		return AST.MakeFun(
-			nt.GetID(),
-			nt.GetTyArgs(),
-			mappedTerms,
-		)
-	}
-	return t
 }

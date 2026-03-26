@@ -39,6 +39,7 @@ package Typing
 
 import (
 	"fmt"
+
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
@@ -47,14 +48,18 @@ import (
 var label = "typing"
 
 func TypeCheck(form AST.Form) bool {
-	debug(Lib.MkLazy(func() string { return fmt.Sprintf("Launching type checking on %s", form.ToString()) }))
+	debug(
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Launching type checking on %s", form.ToString()) },
+		),
+	)
 
-	return typecheckForm(emptyCon(), form)
+	return typecheckForm(emptyCtx(), form)
 }
 
-func typecheckForm(con Con, form AST.Form) bool {
+func typecheckForm(ctx Ctx, form AST.Form) bool {
 	debug(Lib.MkLazy(func() string {
-		return fmt.Sprintf("Trying to type-check: %s |- %s : o", con.toString(), form.ToString())
+		return fmt.Sprintf("Trying to type-check: %s |- %s : o", ctx.toString(), form.ToString())
 	}))
 
 	switch f := form.(type) {
@@ -62,7 +67,7 @@ func typecheckForm(con Con, form AST.Form) bool {
 		return true
 	case AST.Pred:
 		return checkFunctional(
-			con,
+			ctx,
 			f.GetID().GetName(),
 			f.GetTyArgs(),
 			f.GetArgs(),
@@ -71,7 +76,7 @@ func typecheckForm(con Con, form AST.Form) bool {
 
 	case AST.Not, AST.And, AST.Or, AST.Imp, AST.Equ:
 		return typecheckRec(
-			con,
+			ctx,
 			f.GetChildFormulas(),
 			Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
 			Lib.NewList[AST.Ty](),
@@ -79,7 +84,7 @@ func typecheckForm(con Con, form AST.Form) bool {
 
 	case AST.All:
 		return typecheckRec(
-			con.addTypedVars(f.GetVarList()),
+			ctx.add(f.Ty()),
 			Lib.MkListV(f.GetForm()),
 			Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
 			Lib.NewList[AST.Ty](),
@@ -87,7 +92,7 @@ func typecheckForm(con Con, form AST.Form) bool {
 
 	case AST.Ex:
 		return typecheckRec(
-			con.addTypedVars(f.GetVarList()),
+			ctx.add(f.Ty()),
 			Lib.MkListV(f.GetForm()),
 			Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
 			Lib.NewList[AST.Ty](),
@@ -101,35 +106,39 @@ func typecheckForm(con Con, form AST.Form) bool {
 	return false
 }
 
-func typecheckTerm(con Con, term AST.Term, ty AST.Ty) bool {
+func typecheckTerm(ctx Ctx, term AST.Term, ty AST.Ty) bool {
 	debug(Lib.MkLazy(func() string {
-		return fmt.Sprintf("Trying to type-check: %s |- %s : %s", con.toString(), term.ToString(), ty.ToString())
+		return fmt.Sprintf(
+			"Trying to type-check: %s |- %s : %s",
+			ctx.toString(),
+			term.ToString(),
+			ty.ToString(),
+		)
 	}))
 
 	switch t := term.(type) {
 	case AST.Var:
-		if !con.contains(t.GetName(), ty) {
+		if t.Index() >= ctx.Len() {
 			Glob.Fatal(
 				label,
 				fmt.Sprintf(
-					"Variable %s is either not in the context or should not have type %s\nContext: %s",
-					t.GetName(),
-					ty.ToString(),
-					con.toString(),
+					"Variable index too high for the context: expected at most %d, got %d",
+					ctx.Len()-1,
+					t.Index(),
 				))
 			return false
 		}
 
 		return typecheckRec(
-			con,
+			ctx,
 			Lib.NewList[AST.Form](),
 			Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
-			Lib.MkListV(ty),
+			Lib.MkListV(ctx.At(t.Index())),
 		)
 
 	case AST.Fun:
 		return checkFunctional(
-			con,
+			ctx,
 			t.GetID().GetName(),
 			t.GetTyArgs(),
 			t.GetArgs(),
@@ -139,27 +148,28 @@ func typecheckTerm(con Con, term AST.Term, ty AST.Ty) bool {
 
 	Glob.Anomaly(
 		label,
-		fmt.Sprintf("Only bound variables and functions should be typechecked, but found %s", term.ToString()),
+		fmt.Sprintf(
+			"Only bound variables and functions should be typechecked, but found %s",
+			term.ToString(),
+		),
 	)
 	return false
 }
 
-func typecheckType(con Con, ty AST.Ty) bool {
+func typecheckType(ctx Ctx, ty AST.Ty) bool {
 	debug(Lib.MkLazy(func() string {
 		return fmt.Sprintf("Trying to type-check: %s |- %s : %s",
-			con.toString(), ty.ToString(), AST.TType().ToString())
+			ctx.toString(), ty.ToString(), AST.TType().ToString())
 	}))
-
 	switch nty := ty.(type) {
 	case AST.TyBound:
-		if !con.contains(nty.GetName(), AST.TType()) {
-			Glob.PrintInfo("Context", con.toString())
+		if nty.Index() >= ctx.Len() || !ctx.At(nty.Index()).Equals(AST.TType()) {
 			Glob.Fatal(
 				label,
 				fmt.Sprintf(
-					"Variable %s is either not in the context or is not a type variable\nContext: %s",
-					nty.ToString(),
-					con.toString(),
+					"Variable %d is either not in the context or is not a type variable\nContext: %s",
+					nty.Index(),
+					ctx.toString(),
 				))
 			return false
 		}
@@ -190,7 +200,7 @@ func typecheckType(con Con, ty AST.Ty) bool {
 			}
 
 			return typecheckRec(
-				con,
+				ctx,
 				Lib.NewList[AST.Form](),
 				Lib.NewList[Lib.Pair[AST.Term, AST.Ty]](),
 				nty.Args(),
@@ -212,19 +222,22 @@ func typecheckType(con Con, ty AST.Ty) bool {
 }
 
 func checkFunctional(
-	con Con,
+	ctx Ctx,
 	name string,
 	tys Lib.List[AST.Ty],
 	args Lib.List[AST.Term],
 	debug_str Lib.Lazy[string],
 ) bool {
+	debug(Lib.MkLazy(func() string {
+		return "Cheking a functional type (predicate or function)..."
+	}))
+
 	oty := QueryEnvInstance(name, tys)
 	switch ty := oty.(type) {
 	case Lib.Some[AST.Ty]:
 		debug_low_level(Lib.MkLazy(func() string {
 			return fmt.Sprintf("%s has a functional scheme instantiated to %s", debug_str.Run(), ty.Val.ToString())
 		}))
-
 		instantiated_ty := AST.GetArgsTy(ty.Val)
 		debug_low_level(Lib.MkLazy(func() string {
 			return fmt.Sprintf("Arguments will be typechecked against: [%s]",
@@ -239,7 +252,7 @@ func checkFunctional(
 		)
 		tys.Append(AST.GetOutTy(ty.Val))
 
-		return typecheckRec(con, Lib.NewList[AST.Form](), terms_checker, tys)
+		return typecheckRec(ctx, Lib.NewList[AST.Form](), terms_checker, tys)
 
 	case Lib.None[AST.Ty]:
 		Glob.Fatal(
@@ -247,11 +260,13 @@ func checkFunctional(
 			fmt.Sprintf("Type of %s not found in the global environment", debug_str.Run()),
 		)
 	}
+
+	Glob.Anomaly(label, "Reached an impossible case")
 	return false
 }
 
 func typecheckRec(
-	con Con,
+	ctx Ctx,
 	forms Lib.List[AST.Form],
 	typed_terms Lib.List[Lib.Pair[AST.Term, AST.Ty]],
 	tys Lib.List[AST.Ty],
@@ -267,21 +282,21 @@ func typecheckRec(
 	for _, form := range forms.GetSlice() {
 		loop_form := form
 		calls = append(calls, func(outchan chan bool) {
-			outchan <- typecheckForm(con, loop_form)
+			outchan <- typecheckForm(ctx, loop_form)
 		})
 	}
 
 	for _, typed_term := range typed_terms.GetSlice() {
 		loop_term := typed_term
 		calls = append(calls, func(outchan chan bool) {
-			outchan <- typecheckTerm(con, loop_term.Fst, loop_term.Snd)
+			outchan <- typecheckTerm(ctx, loop_term.Fst, loop_term.Snd)
 		})
 	}
 
 	for _, ty := range tys.GetSlice() {
 		loop_ty := ty
 		calls = append(calls, func(outchan chan bool) {
-			outchan <- typecheckType(con, loop_ty)
+			outchan <- typecheckType(ctx, loop_ty)
 		})
 	}
 

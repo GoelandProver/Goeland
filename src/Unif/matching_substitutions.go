@@ -284,7 +284,7 @@ func (s MixMatchSubstitutions) toMatching() MatchingSubstitutions {
 	}
 
 	Glob.Anomaly("unification", "reached an unreachable case")
-	return MakeMatchingSubstitutions(AST.MakerTop(), MakeEmptySubstitution())
+	return MakeMatchingSubstitutions(AST.MakeTop(), MakeEmptySubstitution())
 }
 
 func (s MixMatchSubstitutions) toMixed() MixedSubstitutions {
@@ -300,7 +300,7 @@ func (s MixedTermSubstitutions) Term() AST.Term { return s.term }
 
 func (s MixedTermSubstitutions) ToString() string {
 	substs_list := Lib.MkListV(s.substs...)
-	return s.term.ToString() + " {" + Lib.ListToString(substs_list, Lib.WithEmpty("")) + "}"
+	return s.term.ToString() + " {" + Lib.ListToString(substs_list, ", ", "") + "}"
 }
 
 func (s MixMatchSubstitutions) toMixedTerm() MixedTermSubstitutions {

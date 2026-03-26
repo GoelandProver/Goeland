@@ -88,7 +88,11 @@ func pretype(con Context, terms []Parser.PTerm) []Lib.Pair[Parser.PTerm, Parser.
 		}
 
 		if !typed {
-			debug_low_level(Lib.MkLazy(func() string { return "Term is not a defined term, assigning default type" }))
+			debug_low_level(
+				Lib.MkLazy(
+					func() string { return "Term is not a defined term, assigning default type" },
+				),
+			)
 			tys = append(tys, Lib.MkPair(term, defaultType))
 		}
 
@@ -159,11 +163,23 @@ func parserTermToType(pterm Parser.PTerm) Parser.PType {
 	return nil
 }
 
-func pretypeVars(vars []Lib.Pair[string, Parser.PAtomicType]) Lib.List[AST.TypedVar] {
-	res := Lib.MkList[AST.TypedVar](len(vars))
+func pretypeVars(loc_ctx Context, vars []Lib.Pair[string, Parser.PAtomicType]) Lib.List[AST.Ty] {
+	res := Lib.MkList[AST.Ty](len(vars))
 	for i, v := range vars {
-		ty := elaborateType(v.Snd.(Parser.PType), v.Snd.(Parser.PType), false)
-		res.Upd(i, AST.MakerTypedVar(v.Fst, ty))
+		vs := Lib.ListMap(
+			Lib.MkListV(vars[:i]...),
+			func(p Lib.Pair[string, Parser.PAtomicType]) Lib.Pair[string, Parser.PType] {
+				return Lib.MkPair(p.Fst, p.Snd.(Parser.PType))
+			},
+		)
+		res.Upd(
+			i,
+			elaborateType(
+				append(loc_ctx, vs.GetSlice()...),
+				v.Snd.(Parser.PType),
+				v.Snd.(Parser.PType),
+			),
+		)
 	}
 	return res
 }

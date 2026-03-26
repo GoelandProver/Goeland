@@ -52,7 +52,6 @@ type Skolemization interface {
 	Skolemize(
 		AST.Form,
 		AST.Form,
-		AST.TypedVar,
 		Lib.Set[AST.Meta],
 	) (Skolemization, AST.Form)
 }

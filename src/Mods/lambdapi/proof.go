@@ -256,31 +256,18 @@ func getFormattedTerm(term AST.Term) string {
 }
 
 func getTypeOfFirstBoundVar(form AST.Form) AST.Ty {
-	getTySafe := func(var_list Lib.List[AST.TypedVar]) AST.Ty {
-		if var_list.Empty() {
-			debug(Lib.MkLazy(func() string {
-				return fmt.Sprintf(
-					"Formula %s has no bound variable, cannot get its type",
-					form.ToString(),
-				)
-			}))
-			Glob.Anomaly("LambdaPi", "No bound variable.")
-		}
-		return var_list.At(0).GetTy()
-	}
-
 	switch f := form.(type) {
 	case AST.Not:
 		switch nf := f.GetForm().(type) {
 		case AST.All:
-			return getTySafe(nf.GetVarList())
+			return nf.Ty()
 		case AST.Ex:
-			return getTySafe(nf.GetVarList())
+			return nf.Ty()
 		}
 	case AST.All:
-		return getTySafe(f.GetVarList())
+		return f.Ty()
 	case AST.Ex:
-		return getTySafe(f.GetVarList())
+		return f.Ty()
 	}
 
 	debug(Lib.MkLazy(func() string {
@@ -295,13 +282,14 @@ func getTypeOfFirstBoundVar(form AST.Form) AST.Ty {
 
 // Gets the child formula as a λ (bound_var : ty), P
 func getFormattedChild(form AST.Form) string {
-	format := func(var_list Lib.List[AST.TypedVar], f AST.Form, maker func(Lib.List[AST.TypedVar], AST.Form) AST.Form) string {
-		f = maker(var_list.Slice(1, var_list.Len()), f)
+	format := func(ty AST.Ty, f AST.Form) string {
 		return fmt.Sprintf(
 			"λ (%s : %s), %s",
-			var_list.At(0).GetName(),
-			var_list.At(0).GetTy().ToString(),
-			f.ToString(),
+			AST.PrettyPrinter.StrBound(
+				0,
+			), // this function is the same for every printer. Maybe it shouldn't be bound to a specific printer.
+			ty.ToString(),
+			AST.FormToStringOffset(f),
 		)
 	}
 
@@ -309,34 +297,14 @@ func getFormattedChild(form AST.Form) string {
 	case AST.Not:
 		switch nf := f.GetForm().(type) {
 		case AST.All:
-			return format(nf.GetVarList(), nf.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
-				if !vl.Empty() {
-					f = AST.MakeAll(vl, f)
-				}
-				return f
-			})
+			return format(nf.Ty(), nf.GetForm())
 		case AST.Ex:
-			return format(nf.GetVarList(), nf.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
-				if !vl.Empty() {
-					f = AST.MakeEx(vl, f)
-				}
-				return f
-			})
+			return format(nf.Ty(), nf.GetForm())
 		}
 	case AST.All:
-		return format(f.GetVarList(), f.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
-			if !vl.Empty() {
-				f = AST.MakeAll(vl, f)
-			}
-			return f
-		})
+		return format(f.Ty(), f.GetForm())
 	case AST.Ex:
-		return format(f.GetVarList(), f.GetForm(), func(vl Lib.List[AST.TypedVar], f AST.Form) AST.Form {
-			if !vl.Empty() {
-				f = AST.MakeEx(vl, f)
-			}
-			return f
-		})
+		return format(f.Ty(), f.GetForm())
 	}
 
 	Glob.Anomaly("LambdaPi", "Not a quantifier formula")

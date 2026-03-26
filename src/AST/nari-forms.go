@@ -30,50 +30,60 @@
 * knowledge of the CeCILL license and that you accept its terms.
 **/
 
-package Sko
+/**
+ * This file implements n-ary formulas (or, and)
+ **/
 
-import (
-	"sync"
+package AST
 
-	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Glob"
-	"github.com/GoelandProver/Goeland/Lib"
-)
+import "github.com/GoelandProver/Goeland/Lib"
 
-/** This file provides the inner Skolemization method.
- *
- * See the [skolemisation] file of the package [Core] for more information.
-**/
-
-type InnerSkolemization struct {
-	existingSymbols Lib.Set[AST.Id]
-	mu              *sync.Mutex
+type nari_form struct {
+	subforms Lib.List[Form]
 }
 
-func MkInnerSkolemization() InnerSkolemization {
-	return InnerSkolemization{
-		existingSymbols: Lib.EmptySet[AST.Id](),
-		mu:              &sync.Mutex{},
-	}
+func makeNAriForm(subforms Lib.List[Form]) nari_form {
+	return nari_form{subforms}
 }
 
-func (sko InnerSkolemization) Skolemize(
-	_, form AST.Form,
-	_ Lib.Set[AST.Meta],
-) (Skolemization, AST.Form) {
-	sko.mu.Lock()
-	symbol := genFreshSymbol(&sko.existingSymbols)
-	sko.mu.Unlock()
+func (f nari_form) GetMetas() Lib.Set[Meta] {
+	return listUnion(f.subforms, Form.GetMetas)
+}
 
-	internalMetas := form.GetMetas().Elements()
+func (f nari_form) GetSubTerms() Lib.Set[Term] {
+	return listUnion(f.subforms, Form.GetSubTerms)
 
-	skolemFunc := AST.MakeFun(
-		symbol,
-		Lib.NewList[AST.Ty](),
-		Lib.ListMap(internalMetas, Glob.To[AST.Term]),
+}
+
+func (f nari_form) GetSymbols() Lib.Set[Id] {
+	return listUnion(f.subforms, Form.GetSymbols)
+}
+
+func (f nari_form) equals(oth nari_form) bool {
+	return Lib.ListEquals(f.subforms, oth.subforms)
+}
+
+func (f nari_form) copy() nari_form {
+	return makeNAriForm(Lib.ListCpy(f.subforms))
+}
+
+func (f nari_form) toString(n int, conn Connective) string {
+	return f.subforms.ToString(
+		func(f Form) string { return printer.Str(printer.SurroundChild(f.toString(n))) },
+		printer.StrConn(conn), "",
 	)
+}
 
-	skolemizedForm := form.Instantiate(0, skolemFunc)
+func (f nari_form) applyOnArgs(g func(Form) Form) nari_form {
+	return makeNAriForm(
+		Lib.ListMap(f.subforms, g),
+	)
+}
 
-	return sko, skolemizedForm
+func (f nari_form) GetChildFormulas() Lib.List[Form] {
+	return f.subforms
+}
+
+func (f nari_form) less(g nari_form) bool {
+	return bLess(f.subforms, g.subforms)
 }

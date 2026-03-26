@@ -44,96 +44,117 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-type TyGenVar interface {
-	isGenVar()
-}
-
 type Ty interface {
 	Lib.Stringable
-	Lib.Comparable
+	Lib.Ordered
 	Lib.Copyable[Ty]
+
 	isTy()
-	SubstTy(TyGenVar, Ty) Ty
+	Instantiate(TyBound, Ty) Ty
+	SubstTy(TyMeta, Ty) Ty
+	toString(int) string
 }
 
-// Internal, shouldn't get out so no upper case
-type tyVar struct {
-	repr string
-}
+type TyBound int
 
-func (tyVar) isTy() {}
-func (v tyVar) ToString() string {
-	return printer.StrBound(v.repr)
+func (v TyBound) toString(i int) string {
+	return printer.StrBoundTy(i - int(v) - 1)
 }
-func (v tyVar) Equals(oth any) bool {
-	if ov, ok := oth.(tyVar); ok {
-		return v.repr == ov.repr
-	}
-	return false
-}
-func (v tyVar) Copy() Ty { return tyVar{v.repr} }
-
-func (v tyVar) SubstTy(TyGenVar, Ty) Ty { return v }
-
-type TyBound struct {
-	name string
-}
-
 func (TyBound) isTy()     {}
 func (TyBound) isGenVar() {}
-func (b TyBound) ToString() string {
-	return printer.StrBound(b.name)
+func (v TyBound) ToString() string {
+	return v.toString(0)
 }
 func (b TyBound) Equals(oth any) bool {
 	if bv, ok := oth.(TyBound); ok {
-		return b.name == bv.name
+		return b == bv
 	}
 	return false
 }
-func (b TyBound) Copy() Ty        { return TyBound{b.name} }
-func (b TyBound) GetName() string { return b.name }
+func (b TyBound) Copy() Ty { return b }
+func (b TyBound) GetName() string {
+	Glob.Anomaly("term.GetName()", "A bound variable is nameless")
+	return ""
+}
 
-func (b TyBound) SubstTy(old TyGenVar, new Ty) Ty {
-	if b.Equals(old) {
+func (v TyBound) Instantiate(old TyBound, new Ty) Ty {
+	if v.Equals(old) {
 		return new
 	}
-	return b
+	return v
 }
+
+func (b TyBound) SubstTy(TyMeta, Ty) Ty { return b }
+
+func (v TyBound) Increase() TyBound { return TyBound(int(v) + 1) }
+
+func (v TyBound) Less(oth any) bool {
+	if ty, is_ty := oth.(Ty); is_ty {
+		switch t := ty.(type) {
+		case TyBound:
+			return v < t
+		default:
+			return true
+		}
+	}
+	return false
+}
+
+func (v TyBound) Index() int { return int(v) }
 
 type TyMeta struct {
+	formula int // for compatibility with term metas
 	index   int
 	name    string
-	formula int // for compatibility with term metas
 }
 
-func (TyMeta) isTy()     {}
-func (TyMeta) isGenVar() {}
-func (m TyMeta) ToString() string {
+func (TyMeta) isTy() {}
+func (m TyMeta) toString(int) string {
 	return printer.StrMeta(m.name, m.index)
+}
+func (m TyMeta) ToString() string {
+	return m.toString(0)
 }
 func (m TyMeta) Equals(oth any) bool {
 	if om, ok := oth.(TyMeta); ok {
-		return m.name == om.name && m.formula == om.formula
+		return m.name == om.name && m.index == om.index
 	}
 	return false
 }
-func (m TyMeta) Copy() Ty { return TyMeta{m.index, m.name, m.formula} }
+func (m TyMeta) Copy() Ty { return TyMeta{m.formula, m.index, m.name} }
 
-func (m TyMeta) SubstTy(v TyGenVar, new Ty) Ty {
+func (m TyMeta) Instantiate(TyBound, Ty) Ty { return m }
+func (m TyMeta) SubstTy(v TyMeta, new Ty) Ty {
 	if m.Equals(v) {
 		return new
 	}
 	return m
 }
 
-func (m TyMeta) ToTermMeta() Meta { return Meta{m.index, 0, m.name, m.formula, tType} }
+func (m TyMeta) ToTermMeta() Meta { return Meta{m.formula, m.index, m.name, tType} }
 
 func TyMetaFromMeta(m Meta) TyMeta {
 	return TyMeta{
+		m.formula,
 		m.index,
 		m.name,
-		m.formula,
 	}
+}
+
+func (m TyMeta) Less(oth any) bool {
+	if ty, is_ty := oth.(Ty); is_ty {
+		switch t := ty.(type) {
+		case TyBound:
+			return false
+		case TyMeta:
+			return m.name < t.name ||
+				(m.name == t.name && m.index < t.index) ||
+				(m.name == t.name && m.index == t.index && m.formula < t.formula)
+		default:
+			return true
+		}
+	}
+	return false
 }
 
 // Type constructors, e.g., list, option, ...
@@ -145,14 +166,21 @@ type TyConstr struct {
 
 func (TyConstr) isTy() {}
 
-func (c TyConstr) ToString() string {
+func (c TyConstr) toString(n int) string {
 	if c.args.Empty() {
 		return printer.StrTy(c.symbol)
 	}
 	return fmt.Sprintf("%s%s",
 		printer.StrTy(c.symbol),
-		printer.SurroundArgs(Lib.ListToString(c.args, printer.StrConn(SepArgs), "")),
+		printer.SurroundArgs(
+			c.args.ToString(func(t Ty) string { return t.toString(n) },
+				printer.StrConn(SepArgs), ""),
+		),
 	)
+}
+
+func (c TyConstr) ToString() string {
+	return c.toString(0)
 }
 
 func (c TyConstr) Equals(oth any) bool {
@@ -175,11 +203,31 @@ func (c TyConstr) Args() Lib.List[Ty] {
 	return c.args
 }
 
-func (c TyConstr) SubstTy(old TyGenVar, new Ty) Ty {
-	return TyConstr{
-		c.symbol,
-		Lib.ListMap(c.args, func(t Ty) Ty { return t.SubstTy(old, new) }),
+func (c TyConstr) applyOnArgs(f func(t Ty) Ty) TyConstr {
+	return TyConstr{c.symbol, Lib.ListMap(c.args, f)}
+}
+
+func (c TyConstr) Instantiate(old TyBound, new Ty) Ty {
+	return c.applyOnArgs(func(t Ty) Ty { return t.Instantiate(old, new) })
+}
+
+func (c TyConstr) SubstTy(old TyMeta, new Ty) Ty {
+	return c.applyOnArgs(func(t Ty) Ty { return t.SubstTy(old, new) })
+}
+
+func (c TyConstr) Less(oth any) bool {
+	if ty, is_ty := oth.(Ty); is_ty {
+		switch t := ty.(type) {
+		case TyBound, TyMeta:
+			return false
+		case TyConstr:
+			return c.symbol < t.symbol ||
+				(c.symbol == t.symbol && Lib.ListLess(c.args, t.args))
+		default:
+			return true
+		}
 	}
+	return false
 }
 
 type TyProd struct {
@@ -188,11 +236,15 @@ type TyProd struct {
 
 func (TyProd) isTy() {}
 
-func (p TyProd) ToString() string {
+func (p TyProd) toString(n int) string {
 	return p.args.ToString(
-		func(ty Ty) string { return printer.Str(printer.SurroundChild(ty.ToString())) },
+		func(ty Ty) string { return printer.Str(printer.SurroundChild(ty.toString(n))) },
 		printer.StrConn(ConnProd), "",
 	)
+}
+
+func (p TyProd) ToString() string {
+	return p.toString(0)
 }
 
 func (p TyProd) GetTys() Lib.List[Ty] {
@@ -210,10 +262,30 @@ func (p TyProd) Copy() Ty {
 	return TyProd{Lib.ListCpy(p.args)}
 }
 
-func (p TyProd) SubstTy(old TyGenVar, new Ty) Ty {
-	return TyProd{
-		Lib.ListMap(p.args, func(t Ty) Ty { return t.SubstTy(old, new) }),
+func (c TyProd) applyOnArgs(f func(t Ty) Ty) TyProd {
+	return TyProd{Lib.ListMap(c.args, f)}
+}
+
+func (p TyProd) Instantiate(old TyBound, new Ty) Ty {
+	return p.applyOnArgs(func(t Ty) Ty { return t.Instantiate(old, new) })
+}
+
+func (p TyProd) SubstTy(old TyMeta, new Ty) Ty {
+	return p.applyOnArgs(func(t Ty) Ty { return t.SubstTy(old, new) })
+}
+
+func (p TyProd) Less(oth any) bool {
+	if ty, is_ty := oth.(Ty); is_ty {
+		switch t := ty.(type) {
+		case TyBound, TyMeta, TyConstr:
+			return false
+		case TyProd:
+			return Lib.ListLess(p.args, t.args)
+		default:
+			return true
+		}
 	}
+	return false
 }
 
 type TyFunc struct {
@@ -221,13 +293,19 @@ type TyFunc struct {
 }
 
 func (TyFunc) isTy() {}
-func (f TyFunc) ToString() string {
+
+func (f TyFunc) toString(n int) string {
 	return fmt.Sprintf("%s %s %s",
-		printer.Str(printer.SurroundChild(f.in.ToString())),
+		printer.Str(printer.SurroundChild(f.in.toString(n))),
 		printer.StrConn(ConnMap),
-		printer.Str(printer.SurroundChild(f.out.ToString())),
+		printer.Str(printer.SurroundChild(f.out.toString(n))),
 	)
 }
+
+func (f TyFunc) ToString() string {
+	return f.toString(0)
+}
+
 func (f TyFunc) Equals(oth any) bool {
 	if of, ok := oth.(TyFunc); ok {
 		return f.in.Equals(of.in) && f.out.Equals(of.out)
@@ -239,46 +317,94 @@ func (f TyFunc) Copy() Ty {
 	return TyFunc{f.in.Copy(), f.out.Copy()}
 }
 
-func (f TyFunc) SubstTy(old TyGenVar, new Ty) Ty {
-	return TyFunc{f.in.SubstTy(old, new), f.out.SubstTy(old, new)}
+func (f TyFunc) applyOnArgs(g func(Ty) Ty) TyFunc {
+	return TyFunc{g(f.in), g(f.out)}
+}
+
+func (f TyFunc) Instantiate(old TyBound, new Ty) Ty {
+	return f.applyOnArgs(func(t Ty) Ty { return t.Instantiate(old, new) })
+}
+
+func (f TyFunc) SubstTy(old TyMeta, new Ty) Ty {
+	return f.applyOnArgs(func(t Ty) Ty { return t.SubstTy(old, new) })
+}
+
+func (f TyFunc) Less(oth any) bool {
+	if ty, is_ty := oth.(Ty); is_ty {
+		switch t := ty.(type) {
+		case TyBound, TyMeta, TyConstr, TyProd:
+			return false
+		case TyFunc:
+			return f.in.Less(t.in) ||
+				(f.in.Equals(t.in) && f.out.Less(t.out))
+		default:
+			return true
+		}
+	}
+	return false
 }
 
 type TyPi struct {
-	vars Lib.List[string]
-	ty   Ty
+	ty Ty
 }
 
 func (TyPi) isTy() {}
-func (p TyPi) ToString() string {
+
+func (p TyPi) toString(n int) string {
+	vars := Lib.MkListV(n)
+	n += 1
+
+	for Glob.Is[TyPi](p.ty) {
+		p = Glob.To[TyPi](p.ty)
+		vars = vars.Push(n)
+		n += 1
+	}
+
 	return fmt.Sprintf(
 		"%s %s%s%s",
 		printer.StrConn(ConnPi),
 		printer.SurroundQuantified(
-			p.vars.ToString(PrinterIdentity, printer.StrConn(SepTyVars), ""),
+			vars.ToString(printer.StrBoundTy, printer.StrConn(SepTyVars), ""),
 		),
 		printer.StrConn(SepVarsForm),
-		printer.Str(p.ty.ToString()),
+		printer.Str(p.ty.toString(n)),
 	)
+}
+
+func (p TyPi) ToString() string {
+	return p.toString(0)
 }
 func (p TyPi) Equals(oth any) bool {
 	if op, ok := oth.(TyPi); ok {
-		cmp := func(x, y string) bool { return x == y }
-		return p.vars.Equals(cmp, p.vars, op.vars) &&
-			p.ty.Equals(op.ty)
+		return p.ty.Equals(op.ty)
 	}
 	return false
 }
 
 func (p TyPi) Copy() Ty {
-	return TyPi{p.vars.Copy(func(x string) string { return x }), p.ty.Copy()}
+	return TyPi{p.ty.Copy()}
 }
 
-func (p TyPi) SubstTy(old TyGenVar, new Ty) Ty {
-	return TyPi{p.vars, p.ty.SubstTy(old, new)}
+func (p TyPi) Instantiate(old TyBound, new Ty) Ty {
+	return TyPi{p.ty.Instantiate(old.Increase(), new)}
 }
 
-func (p TyPi) VarsLen() int {
-	return p.vars.Len()
+func (p TyPi) SubstTy(old TyMeta, new Ty) Ty {
+	return TyPi{p.ty.SubstTy(old, new)}
+}
+
+func (p TyPi) Less(oth any) bool {
+	if ty, is_ty := oth.(Ty); is_ty {
+		switch t := ty.(type) {
+		case TyBound, TyMeta, TyConstr, TyProd, TyFunc:
+			return false
+		case TyPi:
+			return p.ty.Less(t.ty)
+		default:
+			return true
+		}
+	}
+	return false
 }
 
 func (p TyPi) Ty() Ty {
@@ -287,20 +413,16 @@ func (p TyPi) Ty() Ty {
 
 // Makers
 
-func MkTyVar(repr string) Ty {
-	return tyVar{repr}
+func MkTyBV(id int) Ty {
+	return TyBound(id)
 }
 
-func MkTyBV(name string) Ty {
-	return TyBound{name}
-}
-
-func MkTyMeta(name string, formula int) Ty {
+func MkTyMeta(formula int) Ty {
 	lock_term.Lock()
 	index := meta_id
 	meta_id++
 	lock_term.Unlock()
-	meta := TyMeta{index, name, formula}
+	meta := TyMeta{formula, index, fmt.Sprintf("MT%d", index)}
 	return meta
 }
 
@@ -320,91 +442,8 @@ func MkTyFunc(in, out Ty) Ty {
 	return TyFunc{in, out}
 }
 
-func MkTyPi(vars Lib.List[string], ty Ty) Ty {
-	return TyPi{vars, ty}
-}
-
-// Deprecated: use MkTyBV instead
-func MakerTyBV(name string) Ty {
-	return MkTyBV(name)
-}
-
-func InstantiateTy(ty Ty, instance Lib.List[Ty]) Ty {
-	fatal := func(expected int) {
-		Glob.Fatal(
-			"Ty.Instantiate",
-			fmt.Sprintf(
-				"On instantiation of %s: given instance %s does not have the right number of arguments (expected %d)",
-				ty.ToString(),
-				Lib.ListToString(instance, ", ", "(empty instance)"),
-				expected,
-			),
-		)
-	}
-
-	switch rty := ty.(type) {
-	case TyConstr, TyFunc:
-		if !instance.Empty() {
-			fatal(0)
-		}
-
-		return ty
-	case TyPi:
-		if instance.Len() != rty.vars.Len() {
-			fatal(rty.vars.Len())
-		}
-
-		instanceMap := make(map[string]Ty)
-		for i, ity := range instance.GetSlice() {
-			instanceMap[rty.vars.At(i)] = ity
-		}
-		return instantiateTyRec(rty.ty, ty, instanceMap)
-	}
-	Glob.Anomaly(
-		"Ty.Instantiate",
-		fmt.Sprintf("Tried to instantiate %s which is not a Pi-type", ty.ToString()),
-	)
-	return nil
-}
-
-// source type is here for logging
-func instantiateTyRec(ty, source Ty, instance map[string]Ty) Ty {
-	aux := func(ty Ty) Ty {
-		return instantiateTyRec(ty, source, instance)
-	}
-
-	switch rty := ty.(type) {
-	case tyVar:
-		if val, ok := instance[rty.repr]; ok {
-			return val
-		}
-		Glob.Anomaly(
-			"Ty.Instantiate",
-			fmt.Sprintf("Under type %s: type variable %s has no instance", source.ToString(), rty.repr),
-		)
-
-	case TyConstr:
-		return MkTyConstr(
-			rty.symbol,
-			Lib.ListMap(rty.args, aux),
-		)
-
-	case TyProd:
-		return MkTyProd(Lib.ListMap(rty.args, aux))
-
-	case TyFunc:
-		return MkTyFunc(aux(rty.in), aux(rty.out))
-	}
-
-	Glob.Anomaly(
-		"Ty.Instantiate",
-		fmt.Sprintf(
-			"In %s, trying to instantiate %s which is illegal",
-			source.ToString(),
-			ty.ToString(),
-		),
-	)
-	return nil
+func MkTyPi(ty Ty) Ty {
+	return TyPi{ty}
 }
 
 func GetArgsTy(ty Ty) Lib.List[Ty] {
@@ -419,6 +458,7 @@ func GetArgsTy(ty Ty) Lib.List[Ty] {
 			return nty.args
 		}
 	}
+
 	Glob.Anomaly(
 		"Ty.GetArgs",
 		fmt.Sprintf(
@@ -480,7 +520,7 @@ func TermToTy(trm Term) Ty {
 		return TyMetaFromMeta(t)
 	case Fun:
 		return MkTyConstr(
-			t.GetID().name,
+			t.GetID().GetName(),
 			Lib.ListMap(t.args, TermToTy),
 		)
 	}
@@ -512,4 +552,15 @@ func MkDefaultPredType(number_of_arguments int) Ty {
 
 func MkDefaultFunctionType(number_of_arguments int) Ty {
 	return mkDefaultFunctionalType(number_of_arguments, TIndividual())
+}
+
+func InstantiateTy(ty Ty, instance Lib.List[Ty]) Lib.Option[Ty] {
+	for _, t := range instance.GetSlice() {
+		if ty0, is_pi := ty.(TyPi); is_pi {
+			ty = ty0.ty.Instantiate(0, t)
+		} else {
+			return Lib.MkNone[Ty]()
+		}
+	}
+	return Lib.MkSome(ty)
 }

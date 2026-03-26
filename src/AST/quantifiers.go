@@ -39,58 +39,88 @@ package AST
 import (
 	"fmt"
 
+	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
 type quantifier struct {
-	metas   Lib.Cache[Lib.Set[Meta], quantifier]
-	varList Lib.List[TypedVar]
+	ty      Ty
 	subForm Form
 	symbol  Connective
 }
 
 func makeQuantifier(
-	vars Lib.List[TypedVar],
+	ty Ty,
 	subForm Form,
-	metas Lib.Set[Meta],
 	symbol Connective,
 ) quantifier {
 	return quantifier{
-		Lib.MkCache(metas, quantifier.forceGetMetas),
-		vars,
+		ty,
 		subForm,
 		symbol,
 	}
-}
-
-func (q quantifier) GetVarList() Lib.List[TypedVar] {
-	return Lib.ListCpy(q.varList)
 }
 
 func (q quantifier) GetForm() Form {
 	return q.subForm.Copy()
 }
 
-func (q quantifier) forceGetMetas() Lib.Set[Meta] {
+func (q quantifier) GetMetas() Lib.Set[Meta] {
 	return q.subForm.GetMetas()
 }
 
-func (q quantifier) GetMetas() Lib.Set[Meta] {
-	return q.metas.Get(q)
+func (q quantifier) Ty() Ty {
+	return q.ty
 }
 
-func (q quantifier) ToString() string {
+func (q quantifier) toString(n int) string {
+	vars := Lib.NewList[Lib.Pair[int, string]]()
+	var test func(quantifier) bool
+	var next func(quantifier) quantifier
+
+	switch q.symbol {
+	case ConnAll:
+		test = func(q quantifier) bool { return Glob.Is[All](q.subForm) }
+		next = func(q quantifier) quantifier { return q.subForm.(All).quantifier }
+	case ConnEx:
+		test = func(q quantifier) bool { return Glob.Is[Ex](q.subForm) }
+		next = func(q quantifier) quantifier { return q.subForm.(Ex).quantifier }
+	default:
+		Glob.Anomaly("formula", "Expected quantifier to be forall or exists")
+	}
+
+	vars = vars.Push(Lib.MkPair(n, q.ty.toString(n)))
+	n += 1
+
+	for test(q) {
+		q = next(q)
+		vars = vars.Push(Lib.MkPair(n, q.ty.toString(n)))
+		n += 1
+	}
+
 	return printer.Str(fmt.Sprintf(
 		"%s %s%s%s",
 		printer.StrConn(q.symbol),
 		printer.SurroundQuantified(
-			Lib.ListMap(q.varList, func(t TypedVar) Lib.Pair[string, Ty] {
-				return Lib.MkPair(t.name, t.ty)
-			}).ToString(printer.StrTyVar, printer.StrConn(SepTyVars), ""),
+			vars.ToString(
+				func(p Lib.Pair[int, string]) string {
+					if p.Snd == tType.ToString() {
+						return printer.StrTyVar(Lib.MkPair(printer.StrBoundTy(p.Fst), p.Snd))
+					} else {
+						return printer.StrTyVar(Lib.MkPair(printer.StrBound(p.Fst), p.Snd))
+					}
+				},
+				printer.StrConn(SepTyVars),
+				"",
+			),
 		),
 		printer.StrConn(SepVarsForm),
-		printer.Str(q.subForm.ToString()),
+		printer.Str(q.subForm.toString(n)),
 	))
+}
+
+func (q quantifier) ToString() string {
+	return q.toString(0)
 }
 
 func (q quantifier) GetChildFormulas() Lib.List[Form] {
@@ -99,7 +129,7 @@ func (q quantifier) GetChildFormulas() Lib.List[Form] {
 
 func (q quantifier) Equals(other any) bool {
 	if typed, ok := other.(quantifier); ok {
-		return Lib.ListEquals(q.varList, typed.varList) && q.subForm.Equals(typed.subForm)
+		return q.ty.Equals(typed.ty) && q.subForm.Equals(typed.subForm)
 	}
 
 	return false
@@ -115,62 +145,18 @@ func (q quantifier) GetSymbols() Lib.Set[Id] {
 
 func (q quantifier) copy() quantifier {
 	nq := makeQuantifier(
-		Lib.ListCpy(q.varList),
+		q.ty.Copy(),
 		q.GetForm(),
-		q.metas.Raw().Copy(),
 		q.symbol,
 	)
-
-	if !q.metas.NeedsUpd() {
-		nq.metas.AvoidUpd()
-	}
 
 	return nq
 }
 
-func (q quantifier) replaceTermByTerm(old Term, new Term) (quantifier, bool) {
-	f, res := q.GetForm().ReplaceTermByTerm(old, new)
-	return makeQuantifier(
-		q.GetVarList(),
-		f,
-		q.metas.Raw().Copy(),
-		q.symbol,
-	), res
+func (q quantifier) applyOnSubForm(f func(Form) Form) quantifier {
+	return makeQuantifier(q.ty, f(q.subForm), q.symbol)
 }
 
-func (q quantifier) replaceTyVar(old TyGenVar, new Ty) quantifier {
-	f := q.GetForm().SubstTy(old, new)
-	return makeQuantifier(
-		Lib.ListMap(
-			q.GetVarList(),
-			func(p TypedVar) TypedVar { return p.SubstTy(old, new) },
-		),
-		f,
-		q.metas.Raw().Copy(),
-		q.symbol,
-	)
-}
-
-func (q quantifier) substituteVarByMeta(old Var, new Meta) quantifier {
-	if Lib.ListMem(old, Lib.ListMap(q.varList, func(x TypedVar) Var { return x.ToBoundVar() })) {
-		return q
-	}
-
-	newForm := q.GetForm().SubstituteVarByMeta(old, new)
-	return makeQuantifier(
-		q.GetVarList(),
-		newForm,
-		newForm.GetMetas().Copy(),
-		q.symbol,
-	)
-}
-
-func (q quantifier) replaceMetaByTerm(meta Meta, term Term) quantifier {
-	newForm := q.GetForm().ReplaceMetaByTerm(meta, term)
-	return makeQuantifier(
-		q.GetVarList(),
-		newForm,
-		newForm.GetMetas().Copy(),
-		q.symbol,
-	)
+func (q quantifier) applyOnTy(f func(Ty) Ty) quantifier {
+	return makeQuantifier(f(q.ty), q.subForm, q.symbol)
 }

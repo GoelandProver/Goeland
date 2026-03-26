@@ -40,14 +40,6 @@ import (
 	"github.com/GoelandProver/Goeland/Lib"
 )
 
-// ex-name: ReplaceMetaByTerm
-func LsSubstByTerm(formulas Lib.List[Form], meta Meta, term Term) Lib.List[Form] {
-	for i, f := range formulas.GetSlice() {
-		formulas.Upd(i, f.ReplaceMetaByTerm(meta, term))
-	}
-	return formulas
-}
-
 func LsFlatten(formulas Lib.List[Form]) Lib.List[Form] {
 	result := Lib.NewList[Form]()
 
