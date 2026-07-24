@@ -40,7 +40,7 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Search"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 var debug Glob.Debugger

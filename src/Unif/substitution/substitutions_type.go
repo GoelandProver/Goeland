@@ -34,7 +34,7 @@
 * This file provides the necessary structures to manipulate sustitutions
 **/
 
-package Unif
+package subst
 
 import (
 	"fmt"

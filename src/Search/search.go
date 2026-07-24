@@ -43,13 +43,13 @@ import (
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	"github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 type SearchAlgorithm interface {
 	Search(AST.Form, int) bool
 	SetApplyRules(func(uint64, State, Communication, Core.FormAndTermsList, int, int, []int))
-	ManageClosureRule(uint64, *State, Communication, Lib.List[Lib.List[Unif.MixedSubstitution]], Core.FormAndTerms, int, int) (bool, []Core.SubstAndForm)
+	ManageClosureRule(uint64, *State, Communication, Lib.List[Lib.List[subst.MixedSubstitution]], Core.FormAndTerms, int, int) (bool, []Core.SubstAndForm)
 }
 
 var UsedSearch SearchAlgorithm
@@ -118,11 +118,11 @@ func printStandardSolution(status string) {
 	fmt.Printf("%s SZS status %v for %v\n", "%", status, Glob.GetProblemName())
 }
 
-func retrieveMetaFromSubst(substs Lib.List[Unif.MixedSubstitution]) []int {
+func retrieveMetaFromSubst(substs Lib.List[subst.MixedSubstitution]) []int {
 	res := []int{}
-	for _, subst := range substs.GetSlice() {
-		switch s := subst.Substitution().(type) {
-		case Lib.Some[Unif.Substitution]:
+	for _, s := range substs.GetSlice() {
+		switch s := s.Substitution().(type) {
+		case Lib.Some[subst.Substitution]:
 			res = Glob.AppendIfNotContainsInt(res, s.Val.Key().GetFormula())
 		}
 	}

@@ -31,46 +31,62 @@
 **/
 
 /**
-* This file provides the necessary structures to represents a sequences for the machine.
+* This file provides the necessary structures to manipulate sustitutions
 **/
 
-package Unif
+package subst
 
 import (
-	"fmt"
-
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Glob"
 )
 
-/*** Sequence ***/
+var debug Glob.Debugger 
 
-type Sequence struct {
-	instructions []Instruction
-	formula      AST.Form
+func InitDebugger() {
+	debug = Glob.CreateDebugger("Subst")
 }
 
-/*** Sequence's methods ***/
-
-func (s *Sequence) GetInstructions() []Instruction {
-	return CopyInstructionList(s.instructions)
+type Substitution struct {
+	k AST.Meta
+	v AST.Term
 }
 
-func (s *Sequence) GetFormula() AST.Form {
-	return s.formula.Copy()
+func MakeSubstitution(k AST.Meta, v AST.Term) Substitution {
+	return Substitution{k, v}
 }
 
-func (s *Sequence) add(instr Instruction) {
-	s.instructions = append(s.instructions, instr)
+func (s Substitution) ToString() string {
+	return "(" + s.k.ToString() + " |-> " + s.v.ToString() + ")"
 }
 
-// ILL TODO: Should not print directly, should return a string that is then printed
-func (s Sequence) Print() {
-	for _, instr := range s.instructions {
-		fmt.Printf("%v", instr)
+func (s Substitution) Key() AST.Meta {
+	return s.k
+}
+
+func (s Substitution) Value() AST.Term {
+	return s.v
+}
+
+func (s Substitution) Copy() Substitution {
+	return Substitution{
+		k: s.k.Copy().ToMeta(),
+		v: s.v.Copy(),
 	}
-	fmt.Printf(" - " + s.formula.ToString())
 }
 
-func (s Sequence) Copy() Sequence {
-	return Sequence{s.GetInstructions(), s.GetFormula()}
+func (s Substitution) Get() (AST.Meta, AST.Term) {
+	return s.k, s.v
+}
+
+func (s *Substitution) Set(value AST.Term) {
+	s.v = value
+}
+
+func (s Substitution) Equals(other any) bool {
+	if typed, ok := other.(Substitution); ok {
+		return s.k.Equals(typed.k) && s.v.Equals(typed.v)
+	}
+
+	return false
 }

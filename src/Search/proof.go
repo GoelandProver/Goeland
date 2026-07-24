@@ -47,7 +47,7 @@ import (
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	substitution "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 var path_proof = Glob.GetExecPath() + "proof_output.json"
@@ -404,7 +404,7 @@ func RetrieveUninstantiatedMetaFromProof(proofStruct []ProofStruct) Lib.Set[AST.
 }
 
 /* Apply subst on a proof tree */
-func ApplySubstitutionOnProofList(s Lib.List[Unif.MixedSubstitution], proof_list []ProofStruct) []ProofStruct {
+func ApplySubstitutionOnProofList(s Lib.List[substitution.MixedSubstitution], proof_list []ProofStruct) []ProofStruct {
 	new_proof_list := []ProofStruct{}
 
 	for _, p := range proof_list {

@@ -3,7 +3,7 @@ package incremental
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 var anyTerm AST.Term = nil

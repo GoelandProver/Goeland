@@ -31,55 +31,61 @@
 **/
 
 /**
-* This file provides the necessary structures to manipulate sustitutions
+* This file contains all the definitons necessary to make a Code Tree
 **/
 
-package Unif
+package discriminationtree
 
 import (
+	"fmt"
+
 	"github.com/GoelandProver/Goeland/AST"
 )
 
-type Substitution struct {
-	k AST.Meta
-	v AST.Term
+// Implement the perfect tree link between a Meta and newMeta
+type NormalizerContext struct {
+	counter int                 // Counter for the naming
+	mapping map[string]AST.Meta // Association a variable name to a normalizedVariable name
+	ty      AST.Ty
 }
 
-func MakeSubstitution(k AST.Meta, v AST.Term) Substitution {
-	return Substitution{k, v}
-}
-
-func (s Substitution) ToString() string {
-	return "(" + s.k.ToString() + " |-> " + s.v.ToString() + ")"
-}
-
-func (s Substitution) Key() AST.Meta {
-	return s.k
-}
-
-func (s Substitution) Value() AST.Term {
-	return s.v
-}
-
-func (s Substitution) Copy() Substitution {
-	return Substitution{
-		k: s.k.Copy().ToMeta(),
-		v: s.v.Copy(),
+// New Instance
+func NewContext() *NormalizerContext {
+	return &NormalizerContext{
+		counter: 0,
+		mapping: make(map[string]AST.Meta),
+		ty:      nil,
 	}
 }
 
-func (s Substitution) Get() (AST.Meta, AST.Term) {
-	return s.k, s.v
-}
+// Transform the discriminationTree to a perfect disriminationTree.
+// Using a Map, when visiting a branch, each Meta is stored and transform into a NormalizedMeta. This allow memory gain.
+// Branch 1 : f(x), Branch 2 : f(y) => Branch 1 : f(v1), Branch 2 : f(v1) => We notice it's the same one => Possible to fuse them to save memory
+func (ctx *NormalizerContext) GetNormalizedMeta(originalMeta AST.Meta) AST.Meta {
 
-func (s *Substitution) Set(value AST.Term) {
-	s.v = value
-}
+	originalName := originalMeta.GetName() // Get meta Name
+	orignalType := originalMeta.GetTy()    // Get Meta Ty
 
-func (s Substitution) Equals(other any) bool {
-	if typed, ok := other.(Substitution); ok {
-		return s.k.Equals(typed.k) && s.v.Equals(typed.v)
+	// Contains check
+	if normalizedMeta, exists := ctx.mapping[originalName]; exists {
+		if normalizedMeta.GetTy().Equals(orignalType) {
+			return normalizedMeta
+		}
 	}
 
-	return false
+	// Create new name
+	ctx.counter++
+	newName := fmt.Sprintf("v%d", ctx.counter) // Create the Meta name
+	newMeta := AST.MakeMeta(ctx.counter, 0, newName, 0, originalMeta.GetTy())
+	ctx.mapping[originalName] = newMeta // Add to the map
+	ctx.ty = newMeta.GetTy()
+
+	return newMeta
+}
+
+func (ctx *NormalizerContext) Reset() {
+
+	ctx.counter = 0
+	ctx.mapping = make(map[string]AST.Meta)
+
 }

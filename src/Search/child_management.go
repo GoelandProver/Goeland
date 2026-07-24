@@ -32,13 +32,12 @@
 package Search
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	subst "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 /* Arguments for waitChildren function & utilitary subfunctions */
@@ -137,10 +136,6 @@ func (ds *destructiveSearch) childrenClosedByThemselves(args wcdArgs, proofChild
 
 	// No need to append the current substitution, because the children returns it anyway (if it exists)
 	// So here, the current substitution should be empty. Otherwise, there's a big bug somewhere else.
-	if !args.currentSubst.IsEmpty() {
-		return errors.New("current substitution is not empty but children close by themselves which shouldn't happen")
-	}
-
 	// Updates the proof using the proofs of the children of the node.
 	args.st = updateProof(args, proofChildren)
 
@@ -162,7 +157,7 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"All children agree on the substitution(s) : %s",
-				Unif.SubstsToString(Core.GetSubstListFromSubstAndFormList(substs)),
+				subst.SubstsToString(Core.GetSubstListFromSubstAndFormList(substs)),
 			)
 		}),
 	)
@@ -180,7 +175,7 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 
 	// Remove all the metas introduced by the current node to only retrieve relevant ones for the parent.
 	resultingSubstsAndForms := []Core.SubstAndForm{}
-	resultingSubsts := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
+	resultingSubsts := Lib.NewList[Lib.List[subst.MixedSubstitution]]()
 
 	for _, subst := range substs {
 		debug(
@@ -191,11 +186,24 @@ func (ds *destructiveSearch) passSubstToParent(args wcdArgs, proofChildren [][]P
 				)
 			}),
 		)
-		err, merged := Core.MergeSubstAndForm(subst, args.st.GetAppliedSubst())
+		succeeded, merged := Core.TryMergeSubstAndForm(subst, args.st.GetAppliedSubst())
 
-		if err != nil {
-			Glob.Anomaly("WC", "Error when merging the children substitution's with the applied one.")
-			return err
+		if !succeeded {
+			// This candidate conflicts with what is already applied at this node
+			// (typically: two sibling branches instantiated a shared meta-variable
+			// with different terms - e.g. Y9 -> a here vs. Y9 -> c already applied).
+			// That is an expected search outcome, not an anomaly, so we discard this
+			// candidate - same as the "cleaned.Empty()" case below - instead of
+			// aborting the whole proof search.
+			debug(
+				Lib.MkLazy(func() string {
+					return fmt.Sprintf(
+						"Substitution %v incompatible with applied subst %v: discarded",
+						subst.ToString(),
+						args.st.GetAppliedSubst().ToString())
+				}),
+			)
+			continue
 		}
 
 		cleaned := Core.RemoveElementWithoutMM(merged.GetSubst(), args.st.GetMM())
@@ -283,7 +291,7 @@ func (ds *destructiveSearch) manageOpenedChild(args wcdArgs) {
 	// If the completeness mode is active, then we need to deal with forbidden substitutions.
 	if Glob.GetCompleteness() {
 		forbidden := args.st.GetForbiddenSubsts()
-		forbidden.Add(Lib.ListEquals[Unif.MixedSubstitution], args.currentSubst.GetSubst())
+		forbidden.Add(Lib.ListEquals[subst.MixedSubstitution], args.currentSubst.GetSubst())
 		args.st.SetForbiddenSubsts(forbidden)
 	}
 

@@ -60,7 +60,9 @@ import (
 	"github.com/GoelandProver/Goeland/Search"
 	"github.com/GoelandProver/Goeland/Search/incremental"
 	"github.com/GoelandProver/Goeland/Typing"
-	"github.com/GoelandProver/Goeland/Unif"
+	"github.com/GoelandProver/Goeland/Unif/codetree"
+	"github.com/GoelandProver/Goeland/Unif/discriminationtree"
+	subst "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 var chAssistant chan bool = make(chan bool)
@@ -219,7 +221,9 @@ func initDebuggers() {
 	incremental.InitDebugger()
 	Search.InitDebugger()
 	Typing.InitDebugger()
-	Unif.InitDebugger()
+	codetree.InitDebugger()
+	discriminationtree.InitDebugger()
+	subst.InitDebugger()
 	Engine.InitDebugger()
 	gs3.InitDebugger()
 }

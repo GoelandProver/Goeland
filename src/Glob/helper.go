@@ -82,6 +82,8 @@ var printVersion = false
 var allowFlattening = false
 var type_check = true
 var list_dbgs = false
+var dt = false
+var early_pruning = false
 
 var IncrEq = false
 
@@ -287,6 +289,17 @@ func ListDebuggers() bool {
 	return list_dbgs
 }
 
+func GetDt() bool {
+	return dt
+}
+
+// GetEarlyPruning reports whether the discrimination tree should use its
+// early-pruning retrieval strategy instead of the classic one. Only meaningful
+// together with GetDt (the discrimination tree is enabled).
+func GetEarlyPruning() bool {
+	return early_pruning
+}
+
 /* Setters */
 func SetDebug(debug_list string) {
 	if debug_list == "none" {
@@ -441,4 +454,12 @@ func SetNoTypeCheck() {
 
 func SetListDebuggers() {
 	list_dbgs = true
+}
+
+func SetDt() {
+	dt = true
+}
+
+func SetEarlyPruning() {
+	early_pruning = true
 }

@@ -38,7 +38,7 @@ import (
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	"github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 /* Struct result to communicate substitution or a quit order through a channel */
@@ -63,7 +63,7 @@ type Result struct {
 	closed, need_answer   bool
 	subst_for_children    Core.SubstAndForm
 	subst_list_for_father []Core.SubstAndForm
-	forbidden             Lib.List[Lib.List[Unif.MixedSubstitution]]
+	forbidden             Lib.List[Lib.List[subst.MixedSubstitution]]
 	proof                 []ProofStruct
 	node_id               int
 	original_node_id      int
@@ -85,8 +85,8 @@ func (r Result) getSubstForChildren() Core.SubstAndForm {
 func (r Result) getSubstListForFather() []Core.SubstAndForm {
 	return Core.CopySubstAndFormList(r.subst_list_for_father)
 }
-func (r Result) getForbiddenSubsts() Lib.List[Lib.List[Unif.MixedSubstitution]] {
-	return r.forbidden.Copy(Lib.ListCpy[Unif.MixedSubstitution])
+func (r Result) getForbiddenSubsts() Lib.List[Lib.List[subst.MixedSubstitution]] {
+	return r.forbidden.Copy(Lib.ListCpy[subst.MixedSubstitution])
 }
 func (r Result) getProof() []ProofStruct {
 	return CopyProofStructList(r.proof)
@@ -170,13 +170,13 @@ func sendSubToChildren(children []Communication, s Core.SubstAndForm) {
 			true,
 			s.Copy(),
 			[]Core.SubstAndForm{},
-			Lib.NewList[Lib.List[Unif.MixedSubstitution]](),
+			Lib.NewList[Lib.List[subst.MixedSubstitution]](),
 			nil, -1, -1, Core.MakeUnifier()}
 	}
 }
 
 /* Send a substitution to a list of child */
-func sendForbiddenToChildren(children []Communication, s Lib.List[Lib.List[Unif.MixedSubstitution]]) {
+func sendForbiddenToChildren(children []Communication, s Lib.List[Lib.List[subst.MixedSubstitution]]) {
 	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Send forbidden to children : %v", len(children)) }),
 	)
@@ -195,7 +195,7 @@ func (ds *destructiveSearch) sendSubToFather(c Communication, closed, need_answe
 		Lib.MkLazy(func() string {
 			return fmt.Sprintf(
 				"Send subst to father : %s, closed : %v, need answer : %v",
-				Unif.SubstsToString(Core.GetSubstListFromSubstAndFormList(subst_for_father)),
+				subst.SubstsToString(Core.GetSubstListFromSubstAndFormList(subst_for_father)),
 				closed, need_answer)
 		}),
 	)
@@ -232,7 +232,7 @@ func (ds *destructiveSearch) sendSubToFather(c Communication, closed, need_answe
 		need_answer,
 		Core.MakeEmptySubstAndForm(),
 		Core.CopySubstAndFormList(subst_for_father),
-		Lib.NewList[Lib.List[Unif.MixedSubstitution]](),
+		Lib.NewList[Lib.List[subst.MixedSubstitution]](),
 		st.GetProof(), node_id, original_node_id, st.GetGlobUnifier()}:
 		if need_answer {
 			ds.waitFather(father_id, st, c, Core.FusionSubstAndFormListWithoutDouble(subst_for_father, given_substs), node_id, original_node_id, []int{}, meta_to_reintroduce)

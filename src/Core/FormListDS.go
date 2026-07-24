@@ -34,7 +34,7 @@ package Core
 import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	"github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 type FormListDS struct {
@@ -48,12 +48,12 @@ func (f FormListDS) GetFL() Lib.List[AST.Form] {
 /* Data struct */
 
 /* Take a list of formula and return a FormList (Datastructure type) */
-func (f FormListDS) MakeDataStruct(lf Lib.List[AST.Form], is_pos bool) Unif.DataStructure {
+func (f FormListDS) MakeDataStruct(lf Lib.List[AST.Form], is_pos bool) subst.DataStructure {
 	return (new(FormListDS)).InsertFormulaListToDataStructure(lf)
 }
 
 /* Insert a list of formula into the given Datastructure (here, FormList) */
-func (f FormListDS) InsertFormulaListToDataStructure(lf Lib.List[AST.Form]) Unif.DataStructure {
+func (f FormListDS) InsertFormulaListToDataStructure(lf Lib.List[AST.Form]) subst.DataStructure {
 	for _, v := range lf.GetSlice() {
 		switch nf := v.(type) {
 		case AST.Pred:
@@ -74,7 +74,7 @@ func (f FormListDS) Print() {
 	}
 }
 
-func (f FormListDS) Copy() Unif.DataStructure {
+func (f FormListDS) Copy() subst.DataStructure {
 	return FormListDS{Lib.ListCpy(f.GetFL())}
 }
 
@@ -82,11 +82,15 @@ func (fl FormListDS) IsEmpty() bool {
 	return fl.GetFL().Empty()
 }
 
-func (fl FormListDS) Unify(f AST.Form) (bool, []Unif.MixedSubstitutions) {
+func (fl FormListDS) Unify(f AST.Form) (bool, []subst.MixedSubstitutions) {
 	for _, element := range fl.GetFL().GetSlice() {
 		if element.Equals(f) {
-			return true, []Unif.MixedSubstitutions{}
+			return true, []subst.MixedSubstitutions{}
 		}
 	}
-	return false, []Unif.MixedSubstitutions{}
+	return false, []subst.MixedSubstitutions{}
+}
+
+func (fl FormListDS) UnifyTerm(t AST.Term) (bool, []subst.MixedTermSubstitutions) {
+	return false, []subst.MixedTermSubstitutions{}
 }

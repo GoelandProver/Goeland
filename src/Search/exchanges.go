@@ -44,7 +44,7 @@ import (
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	"github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 var graph_file_name_exchanges = Glob.GetExecPath() + "../../visualization/json/exchanges_output.json"
@@ -86,8 +86,8 @@ func ResetExchangesFile() {
 func makeJsonExchanges(
 	father_uint uint64,
 	st State,
-	ss_subst Lib.List[Lib.List[Unif.MixedSubstitution]],
-	subst_received Lib.List[Unif.MixedSubstitution],
+	ss_subst Lib.List[Lib.List[subst.MixedSubstitution]],
+	subst_received Lib.List[subst.MixedSubstitution],
 	calling_function string,
 ) exchanges_struct {
 	// ID
@@ -124,7 +124,7 @@ func makeJsonExchanges(
 
 	ss := ""
 	if !ss_subst.Empty() {
-		ss += Unif.SubstsToString(ss_subst)
+		ss += subst.SubstsToString(ss_subst)
 	}
 
 	// fmt.Printf("Id = %v, version = %v, father = %v, forms = %v, mm = %v, mc = %v, ss = %v, sr = %v\n", id, version, father, forms, mm, mc, ss, sr)

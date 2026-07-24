@@ -38,7 +38,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 type substitutions = Lib.List[Unif.MixedSubstitution]

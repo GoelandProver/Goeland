@@ -39,7 +39,7 @@ import (
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 func ApplyRulesAssisted(fatherId uint64, state Search.State, c Search.Communication, newAtomics Core.FormAndTermsList, nodeID int, originalNodeId int, metaToReintroduce []int) {

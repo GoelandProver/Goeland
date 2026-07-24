@@ -34,11 +34,13 @@
 * This file provides the necessary structures to operate the unification algorithm.
 **/
 
-package Unif
+package codetree
 
 import (
+	"fmt"
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 /* Describes the success or failure of the execution of a machine instruction. */
@@ -62,10 +64,10 @@ type Machine struct {
 	hasPushed     bool
 	hasPoped      bool
 	post          []IntPair
-	subst         []SubstPair
+	subst         []subst.SubstPair
 	terms         Lib.List[AST.Term]
-	meta          Substitutions
-	failure       []MatchingSubstitutions
+	meta          subst.Substitutions
+	failure       []subst.MixMatchSubstitutions
 	topLevelTot   int
 	topLevelCount int
 }
@@ -79,10 +81,10 @@ func makeMachine() Machine {
 		hasPushed:     false,
 		hasPoped:      false,
 		post:          []IntPair{},
-		subst:         []SubstPair{},
+		subst:         []subst.SubstPair{},
 		terms:         Lib.NewList[AST.Term](),
-		meta:          Substitutions{},
-		failure:       []MatchingSubstitutions{},
+		meta:          subst.Substitutions{},
+		failure:       []subst.MixMatchSubstitutions{},
 		topLevelTot:   0,
 		topLevelCount: 0,
 	}
@@ -216,7 +218,7 @@ func (m *Machine) matchIndexes(t AST.Term, instrTerm AST.Term) Status {
 
 /* Checks if the substitution of the metavariable t matches the index of instrTerm. */
 func (m *Machine) checkMeta(t AST.Meta, instrTerm AST.Term) Status {
-	if HasSubst(m.meta, t) {
+	if subst.HasSubst(m.meta, t) {
 		metaGotten, _ := m.meta.Get(t)
 		unwrapped := m.unwrapMeta(metaGotten)
 		if !unwrapped.IsMeta() && !m.doIndexMatch(unwrapped, instrTerm) {
@@ -225,4 +227,67 @@ func (m *Machine) checkMeta(t AST.Meta, instrTerm AST.Term) Status {
 	}
 
 	return Status(SUCCESS)
+}
+
+/* Call addUnification and returns a status - modify m.meta */
+func (m *Machine) trySubstituteMeta(i AST.Term, j AST.Term) Status {
+	debug(
+		Lib.MkLazy(
+			func() string { return fmt.Sprintf("Try substitute : %v and %v", i.ToString(), j.ToString()) },
+		),
+	)
+	new_meta := subst.AddUnification(i, j, m.meta.Copy())
+	if new_meta.Equals(subst.Failure()) {
+		return Status(ERROR)
+	}
+	m.meta = new_meta
+	return Status(SUCCESS)
+}
+
+/* Adds the unifications found to the meta substitutions from running the algorithm on term1 and term2. */
+func (m *Machine) addUnifications(term1, term2 AST.Term) Status {
+	debug(
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"add unification : %v and %v",
+				term1.ToString(),
+				term2.ToString())
+		}),
+	)
+	meta := tryUnification(
+		term1.Copy(),
+		term2.Copy(),
+		m.meta.Copy(),
+	) // Return empty or an array of 1 matching substitution, which is m.meta improved wit (term1, term2)
+
+	if len(meta) == 0 {
+		return Status(ERROR)
+	} else {
+		m.meta = meta[0].Subst
+		subst.EliminateMeta(&m.meta)
+		subst.Eliminate(&m.meta)
+	}
+
+	return Status(SUCCESS)
+}
+
+
+/* Tries to unify term1 with term2, depending on the substitutions already found by the parent unification process. */
+func tryUnification(term1, term2 AST.Term, meta subst.Substitutions) []subst.MixMatchSubstitutions {
+	debug(
+		Lib.MkLazy(func() string {
+			return fmt.Sprintf(
+				"Try unification : %v and %v",
+				term1.ToString(),
+				term2.ToString())
+		}),
+	)
+	aux := makeMachine()
+	aux.terms = Lib.MkListV(term2)
+	aux.meta = meta
+
+	// add begin at the start and end at the end !
+	tree := makeBranch(ParseTerm(term1.Copy()))
+	res := aux.unifyAux(*tree)
+	return res
 }

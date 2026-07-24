@@ -5,7 +5,8 @@ import (
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
+	"github.com/GoelandProver/Goeland/Unif/codetree"
 )
 
 type RulesManager struct {
@@ -187,7 +188,7 @@ func (rm *RulesManager) tryComplementaryClosureRules() Rule {
 func (rm *RulesManager) trySubstitutionClosureRules() (applied Rule, subs SubList) {
 	positiveRules, negativeRules := rm.getAtomicsWithoutTopOrBottom()
 
-	negTree := new(Unif.Node).MakeDataStruct(negativeRules.GetFormList(), false)
+	negTree := new(codetree.Node).MakeDataStruct(negativeRules.GetFormList(), false)
 
 	substitutions := []Unif.MixedSubstitutions{}
 

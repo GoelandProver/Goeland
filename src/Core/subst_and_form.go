@@ -43,7 +43,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 /* Stock the substitution and the corresponding list of formulas */
@@ -202,6 +202,36 @@ func MergeSubstAndForm(s1, s2 SubstAndForm) (error, SubstAndForm) {
 	newFormList = Lib.ListAdd(newFormList, s2.GetForm().GetSlice()...)
 
 	return nil, MakeSubstAndForm(new_subst, newFormList)
+}
+
+// Func made because basic-quant-6 was failing with dTree due to merge error
+/* Try to merge two SubstAndForm, without assuming they are compatible.
+ *
+ * Unlike MergeSubstAndForm, a merge conflict here (e.g. two branches that
+ * instantiated a shared meta-variable with two different terms) is treated
+ * as a normal, recoverable "no" - not as a fatal anomaly. Use this whenever
+ * the caller can gracefully discard an incompatible candidate instead of
+ * assuming the two substitutions are "supposed to fit".
+ */
+func TryMergeSubstAndForm(s1, s2 SubstAndForm) (bool, SubstAndForm) {
+	if s1.IsEmpty() {
+		return true, s2
+	}
+
+	if s2.IsEmpty() {
+		return true, s1
+	}
+
+	new_subst, succeeded := Unif.MergeMixedSubstitutions(s1.GetSubst(), s2.GetSubst())
+
+	if !succeeded {
+		return false, MakeEmptySubstAndForm()
+	}
+
+	newFormList := s1.GetForm()
+	newFormList = Lib.ListAdd(newFormList, s2.GetForm().GetSlice()...)
+
+	return true, MakeSubstAndForm(new_subst, newFormList)
 }
 
 /* Merge a list of subst with one subst */

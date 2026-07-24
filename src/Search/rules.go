@@ -42,7 +42,7 @@ import (
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	substitution "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 var strToPrintMap map[string]string = map[string]string{
@@ -59,9 +59,9 @@ var strToPrintMap map[string]string = map[string]string{
 	"EXISTS": "∃",
 }
 
-func ApplyClosureRules(form AST.Form, state *State) (bool, Lib.List[Lib.List[Unif.MixedSubstitution]]) {
+func ApplyClosureRules(form AST.Form, state *State) (bool, Lib.List[Lib.List[substitution.MixedSubstitution]]) {
 	result := false
-	substitutions := Lib.NewList[Lib.List[Unif.MixedSubstitution]]()
+	substitutions := Lib.NewList[Lib.List[substitution.MixedSubstitution]]()
 	debug(Lib.MkLazy(func() string { return "Start ACR" }))
 
 	if searchObviousClosureRule(form) {
@@ -73,9 +73,9 @@ func ApplyClosureRules(form AST.Form, state *State) (bool, Lib.List[Lib.List[Uni
 	substFound, substs := searchInequalities(form)
 	if substFound {
 		result = true
-		mixed_substs := Lib.NewList[Unif.MixedSubstitution]()
+		mixed_substs := Lib.NewList[substitution.MixedSubstitution]()
 		for _, subst := range substs {
-			mixed_substs.Append(Unif.MkMixedFromSubst(subst))
+			mixed_substs.Append(substitution.MkMixedFromSubst(subst))
 		}
 		substitutions.Append(mixed_substs)
 	}
@@ -106,7 +106,7 @@ func ApplyClosureRules(form AST.Form, state *State) (bool, Lib.List[Lib.List[Uni
 							subst.ToString())
 					}),
 				)
-				substitutions.Add(Lib.ListEquals[Unif.MixedSubstitution], subst.GetSubsts())
+				substitutions.Add(Lib.ListEquals[substitution.MixedSubstitution], subst.GetSubsts())
 			}
 		}
 	}
@@ -114,14 +114,14 @@ func ApplyClosureRules(form AST.Form, state *State) (bool, Lib.List[Lib.List[Uni
 	return result, substitutions
 }
 
-func searchForbidden(state *State, s Unif.MatchingSubstitutions) bool {
+func searchForbidden(state *State, s substitution.MatchingSubstitutions) bool {
 	foundForbidden := false
 
 	for _, substForbidden := range state.GetForbiddenSubsts().GetSlice() {
-		substs := Unif.Substitutions{}
+		substs := substitution.Substitutions{}
 		for _, subst := range substForbidden.GetSlice() {
 			switch s := subst.Substitution().(type) {
-			case Lib.Some[Unif.Substitution]:
+			case Lib.Some[substitution.Substitution]:
 				substs = append(substs, s.Val)
 			}
 		}
@@ -155,8 +155,8 @@ func searchObviousClosureRule(f AST.Form) bool {
 }
 
 /* Search contradiction with inequalities (for example, !(x,a) -> subst(x, a)) */
-func searchInequalities(form AST.Form) (bool, Unif.Substitutions) {
-	subst := Unif.MakeEmptySubstitution()
+func searchInequalities(form AST.Form) (bool, substitution.Substitutions) {
+	subst := substitution.MakeEmptySubstitution()
 
 	if formNot, isNot := form.(AST.Not); isNot {
 		if predNeq, isPred := formNot.GetForm().(AST.Pred); isPred {
@@ -181,12 +181,12 @@ func searchInequalities(form AST.Form) (bool, Unif.Substitutions) {
 					Lib.MkLazy(func() string { return fmt.Sprintf("Arg 2 : %v", arg_2.ToString()) }),
 				)
 
-				subst = Unif.AddUnification(arg_1, arg_2, subst)
+				subst = substitution.AddUnification(arg_1, arg_2, subst)
 				debug(
 					Lib.MkLazy(func() string { return fmt.Sprintf("Subst : %v", subst.ToString()) }),
 				)
 
-				if !subst.Equals(Unif.Failure()) {
+				if !subst.Equals(substitution.Failure()) {
 					return true, subst
 				}
 			}
@@ -197,14 +197,54 @@ func searchInequalities(form AST.Form) (bool, Unif.Substitutions) {
 }
 
 /* Search a contradiction between a formula and another in the datastructure */
-func searchClosureRule(f AST.Form, st State) (bool, []Unif.MixedSubstitutions) {
+func searchClosureRule(f AST.Form, st State) (bool, []substitution.MixedSubstitutions) {
 	switch nf := f.(type) {
 	case AST.Pred:
-		return st.GetTreeNeg().Unify(f)
+		res, subst := st.GetTreeNeg().Unify(f)
+		if res {
+			returnList := Lib.NewList[substitution.MixedSubstitutions]()
+
+			running_subst := st.applied_subst.GetSubst()
+
+			for _, e := range subst {
+				subst2, isCompatible := substitution.MergeMixedSubstitutions(e.GetSubsts(), running_subst)
+
+				if isCompatible {
+					running_subst = subst2
+
+					new_subst := substitution.MakeMixedSubstitutions(e.GetForm(), subst2)
+					returnList.Append(new_subst)
+				}
+			}
+
+			return !returnList.Empty(), returnList.GetSlice()
+		}
+		return false, nil
+
 	case AST.Not:
 		switch nf.GetForm().(type) {
 		case AST.Pred:
-			return st.GetTreePos().Unify(nf.GetForm())
+			res, subst := st.GetTreePos().Unify(nf.GetForm())
+			if res {
+				returnList := Lib.NewList[substitution.MixedSubstitutions]()
+
+				running_subst := st.applied_subst.GetSubst()
+
+				for _, e := range subst {
+					subst2, isCompatible := substitution.MergeMixedSubstitutions(e.GetSubsts(), running_subst)
+
+					if isCompatible {
+						running_subst = subst2
+
+						new_subst := substitution.MakeMixedSubstitutions(e.GetForm(), subst2)
+						returnList.Append(new_subst)
+					}
+				}
+
+				return !returnList.Empty(), returnList.GetSlice()
+			}
+			return false, nil
+
 		default:
 			return false, nil
 		}

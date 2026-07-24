@@ -31,22 +31,67 @@
 **/
 
 /**
-* This file contains functions and types which describe the formula's data
-  structure
+* This file provides the necessary structures to manipulate pairs of substitutions.
 **/
 
-package Unif
+package subst
 
 import (
+	"strconv"
+
 	"github.com/GoelandProver/Goeland/AST"
-	"github.com/GoelandProver/Goeland/Lib"
 )
 
-type DataStructure interface {
-	Print()
-	IsEmpty() bool
-	MakeDataStruct(Lib.List[AST.Form], bool) DataStructure
-	InsertFormulaListToDataStructure(Lib.List[AST.Form]) DataStructure
-	Unify(AST.Form) (bool, []MixedSubstitutions)
-	Copy() DataStructure
+/* Association between an integer and a Term. */
+type SubstPair struct {
+	i    int
+	term AST.Term
+}
+
+func (s SubstPair) GetIndex() int {
+	return s.i
+}
+
+func (s SubstPair) GetTerm() AST.Term {
+	return s.term.Copy()
+}
+
+func (s SubstPair) Copy() SubstPair {
+	return MakeSubstPair(s.GetIndex(), s.GetTerm().Copy())
+}
+
+func GetSubstAt(subst []SubstPair, index int) AST.Term {
+	for _, sub := range subst {
+		if sub.i == index {
+			return sub.GetTerm()
+		}
+	}
+	return nil
+}
+
+func SubstPairListToString(s []SubstPair) string {
+	res := "{"
+	for i, v := range s {
+		res += "(" + strconv.Itoa(v.i) + ", " + v.GetTerm().ToString() + ")"
+		if i < len(s)-1 {
+			res += ", "
+		}
+	}
+
+	res += "}"
+	return res
+}
+
+/* Maker */
+func MakeSubstPair(i int, term AST.Term) SubstPair {
+	return SubstPair{i, term.Copy()}
+}
+
+/* Copy a list of substPair */
+func CopySubstPairList(sl []SubstPair) []SubstPair {
+	res := []SubstPair{}
+	for _, sp := range sl {
+		res = append(res, sp.Copy())
+	}
+	return res
 }

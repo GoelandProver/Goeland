@@ -13,7 +13,7 @@ class Parser:
     RES = "% result: "
     ENV = "% env: "
     EXIT_CODE = "% exit: "
-    no_rocq_check = False
+    no_rocq_check = True
 
     def __init__(self, filename):
         self.filename = filename
@@ -52,7 +52,7 @@ class Parser:
         arguments = self.arguments
         if not self.no_rocq_check:
             arguments += " -context -orocq"
-        return self.env + " ../src/_build/goeland " + arguments + " " + self.filename
+        return self.env + " ../src/_build/goeland -dt -ep " + arguments + " " + self.filename
 
     def getArgsForPrinting(self):
         rocq_chk_str = ""

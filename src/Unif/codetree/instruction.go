@@ -34,7 +34,7 @@
 * This file provides the necessary structures to represents instructions for the machine.
 **/
 
-package Unif
+package codetree
 
 import (
 	"reflect"

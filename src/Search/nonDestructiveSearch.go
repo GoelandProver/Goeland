@@ -41,7 +41,7 @@ import (
 	"github.com/GoelandProver/Goeland/Core"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	substitution "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 type nonDestructiveSearch struct {
@@ -54,11 +54,11 @@ func NewNonDestructiveSearch() BasicSearchAlgorithm {
 	return nil
 }
 
-func getMetas(substs Lib.List[Unif.MixedSubstitution]) Lib.List[AST.Meta] {
+func getMetas(substs Lib.List[substitution.MixedSubstitution]) Lib.List[AST.Meta] {
 	metas := Lib.NewList[AST.Meta]()
 	for _, subst := range substs.GetSlice() {
 		switch s := subst.Substitution().(type) {
-		case Lib.Some[Unif.Substitution]:
+		case Lib.Some[substitution.Substitution]:
 			metas.Append(s.Val.Key())
 		}
 	}
@@ -132,11 +132,11 @@ func (nds *nonDestructiveSearch) chooseSubstitutionNonDestructive(substs_found_t
 }
 
 /*  Take a substitution, returns the id of the formula which introduce the metavariable */
-func (nds *nonDestructiveSearch) catchFormulaToInstantiate(subst_found Lib.List[Unif.MixedSubstitution]) int {
+func (nds *nonDestructiveSearch) catchFormulaToInstantiate(subst_found Lib.List[substitution.MixedSubstitution]) int {
 	meta_to_reintroduce := -1
 	for _, subst := range subst_found.GetSlice() {
 		switch s := subst.Substitution().(type) {
-		case Lib.Some[Unif.Substitution]:
+		case Lib.Some[substitution.Substitution]:
 			meta, term := s.Val.Get()
 			if meta.GetFormula() < meta_to_reintroduce || meta_to_reintroduce == -1 {
 				meta_to_reintroduce = meta.GetFormula()
@@ -191,7 +191,7 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 	// If ths meta has an affectation in subst, give it
 	// Else, give the previous meta
 
-	association_subst := Unif.Substitutions{}
+	association_subst := substitution.Substitutions{}
 
 	// Associate new meta with old meta
 	for _, new_meta := range newMetas.Elements().GetSlice() {
@@ -212,7 +212,7 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 		if !found {
 			for _, subst := range state.GetAppliedSubst().GetSubst().GetSlice() {
 				switch s := subst.Substitution().(type) {
-				case Lib.Some[Unif.Substitution]:
+				case Lib.Some[substitution.Substitution]:
 					original_meta, original_term := s.Val.Get()
 					if !found && original_meta.GetName() == new_meta.GetName() && !found {
 						association_subst.Set(new_meta, original_term)
@@ -233,24 +233,24 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 		}
 	}
 
-	mixed_assoc_subst := Lib.NewList[Unif.MixedSubstitution]()
+	mixed_assoc_subst := Lib.NewList[substitution.MixedSubstitution]()
 	for _, subst := range association_subst {
-		mixed_assoc_subst.Append(Unif.MkMixedFromSubst(subst))
+		mixed_assoc_subst.Append(substitution.MkMixedFromSubst(subst))
 	}
-	new_subst, same_key := Unif.MergeMixedSubstitutions(mixed_assoc_subst, state.GetAppliedSubst().GetSubst())
+	new_subst, same_key := substitution.MergeMixedSubstitutions(mixed_assoc_subst, state.GetAppliedSubst().GetSubst())
 	if same_key {
 		Glob.PrintInfo("PS", "Same key in S2 and S1")
 	}
 
-	if !Unif.UnifSucceeded(new_subst) {
+	if !substitution.UnifSucceeded(new_subst) {
 		Glob.Anomaly("PS", "MergeSubstitutions return failure")
 	}
-	new_subst, same_key = Unif.MergeMixedSubstitutions(new_subst, s.GetSubst())
+	new_subst, same_key = substitution.MergeMixedSubstitutions(new_subst, s.GetSubst())
 	if same_key {
 		Glob.PrintInfo("PS", "Same key in S2 and S1")
 	}
 
-	if !Unif.UnifSucceeded(new_subst) {
+	if !substitution.UnifSucceeded(new_subst) {
 		Glob.Anomaly("PS", "MergeSubstitutions return failure")
 	}
 
@@ -271,12 +271,12 @@ func (nds *nonDestructiveSearch) instantiate(fatherId uint64, state *State, c Co
 
 	state.SetLF(Core.ApplySubstitutionsOnFormAndTermsList(new_subst, state.GetLF()))
 
-	ms, same_key := Unif.MergeMixedSubstitutions(state.GetAppliedSubst().GetSubst(), new_subst)
+	ms, same_key := substitution.MergeMixedSubstitutions(state.GetAppliedSubst().GetSubst(), new_subst)
 	if same_key {
 		Glob.Anomaly("PS", "Same key in S2 and S1")
 	}
 
-	if !Unif.UnifSucceeded(ms) {
+	if !substitution.UnifSucceeded(ms) {
 		Glob.Anomaly("PS", "MergeSubstitutions return failure")
 	}
 	state.SetAppliedSubst(Core.MakeSubstAndForm(ms, s.GetForm()))

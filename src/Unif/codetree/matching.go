@@ -34,7 +34,7 @@
 * This file provides the necessary methods for the unification algorithm.
 **/
 
-package Unif
+package codetree
 
 import (
 	"fmt"
@@ -43,6 +43,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
+	"github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 var debug Glob.Debugger
@@ -54,60 +55,69 @@ func InitDebugger() {
 /*** Unify ***/
 
 /* Helper function to avoid using MakeMachine() outside of this file. */
-func (n Node) Unify(formula AST.Form) (bool, []MixedSubstitutions) {
+func (n Node) Unify(formula AST.Form) (bool, []subst.MixedSubstitutions) {
 	machine := makeMachine()
-	res := machine.unify(n, formula)
+	var term AST.Term
+
+	if formula_type, is_pred := formula.(AST.Pred); is_pred {
+		term = subst.TransformPred(formula_type)
+	} else {
+		Glob.Anomaly("unification", fmt.Sprintf("Expected predicate, got %s", formula.ToString()))
+	}
+
+	res, matching_substs := machine.unify(n, term)
+
 	// As we have transformed type metas to terms, we get everything in a term substitution.
 	// But externally, we want to have a substitution of both (term) metas to terms and (type) metas to types.
 	// We use MixedSubstitution to properly manage things internally.
-	mixed_substs := []MixedSubstitutions{}
-	for _, subst := range res {
-		mixed_substs = append(mixed_substs, subst.toMixed())
+	mixed_substs := []subst.MixedSubstitutions{}
+	for _, subst := range matching_substs {
+		mixed_substs = append(mixed_substs, subst.ToMixed())
 	}
-	return !reflect.DeepEqual(machine.failure, res), mixed_substs
+
+	return res, mixed_substs
+}
+
+func (n Node) UnifyTerm(t AST.Term) (bool, []subst.MixedTermSubstitutions) {
+	m := makeMachine()
+
+	res, matching_substs := m.unify(
+		n,
+		subst.TransformTerm(t),
+	)
+
+	mixed_substs := []subst.MixedTermSubstitutions{}
+	for _, subst := range matching_substs {
+		mixed_substs = append(mixed_substs, subst.ToMixedTerm())
+	}
+
+	return res, mixed_substs
 }
 
 /* Tries to find the substitutions needed to unify the formulae with the one described by the sequence of instructions. */
-func (m *Machine) unify(node Node, formula AST.Form) []MatchingSubstitutions {
-	var result []MatchingSubstitutions
-	// The formula has to be a predicate.
-	switch formula_type := formula.(type) {
-	case AST.Pred:
-		// Transform the predicate to a function to make the tool work properly
-		m.terms = Lib.MkListV[AST.Term](AST.MakerFun(
-			formula_type.GetID(),
-			Lib.NewList[AST.Ty](),
-			getFunctionalArguments(formula_type.GetTyArgs(), formula_type.GetArgs()),
-		))
-		result = m.unifyAux(node)
-
-		if !reflect.DeepEqual(m.failure, result) {
-			filteredResult := []MatchingSubstitutions{}
-			for _, matchingSubst := range result {
-				filteredResult = append(filteredResult,
-					MakeMatchingSubstitutions(matchingSubst.GetForm(), matchingSubst.GetSubst()))
-			}
-			result = filteredResult
-		}
-	case TermForm:
-		m.terms = Lib.MkListV(formula_type.GetTerm())
-		result = m.unifyAux(node)
-	default:
-		result = m.failure
-	}
-
-	return result
+func (m *Machine) unify(node Node, t AST.Term) (bool, []subst.MixMatchSubstitutions) {
+	m.terms = Lib.MkListV(t)
+	res := m.unifyAux(node)
+	return !reflect.DeepEqual(m.failure, res), res
 }
 
 /*** Unify aux ***/
-func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
+func (m *Machine) unifyAux(node Node) []subst.MixMatchSubstitutions {
 	for _, instr := range node.value {
 
 		debug(Lib.MkLazy(func() string { return "------------------------" }))
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Instr: %v", instr.ToString()) }))
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Meta : %v", m.meta.ToString()) }))
-		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Subst : %v", SubstPairListToString(m.subst)) }))
-		debug(Lib.MkLazy(func() string { return fmt.Sprintf("Post : %v", IntPairistToString(m.post)) }))
+		debug(
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Subst : %v", subst.SubstPairListToString(m.subst)) },
+			),
+		)
+		debug(
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Post : %v", IntPairistToString(m.post)) },
+			),
+		)
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("IsLocked : %v", m.isLocked()) }))
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("HasPushed : %v", m.hasPushed) }))
 		debug(Lib.MkLazy(func() string { return fmt.Sprintf("HasPoped : %v", m.hasPoped) }))
@@ -131,7 +141,9 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 			Lib.MkLazy(func() string { return fmt.Sprintf("Cursor: %v/%v", m.q, m.terms.Len()) }),
 		)
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("m.terms[cursor] : %v", m.terms.At(m.q).ToString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("m.terms[cursor] : %v", m.terms.At(m.q).ToString()) },
+			),
 		)
 		debug(
 			Lib.MkLazy(func() string {
@@ -173,26 +185,29 @@ func (m *Machine) unifyAux(node Node) []MatchingSubstitutions {
 		}
 	}
 
-	matching := []MatchingSubstitutions{}
+	matching := []subst.MixMatchSubstitutions{}
 
 	if node.isLeaf() {
-		for _, f := range node.formulas.GetSlice() {
-			if reflect.TypeOf(f) == reflect.TypeOf(AST.Pred{}) || reflect.TypeOf(f) == reflect.TypeOf(TermForm{}) {
-				// Rebuild final substitution between meta and subst
-				final_subst := computeSubstitutions(CopySubstPairList(m.subst), m.meta.Copy(), f.Copy())
-				if !final_subst.Equals(Failure()) {
-					matching = append(matching, MakeMatchingSubstitutions(f, final_subst))
-				}
+		for _, f := range node.leafFor.GetSlice() {
+			// Rebuild final substitution between meta and subst
+			final_subst := computeSubstitutions(
+				subst.CopySubstPairList(m.subst),
+				m.meta.Copy(),
+				tofMetaList(f),
+			)
+			if !final_subst.Equals(subst.Failure()) {
+				matching = append(matching, subst.MixMatchSubstitutions{Tof: f, Subst: final_subst})
 			}
 		}
 	}
+
 	matching = append(matching, m.launchChildrenSearch(node)...)
 	return matching
 }
 
 /* Unify on goroutines - to manage die message */
 /* TODO : remove when debug ok */
-func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []MatchingSubstitutions, father_id uint64) {
+func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []subst.MixMatchSubstitutions, father_id uint64) {
 	debug(
 		Lib.MkLazy(func() string { return fmt.Sprintf("Child of %v, Unify Aux", father_id) }),
 	)
@@ -202,23 +217,37 @@ func (m *Machine) unifyAuxOnGoroutine(n Node, ch chan []MatchingSubstitutions, f
 }
 
 /* Launches each child of the current node in a goroutine. */
-func (m *Machine) launchChildrenSearch(node Node) []MatchingSubstitutions {
-	channels := []chan []MatchingSubstitutions{}
+func (m *Machine) launchChildrenSearch(node Node) []subst.MixMatchSubstitutions {
+	channels := []chan []subst.MixMatchSubstitutions{}
 	for _, c := range node.children {
 		debug(
-			Lib.MkLazy(func() string { return fmt.Sprintf("Next symbol = %v", c.getValue()[0].ToString()) }),
+			Lib.MkLazy(
+				func() string { return fmt.Sprintf("Next symbol = %v", c.getValue()[0].ToString()) },
+			),
 		)
-		channels = append(channels, make(chan []MatchingSubstitutions))
+		channels = append(channels, make(chan []subst.MixMatchSubstitutions))
 	}
 
-	matching := []MatchingSubstitutions{}
+	matching := []subst.MixMatchSubstitutions{}
 	for i, n := range node.children {
 		ch := channels[i]
 		st := m.terms.Copy(AST.Term.Copy)
 		ip := CopyIntPairList(m.post)
-		sc := CopySubstPairList(m.subst)
+		sc := subst.CopySubstPairList(m.subst)
 
-		copy := Machine{subst: sc, beginLock: m.beginLock, terms: st, meta: m.meta.Copy(), q: m.q, beginCount: m.beginCount, hasPushed: m.hasPushed, hasPoped: m.hasPoped, post: ip, topLevelTot: m.topLevelTot, topLevelCount: m.topLevelCount}
+		copy := Machine{
+			subst:         sc,
+			beginLock:     m.beginLock,
+			terms:         st,
+			meta:          m.meta.Copy(),
+			q:             m.q,
+			beginCount:    m.beginCount,
+			hasPushed:     m.hasPushed,
+			hasPoped:      m.hasPoped,
+			post:          ip,
+			topLevelTot:   m.topLevelTot,
+			topLevelCount: m.topLevelCount,
+		}
 
 		go copy.unifyAuxOnGoroutine(*n, ch, Glob.GetGID())
 		Glob.IncrGoRoutine(1)
@@ -232,7 +261,7 @@ func (m *Machine) launchChildrenSearch(node Node) []MatchingSubstitutions {
 
 	for cpt_remaining_children > 0 {
 		_, value, _ := reflect.Select(cases)
-		matching = append(matching, value.Interface().([]MatchingSubstitutions)...)
+		matching = append(matching, value.Interface().([]subst.MixMatchSubstitutions)...)
 		cpt_remaining_children--
 	}
 
@@ -320,7 +349,7 @@ func (m *Machine) put(instr Put) {
 	if m.isUnlocked() {
 		m.subst = append(
 			m.subst,
-			MakeSubstPair(instr.GetIndex(), m.terms.At(m.q)),
+			subst.MakeSubstPair(instr.GetIndex(), m.terms.At(m.q)),
 		)
 	}
 }
@@ -328,8 +357,8 @@ func (m *Machine) put(instr Put) {
 /* Algorithm for the instruction Compare. */
 func (m *Machine) compare(i int, j int) Status {
 	if m.isUnlocked() {
-		i := GetSubstAt(m.subst, i)
-		j := GetSubstAt(m.subst, j)
+		i := subst.GetSubstAt(m.subst, i)
+		j := subst.GetSubstAt(m.subst, j)
 
 		if i != nil && j != nil {
 			i = m.unwrapMeta(i)

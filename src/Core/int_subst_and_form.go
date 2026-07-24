@@ -40,7 +40,7 @@ import (
 	"strconv"
 
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 type IntSubstAndForm struct {

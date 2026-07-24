@@ -31,67 +31,61 @@
 **/
 
 /**
-* This file provides the necessary structures to manipulate pairs of substitutions.
+* This file provides the necessary structures to manipulate pairs of int.
 **/
 
-package Unif
+package codetree
 
 import (
 	"strconv"
 
 	"github.com/GoelandProver/Goeland/AST"
+	"github.com/GoelandProver/Goeland/Lib"
 )
 
-/* Association between an integer and a Term. */
-type SubstPair struct {
-	i    int
-	term AST.Term
+/* Association between an integer and an array of Terms. */
+type IntPair struct {
+	q     int
+	terms Lib.List[AST.Term]
 }
 
-func (s SubstPair) GetIndex() int {
-	return s.i
+func (ip IntPair) GetQ() int {
+	return ip.q
+}
+func (ip IntPair) GetTerms() Lib.List[AST.Term] {
+	return ip.terms.Copy(AST.Term.Copy)
 }
 
-func (s SubstPair) GetTerm() AST.Term {
-	return s.term.Copy()
-}
-
-func (s SubstPair) Copy() SubstPair {
-	return MakeSubstPair(s.GetIndex(), s.GetTerm().Copy())
-}
-
-func GetSubstAt(subst []SubstPair, index int) AST.Term {
-	for _, sub := range subst {
-		if sub.i == index {
-			return sub.GetTerm()
-		}
-	}
-	return nil
-}
-
-func SubstPairListToString(s []SubstPair) string {
-	res := "{"
-	for i, v := range s {
-		res += "(" + strconv.Itoa(v.i) + ", " + v.GetTerm().ToString() + ")"
-		if i < len(s)-1 {
-			res += ", "
-		}
-	}
-
-	res += "}"
+func (ip IntPair) ToString() string {
+	res := "(" + strconv.Itoa(ip.q) + ", [" + ip.terms.ToString(AST.Term.ToString, Lib.WithSep(""), Lib.WithEmpty("{}")) + "])"
 	return res
 }
 
-/* Maker */
-func MakeSubstPair(i int, term AST.Term) SubstPair {
-	return SubstPair{i, term.Copy()}
+func (ip IntPair) Copy() IntPair {
+	return MakeIntPair(ip.GetQ(), ip.GetTerms())
 }
 
-/* Copy a list of substPair */
-func CopySubstPairList(sl []SubstPair) []SubstPair {
-	res := []SubstPair{}
-	for _, sp := range sl {
-		res = append(res, sp.Copy())
+func IntPairistToString(ipl []IntPair) string {
+	res := "{"
+	for i, ip := range ipl {
+		res += ip.ToString()
+		if i < len(ipl)-1 {
+			res += ", "
+		}
+	}
+	res += "}"
+
+	return res
+}
+
+func MakeIntPair(q int, terms Lib.List[AST.Term]) IntPair {
+	return IntPair{q, terms.Copy(AST.Term.Copy)}
+}
+
+func CopyIntPairList(ipl []IntPair) []IntPair {
+	res := make([]IntPair, len(ipl))
+	for i, ip := range ipl {
+		res[i] = ip.Copy()
 	}
 	return res
 }

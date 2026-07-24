@@ -44,7 +44,10 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
-	"github.com/GoelandProver/Goeland/Unif"
+	"github.com/GoelandProver/Goeland/Unif/codetree"
+	"github.com/GoelandProver/Goeland/Unif/discriminationtree"
+
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 type EqualityProblem struct {
@@ -136,11 +139,15 @@ func makeEqualityProblem(E Equalities, s AST.Term, t AST.Term, c ConstraintStruc
 
 /* Take a list of equalities and build the corresponding code tree */
 func makeDataStructFromEqualities(eq Equalities) Unif.DataStructure {
-	formList := Lib.NewList[AST.Form]()
+	formList := Lib.NewList[AST.Term]()
 	for _, e := range eq {
-		formList.Append(Unif.MakerTermForm(e.GetT1()), Unif.MakerTermForm(e.GetT2()))
+		formList.Append(e.GetT1(), e.GetT2())
 	}
-	return Unif.NewNode().MakeDataStruct(Lib.ListCpy(formList), true)
+
+	if Glob.GetDt() {
+		return discriminationtree.MakeTermUnifProblem(Lib.ListCpy(formList))
+	}
+	return codetree.MakeTermUnifProblem(Lib.ListCpy(formList))
 }
 
 /* Take a list of equalities and build the corresponding assocative map */

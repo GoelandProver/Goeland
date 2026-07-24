@@ -35,7 +35,7 @@ import (
 	"github.com/GoelandProver/Goeland/AST"
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 func gatherSubs(truthValues map[Lit]bool, sMapping map[Glob.Pair[*termRecord, *eqClass]]Lit, rMapping map[Glob.Pair[*eqClass, *termRecord]]Lit) (subs []Unif.Substitutions, success bool) {

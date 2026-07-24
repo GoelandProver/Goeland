@@ -44,7 +44,7 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	"github.com/GoelandProver/Goeland/Lib"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
-	"github.com/GoelandProver/Goeland/Unif"
+	subst "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 /****************/
@@ -60,11 +60,11 @@ type State struct {
 	applied_subst                         Core.SubstAndForm
 	last_applied_subst                    Core.SubstAndForm   // For non destructive case only
 	substs_found                          []Core.SubstAndForm // Subst found with mm in d, subst for "bactrack" in nd
-	tree_pos, tree_neg                    Unif.DataStructure
+	tree_pos, tree_neg                    subst.DataStructure
 	proof                                 []ProofStruct
 	current_proof                         ProofStruct
 	bt_on_formulas                        bool
-	forbidden                             Lib.List[Lib.List[Unif.MixedSubstitution]]
+	forbidden                             Lib.List[Lib.List[subst.MixedSubstitution]]
 	unifier                               Core.Unifier
 	eqStruct                              eqStruct.EqualityStruct
 }
@@ -113,13 +113,13 @@ func (s State) GetLastAppliedSubst() Core.SubstAndForm {
 func (st State) GetSubstsFound() []Core.SubstAndForm {
 	return Core.CopySubstAndFormList(st.substs_found)
 }
-func (s State) GetTreePos() Unif.DataStructure {
+func (s State) GetTreePos() subst.DataStructure {
 	return s.tree_pos
 }
 func (s *State) AddToTreePos(fl Lib.List[AST.Form]) {
 	s.tree_pos = s.tree_pos.InsertFormulaListToDataStructure(fl)
 }
-func (s State) GetTreeNeg() Unif.DataStructure {
+func (s State) GetTreeNeg() subst.DataStructure {
 	return s.tree_neg
 }
 func (s *State) AddToTreeNeg(fl Lib.List[AST.Form]) {
@@ -134,7 +134,7 @@ func (s State) GetCurrentProof() ProofStruct {
 func (s State) GetBTOnFormulas() bool {
 	return s.bt_on_formulas
 }
-func (s State) GetForbiddenSubsts() Lib.List[Lib.List[Unif.MixedSubstitution]] {
+func (s State) GetForbiddenSubsts() Lib.List[Lib.List[subst.MixedSubstitution]] {
 	return s.forbidden
 }
 func (s State) GetGlobUnifier() Core.Unifier {
@@ -186,10 +186,10 @@ func (st *State) SetLastAppliedSubst(s Core.SubstAndForm) {
 func (st *State) SetSubstsFound(s []Core.SubstAndForm) {
 	st.substs_found = Core.CopySubstAndFormList(s)
 }
-func (st *State) SetTreePos(d Unif.DataStructure) {
+func (st *State) SetTreePos(d subst.DataStructure) {
 	st.tree_pos = d
 }
-func (st *State) SetTreeNeg(d Unif.DataStructure) {
+func (st *State) SetTreeNeg(d subst.DataStructure) {
 	st.tree_neg = d
 }
 func (st *State) SetProof(p []ProofStruct) {
@@ -245,15 +245,15 @@ func (st *State) SetCurrentProofNodeId(i int) {
 func (st *State) SetBTOnFormulas(b bool) {
 	st.bt_on_formulas = b
 }
-func (st *State) SetForbiddenSubsts(s Lib.List[Lib.List[Unif.MixedSubstitution]]) {
-	st.forbidden = s.Copy(Lib.ListCpy[Unif.MixedSubstitution])
+func (st *State) SetForbiddenSubsts(s Lib.List[Lib.List[subst.MixedSubstitution]]) {
+	st.forbidden = s.Copy(Lib.ListCpy[subst.MixedSubstitution])
 }
 func (s *State) SetGlobUnifier(u Core.Unifier) {
 	s.unifier = u.Copy()
 }
 
 /* Maker */
-func MakeState(limit int, tp, tn Unif.DataStructure, f AST.Form) State {
+func MakeState(limit int, tp, tn subst.DataStructure, f AST.Form) State {
 	n := 0
 	if Glob.IsDestructive() {
 		n = limit
@@ -285,7 +285,7 @@ func MakeState(limit int, tp, tn Unif.DataStructure, f AST.Form) State {
 		[]ProofStruct{},
 		current_proof,
 		false,
-		Lib.NewList[Lib.List[Unif.MixedSubstitution]](),
+		Lib.NewList[Lib.List[subst.MixedSubstitution]](),
 		Core.MakeUnifier(),
 		eqStruct.NewEqStruct()}
 }
@@ -353,7 +353,7 @@ func (st State) Print() {
 		debug(Lib.MkLazy(func() string { return "Subst_found: " }))
 		debug(
 			Lib.MkLazy(func() string {
-				return Unif.SubstsToString(Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))
+				return subst.SubstsToString(Core.GetSubstListFromSubstAndFormList(st.GetSubstsFound()))
 			}),
 		)
 	}
@@ -368,7 +368,7 @@ func (st State) Print() {
 		debug(
 			Lib.MkLazy(func() string {
 				return st.forbidden.ToString(
-					func(m Lib.List[Unif.MixedSubstitution]) string {
+					func(m Lib.List[subst.MixedSubstitution]) string {
 						return Lib.ListToString(m)
 					}, Lib.WithSep(" ; "))
 			}),
@@ -428,10 +428,10 @@ func (st State) Copy() State {
 	// Recréer arbre
 	if Glob.IsLoaded("dmt") {
 		new_state.SetTreePos(st.tree_pos.MakeDataStruct(st.GetAtomic().ExtractForms(), true))
-		new_state.SetTreeNeg(st.tree_pos.MakeDataStruct(st.GetAtomic().ExtractForms(), false))
+		new_state.SetTreeNeg(st.tree_neg.MakeDataStruct(st.GetAtomic().ExtractForms(), false))
 	} else {
-		new_state.SetTreePos(st.GetTreePos())
-		new_state.SetTreeNeg(st.GetTreeNeg())
+		new_state.SetTreePos(st.GetTreePos().MakeDataStruct(st.GetAtomic().ExtractForms(), true))
+		new_state.SetTreeNeg(st.GetTreeNeg().MakeDataStruct(st.GetAtomic().ExtractForms(), false))
 	}
 
 	new_state.SetProof([]ProofStruct{})

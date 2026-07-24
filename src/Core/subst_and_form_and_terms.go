@@ -38,7 +38,7 @@ package Core
 
 import (
 	"github.com/GoelandProver/Goeland/Lib"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 )
 
 /* Stock the substitution and the corresponding list of formulas */

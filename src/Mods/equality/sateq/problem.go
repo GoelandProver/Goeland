@@ -36,7 +36,7 @@ import (
 	"github.com/GoelandProver/Goeland/Glob"
 	equality "github.com/GoelandProver/Goeland/Mods/equality/bse"
 	"github.com/GoelandProver/Goeland/Mods/equality/eqStruct"
-	"github.com/GoelandProver/Goeland/Unif"
+	Unif "github.com/GoelandProver/Goeland/Unif/substitution"
 	"github.com/go-air/gini"
 	"github.com/go-air/gini/z"
 )
